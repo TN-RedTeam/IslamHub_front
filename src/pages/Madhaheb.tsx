@@ -1,9 +1,11 @@
 import React from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { m, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { GraduationCap, BookOpen, ChevronRight, Star, Users, Scale, Sun, Moon } from 'lucide-react';
+import { usePageTitle } from '../hooks/usePageTitle';
 
 export const Madhaheb: React.FC = () => {
+  usePageTitle('Les écoles (Madhaheb)');
     const madhaheb = [
         {
             id: 1,
@@ -56,63 +58,63 @@ export const Madhaheb: React.FC = () => {
 
     return (
         <div className="min-h-screen bg-gradient-to-b from-amber-50 to-emerald-50 dark:from-gray-900 dark:to-emerald-950">
-            <motion.header
+            <m.header
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
                 className="relative py-24 bg-gradient-to-r from-emerald-900 via-emerald-800 to-amber-900 dark:from-emerald-950 dark:via-emerald-900 dark:to-amber-950 overflow-hidden"
             >
-                <div className="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/arabesque.png')]" />
+                <div className="absolute inset-0 opacity-10 bg-arabesque" />
                 <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-amber-50 dark:to-gray-900" />
 
                 <div className="relative container mx-auto px-4 text-center">
-                    <motion.div
+                    <m.div
                         initial={{ scale: 0.9, rotate: -10 }}
                         animate={{ scale: 1, rotate: 0 }}
                         transition={{ type: "spring", stiffness: 200 }}
                         className="inline-flex items-center justify-center w-24 h-24 rounded-full bg-white/10 backdrop-blur-sm mb-8 shadow-2xl"
                     >
                         <GraduationCap className="h-12 w-12 text-white" />
-                    </motion.div>
+                    </m.div>
 
-                    <motion.h1
+                    <m.h1
                         initial={{ y: 20, opacity: 0 }}
                         animate={{ y: 0, opacity: 1 }}
                         transition={{ delay: 0.1 }}
                         className="text-5xl md:text-7xl font-bold text-white mb-6 font-amiri"
                     >
                         Les Madhāhib
-                    </motion.h1>
+                    </m.h1>
 
-                    <motion.p
+                    <m.p
                         initial={{ y: 20, opacity: 0 }}
                         animate={{ y: 0, opacity: 1 }}
                         transition={{ delay: 0.2 }}
                         className="text-xl text-emerald-200 max-w-3xl mx-auto mb-4"
                     >
                         Découvrez les quatre écoles juridiques sunnites
-                    </motion.p>
+                    </m.p>
 
-                    <motion.p
+                    <m.p
                         initial={{ y: 20, opacity: 0 }}
                         animate={{ y: 0, opacity: 1 }}
                         transition={{ delay: 0.3 }}
                         className="text-emerald-300 max-w-2xl mx-auto font-amiri"
                     >
 
-                    </motion.p>
+                    </m.p>
                 </div>
-            </motion.header>
+            </m.header>
 
             <main className="container mx-auto px-4 py-12 -mt-12 relative z-10">
                 {/* Section des statistiques */}
-                <motion.section
+                <m.section
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.2 }}
                     className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-16"
                 >
                     {stats.map((stat, index) => (
-                        <motion.div
+                        <m.div
                             key={stat.label}
                             initial={{ opacity: 0, scale: 0.9 }}
                             animate={{ opacity: 1, scale: 1 }}
@@ -129,12 +131,12 @@ export const Madhaheb: React.FC = () => {
                             <div className="text-sm text-gray-600 dark:text-gray-400 mt-1">
                                 {stat.label}
                             </div>
-                        </motion.div>
+                        </m.div>
                     ))}
-                </motion.section>
+                </m.section>
 
                 {/* Section d'introduction */}
-                <motion.section
+                <m.section
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: 0.4 }}
@@ -151,13 +153,13 @@ export const Madhaheb: React.FC = () => {
                         </p>
                         <div className="h-1 w-24 mx-auto bg-gradient-to-r from-amber-400 to-emerald-500 rounded-full mt-6"></div>
                     </div>
-                </motion.section>
+                </m.section>
 
                 {/* Cartes des madhahib */}
                 <section className="pb-16">
                     <div className="grid md:grid-cols-2 gap-8">
                         {madhaheb.map((madhab, index) => (
-                            <motion.div
+                            <m.div
                                 key={madhab.id}
                                 initial={{ opacity: 0, x: index % 2 === 0 ? -30 : 30 }}
                                 animate={{ opacity: 1, x: 0 }}
@@ -215,12 +217,12 @@ export const Madhaheb: React.FC = () => {
                         <span className="text-sm text-emerald-600 dark:text-emerald-400 font-medium">
                           Découvrir l'école {madhab.name}
                         </span>
-                                                <motion.div
+                                                <m.div
                                                     whileHover={{ x: 5 }}
                                                     className="w-8 h-8 rounded-full bg-amber-100 dark:bg-emerald-800 flex items-center justify-center"
                                                 >
                                                     <ChevronRight className="h-4 w-4 text-amber-600 dark:text-emerald-400" />
-                                                </motion.div>
+                                                </m.div>
                                             </div>
                                         </div>
 
@@ -237,13 +239,13 @@ export const Madhaheb: React.FC = () => {
                                         </div>
                                     </div>
                                 </Link>
-                            </motion.div>
+                            </m.div>
                         ))}
                     </div>
                 </section>
 
                 {/* Section de citation */}
-                <motion.section
+                <m.section
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: 0.8 }}
@@ -258,7 +260,7 @@ export const Madhaheb: React.FC = () => {
                             - Propos rapporté par Abou Dawoud
                         </p>
                     </div>
-                </motion.section>
+                </m.section>
             </main>
 
             <footer className="bg-emerald-900 dark:bg-emerald-950 text-white py-12 mt-16">

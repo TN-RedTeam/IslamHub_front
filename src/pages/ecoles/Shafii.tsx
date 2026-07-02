@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { m, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { GraduationCap, BookOpen, Users, Star, ChevronRight, Scale, Globe, Shield, Heart, ChevronDown, ChevronUp, Calendar, Scroll, MapPin, Sparkles } from 'lucide-react';
 
@@ -14,7 +14,7 @@ const CollapsibleSection: React.FC<SectionProps> = ({ title, icon, children, def
     const [isOpen, setIsOpen] = useState(defaultOpen);
 
     return (
-        <motion.div
+        <m.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden border border-amber-200 dark:border-emerald-800"
@@ -39,7 +39,7 @@ const CollapsibleSection: React.FC<SectionProps> = ({ title, icon, children, def
             </button>
             <AnimatePresence>
                 {isOpen && (
-                    <motion.div
+                    <m.div
                         initial={{ height: 0, opacity: 0 }}
                         animate={{ height: 'auto', opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}
@@ -49,10 +49,10 @@ const CollapsibleSection: React.FC<SectionProps> = ({ title, icon, children, def
                         <div className="p-6 text-gray-700 dark:text-gray-300 leading-relaxed">
                             {children}
                         </div>
-                    </motion.div>
+                    </m.div>
                 )}
             </AnimatePresence>
-        </motion.div>
+        </m.div>
     );
 };
 
@@ -170,63 +170,63 @@ const Shafii: React.FC = () => {
 
     return (
         <div className="min-h-screen bg-gradient-to-b from-amber-50 to-emerald-50 dark:from-gray-900 dark:to-emerald-950">
-            <motion.header
+            <m.header
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
                 className="relative py-24 bg-gradient-to-r from-emerald-900 via-emerald-800 to-amber-900 dark:from-emerald-950 dark:via-emerald-900 dark:to-amber-950 overflow-hidden"
             >
-                <div className="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/arabesque.png')]" />
+                <div className="absolute inset-0 opacity-10 bg-arabesque" />
                 <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-amber-50 dark:to-gray-900" />
 
                 <div className="relative container mx-auto px-4 text-center">
-                    <motion.div
+                    <m.div
                         initial={{ scale: 0.9, rotate: -10 }}
                         animate={{ scale: 1, rotate: 0 }}
                         transition={{ type: "spring", stiffness: 200 }}
                         className="inline-flex items-center justify-center w-24 h-24 rounded-full bg-white/10 backdrop-blur-sm mb-8 shadow-2xl"
                     >
                         <GraduationCap className="h-12 w-12 text-white" />
-                    </motion.div>
+                    </m.div>
 
-                    <motion.h1
+                    <m.h1
                         initial={{ y: 20, opacity: 0 }}
                         animate={{ y: 0, opacity: 1 }}
                         transition={{ delay: 0.1 }}
                         className="text-5xl md:text-7xl font-bold text-white mb-6 font-amiri"
                     >
                         École Shafi'ite
-                    </motion.h1>
+                    </m.h1>
 
-                    <motion.p
+                    <m.p
                         initial={{ y: 20, opacity: 0 }}
                         animate={{ y: 0, opacity: 1 }}
                         transition={{ delay: 0.2 }}
                         className="text-xl text-emerald-200 max-w-3xl mx-auto mb-4"
                     >
                         L'école équilibrée entre texte et raison
-                    </motion.p>
+                    </m.p>
 
-                    <motion.p
+                    <m.p
                         initial={{ y: 20, opacity: 0 }}
                         animate={{ y: 0, opacity: 1 }}
                         transition={{ delay: 0.3 }}
                         className="text-emerald-300 max-w-2xl mx-auto font-amiri"
                     >
                         Fondée par l'Imam Mouhammad fils de Idris Ach-Chafi^iyy (150 H - 204 H / 767-820 EC)
-                    </motion.p>
+                    </m.p>
                 </div>
-            </motion.header>
+            </m.header>
 
             <main className="container mx-auto px-4 py-12 -mt-12 relative z-10">
                 {/* Section des statistiques */}
-                <motion.section
+                <m.section
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.2 }}
                     className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-16"
                 >
                     {stats.map((stat, index) => (
-                        <motion.div
+                        <m.div
                             key={stat.label}
                             initial={{ opacity: 0, scale: 0.9 }}
                             animate={{ opacity: 1, scale: 1 }}
@@ -243,12 +243,12 @@ const Shafii: React.FC = () => {
                             <div className="text-sm text-gray-600 dark:text-gray-400 mt-1">
                                 {stat.label}
                             </div>
-                        </motion.div>
+                        </m.div>
                     ))}
-                </motion.section>
+                </m.section>
 
                 {/* Section d'introduction */}
-                <motion.section
+                <m.section
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: 0.4 }}
@@ -271,10 +271,10 @@ const Shafii: React.FC = () => {
                         </p>
                         <div className="h-1 w-24 mx-auto bg-gradient-to-r from-amber-400 to-emerald-500 rounded-full mt-6"></div>
                     </div>
-                </motion.section>
+                </m.section>
 
                 {/* Sections biographiques détaillées */}
-                <motion.section
+                <m.section
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: 0.5 }}
@@ -575,10 +575,10 @@ const Shafii: React.FC = () => {
                             </p>
                         </div>
                     </CollapsibleSection>
-                </motion.section>
+                </m.section>
 
                 {/* Section des sources */}
-                <motion.section
+                <m.section
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: 0.6 }}
@@ -589,7 +589,7 @@ const Shafii: React.FC = () => {
                     </h3>
                     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                         {sources.map((source, index) => (
-                            <motion.div
+                            <m.div
                                 key={source.title}
                                 initial={{ opacity: 0, y: 20 }}
                                 animate={{ opacity: 1, y: 0 }}
@@ -606,13 +606,13 @@ const Shafii: React.FC = () => {
                                 <p className="text-gray-600 dark:text-gray-400">
                                     {source.description}
                                 </p>
-                            </motion.div>
+                            </m.div>
                         ))}
                     </div>
-                </motion.section>
+                </m.section>
 
                 {/* Section spécifique Usul al-Fiqh */}
-                <motion.section
+                <m.section
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.8 }}
@@ -639,10 +639,10 @@ const Shafii: React.FC = () => {
                             </div>
                         </div>
                     </div>
-                </motion.section>
+                </m.section>
 
                 {/* Section particularités */}
-                <motion.section
+                <m.section
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: 0.85 }}
@@ -680,10 +680,10 @@ const Shafii: React.FC = () => {
                             </p>
                         </div>
                     </div>
-                </motion.section>
+                </m.section>
 
                 {/* Autres écoles */}
-                <motion.section
+                <m.section
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: 0.9 }}
@@ -694,7 +694,7 @@ const Shafii: React.FC = () => {
                     </h3>
                     <div className="grid md:grid-cols-3 gap-6">
                         {relatedMadhaheb.map((madhab, index) => (
-                            <motion.div
+                            <m.div
                                 key={madhab.id}
                                 initial={{ opacity: 0, scale: 0.95 }}
                                 animate={{ opacity: 1, scale: 1 }}
@@ -713,23 +713,23 @@ const Shafii: React.FC = () => {
                                                 {madhab.description}
                                             </p>
                                             <div className="flex items-center justify-end mt-4">
-                                                <motion.div
+                                                <m.div
                                                     whileHover={{ x: 5 }}
                                                     className="flex items-center gap-1 text-emerald-600 dark:text-emerald-400 text-sm"
                                                 >
                                                     Voir <ChevronRight className="h-4 w-4" />
-                                                </motion.div>
+                                                </m.div>
                                             </div>
                                         </div>
                                     </div>
                                 </Link>
-                            </motion.div>
+                            </m.div>
                         ))}
                     </div>
-                </motion.section>
+                </m.section>
 
                 {/* Section de citation */}
-                <motion.section
+                <m.section
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: 1.1 }}
@@ -744,7 +744,7 @@ const Shafii: React.FC = () => {
                             - L'Imam Ach-Chafi^iyy
                         </p>
                     </div>
-                </motion.section>
+                </m.section>
             </main>
 
             <footer className="bg-emerald-900 dark:bg-emerald-950 text-white py-12 mt-16">

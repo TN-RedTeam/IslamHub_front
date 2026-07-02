@@ -1,30 +1,30 @@
 import React from 'react';
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 
 const ArgumentationGlobale: React.FC = () => {
   return (
     <div className="min-h-screen bg-gradient-to-b from-amber-50 to-emerald-50 dark:from-gray-900 dark:to-emerald-950 py-12">
       {/* En-tête avec motif islamique */}
-      <motion.header
+      <m.header
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         className="relative py-16 bg-emerald-800 dark:bg-emerald-950 overflow-hidden mb-12"
       >
-        <div className="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/arabesque.png')]" />
+        <div className="absolute inset-0 opacity-20 bg-arabesque" />
         <div className="container mx-auto px-4 relative">
-          <motion.h1 
+          <m.h1 
             initial={{ scale: 0.9 }}
             animate={{ scale: 1 }}
             className="text-4xl font-bold text-white mb-2 font-amiri text-center"
           >
             Argumentation Globale
-          </motion.h1>
+          </m.h1>
         </div>
-      </motion.header>
+      </m.header>
 
       <div className="container mx-auto px-4 space-y-8">
         {/* Section principale */}
-        <motion.div 
+        <m.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 border border-emerald-100 dark:border-emerald-900"
@@ -62,7 +62,7 @@ const ArgumentationGlobale: React.FC = () => {
               Un autre exemple d'argumentation globale, c'est comme si une personne dit : "moi, j'existe après n'avoir pas existé, et tout ce qui existe après n'avoir pas existé a nécessairement Qui l'a fait existé. J'ai donc nécessairement besoin d'un Être Qui m'a donné l'existence et Qui n'a absolument aucune ressemblance avec moi". Et cette argumentation est également valable pour toutes les parties de ce monde, pour toutes les créatures. Et Celui qui a donné l'existence à ce monde, n'a absolument aucune ressemblance avec ce monde, sinon Il aurait eut Lui aussi besoin d'un être qui Lui donne l'existence.        
             </p>
           </div>
-        </motion.div>
+        </m.div>
       </div>
     </div>
   );

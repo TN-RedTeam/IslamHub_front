@@ -1,5 +1,5 @@
 import React from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { m, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Search, Filter, X, ChevronRight, BookOpen } from 'lucide-react';
 
@@ -62,31 +62,31 @@ const CroyanceEnDieu: React.FC = () => {
   return (
     <div className="min-h-screen bg-gradient-to-b from-amber-50 to-emerald-50 dark:from-gray-900 dark:to-emerald-950">
       {/* En-tête avec motif islamique */}
-      <motion.header
+      <m.header
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         className="relative py-20 bg-emerald-800 dark:bg-emerald-950 overflow-hidden"
       >
-        <div className="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/arabesque.png')]" />
+        <div className="absolute inset-0 opacity-20 bg-arabesque" />
         <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-amber-50 dark:from-gray-900" />
         
         <div className="relative container mx-auto px-4 text-center">
-          <motion.h1 
+          <m.h1 
             initial={{ scale: 0.9 }}
             animate={{ scale: 1 }}
             className="text-5xl md:text-6xl font-bold text-white mb-6 font-amiri"
           >
             Croyance en Allah
-          </motion.h1>
+          </m.h1>
           <p className="text-xl text-emerald-200 max-w-3xl mx-auto">
             Les fondements de la croyance en notre Créateur
           </p>
         </div>
-      </motion.header>
+      </m.header>
 
       <main className="container mx-auto px-4 py-12 -mt-12 relative z-10">
         {/* Recherche et filtres */}
-        <motion.section
+        <m.section
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.4 }}
@@ -124,7 +124,7 @@ const CroyanceEnDieu: React.FC = () => {
           </div>
 
           {selectedCategory && (
-            <motion.div
+            <m.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               className="mt-4 flex items-center justify-between bg-emerald-50 dark:bg-emerald-900/30 rounded-lg px-4 py-2"
@@ -138,15 +138,15 @@ const CroyanceEnDieu: React.FC = () => {
               >
                 <X className="h-5 w-5" />
               </button>
-            </motion.div>
+            </m.div>
           )}
-        </motion.section>
+        </m.section>
 
         {/* Résultats */}
         <section className="pb-16">
           <AnimatePresence>
             {filteredCroyance.length === 0 ? (
-              <motion.div
+              <m.div
                 key="no-results"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -171,20 +171,20 @@ const CroyanceEnDieu: React.FC = () => {
                     Réinitialiser
                   </button>
                 </div>
-              </motion.div>
+              </m.div>
             ) : (
               <>
-                <motion.p 
+                <m.p 
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   className="text-sm font-medium text-emerald-700 dark:text-emerald-400 mb-6"
                 >
                   {filteredCroyance.length} aspect{filteredCroyance.length > 1 ? 's' : ''} de la croyance trouvé{filteredCroyance.length > 1 ? 's' : ''}
-                </motion.p>
+                </m.p>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                   {filteredCroyance.map((item, index) => (
-                    <motion.div
+                    <m.div
                       key={item.id}
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
@@ -229,20 +229,20 @@ const CroyanceEnDieu: React.FC = () => {
                             
                             <div className="flex flex-wrap gap-2 mt-4">
                               {item.tags.split(',').map(tag => (
-                                <motion.span
+                                <m.span
                                   key={tag.trim()}
                                   whileHover={{ scale: 1.05 }}
                                   className="text-xs bg-amber-100 dark:bg-emerald-800 text-amber-800 dark:text-emerald-200 px-3 py-1 rounded-full flex items-center"
                                 >
                                   <ChevronRight className="h-3 w-3 mr-1" />
                                   {tag.trim()}
-                                </motion.span>
+                                </m.span>
                               ))}
                             </div>
                           </div>
                         </div>
                       </Link>
-                    </motion.div>
+                    </m.div>
                   ))}
                 </div>
               </>

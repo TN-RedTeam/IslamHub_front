@@ -1,5 +1,5 @@
 import React from 'react';
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { BookOpen, Search, Filter } from 'lucide-react';
 import { useNavigate } from 'react-router-dom'; // Importez useNavigate
 
@@ -16,7 +16,7 @@ const MiseEnGarde: React.FC = () => {
 
     return (
         <div className="space-y-8">
-            <motion.div
+            <m.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 className="relative py-16 bg-arabesque bg-cover bg-center"
@@ -28,7 +28,7 @@ const MiseEnGarde: React.FC = () => {
                         Apprendre les lois et les régles de l'Islam
                     </p>
                 </div>
-            </motion.div>
+            </m.div>
 
             <div className="max-w-7xl mx-auto px-4">
                 <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 mb-8">
@@ -50,7 +50,7 @@ const MiseEnGarde: React.FC = () => {
 
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {['Croyance', 'Salat', 'Jeûne', 'Zakat', 'Mariage', 'Ventes', 'Famille', 'Femmes'].map((topic, index) => (
-                        <motion.div
+                        <m.div
                             key={topic}
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
@@ -71,7 +71,7 @@ const MiseEnGarde: React.FC = () => {
                                     </p>
                                 </div>
                             </div>
-                        </motion.div>
+                        </m.div>
                     ))}
                 </div>
             </div>

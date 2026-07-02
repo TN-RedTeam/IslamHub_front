@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { m, AnimatePresence } from 'framer-motion';
 import { Heart, BookOpen, Loader, Search, Filter, X, Sparkles, Tags, Hash, Star } from 'lucide-react';
 import { dataService } from '../services/DataService';
 import type { Dhikr } from '../types';
+import { usePageTitle } from '../hooks/usePageTitle';
 
 const getTagsArray = (tags: string | null | undefined): string[] => {
     if (!tags) return [];
@@ -12,6 +13,7 @@ const getTagsArray = (tags: string | null | undefined): string[] => {
 const ITEMS_PER_PAGE = 20;
 
 export const Dhikrs: React.FC = () => {
+  usePageTitle('Dhikrs');
     const [dhikrs, setDhikrs] = useState<Dhikr[]>([]);
     const [hasSearched, setHasSearched] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
@@ -97,21 +99,21 @@ export const Dhikrs: React.FC = () => {
 
     return (
         <div className="min-h-screen bg-gradient-to-b from-amber-50 to-emerald-50 dark:from-gray-900 dark:to-emerald-950">
-            <motion.header
+            <m.header
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
                 className="relative py-20 bg-emerald-800 dark:bg-emerald-950 overflow-hidden"
             >
-                <div className="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/arabesque.png')]" />
+                <div className="absolute inset-0 opacity-20 bg-arabesque" />
                 <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-amber-50 dark:from-gray-900" />
                 <div className="relative container mx-auto px-4 text-center">
-                    <motion.div
+                    <m.div
                         initial={{ scale: 0.9 }}
                         animate={{ scale: 1 }}
                         className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-white/10 backdrop-blur-sm mb-6"
                     >
                         <Heart className="h-10 w-10 text-white" />
-                    </motion.div>
+                    </m.div>
                     <h1 className="text-5xl md:text-6xl font-bold text-white mb-6 font-amiri">
                         Évocations et Dhikrs
                     </h1>
@@ -125,13 +127,13 @@ export const Dhikrs: React.FC = () => {
                         </div>
                     )}
                 </div>
-            </motion.header>
+            </m.header>
 
             <main className="container mx-auto px-4 py-12 -mt-12 relative z-10">
 
                 {/* Catégories — visibles seulement après recherche */}
                 {hasSearched && categories.length > 0 && (
-                    <motion.section
+                    <m.section
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         className="mb-8"
@@ -163,12 +165,12 @@ export const Dhikrs: React.FC = () => {
                                 ))}
                             </div>
                         </div>
-                    </motion.section>
+                    </m.section>
                 )}
 
                 {/* Tags — visibles seulement après recherche */}
                 {hasSearched && tagCounts.size > 0 && (
-                    <motion.section
+                    <m.section
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         className="mb-8"
@@ -180,7 +182,7 @@ export const Dhikrs: React.FC = () => {
                             </div>
                             <div className="flex flex-wrap gap-2">
                                 {Array.from(tagCounts.entries()).sort((a, b) => b[1] - a[1]).slice(0, 15).map(([tag, count]) => (
-                                    <motion.button
+                                    <m.button
                                         key={tag}
                                         whileHover={{ scale: 1.05 }}
                                         whileTap={{ scale: 0.95 }}
@@ -192,15 +194,15 @@ export const Dhikrs: React.FC = () => {
                                         <Hash className="h-3 w-3" />
                                         {tag}
                                         <span className="text-xs opacity-75">({count})</span>
-                                    </motion.button>
+                                    </m.button>
                                 ))}
                             </div>
                         </div>
-                    </motion.section>
+                    </m.section>
                 )}
 
                 {/* Barre de recherche et filtres */}
-                <motion.section
+                <m.section
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-6 mb-8 sticky top-20 z-20 border border-emerald-100 dark:border-emerald-900"
@@ -240,7 +242,7 @@ export const Dhikrs: React.FC = () => {
                     </div>
 
                     {(selectedCategory || selectedTag || searchQuery) && (
-                        <motion.div
+                        <m.div
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             className="mt-4 flex items-center justify-between bg-gradient-to-r from-emerald-50 to-amber-50 dark:from-emerald-900/30 dark:to-amber-900/30 rounded-lg px-4 py-2"
@@ -266,9 +268,9 @@ export const Dhikrs: React.FC = () => {
                             <button onClick={handleResetFilters} aria-label="Retirer les filtres" className="text-emerald-600 dark:text-emerald-400 hover:text-emerald-800 p-1 transition-colors">
                                 <X className="h-5 w-5" />
                             </button>
-                        </motion.div>
+                        </m.div>
                     )}
-                </motion.section>
+                </m.section>
 
                 {/* Résultats */}
                 <section className="pb-16">
@@ -284,20 +286,20 @@ export const Dhikrs: React.FC = () => {
                             <button onClick={() => doSearch(searchQuery, selectedTag)} className="px-6 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg transition-colors">Réessayer</button>
                         </div>
                     ) : !hasSearched ? (
-                        <motion.div
+                        <m.div
                             key="empty-state"
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             className="text-center py-24"
                         >
                             <div className="max-w-lg mx-auto">
-                                <motion.div
+                                <m.div
                                     animate={{ y: [0, -10, 0] }}
                                     transition={{ repeat: Infinity, duration: 4, ease: 'easeInOut' }}
                                     className="text-9xl mb-8 select-none"
                                 >
                                     💫
-                                </motion.div>
+                                </m.div>
                                 <h3 className="text-3xl font-bold text-emerald-800 dark:text-emerald-200 mb-4 font-amiri">
                                     Recherchez parmi les dhikrs
                                 </h3>
@@ -308,7 +310,7 @@ export const Dhikrs: React.FC = () => {
                                     <div className="flex flex-wrap gap-2 justify-center">
                                         <p className="w-full text-sm text-gray-500 dark:text-gray-400 mb-2">Suggestions :</p>
                                         {allTags.slice(0, 8).map(tag => (
-                                            <motion.button
+                                            <m.button
                                                 key={tag}
                                                 whileHover={{ scale: 1.05 }}
                                                 whileTap={{ scale: 0.95 }}
@@ -316,14 +318,14 @@ export const Dhikrs: React.FC = () => {
                                                 className="px-4 py-2 bg-amber-100 dark:bg-emerald-800/60 text-amber-800 dark:text-emerald-200 rounded-full text-sm font-medium hover:bg-amber-200 dark:hover:bg-emerald-700 transition-colors border border-amber-200 dark:border-emerald-700"
                                             >
                                                 #{tag}
-                                            </motion.button>
+                                            </m.button>
                                         ))}
                                     </div>
                                 )}
                             </div>
-                        </motion.div>
+                        </m.div>
                     ) : displayedDhikrs.length === 0 ? (
-                        <motion.div
+                        <m.div
                             key="no-results"
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
@@ -335,24 +337,24 @@ export const Dhikrs: React.FC = () => {
                                 <p className="text-gray-500 dark:text-gray-400 mb-6">Essayez de modifier vos critères de recherche</p>
                                 <button onClick={handleResetFilters} className="px-6 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg transition-colors">Réinitialiser</button>
                             </div>
-                        </motion.div>
+                        </m.div>
                     ) : (
                         <AnimatePresence mode="wait">
                             <>
-                                <motion.p
+                                <m.p
                                     initial={{ opacity: 0 }}
                                     animate={{ opacity: 1 }}
                                     className="text-sm font-medium text-emerald-700 dark:text-emerald-400 mb-6"
                                 >
                                     {displayedDhikrs.length} évocation{displayedDhikrs.length > 1 ? 's' : ''} trouvée{displayedDhikrs.length > 1 ? 's' : ''}
                                     {totalCount > dhikrs.length && <span className="ml-1 text-gray-400">(sur {totalCount})</span>}
-                                </motion.p>
+                                </m.p>
 
                                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                                     {displayedDhikrs.map((dhikr, index) => {
                                         const tags = getTagsArray(dhikr.tags);
                                         return (
-                                            <motion.div
+                                            <m.div
                                                 key={dhikr.id}
                                                 initial={{ opacity: 0, y: 20 }}
                                                 animate={{ opacity: 1, y: 0 }}
@@ -397,14 +399,14 @@ export const Dhikrs: React.FC = () => {
                                                             {tags.length > 0 && (
                                                                 <div className="mt-4 flex flex-wrap gap-2">
                                                                     {tags.map(tag => (
-                                                                        <motion.button
+                                                                        <m.button
                                                                             key={tag}
                                                                             whileHover={{ scale: 1.05 }}
                                                                             onClick={() => handleTagClick(tag)}
                                                                             className="inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium bg-amber-100 dark:bg-emerald-800 text-amber-800 dark:text-emerald-200 hover:bg-amber-200 dark:hover:bg-emerald-700 transition-colors cursor-pointer"
                                                                         >
                                                                             <Hash className="h-3 w-3" />{tag}
-                                                                        </motion.button>
+                                                                        </m.button>
                                                                     ))}
                                                                 </div>
                                                             )}
@@ -418,7 +420,7 @@ export const Dhikrs: React.FC = () => {
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </motion.div>
+                                            </m.div>
                                         );
                                     })}
                                 </div>

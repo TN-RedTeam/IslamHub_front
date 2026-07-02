@@ -11,7 +11,7 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['vite.svg'],
+      includeAssets: ['favicon.svg', 'apple-touch-icon.png', 'robots.txt'],
       manifest: {
         name: 'IslamicHub',
         short_name: 'IslamicHub',
@@ -84,12 +84,14 @@ export default defineConfig({
     // Code splitting pour réduire la taille du bundle initial
     rollupOptions: {
       output: {
-        manualChunks: {
-          // Séparer les librairies volumineuses
-          'vendor-react': ['react', 'react-dom', 'react-router-dom'],
-          'vendor-animation': ['framer-motion'],
-          'vendor-utils': ['date-fns', 'moment-hijri', 'axios'],
-          'vendor-ui': ['lucide-react'],
+        // Vite 8 (Rolldown) n'accepte plus la forme objet : fonction obligatoire.
+        manualChunks(id) {
+          if (!id.includes('node_modules')) return;
+          if (/node_modules\/(react|react-dom|react-router|react-router-dom|scheduler)\//.test(id)) return 'vendor-react';
+          // framer-motion volontairement absent : laisser Rolldown le découper
+          // pour que le moteur (domMax) reste dans un chunk asynchrone.
+          if (id.includes('node_modules/@supabase/')) return 'vendor-supabase';
+          if (id.includes('node_modules/lucide-react/')) return 'vendor-ui';
         },
       },
     },

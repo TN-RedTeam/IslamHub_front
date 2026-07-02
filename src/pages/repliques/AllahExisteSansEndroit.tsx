@@ -1,34 +1,34 @@
 import React from 'react';
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 
 const AllahExisteSansEndroit: React.FC = () => {
   return (
     <div className="min-h-screen bg-gradient-to-b from-amber-50 to-emerald-50 dark:from-gray-900 dark:to-emerald-950">
       {/* En-tête avec motif islamique */}
-      <motion.header
+      <m.header
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         className="relative py-20 bg-emerald-800 dark:bg-emerald-950 overflow-hidden"
       >
-        <div className="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/arabesque.png')]" />
+        <div className="absolute inset-0 opacity-20 bg-arabesque" />
         <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-amber-50 dark:from-gray-900" />
         
         <div className="relative container mx-auto px-4 text-center">
-          <motion.h1 
+          <m.h1 
             initial={{ scale: 0.9 }}
             animate={{ scale: 1 }}
             className="text-4xl md:text-5xl font-bold text-white mb-6 font-amiri"
           >
             Réplique aux égarés qui attribuent à Dieu le corps et l'endroit
-          </motion.h1>
+          </m.h1>
           <p className="text-xl text-emerald-200 max-w-3xl mx-auto">
             La croyance authentique de Ahlou s-Sounnah concernant l'existence de Allah
           </p>
         </div>
-      </motion.header>
+      </m.header>
 
       <main className="container mx-auto px-4 py-12 -mt-12">
-        <motion.div 
+        <m.div 
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.2 }}
@@ -36,12 +36,12 @@ const AllahExisteSansEndroit: React.FC = () => {
         >
           {/* Section 1 : L'existence */}
           <section className="space-y-8 mb-12">
-            <motion.h2 
+            <m.h2 
               whileHover={{ x: 5 }}
               className="text-2xl font-bold text-emerald-900 dark:text-emerald-300 border-b border-amber-200 dark:border-emerald-700 pb-2 font-amiri"
             >
               Preuves textuelles des savants
-            </motion.h2>
+            </m.h2>
 
             {[
               {
@@ -98,7 +98,7 @@ const AllahExisteSansEndroit: React.FC = () => {
               
 
            ].map((quote, index) => (
-              <motion.div
+              <m.div
                 key={index}
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
@@ -120,20 +120,20 @@ const AllahExisteSansEndroit: React.FC = () => {
                 <p className="text-sm text-emerald-700 dark:text-emerald-400">
                   {quote.source}
                 </p>
-              </motion.div>
+              </m.div>
             ))}
           </section>
 
           {/* Section 2 : La non ressemblance */}
           <section className="space-y-8 mb-12">
-            <motion.h2 
+            <m.h2 
               whileHover={{ x: 5 }}
               className="text-2xl font-bold text-emerald-900 dark:text-emerald-300 border-b border-amber-200 dark:border-emerald-700 pb-2 font-amiri"
             >
               L'attribut de non-ressemblance
-            </motion.h2>
+            </m.h2>
 
-            <motion.div
+            <m.div
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
@@ -155,19 +155,19 @@ const AllahExisteSansEndroit: React.FC = () => {
                   </p>
                 </div>
               </div>
-            </motion.div>
+            </m.div>
           </section>
 
           {/* Section 3 : L'unicité */}
           <section className="space-y-8">
-            <motion.h2 
+            <m.h2 
               whileHover={{ x: 5 }}
               className="text-2xl font-bold text-emerald-900 dark:text-emerald-300 border-b border-amber-200 dark:border-emerald-700 pb-2 font-amiri"
             >
               L'unicité divine
-            </motion.h2>
+            </m.h2>
 
-            <motion.div
+            <m.div
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
@@ -189,9 +189,9 @@ const AllahExisteSansEndroit: React.FC = () => {
                   </p>
                 </div>
               </div>
-            </motion.div>
+            </m.div>
 
-            <motion.div
+            <m.div
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
@@ -211,9 +211,9 @@ const AllahExisteSansEndroit: React.FC = () => {
                   </p>
                 </div>
               </div>
-            </motion.div>
+            </m.div>
           </section>
-        </motion.div>
+        </m.div>
       </main>
 
       {/* Pied de page décoratif */}

@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { m, AnimatePresence } from 'framer-motion';
 import {
   BookOpen, Search, Filter, X, Star, ChevronRight, Loader,
   Tags, Hash, ChevronDown, Eye, List as ListIcon, Grid3x3
 } from 'lucide-react';
 import { dataService } from '../services/DataService';
 import type { Coran as CoranType } from '../types';
+import { usePageTitle } from '../hooks/usePageTitle';
 
 interface Coran extends CoranType {
   id: number;
@@ -57,7 +58,7 @@ const CoranCard: React.FC<{
   };
 
   return (
-    <motion.div
+    <m.div
       whileHover={{ scale: 1.01 }}
       onClick={onClick}
       className="relative bg-gradient-to-br from-amber-50 to-emerald-50 dark:from-emerald-900 dark:to-amber-900 rounded-2xl p-6 shadow-xl border border-amber-200 dark:border-emerald-800 space-y-4 overflow-hidden cursor-pointer h-full flex flex-col transition-all duration-300 hover:shadow-2xl"
@@ -98,7 +99,7 @@ const CoranCard: React.FC<{
       {tags.length > 0 && (
         <div className="flex flex-wrap gap-2">
           {tags.slice(0, 3).map(tag => (
-            <motion.span
+            <m.span
               key={tag}
               whileHover={{ scale: 1.05 }}
               onClick={(e) => handleTagClick(e, tag)}
@@ -106,7 +107,7 @@ const CoranCard: React.FC<{
             >
               <Hash className="h-3 w-3 mr-1" />
               {tag}
-            </motion.span>
+            </m.span>
           ))}
           {tags.length > 3 && (
             <span className="text-xs text-gray-500 dark:text-gray-400 px-2 py-1">
@@ -121,7 +122,7 @@ const CoranCard: React.FC<{
           Lire la suite...
         </button>
       </div>
-    </motion.div>
+    </m.div>
   );
 };
 
@@ -136,14 +137,14 @@ const CoranModal: React.FC<{
   const tags = getTagsArray(coran.tag);
 
   return (
-    <motion.div
+    <m.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4"
       onClick={onClose}
     >
-      <motion.div
+      <m.div
         initial={{ scale: 0.9, y: 50 }}
         animate={{ scale: 1, y: 0 }}
         onClick={(e) => e.stopPropagation()}
@@ -198,7 +199,7 @@ const CoranModal: React.FC<{
           {tags.length > 0 && (
             <div className="flex flex-wrap gap-2">
               {tags.map(tag => (
-                <motion.span
+                <m.span
                   key={tag}
                   whileHover={{ scale: 1.05 }}
                   onClick={() => { onTagClick?.(tag); onClose(); }}
@@ -206,13 +207,13 @@ const CoranModal: React.FC<{
                 >
                   <Hash className="h-3 w-3 inline mr-1" />
                   {tag}
-                </motion.span>
+                </m.span>
               ))}
             </div>
           )}
         </div>
-      </motion.div>
-    </motion.div>
+      </m.div>
+    </m.div>
   );
 };
 
@@ -259,7 +260,7 @@ const TagSelector: React.FC<{
 
       <AnimatePresence>
         {isOpen && (
-          <motion.div
+          <m.div
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
@@ -312,7 +313,7 @@ const TagSelector: React.FC<{
                 </div>
               )}
             </div>
-          </motion.div>
+          </m.div>
         )}
       </AnimatePresence>
     </div>
@@ -324,6 +325,7 @@ const TagSelector: React.FC<{
 const ITEMS_PER_PAGE = 20;
 
 export const Corans: React.FC = () => {
+  usePageTitle('Coran');
   const [corans, setCorans] = useState<Coran[]>([]);
   const [hasSearched, setHasSearched] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -454,22 +456,22 @@ export const Corans: React.FC = () => {
       />
 
       {/* Header */}
-      <motion.header
+      <m.header
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         className="relative py-20 bg-emerald-800 dark:bg-emerald-950 overflow-hidden"
       >
-        <div className="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/arabesque.png')]" />
+        <div className="absolute inset-0 opacity-20 bg-arabesque" />
         <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-amber-50 dark:from-gray-900" />
 
         <div className="relative container mx-auto px-4 text-center">
-          <motion.h1
+          <m.h1
             initial={{ scale: 0.9 }}
             animate={{ scale: 1 }}
             className="text-5xl md:text-6xl font-bold text-white mb-6 font-amiri"
           >
             Le Noble Coran
-          </motion.h1>
+          </m.h1>
           <p className="text-xl text-emerald-200 max-w-3xl mx-auto">
             Explorez les versets du Livre Sacré
           </p>
@@ -480,13 +482,13 @@ export const Corans: React.FC = () => {
             </div>
           )}
         </div>
-      </motion.header>
+      </m.header>
 
       <main className="container mx-auto px-4 py-12 -mt-12 relative z-10">
 
         {/* Toolbar (shown only after first search) */}
         {hasSearched && (
-          <motion.div
+          <m.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             className="mb-8 flex justify-between items-center flex-wrap gap-4"
@@ -517,12 +519,12 @@ export const Corans: React.FC = () => {
                 <ListIcon className="w-5 h-5" />
               </button>
             </div>
-          </motion.div>
+          </m.div>
         )}
 
         {/* Tag cloud from search results */}
         {hasSearched && tagCounts.size > 0 && (
-          <motion.section
+          <m.section
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             className="mb-8"
@@ -538,7 +540,7 @@ export const Corans: React.FC = () => {
                 {Array.from(tagCounts.entries())
                   .sort((a, b) => b[1] - a[1])
                   .map(([tag, count]) => (
-                    <motion.button
+                    <m.button
                       key={tag}
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
@@ -552,15 +554,15 @@ export const Corans: React.FC = () => {
                       <Hash className="h-3 w-3" />
                       {tag}
                       <span className="text-xs opacity-75">({count})</span>
-                    </motion.button>
+                    </m.button>
                   ))}
               </div>
             </div>
-          </motion.section>
+          </m.section>
         )}
 
         {/* Sticky search bar */}
-        <motion.section
+        <m.section
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-6 mb-8 sticky top-20 z-20 border border-emerald-100 dark:border-emerald-900"
@@ -588,7 +590,7 @@ export const Corans: React.FC = () => {
           </div>
 
           {(selectedTag || searchTerm) && (
-            <motion.div
+            <m.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               className="mt-4 flex items-center justify-between bg-gradient-to-r from-emerald-50 to-amber-50 dark:from-emerald-900/30 dark:to-amber-900/30 rounded-lg px-4 py-2"
@@ -618,9 +620,9 @@ export const Corans: React.FC = () => {
               >
                 <X className="h-5 w-5" />
               </button>
-            </motion.div>
+            </m.div>
           )}
-        </motion.section>
+        </m.section>
 
         {/* Results area */}
         <section className="pb-16">
@@ -630,7 +632,7 @@ export const Corans: React.FC = () => {
             </div>
 
           ) : error ? (
-            <motion.div
+            <m.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               className="text-center py-16 bg-white dark:bg-gray-800 rounded-2xl shadow-xl"
@@ -648,23 +650,23 @@ export const Corans: React.FC = () => {
                   Réessayer
                 </button>
               </div>
-            </motion.div>
+            </m.div>
 
           ) : !hasSearched ? (
-            <motion.div
+            <m.div
               key="empty-state"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               className="text-center py-24"
             >
               <div className="max-w-lg mx-auto">
-                <motion.div
+                <m.div
                   animate={{ y: [0, -10, 0] }}
                   transition={{ repeat: Infinity, duration: 4, ease: 'easeInOut' }}
                   className="text-9xl mb-8 select-none"
                 >
                   📖
-                </motion.div>
+                </m.div>
                 <h3 className="text-3xl font-bold text-emerald-800 dark:text-emerald-200 mb-4 font-amiri">
                   Recherchez parmi les versets
                 </h3>
@@ -675,7 +677,7 @@ export const Corans: React.FC = () => {
                   <div className="flex flex-wrap gap-2 justify-center">
                     <p className="w-full text-sm text-gray-500 dark:text-gray-400 mb-2">Suggestions :</p>
                     {allTags.slice(0, 8).map(tag => (
-                      <motion.button
+                      <m.button
                         key={tag}
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
@@ -683,15 +685,15 @@ export const Corans: React.FC = () => {
                         className="px-4 py-2 bg-amber-100 dark:bg-emerald-800/60 text-amber-800 dark:text-emerald-200 rounded-full text-sm font-medium hover:bg-amber-200 dark:hover:bg-emerald-700 transition-colors border border-amber-200 dark:border-emerald-700"
                       >
                         #{tag}
-                      </motion.button>
+                      </m.button>
                     ))}
                   </div>
                 )}
               </div>
-            </motion.div>
+            </m.div>
 
           ) : corans.length === 0 ? (
-            <motion.div
+            <m.div
               key="no-results"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -712,14 +714,14 @@ export const Corans: React.FC = () => {
                   Réinitialiser
                 </button>
               </div>
-            </motion.div>
+            </m.div>
 
           ) : (
             <>
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 <AnimatePresence mode="wait">
                   {corans.map((coran, index) => (
-                    <motion.div
+                    <m.div
                       key={coran.id}
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
@@ -731,7 +733,7 @@ export const Corans: React.FC = () => {
                         onClick={() => setSelectedCoran(coran)}
                         onTagClick={handleTagClick}
                       />
-                    </motion.div>
+                    </m.div>
                   ))}
                 </AnimatePresence>
               </div>

@@ -1,13 +1,15 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { m, AnimatePresence } from 'framer-motion';
 import { Search, Filter, X, Loader2 } from 'lucide-react';
 import { dataService } from '../services/DataService';
 import { VideoCard } from '../components/VideoCard';
 import type { Multimedia as MultimediaType, MultimediaCategory } from '../types';
+import { usePageTitle } from '../hooks/usePageTitle';
 
 const PAGE_SIZE = 12;
 
 export const Multimedia: React.FC = () => {
+  usePageTitle('Multimédia');
   const [videos, setVideos]               = useState<MultimediaType[]>([]);
   const [categories, setCategories]       = useState<MultimediaCategory[]>([]);
   const [searchTerm, setSearchTerm]       = useState('');
@@ -90,31 +92,31 @@ export const Multimedia: React.FC = () => {
   return (
     <div className="min-h-screen bg-gradient-to-b from-amber-50 to-emerald-50 dark:from-gray-900 dark:to-emerald-950">
       {/* En-tête */}
-      <motion.header
+      <m.header
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         className="relative py-20 bg-emerald-800 dark:bg-emerald-950 overflow-hidden"
       >
-        <div className="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/arabesque.png')]" />
+        <div className="absolute inset-0 opacity-20 bg-arabesque" />
         <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-amber-50 dark:from-gray-900" />
 
         <div className="relative container mx-auto px-4 text-center">
-          <motion.h1
+          <m.h1
             initial={{ scale: 0.9 }}
             animate={{ scale: 1 }}
             className="text-5xl md:text-6xl font-bold text-white mb-6 font-amiri"
           >
             Média Islamique
-          </motion.h1>
+          </m.h1>
           <p className="text-xl text-emerald-200 max-w-3xl mx-auto">
             Apprenez à travers notre collection de vidéos
           </p>
         </div>
-      </motion.header>
+      </m.header>
 
       <main className="container mx-auto px-4 py-12 -mt-12 relative z-10">
         {/* Barre de recherche + filtre catégorie */}
-        <motion.section
+        <m.section
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.4 }}
@@ -150,7 +152,7 @@ export const Multimedia: React.FC = () => {
           </div>
 
           {(selectedCategory || searchTerm) && (
-            <motion.div
+            <m.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               className="mt-4 flex items-center justify-between bg-emerald-50 dark:bg-emerald-900/30 rounded-lg px-4 py-2"
@@ -167,29 +169,29 @@ export const Multimedia: React.FC = () => {
               >
                 <X className="h-5 w-5" />
               </button>
-            </motion.div>
+            </m.div>
           )}
-        </motion.section>
+        </m.section>
 
         {/* Résultats */}
         <section className="pb-16">
           <AnimatePresence mode="wait">
             {/* État initial : pas de recherche */}
             {!hasSearched && !isLoading && (
-              <motion.div
+              <m.div
                 key="empty"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 className="text-center py-16 bg-white dark:bg-gray-800 rounded-2xl shadow-xl"
               >
-                <motion.div
+                <m.div
                   animate={{ scale: [1, 1.1, 1] }}
                   transition={{ repeat: Infinity, duration: 2 }}
                   className="text-7xl mb-6"
                 >
                   🎥
-                </motion.div>
+                </m.div>
                 <h3 className="text-2xl font-bold text-gray-700 dark:text-gray-300 mb-3 font-amiri">
                   Lance une recherche pour découvrir des vidéos
                 </h3>
@@ -209,12 +211,12 @@ export const Multimedia: React.FC = () => {
                     ))}
                   </div>
                 )}
-              </motion.div>
+              </m.div>
             )}
 
             {/* Loading initial */}
             {isLoading && (
-              <motion.div
+              <m.div
                 key="loading"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -231,12 +233,12 @@ export const Multimedia: React.FC = () => {
                     </div>
                   </div>
                 ))}
-              </motion.div>
+              </m.div>
             )}
 
             {/* Erreur */}
             {error && !isLoading && (
-              <motion.div
+              <m.div
                 key="error"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -244,12 +246,12 @@ export const Multimedia: React.FC = () => {
               >
                 <div className="text-5xl mb-4">⚠️</div>
                 <p className="text-red-700 dark:text-red-300 font-medium">{error}</p>
-              </motion.div>
+              </m.div>
             )}
 
             {/* Aucun résultat */}
             {hasSearched && !isLoading && !error && videos.length === 0 && (
-              <motion.div
+              <m.div
                 key="no-results"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -269,12 +271,12 @@ export const Multimedia: React.FC = () => {
                 >
                   Réinitialiser
                 </button>
-              </motion.div>
+              </m.div>
             )}
 
             {/* Résultats */}
             {hasSearched && !isLoading && !error && videos.length > 0 && (
-              <motion.div
+              <m.div
                 key="results"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -296,7 +298,7 @@ export const Multimedia: React.FC = () => {
                     )}
                   </div>
                 )}
-              </motion.div>
+              </m.div>
             )}
           </AnimatePresence>
         </section>
