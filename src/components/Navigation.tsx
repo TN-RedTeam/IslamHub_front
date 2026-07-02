@@ -3,20 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { m, AnimatePresence } from 'framer-motion';
 import { Book, Heart, Wind, GraduationCap, Video, Clock, BookOpen, Moon, Sun, Menu, X, Bookmark, ScrollText } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
-
-// Date hijri via l'API Intl native (calendrier islamique Umm al-Qura) :
-// évite d'embarquer moment + moment-hijri (~70 KB gzip) pour une seule date.
-const formatHijriDate = (): string => {
-    try {
-        return new Intl.DateTimeFormat('fr-u-ca-islamic-umalqura', {
-            day: 'numeric',
-            month: 'long',
-            year: 'numeric',
-        }).format(new Date());
-    } catch {
-        return '';
-    }
-};
+import moment from 'moment-hijri';
 
 const navItems = [
     { to: '/coran', icon: Bookmark, label: 'Coran' },
@@ -39,7 +26,7 @@ export const Navigation: React.FC = () => {
 
     useEffect(() => {
         const updateHijriDate = () => {
-            setHijriDate(formatHijriDate());
+            setHijriDate(moment().format('iD iMMMM iYYYY'));
         };
         updateHijriDate();
         const interval = setInterval(updateHijriDate, 86400000);
