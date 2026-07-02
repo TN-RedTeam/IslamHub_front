@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { m, AnimatePresence } from 'framer-motion';
-import { Users, Search, Filter, X, Star, ChevronRight, BookOpen } from 'lucide-react';
+import { Users, Search, Filter, X, ChevronRight } from 'lucide-react';
 import { usePageTitle } from '../hooks/usePageTitle';
 
 export const Biographies: React.FC = () => {
@@ -81,7 +81,6 @@ export const Biographies: React.FC = () => {
   ];
 
   const categories = [...new Set(biographies.map(bio => bio.category))];
-  const allTags = [...new Set(biographies.flatMap(bio => bio.tags.split(',')))];
 
   const filteredBios = biographies.filter(bio => {
     const matchesSearch = bio.name.toLowerCase().includes(searchTerm.toLowerCase()) || 

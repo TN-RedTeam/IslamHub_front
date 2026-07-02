@@ -1,23 +1,22 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { m, AnimatePresence } from 'framer-motion';
-import { Calendar, MapPin, Search, ChevronRight, Loader2 } from 'lucide-react';
+import { Calendar, MapPin, Search, ChevronRight } from 'lucide-react';
 import { PrayerTimes as PrayerTimesComponent } from '../components/PrayerTimes';
-import { usePrayerTimes } from '../hooks/usePrayerTimes';
+// import { usePrayerTimes } from '../hooks/usePrayerTimes'; // API horaires désactivée en attendant une API plus fiable
 import { usePageTitle } from '../hooks/usePageTitle';
+
+const mockPrayerTimes = {
+  fajr: "05:30",
+  sunrise: "06:45",
+  dhuhr: "12:30",
+  asr: "15:45",
+  maghrib: "18:15",
+  isha: "19:30"
+};
 
 interface CityOption {
   name: string;
   country: string;
-}
-
-interface CalendarDay {
-  date: string;
-  fajr: string;
-  sunrise: string;
-  dhuhr: string;
-  asr: string;
-  maghrib: string;
-  isha: string;
 }
 
 const cities: CityOption[] = [
@@ -29,93 +28,109 @@ const cities: CityOption[] = [
   { name: "Dubai", country: "UAE" }
 ];
 
-const cleanTime = (value: string): string => value.split(' ')[0];
-
-/**
- * Calendrier du mois via AlAdhan (méthode 12 - UOIF), mis en cache
- * dans localStorage par ville et par mois.
- */
-function useMonthlyCalendar(city: string, country: string) {
-  const [days, setDays] = useState<CalendarDay[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    let cancelled = false;
-    const now = new Date();
-    const month = now.getMonth() + 1;
-    const year = now.getFullYear();
-    const cacheKey = `prayer-calendar:${city}:${year}-${month}`;
-
-    const fetchCalendar = async () => {
-      setIsLoading(true);
-
-      try {
-        const cached = localStorage.getItem(cacheKey);
-        if (cached) {
-          if (!cancelled) {
-            setDays(JSON.parse(cached) as CalendarDay[]);
-            setIsLoading(false);
-          }
-          return;
-        }
-      } catch {
-        // cache illisible : on continue vers le réseau
-      }
-
-      try {
-        const response = await fetch(
-          `https://api.aladhan.com/v1/calendarByCity/${year}/${month}?city=${encodeURIComponent(city)}&country=${encodeURIComponent(country)}&method=12`
-        );
-        if (!response.ok) throw new Error(`AlAdhan API: ${response.status}`);
-
-        const json = await response.json();
-        const result: CalendarDay[] = (json?.data || []).map((day: {
-          date: { readable: string };
-          timings: Record<string, string>;
-        }) => ({
-          date: day.date.readable,
-          fajr: cleanTime(day.timings.Fajr),
-          sunrise: cleanTime(day.timings.Sunrise),
-          dhuhr: cleanTime(day.timings.Dhuhr),
-          asr: cleanTime(day.timings.Asr),
-          maghrib: cleanTime(day.timings.Maghrib),
-          isha: cleanTime(day.timings.Isha),
-        }));
-
-        try {
-          localStorage.setItem(cacheKey, JSON.stringify(result));
-        } catch {
-          // stockage plein : tant pis pour le cache
-        }
-
-        if (!cancelled) setDays(result);
-      } catch (err) {
-        console.error('Error fetching prayer calendar:', err);
-        if (!cancelled) setDays([]);
-      } finally {
-        if (!cancelled) setIsLoading(false);
-      }
-    };
-
-    fetchCalendar();
-    return () => {
-      cancelled = true;
-    };
-  }, [city, country]);
-
-  return { days, isLoading };
-}
+// Calendrier mensuel via API — désactivé en attendant une API plus fiable.
+// Réactiver en décommentant ce bloc et les appels dans le composant.
+// interface CalendarDay {
+//   date: string;
+//   fajr: string;
+//   sunrise: string;
+//   dhuhr: string;
+//   asr: string;
+//   maghrib: string;
+//   isha: string;
+// }
+//
+// const cleanTime = (value: string): string => value.split(' ')[0];
+//
+// /**
+//  * Calendrier du mois via AlAdhan (méthode 12 - UOIF), mis en cache
+//  * dans localStorage par ville et par mois.
+//  */
+// function useMonthlyCalendar(city: string, country: string) {
+//   const [days, setDays] = useState<CalendarDay[]>([]);
+//   const [isLoading, setIsLoading] = useState(true);
+//
+//   useEffect(() => {
+//     let cancelled = false;
+//     const now = new Date();
+//     const month = now.getMonth() + 1;
+//     const year = now.getFullYear();
+//     const cacheKey = `prayer-calendar:${city}:${year}-${month}`;
+//
+//     const fetchCalendar = async () => {
+//       setIsLoading(true);
+//
+//       try {
+//         const cached = localStorage.getItem(cacheKey);
+//         if (cached) {
+//           if (!cancelled) {
+//             setDays(JSON.parse(cached) as CalendarDay[]);
+//             setIsLoading(false);
+//           }
+//           return;
+//         }
+//       } catch {
+//         // cache illisible : on continue vers le réseau
+//       }
+//
+//       try {
+//         const response = await fetch(
+//           `https://api.aladhan.com/v1/calendarByCity/${year}/${month}?city=${encodeURIComponent(city)}&country=${encodeURIComponent(country)}&method=12`
+//         );
+//         if (!response.ok) throw new Error(`AlAdhan API: ${response.status}`);
+//
+//         const json = await response.json();
+//         const result: CalendarDay[] = (json?.data || []).map((day: {
+//           date: { readable: string };
+//           timings: Record<string, string>;
+//         }) => ({
+//           date: day.date.readable,
+//           fajr: cleanTime(day.timings.Fajr),
+//           sunrise: cleanTime(day.timings.Sunrise),
+//           dhuhr: cleanTime(day.timings.Dhuhr),
+//           asr: cleanTime(day.timings.Asr),
+//           maghrib: cleanTime(day.timings.Maghrib),
+//           isha: cleanTime(day.timings.Isha),
+//         }));
+//
+//         try {
+//           localStorage.setItem(cacheKey, JSON.stringify(result));
+//         } catch {
+//           // stockage plein : tant pis pour le cache
+//         }
+//
+//         if (!cancelled) setDays(result);
+//       } catch (err) {
+//         console.error('Error fetching prayer calendar:', err);
+//         if (!cancelled) setDays([]);
+//       } finally {
+//         if (!cancelled) setIsLoading(false);
+//       }
+//     };
+//
+//     fetchCalendar();
+//     return () => {
+//       cancelled = true;
+//     };
+//   }, [city, country]);
+//
+//   return { days, isLoading };
+// }
+//
 
 export const PrayerTimesPage: React.FC = () => {
   usePageTitle('Horaires de prière');
   const [selectedCity, setSelectedCity] = useState<CityOption>(cities[0]);
   const [searchTerm, setSearchTerm] = useState("");
 
-  const { times } = usePrayerTimes(selectedCity.name, selectedCity.country);
-  const { days: calendarDays, isLoading: isCalendarLoading } = useMonthlyCalendar(
-    selectedCity.name,
-    selectedCity.country
-  );
+  // Horaires via API désactivés pour l'instant — réactiver en remplaçant
+  // l'implémentation des hooks (usePrayerTimes / useMonthlyCalendar) par l'API choisie :
+  // const { times } = usePrayerTimes(selectedCity.name, selectedCity.country);
+  // const { days: calendarDays, isLoading: isCalendarLoading } = useMonthlyCalendar(
+  //   selectedCity.name,
+  //   selectedCity.country
+  // );
+  const times = mockPrayerTimes;
 
   const filteredCities = cities.filter(city =>
     city.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -272,52 +287,42 @@ export const PrayerTimesPage: React.FC = () => {
                 Calendrier Mensuel
               </h2>
               <p className="text-sm text-emerald-700 dark:text-emerald-400">
-                Consultez les horaires pour tout le mois — {selectedCity.name}
+                Consultez les horaires pour tout le mois
               </p>
             </div>
           </div>
 
-          {isCalendarLoading ? (
-            <div className="flex justify-center items-center py-16">
-              <Loader2 className="w-8 h-8 text-emerald-600 dark:text-emerald-400 animate-spin" />
-            </div>
-          ) : calendarDays.length === 0 ? (
-            <p className="text-center py-8 text-gray-500 dark:text-gray-400">
-              Calendrier indisponible pour le moment
-            </p>
-          ) : (
-            <div className="overflow-x-auto max-h-[28rem] overflow-y-auto">
-              <table className="w-full">
-                <thead className="sticky top-0 bg-amber-50 dark:bg-emerald-900">
-                  <tr>
-                    <th className="px-4 py-2 text-left text-sm font-medium text-emerald-800 dark:text-emerald-300">Date</th>
-                    <th className="px-4 py-2 text-left text-sm font-medium text-emerald-800 dark:text-emerald-300">Fajr</th>
-                    <th className="px-4 py-2 text-left text-sm font-medium text-emerald-800 dark:text-emerald-300">Chourouq</th>
-                    <th className="px-4 py-2 text-left text-sm font-medium text-emerald-800 dark:text-emerald-300">Dhuhr</th>
-                    <th className="px-4 py-2 text-left text-sm font-medium text-emerald-800 dark:text-emerald-300">Asr</th>
-                    <th className="px-4 py-2 text-left text-sm font-medium text-emerald-800 dark:text-emerald-300">Maghrib</th>
-                    <th className="px-4 py-2 text-left text-sm font-medium text-emerald-800 dark:text-emerald-300">Isha</th>
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead>
+                <tr>
+                  <th className="px-4 py-2 text-left text-sm font-medium text-emerald-800 dark:text-emerald-300">Date</th>
+                  <th className="px-4 py-2 text-left text-sm font-medium text-emerald-800 dark:text-emerald-300">Fajr</th>
+                  <th className="px-4 py-2 text-left text-sm font-medium text-emerald-800 dark:text-emerald-300">Sunrise</th>
+                  <th className="px-4 py-2 text-left text-sm font-medium text-emerald-800 dark:text-emerald-300">Dhuhr</th>
+                  <th className="px-4 py-2 text-left text-sm font-medium text-emerald-800 dark:text-emerald-300">Asr</th>
+                  <th className="px-4 py-2 text-left text-sm font-medium text-emerald-800 dark:text-emerald-300">Maghrib</th>
+                  <th className="px-4 py-2 text-left text-sm font-medium text-emerald-800 dark:text-emerald-300">Isha</th>
+                </tr>
+              </thead>
+              <tbody>
+                {[1, 2, 3].map((day) => (
+                  <tr
+                    key={day}
+                    className="border-t border-amber-200 dark:border-emerald-800 hover:bg-amber-50 dark:hover:bg-emerald-900/30"
+                  >
+                    <td className="px-4 py-3 text-gray-800 dark:text-gray-200">Mars {day}</td>
+                    <td className="px-4 py-3 text-gray-800 dark:text-gray-200">05:30</td>
+                    <td className="px-4 py-3 text-gray-800 dark:text-gray-200">06:45</td>
+                    <td className="px-4 py-3 text-gray-800 dark:text-gray-200">12:30</td>
+                    <td className="px-4 py-3 text-gray-800 dark:text-gray-200">15:45</td>
+                    <td className="px-4 py-3 text-gray-800 dark:text-gray-200">18:15</td>
+                    <td className="px-4 py-3 text-gray-800 dark:text-gray-200">19:30</td>
                   </tr>
-                </thead>
-                <tbody>
-                  {calendarDays.map((day) => (
-                    <tr
-                      key={day.date}
-                      className="border-t border-amber-200 dark:border-emerald-800 hover:bg-amber-50 dark:hover:bg-emerald-900/30"
-                    >
-                      <td className="px-4 py-3 text-gray-800 dark:text-gray-200 whitespace-nowrap">{day.date}</td>
-                      <td className="px-4 py-3 text-gray-800 dark:text-gray-200">{day.fajr}</td>
-                      <td className="px-4 py-3 text-gray-800 dark:text-gray-200">{day.sunrise}</td>
-                      <td className="px-4 py-3 text-gray-800 dark:text-gray-200">{day.dhuhr}</td>
-                      <td className="px-4 py-3 text-gray-800 dark:text-gray-200">{day.asr}</td>
-                      <td className="px-4 py-3 text-gray-800 dark:text-gray-200">{day.maghrib}</td>
-                      <td className="px-4 py-3 text-gray-800 dark:text-gray-200">{day.isha}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          )}
+                ))}
+              </tbody>
+            </table>
+          </div>
         </m.div>
       </main>
 

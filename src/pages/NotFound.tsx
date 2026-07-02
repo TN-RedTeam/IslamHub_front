@@ -14,14 +14,8 @@ export const NotFound: React.FC = () => {
         animate={{ opacity: 1, y: 0 }}
         className="text-center max-w-lg"
       >
-        <p className="text-7xl mb-6 font-amiri bg-gradient-to-r from-emerald-600 to-amber-500 dark:from-emerald-400 dark:to-amber-400 bg-clip-text text-transparent font-bold">
+        <p className="text-7xl mb-8 font-amiri bg-gradient-to-r from-emerald-600 to-amber-500 dark:from-emerald-400 dark:to-amber-400 bg-clip-text text-transparent font-bold">
           404
-        </p>
-        <p className="text-2xl text-right font-amiri text-gray-700 dark:text-gray-300 mb-2 leading-loose" lang="ar" dir="rtl">
-          وَمَن يَتَوَكَّلْ عَلَى ٱللَّهِ فَهُوَ حَسْبُهُ
-        </p>
-        <p className="text-sm text-gray-500 dark:text-gray-400 italic mb-8">
-          « Et quiconque place sa confiance en Allah, Il lui suffit. » (Coran 65:3)
         </p>
         <h1 className="text-2xl font-bold text-emerald-900 dark:text-emerald-300 mb-3 font-amiri">
           Cette page n'existe pas

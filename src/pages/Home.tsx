@@ -5,9 +5,18 @@ import { BookOpen, ChevronRight, Sun, Moon, Sunrise, Sunset, Book, Heart, Wind, 
 import { PrayerTimes } from '../components/PrayerTimes';
 import { DailyQuote } from '../components/DailyQuote';
 import { dataService } from '../services/DataService';
-import { usePrayerTimes } from '../hooks/usePrayerTimes';
+// import { usePrayerTimes } from '../hooks/usePrayerTimes'; // API horaires désactivée en attendant une API plus fiable
 import { usePageTitle } from '../hooks/usePageTitle';
 import type { Hadith, Douaa, Coran } from '../types';
+
+const mockPrayerTimes = {
+  fajr: "05:30",
+  sunrise: "06:45",
+  dhuhr: "12:30",
+  asr: "15:45",
+  maghrib: "18:15",
+  isha: "19:30"
+};
 
 const mockQuote = {
   text: "Celui pour qui Allah veut le bien, lui facilite l'apprentissage de la religion",
@@ -61,7 +70,10 @@ export const Home: React.FC = () => {
   usePageTitle();
   const [selectedCity] = useState("Paris");
   const [timeOfDay] = useState<'morning' | 'afternoon' | 'evening' | 'night'>(getTimeOfDay());
-  const { times: prayerTimes } = usePrayerTimes(selectedCity);
+  // Horaires via API désactivés pour l'instant — réactiver en remplaçant
+  // l'implémentation de src/hooks/usePrayerTimes.ts par l'API choisie :
+  // const { times: prayerTimes } = usePrayerTimes(selectedCity);
+  const prayerTimes = mockPrayerTimes;
 
   const [stats, setStats] = useState<SiteStats>({
     hadiths: 0,
@@ -433,7 +445,7 @@ export const Home: React.FC = () => {
       <footer className="bg-emerald-900 dark:bg-emerald-950 text-white py-12">
         <div className="container mx-auto px-4 text-center">
           <p className="text-emerald-300 mb-4 font-amiri text-xl">
-            « Que l'un de vous apprenne un chapitre de la religion ou l'enseigne aura plus de récompenses que de prier mille rak`ah des prières surérogatoires »
+            "Que l'un de vous apprenne un chapitre de la religion ou l'enseigne aura plus de récompenses que de prier mille rak`ah des prières surérogatoires"
           </p>
           <p className="text-emerald-200">© {new Date().getFullYear()} IslamHub - Tous droits réservés</p>
         </div>

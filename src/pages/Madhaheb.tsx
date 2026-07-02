@@ -1,7 +1,7 @@
 import React from 'react';
-import { m, AnimatePresence } from 'framer-motion';
+import { m } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { GraduationCap, BookOpen, ChevronRight, Star, Users, Scale, Sun, Moon } from 'lucide-react';
+import { GraduationCap, BookOpen, ChevronRight, Star, Users, Scale } from 'lucide-react';
 import { usePageTitle } from '../hooks/usePageTitle';
 
 export const Madhaheb: React.FC = () => {

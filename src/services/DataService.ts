@@ -60,7 +60,7 @@ let currentDataSource = detectDataSource();
 // Fonctions utilitaires
 // ==========================================
 
-function extractTags<T extends { tag?: string }>(items: T[]): string[] {
+function extractTags<T extends { tag?: string | null }>(items: T[]): string[] {
   const tagsSet = new Set<string>();
   items.forEach(item => {
     if (item.tag) {

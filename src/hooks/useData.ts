@@ -46,7 +46,11 @@ export function useHadiths(pageSize = 50): UseDataResult<Hadith> {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
 
-  const tags = dataService.getHadithTags();
+  const [tags, setTags] = useState<string[]>([]);
+
+  useEffect(() => {
+    dataService.getHadithTags().then(setTags).catch(() => setTags([]));
+  }, []);
 
   const fetchData = useCallback(async (reset = false) => {
     setIsLoading(true);
@@ -112,7 +116,11 @@ export function useCoran(pageSize = 50): UseDataResult<Coran> {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
 
-  const tags = dataService.getCoranTags();
+  const [tags, setTags] = useState<string[]>([]);
+
+  useEffect(() => {
+    dataService.getCoranTags().then(setTags).catch(() => setTags([]));
+  }, []);
 
   const fetchData = useCallback(async (reset = false) => {
     setIsLoading(true);
@@ -178,7 +186,11 @@ export function useDhikrs(pageSize = 50): UseDataResult<Dhikr> {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
 
-  const tags = dataService.getDhikrTags();
+  const [tags, setTags] = useState<string[]>([]);
+
+  useEffect(() => {
+    dataService.getDhikrTags().then(setTags).catch(() => setTags([]));
+  }, []);
 
   const fetchData = useCallback(async (reset = false) => {
     setIsLoading(true);
@@ -244,7 +256,11 @@ export function useDouaas(pageSize = 50): UseDataResult<Douaa> {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
 
-  const tags = dataService.getDouaaTags();
+  const [tags, setTags] = useState<string[]>([]);
+
+  useEffect(() => {
+    dataService.getDouaaTags().then(setTags).catch(() => setTags([]));
+  }, []);
 
   const fetchData = useCallback(async (reset = false) => {
     setIsLoading(true);
@@ -314,8 +330,13 @@ export function useSavants(pageSize = 50): UseSavantsResult {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
 
-  const tags = dataService.getSavantTags();
-  const savantNames = dataService.getSavantNames();
+  const [tags, setTags] = useState<string[]>([]);
+  const [savantNames, setSavantNames] = useState<string[]>([]);
+
+  useEffect(() => {
+    dataService.getSavantTags().then(setTags).catch(() => setTags([]));
+    dataService.getSavantNames().then(setSavantNames).catch(() => setSavantNames([]));
+  }, []);
 
   const fetchData = useCallback(async (reset = false) => {
     setIsLoading(true);

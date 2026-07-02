@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { m, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { Scale, BookOpen, Users, Star, ChevronRight, GraduationCap, Lightbulb, Globe, ChevronDown, ChevronUp, Heart, Shield, Sparkles, Calendar, BookMarked } from 'lucide-react';
+import { Scale, BookOpen, Users, Star, ChevronRight, Lightbulb, Globe, ChevronDown, ChevronUp, Heart, Shield, Sparkles, Calendar, BookMarked } from 'lucide-react';
 
 interface SectionProps {
     title: string;
