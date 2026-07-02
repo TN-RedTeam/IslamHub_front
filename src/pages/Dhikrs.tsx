@@ -12,9 +12,13 @@ const getTagsArray = (tags: string | null | undefined): string[] => {
 
 const ITEMS_PER_PAGE = 20;
 
+// La colonne `categorie` n'existe pas (encore) dans la table dhikr : optionnelle
+// pour que le badge et le filtre ne s'affichent que si elle est ajoutée un jour.
+type DhikrItem = Dhikr & { categorie?: string | null };
+
 export const Dhikrs: React.FC = () => {
   usePageTitle('Dhikrs');
-    const [dhikrs, setDhikrs] = useState<Dhikr[]>([]);
+    const [dhikrs, setDhikrs] = useState<DhikrItem[]>([]);
     const [hasSearched, setHasSearched] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -41,7 +45,7 @@ export const Dhikrs: React.FC = () => {
         const counts = new Map<string, number>();
         dhikrs.forEach(d => {
             if (d.categorie) cats.add(d.categorie);
-            getTagsArray(d.tags).forEach(t => counts.set(t, (counts.get(t) || 0) + 1));
+            getTagsArray(d.tag).forEach(t => counts.set(t, (counts.get(t) || 0) + 1));
         });
         setCategories(Array.from(cats).sort());
         setTagCounts(counts);
@@ -59,7 +63,7 @@ export const Dhikrs: React.FC = () => {
         try {
             const res = await dataService.searchDhikrs(q, tag, { page: 0, pageSize: ITEMS_PER_PAGE });
             setDhikrs(res.data ?? []);
-            setTotalCount(res.total ?? 0);
+            setTotalCount(res.count ?? 0);
             setHasSearched(true);
         } catch {
             setError('Erreur lors de la recherche. Veuillez réessayer.');
@@ -352,7 +356,7 @@ export const Dhikrs: React.FC = () => {
 
                                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                                     {displayedDhikrs.map((dhikr, index) => {
-                                        const tags = getTagsArray(dhikr.tags);
+                                        const tags = getTagsArray(dhikr.tag);
                                         return (
                                             <m.div
                                                 key={dhikr.id}

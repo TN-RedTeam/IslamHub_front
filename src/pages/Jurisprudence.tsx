@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { m, AnimatePresence } from 'framer-motion';
-import { 
-  BookOpen, Search, Filter, X, Star, ChevronRight, 
-  Heart, Sun, Moon, Scale, Gift, Home, ShoppingCart, 
-  Users,  Landmark, Utensils, Shirt, HandCoins 
+import {
+  BookOpen, Search, Filter, X, ChevronRight,
+  Heart, Sun, Moon, Scale, Gift, Home, ShoppingCart,
+  Landmark, Utensils, Shirt, HandCoins
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 

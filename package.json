@@ -10,6 +10,7 @@
     "build:android": "vite build && npx cap sync android",
     "android": "npm run build:android && npx cap open android",
     "lint": "eslint .",
+    "typecheck": "tsc --noEmit -p tsconfig.app.json",
     "preview": "vite preview",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist"

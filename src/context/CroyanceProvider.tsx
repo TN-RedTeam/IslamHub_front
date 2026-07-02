@@ -31,7 +31,7 @@ export const CroyanceProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     setIsLoading(true);
     setError(null);
     try {
-      const response = await api.get('/croyances'); // Endpoint pour récupérer les croyances
+      const response = await api.get<Croyance[]>('/croyances'); // Endpoint pour récupérer les croyances
       setCroyances(response.data);
     } catch (error) {
       console.error('Error fetching croyances:', error);

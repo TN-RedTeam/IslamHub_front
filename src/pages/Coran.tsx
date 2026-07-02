@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { m, AnimatePresence } from 'framer-motion';
 import {
-  BookOpen, Search, Filter, X, Star, ChevronRight, Loader,
+  Search, Filter, X, Star, Loader,
   Tags, Hash, ChevronDown, Eye, List as ListIcon, Grid3x3
 } from 'lucide-react';
 import { dataService } from '../services/DataService';

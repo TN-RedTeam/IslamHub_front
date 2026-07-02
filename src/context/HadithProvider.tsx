@@ -32,7 +32,7 @@ export const HadithProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     setIsLoading(true);
     setError(null); // Réinitialiser l'erreur avant chaque requête
     try {
-      const response = await api.get('/hadiths');
+      const response = await api.get<Hadith[]>('/hadiths');
       setHadiths(response.data);
     } catch (error) {
       console.error('Error fetching hadiths:', error);

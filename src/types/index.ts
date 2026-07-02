@@ -10,7 +10,7 @@ export interface BaseText {
   texte_francais: string | null;
   phonétique: string | null;
   explication: string | null;
-  tag: string;
+  tag: string | null;
 }
 
 /** Hadith - Parole du Prophète (ﷺ) */

@@ -11,7 +11,7 @@ interface Savant {
   savant: string;
   texte_arabe: string;
   texte_francais: string | null;
-  phonetique: string | null;
+  phonétique: string | null;
   explication: string | null;
   tag: string;
 }
@@ -129,10 +129,10 @@ const SavantModal: React.FC<{
               {savant.texte_arabe}
             </p>
             
-            {savant.phonetique && (
+            {savant.phonétique && (
               <div className="mt-6 bg-white dark:bg-gray-600 p-4 rounded">
                 <p className="text-sm text-amber-700 dark:text-amber-300 mb-2">Phonétique:</p>
-                <p className="text-gray-700 dark:text-gray-200">{savant.phonetique}</p>
+                <p className="text-gray-700 dark:text-gray-200">{savant.phonétique}</p>
               </div>
             )}
             
@@ -275,7 +275,7 @@ useEffect(() => {
         (savant.texte_francais?.toLowerCase().includes(term)) ||
         (savant.explication?.toLowerCase().includes(term)) ||
         savant.sujet.toLowerCase().includes(term) ||
-        (savant.rapporteur?.toLowerCase().includes(term))
+        savant.savant.toLowerCase().includes(term)
       );
     }
 

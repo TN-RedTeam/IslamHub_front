@@ -512,7 +512,7 @@ export const Hadiths: React.FC = () => {
     try {
       const res = await dataService.searchHadiths(q, tag, { page, pageSize: ITEMS_PER_PAGE });
       const items = res.data ?? [];
-      const total = res.total ?? 0;
+      const total = res.count ?? 0;
       setHadiths(prev => append ? [...prev, ...items] : items);
       setTotalCount(total);
       setHasMore((page + 1) * ITEMS_PER_PAGE < total);

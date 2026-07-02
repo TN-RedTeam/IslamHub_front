@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { m, AnimatePresence } from 'framer-motion';
-import { BookOpen, Search, Filter, X, Star, ChevronRight } from 'lucide-react';
+import { BookOpen, Search, Filter, X, ChevronRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 const Repliques: React.FC = () => {
@@ -75,7 +75,6 @@ const Repliques: React.FC = () => {
   ];
 
   const categories = [...new Set(repliques.map(item => item.category))];
-  const allTags = [...new Set(repliques.flatMap(item => item.tags.split(',')))];
 
   const handleTopicClick = (title: string) => {
     const replique = repliques.find(r => r.title === title);

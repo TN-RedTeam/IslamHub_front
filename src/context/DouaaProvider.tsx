@@ -31,7 +31,7 @@ export const DouaaProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     setIsLoading(true);
     setError(null); // Réinitialiser l'erreur avant chaque requête
     try {
-      const response = await api.get('/douaas');
+      const response = await api.get<Douaa[]>('/douaas');
       setDouaas(response.data);
     } catch (error) {
       console.error('Error fetching douaas:', error);

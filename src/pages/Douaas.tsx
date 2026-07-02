@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { m, AnimatePresence } from 'framer-motion';
-import { Search, Filter, X, Star, ChevronRight, Loader, Tags, Hash, ChevronDown, Heart } from 'lucide-react';
+import { Search, Filter, X, Star, Loader, Tags, Hash, ChevronDown, Heart } from 'lucide-react';
 import { dataService } from '../services/DataService';
 import type { Douaa as DouaaType } from '../types';
 import { usePageTitle } from '../hooks/usePageTitle';
@@ -10,10 +10,9 @@ interface Douaa extends DouaaType {
     sujet: string;
     texte_arabe: string;
     texte_francais: string | null;
-    phonetique: string | null;
+    phonétique: string | null;
     explication: string | null;
     commentaire: string | null;
-    type_id: number;
     tag: string | null;
 }
 
@@ -97,10 +96,10 @@ const DouaaModal: React.FC<{ douaa: Douaa; onClose: () => void; onTagClick?: (ta
                     <h2 className="text-2xl font-bold text-amber-800 dark:text-amber-200 font-amiri">{douaa.sujet}</h2>
                     <div className="bg-amber-50 dark:bg-gray-700 p-6 rounded-lg">
                         <p className="text-3xl text-gray-900 dark:text-white font-arabic leading-loose text-right">{douaa.texte_arabe}</p>
-                        {douaa.phonetique && (
+                        {douaa.phonétique && (
                             <div className="mt-6 bg-white dark:bg-gray-600 p-4 rounded">
                                 <p className="text-sm text-amber-700 dark:text-amber-300 mb-2">Phonétique:</p>
-                                <p className="text-gray-700 dark:text-gray-200">{douaa.phonetique}</p>
+                                <p className="text-gray-700 dark:text-gray-200">{douaa.phonétique}</p>
                             </div>
                         )}
                         {douaa.texte_francais && (
@@ -256,7 +255,7 @@ export const Douaas: React.FC = () => {
         try {
             const res = await dataService.searchDouaas(q, tag, { page: 0, pageSize: ITEMS_PER_PAGE });
             setDouaas(res.data ?? []);
-            setTotalCount(res.total ?? 0);
+            setTotalCount(res.count ?? 0);
             setHasSearched(true);
         } catch {
             setError('Erreur lors de la recherche. Veuillez réessayer.');
