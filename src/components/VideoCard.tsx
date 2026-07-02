@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { Play } from 'lucide-react';
 import type { Multimedia } from '../types';
 
@@ -28,7 +28,7 @@ export const VideoCard: React.FC<VideoCardProps> = ({ video, index = 0 }) => {
   const duration = formatDuration(video.duree_secondes);
 
   return (
-    <motion.article
+    <m.article
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.05 }}
@@ -99,7 +99,7 @@ export const VideoCard: React.FC<VideoCardProps> = ({ video, index = 0 }) => {
           </p>
         )}
       </div>
-    </motion.article>
+    </m.article>
   );
 };
 

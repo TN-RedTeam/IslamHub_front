@@ -1,30 +1,30 @@
 import React from 'react';
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 
 const AttributsDeDieu: React.FC = () => {
   return (
     <div className="min-h-screen bg-gradient-to-b from-amber-50 to-emerald-50 dark:from-gray-900 dark:to-emerald-950 py-12">
       {/* En-tête avec motif islamique */}
-      <motion.header
+      <m.header
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         className="relative py-16 bg-emerald-800 dark:bg-emerald-950 overflow-hidden mb-12"
       >
-        <div className="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/arabesque.png')]" />
+        <div className="absolute inset-0 opacity-20 bg-arabesque" />
         <div className="container mx-auto px-4 relative">
-          <motion.h1 
+          <m.h1 
             initial={{ scale: 0.9 }}
             animate={{ scale: 1 }}
             className="text-4xl font-bold text-white mb-2 font-amiri text-center"
           >
             Les Attributs d'Allah
-          </motion.h1>
+          </m.h1>
         </div>
-      </motion.header>
+      </m.header>
 
       <div className="container mx-auto px-4 space-y-12">
         {/* Section 1 : L'existence */}
-        <motion.div 
+        <m.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 border border-emerald-100 dark:border-emerald-900"
@@ -59,10 +59,10 @@ const AttributsDeDieu: React.FC = () => {
               Notre connaissance de Dieu ne peut pas atteindre la réalité de Dieu, mais elle concerne ce qui est obligatoire à Son Sujet comme attributs de perfection, telle que la science et la puissance, ce qui est impossible à Son Sujet comme le fait d'avoir un associé, et ce qui est possible à Son Sujet comme le fait de créer quelque chose et de l'anéantir.
             </p>
           </div>
-        </motion.div>
+        </m.div>
 
         {/* Section 2 : La non ressemblance avec les créatures */}
-        <motion.div 
+        <m.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
@@ -86,10 +86,10 @@ const AttributsDeDieu: React.FC = () => {
               L'Imām Aboū Ja`far At-Ṭaḥāwiyy (mort en 323 de l'Hégire) a dit : « Il est exempt – c'est-à-dire Allāh – des limites, des fins, des côtés, des organes et des membres ; Il n'est pas concerné par les six directions contrairement à toutes les créatures ».
             </p>
           </div>
-        </motion.div>
+        </m.div>
 
         {/* Section 3 : L'unicité */}
-        <motion.div 
+        <m.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
@@ -123,7 +123,7 @@ const AttributsDeDieu: React.FC = () => {
               ce qui signifie: <strong>« S'il y avait [pour le ciel et la terre] des dieux hormis Allāh, [les cieux et les terres] seraient certes en discordance »</strong> [soūrat al-'Anbiyā' / 'āyah 22].
             </p>
           </div>
-        </motion.div>
+        </m.div>
       </div>
     </div>
   );

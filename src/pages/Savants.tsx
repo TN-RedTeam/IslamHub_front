@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { m, AnimatePresence } from 'framer-motion';
 import { BookOpen, Search, Filter, X, Star, ChevronRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import savantsData from '../data/parole.json';
+import { usePageTitle } from '../hooks/usePageTitle';
 
 interface Savant {
   id: number;
@@ -16,7 +17,7 @@ interface Savant {
 }
 
 const SavantCard: React.FC<{ savant: Savant; onClick: () => void }> = ({ savant, onClick }) => (
-  <motion.div 
+  <m.div 
     whileHover={{ scale: 1.01 }}
     onClick={onClick}
     className="relative bg-gradient-to-br from-amber-50 to-emerald-50 dark:from-emerald-900 dark:to-amber-900 rounded-2xl p-6 shadow-xl border border-amber-200 dark:border-emerald-800 space-y-4 overflow-hidden cursor-pointer h-full flex flex-col"
@@ -58,14 +59,14 @@ const SavantCard: React.FC<{ savant: Savant; onClick: () => void }> = ({ savant,
 
     <div className="flex flex-wrap gap-2">
       {savant.tag.split(',').map(tag => (
-        <motion.span
+        <m.span
           key={tag.trim()}
           whileHover={{ scale: 1.05 }}
           className="text-xs bg-amber-100 dark:bg-emerald-800 text-amber-800 dark:text-emerald-200 px-3 py-1 rounded-full flex items-center"
         >
           <ChevronRight className="h-3 w-3 mr-1" />
           {tag.trim()}
-        </motion.span>
+        </m.span>
       ))}
     </div>
     
@@ -74,7 +75,7 @@ const SavantCard: React.FC<{ savant: Savant; onClick: () => void }> = ({ savant,
         Lire la suite...
       </button>
     </div>
-  </motion.div>
+  </m.div>
 );
 
 const SavantModal: React.FC<{ 
@@ -84,14 +85,14 @@ const SavantModal: React.FC<{
   if (!savant) return null;
 
   return (
-    <motion.div 
+    <m.div 
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4"
       onClick={onClose}
     >
-      <motion.div 
+      <m.div 
         initial={{ scale: 0.9, y: 50 }}
         animate={{ scale: 1, y: 0 }}
         onClick={(e) => e.stopPropagation()}
@@ -161,12 +162,13 @@ const SavantModal: React.FC<{
             ))}
           </div>
         </div>
-      </motion.div>
-    </motion.div>
+      </m.div>
+    </m.div>
   );
 };
 
 export const Savants: React.FC = () => {
+  usePageTitle('Paroles de savants');
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
@@ -283,31 +285,31 @@ useEffect(() => {
   return (
     <div className="min-h-screen bg-gradient-to-b from-amber-50 to-emerald-50 dark:from-gray-900 dark:to-emerald-950">
       {/* En-tête avec motif islamique */}
-      <motion.header
+      <m.header
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         className="relative py-20 bg-emerald-800 dark:bg-emerald-950 overflow-hidden"
       >
-        <div className="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/arabesque.png')]" />
+        <div className="absolute inset-0 opacity-20 bg-arabesque" />
         <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-amber-50 dark:from-gray-900" />
         
         <div className="relative container mx-auto px-4 text-center">
-          <motion.h1 
+          <m.h1 
             initial={{ scale: 0.9 }}
             animate={{ scale: 1 }}
             className="text-5xl md:text-6xl font-bold text-white mb-6 font-amiri"
           >
             Paroles de savants
-          </motion.h1>
+          </m.h1>
           <p className="text-xl text-emerald-200 max-w-3xl mx-auto">
             Explorez les paroles des savanst de Ahlu Sounnah
           </p>
         </div>
-      </motion.header>
+      </m.header>
 
       <main className="container mx-auto px-4 py-12 -mt-12 relative z-10">
         {/* Navigation rapide */}
-        <motion.section 
+        <m.section 
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.2 }}
@@ -318,7 +320,7 @@ useEffect(() => {
           </h2>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
             {topics.map((topic, i) => (
-              <motion.div
+              <m.div
                 key={topic}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -333,13 +335,13 @@ useEffect(() => {
                 <span className="text-sm font-medium text-emerald-800 dark:text-emerald-300">
                   {topic}
                 </span>
-              </motion.div>
+              </m.div>
             ))}
           </div>
-        </motion.section>
+        </m.section>
 
         {/* Recherche et filtres */}
-        <motion.section
+        <m.section
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.4 }}
@@ -377,7 +379,7 @@ useEffect(() => {
           </div>
 
           {selectedTag && (
-            <motion.div
+            <m.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               className="mt-4 flex items-center justify-between bg-emerald-50 dark:bg-emerald-900/30 rounded-lg px-4 py-2"
@@ -391,15 +393,15 @@ useEffect(() => {
               >
                 <X className="h-5 w-5" />
               </button>
-            </motion.div>
+            </m.div>
           )}
-        </motion.section>
+        </m.section>
 
         {/* Résultats */}
         <section className="pb-16">
           <AnimatePresence>
             {filteredSavants.length === 0 ? (
-              <motion.div
+              <m.div
                 key="no-results"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -424,20 +426,20 @@ useEffect(() => {
                     Réinitialiser
                   </button>
                 </div>
-              </motion.div>
+              </m.div>
             ) : (
               <>
-                <motion.p 
+                <m.p 
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   className="text-sm font-medium text-emerald-700 dark:text-emerald-400 mb-6"
                 >
                   {filteredSavants.length} hadith{filteredSavants.length > 1 ? 's' : ''} trouvé{filteredSavants.length > 1 ? 's' : ''}
-                </motion.p>
+                </m.p>
 
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                   {filteredSavants.map((savant, index) => (
-                    <motion.div
+                    <m.div
                       key={`${savant.id}-${index}`}
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
@@ -448,7 +450,7 @@ useEffect(() => {
                         savant={savant} 
                         onClick={() => setSelectedSavant(savant)}
                       />
-                    </motion.div>
+                    </m.div>
                   ))}
                 </div>
               </>

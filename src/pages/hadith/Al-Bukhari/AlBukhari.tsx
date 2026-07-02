@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 
 const AlBukhari: React.FC = () => {
   // État pour gérer la section active
@@ -97,7 +97,7 @@ const AlBukhari: React.FC = () => {
   return (
     <div className="space-y-8">
       {/* Bannière d'introduction */}
-      <motion.div 
+      <m.div 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         className="relative py-16 bg-arabesque bg-cover bg-center"
@@ -109,11 +109,11 @@ const AlBukhari: React.FC = () => {
             Découvrez les Hadiths Rapportés par l'Imam Al-Bukhari
           </p>
         </div>
-      </motion.div>
+      </m.div>
 
       {/* Sommaire */}
       <div className="max-w-7xl mx-auto px-4">
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
@@ -148,14 +148,14 @@ const AlBukhari: React.FC = () => {
               </li>
             ))}
           </ul>
-        </motion.div>
+        </m.div>
       </div>
 
       {/* Sections et articles */}
       <div className="max-w-7xl mx-auto px-4 space-y-8">
         {sections.map((section) => (
           <div key={section.id} id={section.id} className="pt-16 -mt-16">
-            <motion.div
+            <m.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
@@ -173,7 +173,7 @@ const AlBukhari: React.FC = () => {
                   </p>
                 </div>
               ))}
-            </motion.div>
+            </m.div>
           </div>
         ))}
       </div>

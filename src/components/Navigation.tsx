@@ -1,9 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Book, Heart, Wind, Users, GraduationCap, Video, Clock, BookOpen, Moon, Sun, Menu, X, Bookmark, ScrollText, ChevronDown } from 'lucide-react';
+import { m, AnimatePresence } from 'framer-motion';
+import { Book, Heart, Wind, GraduationCap, Video, Clock, BookOpen, Moon, Sun, Menu, X, Bookmark, ScrollText } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
-import moment from 'moment-hijri';
+
+// Date hijri via l'API Intl native (calendrier islamique Umm al-Qura) :
+// évite d'embarquer moment + moment-hijri (~70 KB gzip) pour une seule date.
+const formatHijriDate = (): string => {
+    try {
+        return new Intl.DateTimeFormat('fr-u-ca-islamic-umalqura', {
+            day: 'numeric',
+            month: 'long',
+            year: 'numeric',
+        }).format(new Date());
+    } catch {
+        return '';
+    }
+};
 
 const navItems = [
     { to: '/coran', icon: Bookmark, label: 'Coran' },
@@ -26,7 +39,7 @@ export const Navigation: React.FC = () => {
 
     useEffect(() => {
         const updateHijriDate = () => {
-            setHijriDate(moment().format('iD iMMMM iYYYY'));
+            setHijriDate(formatHijriDate());
         };
         updateHijriDate();
         const interval = setInterval(updateHijriDate, 86400000);
@@ -46,7 +59,7 @@ export const Navigation: React.FC = () => {
     }, []);
 
     return (
-        <motion.nav
+        <m.nav
             initial={{ y: -100 }}
             animate={{ y: 0 }}
             transition={{ type: "spring", stiffness: 100, damping: 20 }}
@@ -64,7 +77,7 @@ export const Navigation: React.FC = () => {
                     {/* Left section: Muhammad (Arabic) + Logo + Hijri Date */}
                     <div className="flex items-center space-x-3">
                         {/* Muhammad in Arabic calligraphy */}
-                        <motion.span
+                        <m.span
                             initial={{ opacity: 0, scale: 0.8 }}
                             animate={{ opacity: 1, scale: 1 }}
                             transition={{ delay: 0.2 }}
@@ -72,14 +85,14 @@ export const Navigation: React.FC = () => {
                             style={{ fontFamily: "'Amiri', 'Traditional Arabic', serif" }}
                         >
                             مُحَمَّد ﷺ
-                        </motion.span>
+                        </m.span>
 
                         {/* Decorative separator */}
                         <div className="hidden sm:block h-8 w-px bg-gradient-to-b from-transparent via-emerald-300 dark:via-emerald-600 to-transparent" />
 
                         {/* Logo */}
                         <Link to="/" className="flex items-center group">
-                            <motion.div
+                            <m.div
                                 whileHover={{ scale: 1.05 }}
                                 whileTap={{ scale: 0.95 }}
                                 className="relative"
@@ -87,17 +100,17 @@ export const Navigation: React.FC = () => {
                                 <span className="text-xl md:text-2xl font-bold bg-gradient-to-r from-emerald-600 to-emerald-500 dark:from-emerald-400 dark:to-emerald-300 bg-clip-text text-transparent font-amiri">
                                     IslamHub
                                 </span>
-                                <motion.div
+                                <m.div
                                     className="absolute -bottom-1 left-0 right-0 h-0.5 bg-gradient-to-r from-emerald-500 to-amber-400 origin-left"
                                     initial={{ scaleX: 0 }}
                                     whileHover={{ scaleX: 1 }}
                                     transition={{ duration: 0.3 }}
                                 />
-                            </motion.div>
+                            </m.div>
                         </Link>
 
                         {/* Hijri Date */}
-                        <motion.div
+                        <m.div
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             transition={{ delay: 0.3 }}
@@ -106,7 +119,7 @@ export const Navigation: React.FC = () => {
                             <span className="text-sm text-emerald-700 dark:text-emerald-300 font-amiri whitespace-nowrap">
                                 {hijriDate}
                             </span>
-                        </motion.div>
+                        </m.div>
                     </div>
 
                     {/* Mobile controls */}
@@ -119,7 +132,7 @@ export const Navigation: React.FC = () => {
                             الله
                         </span>
 
-                        <motion.button
+                        <m.button
                             whileHover={{ scale: 1.1 }}
                             whileTap={{ scale: 0.9 }}
                             onClick={toggleTheme}
@@ -127,7 +140,7 @@ export const Navigation: React.FC = () => {
                             className="p-2 rounded-xl bg-gradient-to-br from-amber-100 to-emerald-100 dark:from-emerald-900 dark:to-amber-900 text-amber-600 dark:text-amber-400 hover:shadow-md transition-all duration-200"
                         >
                             <AnimatePresence mode="wait">
-                                <motion.div
+                                <m.div
                                     key={theme}
                                     initial={{ rotate: -90, opacity: 0 }}
                                     animate={{ rotate: 0, opacity: 1 }}
@@ -135,11 +148,11 @@ export const Navigation: React.FC = () => {
                                     transition={{ duration: 0.2 }}
                                 >
                                     {theme === 'dark' ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
-                                </motion.div>
+                                </m.div>
                             </AnimatePresence>
-                        </motion.button>
+                        </m.button>
 
-                        <motion.button
+                        <m.button
                             whileHover={{ scale: 1.1 }}
                             whileTap={{ scale: 0.9 }}
                             onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -148,7 +161,7 @@ export const Navigation: React.FC = () => {
                             className="p-2 rounded-xl bg-gradient-to-br from-emerald-100 to-amber-100 dark:from-emerald-900 dark:to-amber-900 text-emerald-600 dark:text-emerald-400 hover:shadow-md transition-all duration-200"
                         >
                             <AnimatePresence mode="wait">
-                                <motion.div
+                                <m.div
                                     key={isMenuOpen ? 'close' : 'open'}
                                     initial={{ rotate: -90, opacity: 0 }}
                                     animate={{ rotate: 0, opacity: 1 }}
@@ -156,9 +169,9 @@ export const Navigation: React.FC = () => {
                                     transition={{ duration: 0.2 }}
                                 >
                                     {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-                                </motion.div>
+                                </m.div>
                             </AnimatePresence>
-                        </motion.button>
+                        </m.button>
                     </div>
 
                     {/* Desktop navigation */}
@@ -166,7 +179,7 @@ export const Navigation: React.FC = () => {
                         {navItems.map(({ to, icon: Icon, label }, index) => {
                             const isActive = location.pathname === to || location.pathname.startsWith(to + '/');
                             return (
-                                <motion.div
+                                <m.div
                                     key={to}
                                     initial={{ opacity: 0, y: -20 }}
                                     animate={{ opacity: 1, y: 0 }}
@@ -183,14 +196,14 @@ export const Navigation: React.FC = () => {
                                         <Icon className={`w-4 h-4 mr-1.5 transition-transform duration-200 ${isActive ? 'scale-110' : 'group-hover:scale-110'}`} />
                                         <span className="font-amiri">{label}</span>
                                         {isActive && (
-                                            <motion.div
+                                            <m.div
                                                 layoutId="activeTab"
                                                 className="absolute -bottom-0.5 left-2 right-2 h-0.5 bg-gradient-to-r from-emerald-500 to-amber-400 rounded-full"
                                                 transition={{ type: "spring", stiffness: 300, damping: 30 }}
                                             />
                                         )}
                                     </Link>
-                                </motion.div>
+                                </m.div>
                             );
                         })}
 
@@ -198,7 +211,7 @@ export const Navigation: React.FC = () => {
                         <div className="h-8 w-px bg-gradient-to-b from-transparent via-emerald-300 dark:via-emerald-600 to-transparent mx-2" />
 
                         {/* Theme toggle button */}
-                        <motion.button
+                        <m.button
                             whileHover={{ scale: 1.1, rotate: 15 }}
                             whileTap={{ scale: 0.9 }}
                             onClick={toggleTheme}
@@ -206,7 +219,7 @@ export const Navigation: React.FC = () => {
                             className="p-2.5 rounded-xl bg-gradient-to-br from-amber-100 to-emerald-100 dark:from-emerald-900 dark:to-amber-900 text-amber-600 dark:text-amber-400 hover:shadow-lg hover:shadow-amber-200/50 dark:hover:shadow-emerald-800/50 transition-all duration-200"
                         >
                             <AnimatePresence mode="wait">
-                                <motion.div
+                                <m.div
                                     key={theme}
                                     initial={{ rotate: -90, opacity: 0, scale: 0.5 }}
                                     animate={{ rotate: 0, opacity: 1, scale: 1 }}
@@ -214,12 +227,12 @@ export const Navigation: React.FC = () => {
                                     transition={{ duration: 0.3 }}
                                 >
                                     {theme === 'dark' ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
-                                </motion.div>
+                                </m.div>
                             </AnimatePresence>
-                        </motion.button>
+                        </m.button>
 
                         {/* Allah in Arabic calligraphy */}
-                        <motion.span
+                        <m.span
                             initial={{ opacity: 0, scale: 0.8 }}
                             animate={{ opacity: 1, scale: 1 }}
                             transition={{ delay: 0.4 }}
@@ -229,14 +242,14 @@ export const Navigation: React.FC = () => {
                             title="Allah - Le Dieu Unique"
                         >
                             الله
-                        </motion.span>
+                        </m.span>
                     </div>
                 </div>
 
                 {/* Mobile menu */}
                 <AnimatePresence>
                     {isMenuOpen && (
-                        <motion.div
+                        <m.div
                             initial={{ opacity: 0, height: 0 }}
                             animate={{ opacity: 1, height: 'auto' }}
                             exit={{ opacity: 0, height: 0 }}
@@ -266,7 +279,7 @@ export const Navigation: React.FC = () => {
                                 {navItems.map(({ to, icon: Icon, label }, index) => {
                                     const isActive = location.pathname === to || location.pathname.startsWith(to + '/');
                                     return (
-                                        <motion.div
+                                        <m.div
                                             key={to}
                                             initial={{ opacity: 0, x: -20 }}
                                             animate={{ opacity: 1, x: 0 }}
@@ -289,28 +302,28 @@ export const Navigation: React.FC = () => {
                                                 </div>
                                                 <span className="font-amiri text-lg">{label}</span>
                                                 {isActive && (
-                                                    <motion.div
+                                                    <m.div
                                                         initial={{ scale: 0 }}
                                                         animate={{ scale: 1 }}
                                                         className="ml-auto w-2 h-2 rounded-full bg-gradient-to-r from-emerald-500 to-amber-400"
                                                     />
                                                 )}
                                             </Link>
-                                        </motion.div>
+                                        </m.div>
                                     );
                                 })}
                             </div>
-                        </motion.div>
+                        </m.div>
                     )}
                 </AnimatePresence>
             </div>
 
             {/* Decorative bottom shadow line when scrolled */}
-            <motion.div
+            <m.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: scrolled ? 1 : 0 }}
                 className="h-px bg-gradient-to-r from-transparent via-emerald-200 dark:via-emerald-700 to-transparent"
             />
-        </motion.nav>
+        </m.nav>
     );
 };

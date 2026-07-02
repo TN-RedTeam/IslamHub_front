@@ -34,6 +34,13 @@ html {
     outline-offset: 2px;
 }
 
+/* Motif arabesque local (SVG inline) : remplace la texture chargée depuis
+   transparenttextures.com — plus de requête externe, fonctionne hors-ligne. */
+.bg-arabesque {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cg fill='none' stroke='%23ffffff' stroke-width='1.5'%3E%3Crect x='24' y='24' width='32' height='32'/%3E%3Crect x='24' y='24' width='32' height='32' transform='rotate(45 40 40)'/%3E%3Ccircle cx='40' cy='40' r='6'/%3E%3Cpath d='M0 40h16M64 40h16M40 0v16M40 64v16'/%3E%3C/g%3E%3C/svg%3E");
+    background-size: 80px 80px;
+}
+
 .font-arabic,
 .font-amiri {
     -webkit-font-smoothing: antialiased;

@@ -2,17 +2,34 @@
 <html lang="fr">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="./vite.svg" />
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#065f46" />
-    <link rel="apple-touch-icon" href="./pwa-192x192.png" />
+    <link rel="apple-touch-icon" href="./apple-touch-icon.png" />
 
-    <!-- Security headers -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https: wss: http://localhost:* ws://localhost:*; img-src 'self' data: https:; frame-src https://www.youtube.com https://www.youtube-nocookie.com;" />
+    <!-- SEO -->
+    <meta name="description" content="IslamHub : hadiths authentiques, douaas, dhikrs, versets du Coran avec traduction française, paroles de savants, horaires de prière et vidéos islamiques." />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="IslamHub" />
+    <meta property="og:title" content="IslamHub - Votre source de savoir islamique" />
+    <meta property="og:description" content="Hadiths authentiques, douaas, dhikrs, versets du Coran avec traduction française, paroles de savants et horaires de prière." />
+    <meta property="og:locale" content="fr_FR" />
+    <!-- URL absolue requise pour og:image : à mettre à jour lors du passage au vrai domaine -->
+    <meta property="og:image" content="https://sou55i.github.io/IslamHub_front/pwa-512x512.png" />
+    <meta name="twitter:card" content="summary" />
+
+    <!-- Security headers (en prod, préférer de vrais headers HTTP côté hébergeur) -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://api.aladhan.com http://localhost:* ws://localhost:*; img-src 'self' data: https://i.ytimg.com; frame-src https://www.youtube.com https://www.youtube-nocookie.com;" />
     <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin" />
     <meta http-equiv="X-Content-Type-Options" content="nosniff" />
 
-    <title>IslamicHub</title>
+    <!-- Applique le thème sombre avant le premier rendu (anti-flash blanc).
+         Fichier externe plutôt qu'inline pour rester compatible avec script-src 'self'. -->
+    <script src="./theme-init.js"></script>
+
+    <title>IslamHub - Hadiths, Coran, Douaas et savoir islamique</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&family=Noto+Naskh+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
   </head>
   <body>

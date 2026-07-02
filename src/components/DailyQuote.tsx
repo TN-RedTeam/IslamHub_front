@@ -1,6 +1,6 @@
 import React from 'react';
 import { Quote } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { DailyQuote as DailyQuoteType } from '../types';
 
 interface DailyQuoteProps {
@@ -9,7 +9,7 @@ interface DailyQuoteProps {
 
 export const DailyQuote: React.FC<DailyQuoteProps> = ({ quote }) => {
   return (
-    <motion.div 
+    <m.div 
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       className="bg-white dark:bg-gray-800 rounded-xl p-8 relative border border-emerald-100 dark:border-emerald-800 shadow-lg hover:border-emerald-300 dark:hover:border-emerald-700 transition-colors"
@@ -28,6 +28,6 @@ export const DailyQuote: React.FC<DailyQuoteProps> = ({ quote }) => {
         </div>
       </div>
       <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-500 to-emerald-300 dark:from-emerald-600 dark:to-emerald-400 rounded-b-xl"></div>
-    </motion.div>
+    </m.div>
   );
 };

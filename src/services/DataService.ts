@@ -171,6 +171,100 @@ class DataService {
   }
 
   // ==========================================
+  // Statistiques & contenu du jour (page d'accueil)
+  // ==========================================
+
+  /**
+   * Compte les lignes d'une table sans télécharger les données
+   * (`head: true` → réponse vide, seul le header de count est renvoyé).
+   */
+  private async countTable(table: string): Promise<number> {
+    const { count, error } = await supabase
+      .from(table)
+      .select('id', { count: 'exact', head: true });
+    if (error) throw error;
+    return count || 0;
+  }
+
+  /**
+   * Statistiques du site pour la page d'accueil.
+   * En mode supabase : 6 requêtes count "head" (aucune donnée transférée),
+   * au lieu de télécharger les tables entières.
+   */
+  async getStats(): Promise<{
+    hadiths: number;
+    savants: number;
+    douaas: number;
+    dhikrs: number;
+    videos: number;
+    coran: number;
+  }> {
+    if (currentDataSource === 'supabase') {
+      try {
+        const [hadiths, savants, douaas, dhikrs, videos, coran] = await Promise.all([
+          this.countTable('hadith'),
+          this.countTable('parole'),
+          this.countTable('douaa'),
+          this.countTable('dhikr'),
+          this.countTable('multimedia'),
+          this.countTable('coran'),
+        ]);
+        return { hadiths, savants, douaas, dhikrs, videos, coran };
+      } catch (err) {
+        console.error('Supabase stats error, falling back to local:', err);
+      }
+    }
+
+    // Fallback local / express : les JSON embarqués suffisent pour les compteurs
+    return {
+      hadiths: (hadithsData as Hadith[]).length,
+      savants: (paroleData as Savant[]).length,
+      douaas: (douaaData as Douaa[]).length,
+      dhikrs: (dhikrData as Dhikr[]).length,
+      videos: 0,
+      coran: (coranData as Coran[]).length,
+    };
+  }
+
+  /**
+   * Récupère UNE seule ligne à un index donné (item du jour) au lieu de
+   * télécharger toute la table. `index` est ramené dans [0, count) modulo count.
+   */
+  private async getItemAt<T>(table: string, index: number, localData: T[]): Promise<T | null> {
+    if (currentDataSource === 'supabase') {
+      try {
+        const count = await this.countTable(table);
+        if (count === 0) return null;
+        const offset = ((index % count) + count) % count;
+        const { data, error } = await supabase
+          .from(table)
+          .select('*')
+          .order('id')
+          .range(offset, offset);
+        if (error) throw error;
+        return (data && data[0] as T) || null;
+      } catch (err) {
+        console.error(`Supabase getItemAt(${table}) error, falling back to local:`, err);
+      }
+    }
+
+    if (localData.length === 0) return null;
+    return localData[((index % localData.length) + localData.length) % localData.length];
+  }
+
+  async getDailyHadith(dayIndex: number): Promise<Hadith | null> {
+    return this.getItemAt<Hadith>('hadith', dayIndex, hadithsData as Hadith[]);
+  }
+
+  async getDailyCoran(dayIndex: number): Promise<Coran | null> {
+    return this.getItemAt<Coran>('coran', dayIndex, coranData as Coran[]);
+  }
+
+  async getDailyDouaa(dayIndex: number): Promise<Douaa | null> {
+    return this.getItemAt<Douaa>('douaa', dayIndex, douaaData as Douaa[]);
+  }
+
+  // ==========================================
   // Hadiths
   // ==========================================
 

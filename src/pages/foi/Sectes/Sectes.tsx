@@ -1,5 +1,5 @@
 import React from 'react';
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { BookOpen, Search, Filter } from 'lucide-react';
 import { useNavigate } from 'react-router-dom'; // Importez useNavigate
 
@@ -16,7 +16,7 @@ const Sectes: React.FC = () => {
 
     return (
         <div className="space-y-8">
-            <motion.div
+            <m.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 className="relative py-16 bg-arabesque bg-cover bg-center"
@@ -31,7 +31,7 @@ const Sectes: React.FC = () => {
                         [rapporté par Abôu Dâwôud et une version rapporté par at-Tirmīdhiyy]                    </p>
 
                 </div>
-            </motion.div>
+            </m.div>
 
             <div className="max-w-7xl mx-auto px-4">
                 <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 mb-8">
@@ -53,7 +53,7 @@ const Sectes: React.FC = () => {
 
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {['Wahhabites', 'mutazila', 'kadiria', 'Zakat', 'Répliques', 'Ventes', 'Famille', 'Femmes'].map((topic, index) => (
-                        <motion.div
+                        <m.div
                             key={topic}
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
@@ -74,7 +74,7 @@ const Sectes: React.FC = () => {
                                     </p>
                                 </div>
                             </div>
-                        </motion.div>
+                        </m.div>
                     ))}
                 </div>
             </div>
