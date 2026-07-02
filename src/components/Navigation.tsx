@@ -103,7 +103,9 @@ export const Navigation: React.FC = () => {
                             transition={{ delay: 0.3 }}
                             className="hidden lg:flex items-center px-3 py-1 rounded-full bg-emerald-100/50 dark:bg-emerald-900/30 border border-emerald-200/50 dark:border-emerald-700/50"
                         >
-                            <span className="text-sm text-emerald-700 dark:text-emerald-300 font-amiri whitespace-nowrap">
+                            {/* translate="no" : empêche la traduction automatique du navigateur
+                                de déformer la date hijri (محرم → « janvier », ère « av. J.-C. »…) */}
+                            <span className="text-sm text-emerald-700 dark:text-emerald-300 font-amiri whitespace-nowrap" translate="no" lang="ar" dir="rtl">
                                 {hijriDate}
                             </span>
                         </m.div>
@@ -246,7 +248,7 @@ export const Navigation: React.FC = () => {
                             <div className="py-4 space-y-1">
                                 {/* Hijri Date - Mobile */}
                                 <div className="flex justify-center mb-4">
-                                    <span className="px-4 py-2 rounded-full bg-emerald-100/50 dark:bg-emerald-900/30 border border-emerald-200/50 dark:border-emerald-700/50 text-sm text-emerald-700 dark:text-emerald-300 font-amiri">
+                                    <span className="px-4 py-2 rounded-full bg-emerald-100/50 dark:bg-emerald-900/30 border border-emerald-200/50 dark:border-emerald-700/50 text-sm text-emerald-700 dark:text-emerald-300 font-amiri" translate="no" lang="ar" dir="rtl">
                                         {hijriDate}
                                     </span>
                                 </div>
