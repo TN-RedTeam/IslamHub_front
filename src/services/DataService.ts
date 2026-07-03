@@ -13,6 +13,7 @@ import type {
   Dhikr,
   Douaa,
   Savant,
+  HadithArabe,
   Multimedia,
   MultimediaCategory,
   PaginatedResponse,
@@ -882,6 +883,102 @@ class DataService {
       if (s.savant) names.add(s.savant);
     });
     return Array.from(names).sort();
+  }
+
+  // ==========================================
+  // Hadiths en arabe (table hadith_arabe)
+  // ==========================================
+
+  private hadithArabeLocal: HadithArabe[] | null = null;
+
+  /** Fallback local chargé en lazy pour ne pas alourdir le bundle commun. */
+  private async loadHadithArabeLocal(): Promise<HadithArabe[]> {
+    if (!this.hadithArabeLocal) {
+      const mod = await import('../data/hadith_arabe.json');
+      this.hadithArabeLocal = mod.default as HadithArabe[];
+    }
+    return this.hadithArabeLocal;
+  }
+
+  async getHadithsArabe(params?: PaginationParams): Promise<PaginatedResponse<HadithArabe>> {
+    const { page = 0, pageSize = 20 } = params || {};
+
+    if (currentDataSource === 'supabase') {
+      try {
+        const from = page * pageSize;
+        const to = from + pageSize - 1;
+
+        const { data, count, error } = await supabase
+          .from('hadith_arabe')
+          .select('*', { count: 'exact' })
+          .range(from, to)
+          .order('id');
+
+        if (error) throw error;
+
+        return {
+          data: data as HadithArabe[],
+          count: count || 0,
+          page,
+          pageSize,
+          hasMore: (from + pageSize) < (count || 0)
+        };
+      } catch (err) {
+        console.error('Supabase error, falling back to local:', err);
+      }
+    }
+
+    const local = await this.loadHadithArabeLocal();
+    if (params) {
+      return paginate(local, params);
+    }
+    return defaultPaginatedResponse(local);
+  }
+
+  async searchHadithsArabe(
+    searchTerm: string,
+    params?: PaginationParams
+  ): Promise<PaginatedResponse<HadithArabe>> {
+    const { page = 0, pageSize = 20 } = params || {};
+
+    if (currentDataSource === 'supabase' && searchTerm.trim()) {
+      try {
+        const from = page * pageSize;
+        const to = from + pageSize - 1;
+
+        const { data, count, error } = await supabase
+          .from('hadith_arabe')
+          .select('*', { count: 'exact' })
+          .or(`sujet.ilike.%${searchTerm}%,texte_arabe.ilike.%${searchTerm}%`)
+          .range(from, to)
+          .order('id');
+
+        if (error) throw error;
+
+        return {
+          data: data as HadithArabe[],
+          count: count || 0,
+          page,
+          pageSize,
+          hasMore: (from + pageSize) < (count || 0)
+        };
+      } catch (err) {
+        console.error('Supabase search error:', err);
+      }
+    }
+
+    const local = await this.loadHadithArabeLocal();
+    const term = searchTerm.toLowerCase();
+    const filtered = term.trim()
+      ? local.filter(h =>
+          h.sujet.toLowerCase().includes(term) ||
+          h.texte_arabe.toLowerCase().includes(term))
+      : local;
+
+    if (params) {
+      return paginate(filtered, params);
+    }
+    return defaultPaginatedResponse(filtered);
   }
 
   // ==========================================

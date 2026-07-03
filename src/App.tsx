@@ -11,6 +11,7 @@ import { ThemeProvider } from './context/ThemeContext';
 const Home = lazy(() => import('./pages/Home').then(m => ({ default: m.Home })));
 const Corans = lazy(() => import('./pages/Coran').then(m => ({ default: m.Corans })));
 const Hadiths = lazy(() => import('./pages/Hadiths').then(m => ({ default: m.Hadiths })));
+const HadithsArabe = lazy(() => import('./pages/HadithsArabe'));
 const AlBukhari = lazy(() => import('./pages/hadith/Al-Bukhari/AlBukhari'));
 const Dhikrs = lazy(() => import('./pages/Dhikrs').then(m => ({ default: m.Dhikrs })));
 const Douaas = lazy(() => import('./pages/Douaas').then(m => ({ default: m.Douaas })));
@@ -60,6 +61,7 @@ function App() {
                     <Route path="/coran" element={<Corans />} />
                     <Route path="/hadiths" element={<Hadiths />} />
                     <Route path="/hadith/albukhari" element={<AlBukhari />} />
+                    <Route path="/hadiths-arabe" element={<HadithsArabe />} />
                     <Route path="/dhikrs" element={<Dhikrs />} />
                     <Route path="/douaas" element={<Douaas />} />
                     <Route path="/savants" element={<Savants />} />

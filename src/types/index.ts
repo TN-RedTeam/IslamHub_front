@@ -40,6 +40,15 @@ export interface Savant extends BaseText {
   savant: string;             // Nom du savant
 }
 
+/** Hadith en arabe — texte recopié verbatim depuis sunnaonline.org */
+export interface HadithArabe {
+  id: number;
+  sujet: string;
+  texte_arabe: string;
+  source_url: string;
+  date_site: string | null;
+}
+
 /** Vidéo YouTube (lien externe, pas de contenu Arabe/Français) */
 export interface Multimedia {
   id: number;

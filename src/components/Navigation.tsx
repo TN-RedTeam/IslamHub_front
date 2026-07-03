@@ -8,6 +8,7 @@ import moment from 'moment-hijri';
 const navItems = [
     { to: '/coran', icon: Bookmark, label: 'Coran' },
     { to: '/hadiths', icon: Book, label: 'Hadiths' },
+    { to: '/hadiths-arabe', icon: BookOpen, label: 'أحاديث' },
     { to: '/dhikrs', icon: Wind, label: 'Dhikrs' },
     { to: '/douaas', icon: Heart, label: 'Douaas' },
     { to: '/savants', icon: GraduationCap, label: 'Savants' },
