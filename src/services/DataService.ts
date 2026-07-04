@@ -24,12 +24,9 @@ import type {
 import { supabase } from './supabase';
 import api from './api';
 
-// Import des données JSON locales (fallback ultime)
-import hadithsData from '../data/hadith.json';
-import coranData from '../data/coran.json';
-import dhikrData from '../data/dhikr.json';
-import douaaData from '../data/douaa.json';
-import paroleData from '../data/parole.json';
+// Les données JSON locales (fallback ultime) sont chargées en lazy via
+// import() dynamique : elles partent dans des chunks séparés au lieu de
+// gonfler le bundle initial (voir les méthodes localXxx ci-dessous).
 
 // ==========================================
 // Configuration du mode de données
@@ -172,6 +169,45 @@ class DataService {
   }
 
   // ==========================================
+  // Chargement lazy des JSON locaux (fallback)
+  // ==========================================
+
+  private async localHadiths(): Promise<Hadith[]> {
+    if (!this.cache.hadiths) {
+      this.cache.hadiths = (await import('../data/hadith.json')).default as unknown as Hadith[];
+    }
+    return this.cache.hadiths;
+  }
+
+  private async localCoran(): Promise<Coran[]> {
+    if (!this.cache.coran) {
+      this.cache.coran = (await import('../data/coran.json')).default as unknown as Coran[];
+    }
+    return this.cache.coran;
+  }
+
+  private async localDhikrs(): Promise<Dhikr[]> {
+    if (!this.cache.dhikrs) {
+      this.cache.dhikrs = (await import('../data/dhikr.json')).default as unknown as Dhikr[];
+    }
+    return this.cache.dhikrs;
+  }
+
+  private async localDouaas(): Promise<Douaa[]> {
+    if (!this.cache.douaas) {
+      this.cache.douaas = (await import('../data/douaa.json')).default as unknown as Douaa[];
+    }
+    return this.cache.douaas;
+  }
+
+  private async localSavants(): Promise<Savant[]> {
+    if (!this.cache.savants) {
+      this.cache.savants = (await import('../data/parole.json')).default as unknown as Savant[];
+    }
+    return this.cache.savants;
+  }
+
+  // ==========================================
   // Statistiques & contenu du jour (page d'accueil)
   // ==========================================
 
@@ -217,13 +253,20 @@ class DataService {
     }
 
     // Fallback local / express : les JSON embarqués suffisent pour les compteurs
+    const [h, s, d, k, c] = await Promise.all([
+      this.localHadiths(),
+      this.localSavants(),
+      this.localDouaas(),
+      this.localDhikrs(),
+      this.localCoran(),
+    ]);
     return {
-      hadiths: (hadithsData as Hadith[]).length,
-      savants: (paroleData as Savant[]).length,
-      douaas: (douaaData as Douaa[]).length,
-      dhikrs: (dhikrData as Dhikr[]).length,
+      hadiths: h.length,
+      savants: s.length,
+      douaas: d.length,
+      dhikrs: k.length,
       videos: 0,
-      coran: (coranData as Coran[]).length,
+      coran: c.length,
     };
   }
 
@@ -231,7 +274,7 @@ class DataService {
    * Récupère UNE seule ligne à un index donné (item du jour) au lieu de
    * télécharger toute la table. `index` est ramené dans [0, count) modulo count.
    */
-  private async getItemAt<T>(table: string, index: number, localData: T[]): Promise<T | null> {
+  private async getItemAt<T>(table: string, index: number, loadLocal: () => Promise<T[]>): Promise<T | null> {
     if (currentDataSource === 'supabase') {
       try {
         const count = await this.countTable(table);
@@ -249,20 +292,21 @@ class DataService {
       }
     }
 
+    const localData = await loadLocal();
     if (localData.length === 0) return null;
     return localData[((index % localData.length) + localData.length) % localData.length];
   }
 
   async getDailyHadith(dayIndex: number): Promise<Hadith | null> {
-    return this.getItemAt<Hadith>('hadith', dayIndex, hadithsData as Hadith[]);
+    return this.getItemAt<Hadith>('hadith', dayIndex, () => this.localHadiths());
   }
 
   async getDailyCoran(dayIndex: number): Promise<Coran | null> {
-    return this.getItemAt<Coran>('coran', dayIndex, coranData as Coran[]);
+    return this.getItemAt<Coran>('coran', dayIndex, () => this.localCoran());
   }
 
   async getDailyDouaa(dayIndex: number): Promise<Douaa | null> {
-    return this.getItemAt<Douaa>('douaa', dayIndex, douaaData as Douaa[]);
+    return this.getItemAt<Douaa>('douaa', dayIndex, () => this.localDouaas());
   }
 
   // ==========================================
@@ -311,14 +355,12 @@ class DataService {
     return this.getHadithsLocal(params);
   }
 
-  private getHadithsLocal(params?: PaginationParams): PaginatedResponse<Hadith> {
-    if (!this.cache.hadiths) {
-      this.cache.hadiths = hadithsData as Hadith[];
-    }
+  private async getHadithsLocal(params?: PaginationParams): Promise<PaginatedResponse<Hadith>> {
+    const data = await this.localHadiths();
     if (params) {
-      return paginate(this.cache.hadiths, params);
+      return paginate(data, params);
     }
-    return defaultPaginatedResponse(this.cache.hadiths);
+    return defaultPaginatedResponse(data);
   }
 
   async searchHadiths(
@@ -378,10 +420,7 @@ class DataService {
       }
     }
 
-    if (!this.cache.hadiths) {
-      this.cache.hadiths = hadithsData as Hadith[];
-    }
-    return extractTags(this.cache.hadiths);
+    return extractTags(await this.localHadiths());
   }
 
   // ==========================================
@@ -430,14 +469,12 @@ class DataService {
     return this.getCoranLocal(params);
   }
 
-  private getCoranLocal(params?: PaginationParams): PaginatedResponse<Coran> {
-    if (!this.cache.coran) {
-      this.cache.coran = coranData as Coran[];
-    }
+  private async getCoranLocal(params?: PaginationParams): Promise<PaginatedResponse<Coran>> {
+    const data = await this.localCoran();
     if (params) {
-      return paginate(this.cache.coran, params);
+      return paginate(data, params);
     }
-    return defaultPaginatedResponse(this.cache.coran);
+    return defaultPaginatedResponse(data);
   }
 
   async searchCoran(
@@ -497,10 +534,7 @@ class DataService {
       }
     }
 
-    if (!this.cache.coran) {
-      this.cache.coran = coranData as Coran[];
-    }
-    return extractTags(this.cache.coran);
+    return extractTags(await this.localCoran());
   }
 
   // ==========================================
@@ -549,14 +583,12 @@ class DataService {
     return this.getDhikrsLocal(params);
   }
 
-  private getDhikrsLocal(params?: PaginationParams): PaginatedResponse<Dhikr> {
-    if (!this.cache.dhikrs) {
-      this.cache.dhikrs = dhikrData as Dhikr[];
-    }
+  private async getDhikrsLocal(params?: PaginationParams): Promise<PaginatedResponse<Dhikr>> {
+    const data = await this.localDhikrs();
     if (params) {
-      return paginate(this.cache.dhikrs, params);
+      return paginate(data, params);
     }
-    return defaultPaginatedResponse(this.cache.dhikrs);
+    return defaultPaginatedResponse(data);
   }
 
   async searchDhikrs(
@@ -616,10 +648,7 @@ class DataService {
       }
     }
 
-    if (!this.cache.dhikrs) {
-      this.cache.dhikrs = dhikrData as Dhikr[];
-    }
-    return extractTags(this.cache.dhikrs);
+    return extractTags(await this.localDhikrs());
   }
 
   // ==========================================
@@ -668,14 +697,12 @@ class DataService {
     return this.getDouaasLocal(params);
   }
 
-  private getDouaasLocal(params?: PaginationParams): PaginatedResponse<Douaa> {
-    if (!this.cache.douaas) {
-      this.cache.douaas = douaaData as Douaa[];
-    }
+  private async getDouaasLocal(params?: PaginationParams): Promise<PaginatedResponse<Douaa>> {
+    const data = await this.localDouaas();
     if (params) {
-      return paginate(this.cache.douaas, params);
+      return paginate(data, params);
     }
-    return defaultPaginatedResponse(this.cache.douaas);
+    return defaultPaginatedResponse(data);
   }
 
   async searchDouaas(
@@ -735,10 +762,7 @@ class DataService {
       }
     }
 
-    if (!this.cache.douaas) {
-      this.cache.douaas = douaaData as Douaa[];
-    }
-    return extractTags(this.cache.douaas);
+    return extractTags(await this.localDouaas());
   }
 
   // ==========================================
@@ -787,14 +811,12 @@ class DataService {
     return this.getSavantsLocal(params);
   }
 
-  private getSavantsLocal(params?: PaginationParams): PaginatedResponse<Savant> {
-    if (!this.cache.savants) {
-      this.cache.savants = paroleData as Savant[];
-    }
+  private async getSavantsLocal(params?: PaginationParams): Promise<PaginatedResponse<Savant>> {
+    const data = await this.localSavants();
     if (params) {
-      return paginate(this.cache.savants, params);
+      return paginate(data, params);
     }
-    return defaultPaginatedResponse(this.cache.savants);
+    return defaultPaginatedResponse(data);
   }
 
   async searchSavants(
@@ -854,10 +876,7 @@ class DataService {
       }
     }
 
-    if (!this.cache.savants) {
-      this.cache.savants = paroleData as Savant[];
-    }
-    return extractTags(this.cache.savants);
+    return extractTags(await this.localSavants());
   }
 
   async getSavantNames(): Promise<string[]> {
@@ -875,11 +894,9 @@ class DataService {
       }
     }
 
-    if (!this.cache.savants) {
-      this.cache.savants = paroleData as Savant[];
-    }
+    const localSavants = await this.localSavants();
     const names = new Set<string>();
-    this.cache.savants.forEach(s => {
+    localSavants.forEach(s => {
       if (s.savant) names.add(s.savant);
     });
     return Array.from(names).sort();

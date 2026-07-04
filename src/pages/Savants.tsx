@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { m, AnimatePresence } from 'framer-motion';
 import { BookOpen, Search, Filter, X, Star, ChevronRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import savantsData from '../data/parole.json';
+
 import { usePageTitle } from '../hooks/usePageTitle';
 
 interface Savant {
@@ -58,7 +58,7 @@ const SavantCard: React.FC<{ savant: Savant; onClick: () => void }> = ({ savant,
     </div>
 
     <div className="flex flex-wrap gap-2">
-      {savant.tag.split(',').map(tag => (
+      {savant.tag.split(',').filter(t => t.trim()).map(tag => (
         <m.span
           key={tag.trim()}
           whileHover={{ scale: 1.05 }}
@@ -152,7 +152,7 @@ const SavantModal: React.FC<{
           )}
           
           <div className="flex flex-wrap gap-2">
-            {savant.tag.split(',').map(tag => (
+            {savant.tag.split(',').filter(t => t.trim()).map(tag => (
               <span
                 key={tag.trim()}
                 className="text-xs bg-amber-100 dark:bg-emerald-800 text-amber-800 dark:text-emerald-200 px-3 py-1 rounded-full"
@@ -173,7 +173,16 @@ export const Savants: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
   const [allTags, setAllTags] = useState<string[]>([]);
-  const [filteredSavants, setFilteredSavants] = useState<Savant[]>(savantsData);
+  // Données chargées en lazy : parole.json part dans un chunk séparé
+  // au lieu de gonfler le bundle initial.
+  const [savantsData, setSavantsData] = useState<Savant[]>([]);
+  const [filteredSavants, setFilteredSavants] = useState<Savant[]>([]);
+
+  useEffect(() => {
+    import('../data/parole.json').then(mod => {
+      setSavantsData(mod.default as unknown as Savant[]);
+    });
+  }, []);
   const [selectedSavant, setSelectedSavant] = useState<Savant | null>(null);
 
   const topics = [
@@ -244,14 +253,14 @@ export const Savants: React.FC = () => {
 useEffect(() => {
   const tags = new Set<string>();
   savantsData.forEach(savant => {
-    savant.tag.split(',')
+    (savant.tag || '').split(',')
       .map(t => t.trim())
       .filter(t => t.length > 0)
       .forEach(tag => tags.add(tag));
   });
   // Tri alphabétique ici
   setAllTags(Array.from(tags).sort((a, b) => a.localeCompare(b)));
-}, []);
+}, [savantsData]);
 
   // Filtrage des hadiths
   useEffect(() => {
@@ -261,7 +270,7 @@ useEffect(() => {
     if (selectedTag) {
       const tagToFind = selectedTag.toLowerCase();
       results = results.filter(savant => 
-        savant.tag.split(',')
+        (savant.tag || '').split(',')
           .map(t => t.trim().toLowerCase())
           .includes(tagToFind)
       );

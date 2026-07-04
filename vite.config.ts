@@ -30,6 +30,10 @@ export default defineConfig({
       },
       workbox: {
         globPatterns: ['**/*.{js,css,html,svg,png,woff2}'],
+        // Les chunks de données JSON (fallback local, volumineux) ne sont pas
+        // précachés : ils seraient téléchargés d'office par chaque visiteur
+        // alors qu'ils ne servent que si Supabase est indisponible.
+        globIgnores: ['**/assets/data-*.js'],
         navigateFallback: 'index.html',
         runtimeCaching: [
           // Feuilles de style Google Fonts : revalidées en arrière-plan
@@ -86,6 +90,11 @@ export default defineConfig({
       output: {
         // Vite 8 (Rolldown) n'accepte plus la forme objet : fonction obligatoire.
         manualChunks(id) {
+          // Chunks nommés pour les données JSON locales (exclus de la précache PWA)
+          if (id.includes('/src/data/') && id.endsWith('.json')) {
+            const name = id.split('/').pop()!.replace('.json', '');
+            return `data-${name}`;
+          }
           if (!id.includes('node_modules')) return;
           if (/node_modules\/(react|react-dom|react-router|react-router-dom|scheduler)\//.test(id)) return 'vendor-react';
           // framer-motion volontairement absent : laisser Rolldown le découper
