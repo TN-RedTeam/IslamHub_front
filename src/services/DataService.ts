@@ -1,3 +1,4 @@
+import { supabase } from './supabase';
 import type {
   Hadith,
   Coran,
@@ -10,185 +11,137 @@ import type {
   PaginationParams,
 } from '../types';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001/api';
+// ============================================================
+// Path B : le front interroge Supabase DIRECTEMENT (via RPC).
+// Les fonctions SQL sont définies dans supabase/setup.sql.
+// Plus aucun appel à l'API Express — Render n'est plus utilisé.
+// ============================================================
 
 function sanitizeInput(value: string): string {
   return value.trim().slice(0, 300).replace(/[<>"']/g, '');
 }
 
-class ApiClient {
-  private async request<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
-    const url = `${API_BASE_URL}${endpoint}`;
-    try {
-      const response = await fetch(url, {
-        ...options,
-        headers: {
-          'Content-Type': 'application/json',
-          ...options.headers,
-        },
-      });
-      if (!response.ok) {
-        throw new Error(`API Error: ${response.status} ${response.statusText}`);
-      }
-      return response.json();
-    } catch (error) {
-      throw error;
-    }
-  }
-
-  async get<T>(endpoint: string): Promise<T> {
-    return this.request<T>(endpoint, { method: 'GET' });
-  }
-
-  async getWithParams<T>(endpoint: string, params: Record<string, unknown>): Promise<T> {
-    const filteredParams = Object.fromEntries(
-      Object.entries(params).filter(([, value]) => value != null && value !== '')
-    );
-    const queryString = new URLSearchParams(filteredParams as Record<string, string>).toString();
-    return this.get<T>(`${endpoint}${queryString ? `?${queryString}` : ''}`);
-  }
+// Chaque RPC de recherche renvoie { total, data }. On uniformise vers la forme
+// attendue par les pages (data + count + total + pagination).
+function shapeResult<T>(payload: unknown, page: number, pageSize: number) {
+  const p = (payload ?? {}) as { total?: number; data?: T[] };
+  const total = p.total ?? 0;
+  const data = p.data ?? [];
+  return {
+    data,
+    count: total,
+    total,
+    page,
+    pageSize,
+    hasMore: (page + 1) * pageSize < total,
+  } as PaginatedResponse<T> & { total: number };
 }
 
-const apiClient = new ApiClient();
+async function rpcSearch<T>(
+  fn: string,
+  q: string,
+  filter: string | null,
+  filterKey: 'tag_filter' | 'categorie_filter',
+  params?: PaginationParams,
+) {
+  const page = params?.page ?? 0;
+  const pageSize = params?.pageSize ?? 20;
+  const args: Record<string, unknown> = {
+    q: sanitizeInput(q),
+    page_num: page,
+    page_size: pageSize,
+  };
+  args[filterKey] = filter ? sanitizeInput(filter) : '';
+  const { data, error } = await supabase.rpc(fn, args);
+  if (error) throw error;
+  return shapeResult<T>(data, page, pageSize);
+}
+
+async function rpcTags(fn: string): Promise<string[]> {
+  const { data, error } = await supabase.rpc(fn);
+  if (error) throw error;
+  return (data ?? []) as string[];
+}
 
 class DataService {
-  // ==========================================
-  // Hadiths
-  // ==========================================
-
+  // ================= Hadiths =================
   async getHadiths(params?: PaginationParams): Promise<PaginatedResponse<Hadith>> {
-    const queryParams: Record<string, unknown> = {};
-    if (params) { queryParams.page = params.page; queryParams.pageSize = params.pageSize; }
-    return apiClient.getWithParams<PaginatedResponse<Hadith>>('/hadiths', queryParams);
+    return rpcSearch<Hadith>('search_hadiths', '', null, 'tag_filter', params ?? { page: 0, pageSize: 50 });
   }
-
   async searchHadiths(searchTerm: string, tag?: string | null, params?: PaginationParams): Promise<PaginatedResponse<Hadith>> {
-    const queryParams: Record<string, unknown> = { q: sanitizeInput(searchTerm) };
-    if (tag) queryParams.tag = sanitizeInput(tag);
-    if (params) { queryParams.page = params.page; queryParams.pageSize = params.pageSize; }
-    return apiClient.getWithParams<PaginatedResponse<Hadith>>('/hadiths/search', queryParams);
+    return rpcSearch<Hadith>('search_hadiths', searchTerm, tag ?? null, 'tag_filter', params);
   }
-
   async getHadithTags(): Promise<string[]> {
-    return apiClient.get<string[]>('/hadiths/tags');
+    return rpcTags('tags_hadiths');
   }
 
-  // ==========================================
-  // Coran
-  // ==========================================
-
+  // ================= Coran =================
   async getCoran(params?: PaginationParams): Promise<PaginatedResponse<Coran>> {
-    const queryParams: Record<string, unknown> = {};
-    if (params) { queryParams.page = params.page; queryParams.pageSize = params.pageSize; }
-    return apiClient.getWithParams<PaginatedResponse<Coran>>('/coran', queryParams);
+    return rpcSearch<Coran>('search_coran', '', null, 'tag_filter', params ?? { page: 0, pageSize: 50 });
   }
-
   async searchCoran(searchTerm: string, tag?: string | null, params?: PaginationParams): Promise<PaginatedResponse<Coran>> {
-    const queryParams: Record<string, unknown> = { q: sanitizeInput(searchTerm) };
-    if (tag) queryParams.tag = sanitizeInput(tag);
-    if (params) { queryParams.page = params.page; queryParams.pageSize = params.pageSize; }
-    return apiClient.getWithParams<PaginatedResponse<Coran>>('/coran/search', queryParams);
+    return rpcSearch<Coran>('search_coran', searchTerm, tag ?? null, 'tag_filter', params);
   }
-
   async getCoranTags(): Promise<string[]> {
-    return apiClient.get<string[]>('/coran/tags');
+    return rpcTags('tags_coran');
   }
 
-  // ==========================================
-  // Dhikrs
-  // ==========================================
-
+  // ================= Dhikrs =================
   async getDhikrs(params?: PaginationParams): Promise<PaginatedResponse<Dhikr>> {
-    const queryParams: Record<string, unknown> = {};
-    if (params) { queryParams.page = params.page; queryParams.pageSize = params.pageSize; }
-    return apiClient.getWithParams<PaginatedResponse<Dhikr>>('/dhikrs', queryParams);
+    return rpcSearch<Dhikr>('search_dhikrs', '', null, 'tag_filter', params ?? { page: 0, pageSize: 50 });
   }
-
   async searchDhikrs(searchTerm: string, tag?: string | null, params?: PaginationParams): Promise<PaginatedResponse<Dhikr>> {
-    const queryParams: Record<string, unknown> = { q: sanitizeInput(searchTerm) };
-    if (tag) queryParams.tag = sanitizeInput(tag);
-    if (params) { queryParams.page = params.page; queryParams.pageSize = params.pageSize; }
-    return apiClient.getWithParams<PaginatedResponse<Dhikr>>('/dhikrs/search', queryParams);
+    return rpcSearch<Dhikr>('search_dhikrs', searchTerm, tag ?? null, 'tag_filter', params);
   }
-
   async getDhikrTags(): Promise<string[]> {
-    return apiClient.get<string[]>('/dhikrs/tags');
+    return rpcTags('tags_dhikrs');
   }
 
-  // ==========================================
-  // Douaas
-  // ==========================================
-
+  // ================= Douaas =================
   async getDouaas(params?: PaginationParams): Promise<PaginatedResponse<Douaa>> {
-    const queryParams: Record<string, unknown> = {};
-    if (params) { queryParams.page = params.page; queryParams.pageSize = params.pageSize; }
-    return apiClient.getWithParams<PaginatedResponse<Douaa>>('/douaas', queryParams);
+    return rpcSearch<Douaa>('search_douaas', '', null, 'tag_filter', params ?? { page: 0, pageSize: 50 });
   }
-
   async searchDouaas(searchTerm: string, tag?: string | null, params?: PaginationParams): Promise<PaginatedResponse<Douaa>> {
-    const queryParams: Record<string, unknown> = { q: sanitizeInput(searchTerm) };
-    if (tag) queryParams.tag = sanitizeInput(tag);
-    if (params) { queryParams.page = params.page; queryParams.pageSize = params.pageSize; }
-    return apiClient.getWithParams<PaginatedResponse<Douaa>>('/douaas/search', queryParams);
+    return rpcSearch<Douaa>('search_douaas', searchTerm, tag ?? null, 'tag_filter', params);
   }
-
   async getDouaaTags(): Promise<string[]> {
-    return apiClient.get<string[]>('/douaas/tags');
+    return rpcTags('tags_douaas');
   }
 
-  // ==========================================
-  // Savants
-  // ==========================================
-
+  // ================= Savants (table `parole`) =================
   async getSavants(params?: PaginationParams): Promise<PaginatedResponse<Savant>> {
-    const queryParams: Record<string, unknown> = {};
-    if (params) { queryParams.page = params.page; queryParams.pageSize = params.pageSize; }
-    return apiClient.getWithParams<PaginatedResponse<Savant>>('/savants', queryParams);
+    return rpcSearch<Savant>('search_parole', '', null, 'tag_filter', params ?? { page: 0, pageSize: 50 });
   }
-
   async searchSavants(searchTerm: string, tag?: string | null, params?: PaginationParams): Promise<PaginatedResponse<Savant>> {
-    const queryParams: Record<string, unknown> = { q: sanitizeInput(searchTerm) };
-    if (tag) queryParams.tag = sanitizeInput(tag);
-    if (params) { queryParams.page = params.page; queryParams.pageSize = params.pageSize; }
-    return apiClient.getWithParams<PaginatedResponse<Savant>>('/savants/search', queryParams);
+    return rpcSearch<Savant>('search_parole', searchTerm, tag ?? null, 'tag_filter', params);
   }
-
   async getSavantTags(): Promise<string[]> {
-    return apiClient.get<string[]>('/savants/tags');
+    return rpcTags('tags_parole');
   }
-
   async getSavantNames(): Promise<string[]> {
-    return apiClient.get<string[]>('/savants/names');
+    return rpcTags('names_parole');
   }
 
-  // ==========================================
-  // Multimedia (vidéos YouTube externes)
-  // ==========================================
-
+  // ================= Multimedia =================
   async searchMultimedia(
     searchTerm: string,
     categorie?: string | null,
     params?: PaginationParams,
   ): Promise<{ data: Multimedia[]; total: number; page: number; pageSize: number }> {
-    const queryParams: Record<string, unknown> = { q: sanitizeInput(searchTerm) };
-    if (categorie) queryParams.categorie = sanitizeInput(categorie);
-    if (params) { queryParams.page = params.page; queryParams.pageSize = params.pageSize; }
-    return apiClient.getWithParams('/multimedia/search', queryParams);
+    const res = await rpcSearch<Multimedia>('search_multimedia', searchTerm, categorie ?? null, 'categorie_filter', params);
+    return { data: res.data, total: res.total, page: res.page, pageSize: res.pageSize };
   }
-
   async getMultimediaCategories(): Promise<MultimediaCategory[]> {
-    const res = await apiClient.get<{ data: MultimediaCategory[] }>('/multimedia/categories');
-    return res.data;
+    const { data, error } = await supabase.rpc('categories_multimedia');
+    if (error) throw error;
+    return (data ?? []) as MultimediaCategory[];
   }
 
-  // ==========================================
-  // Utilitaires
-  // ==========================================
-
+  // ================= Utilitaires =================
   async testApiConnection(): Promise<boolean> {
     try {
-      await apiClient.get('/health');
-      return true;
+      const { error } = await supabase.rpc('tags_hadiths');
+      return !error;
     } catch {
       return false;
     }
