@@ -1,5 +1,6 @@
 import React from 'react';
 import { HashRouter as Router, Routes, Route } from 'react-router-dom';
+import { LazyMotion, domAnimation } from 'framer-motion';
 import { Navigation } from './components/Navigation';
 import { Home } from './pages/Home';
 import { Hadiths } from './pages/Hadiths';
@@ -26,34 +27,39 @@ import {
 function App() {
   return (
     <ThemeProvider>
-      <Router>
-        <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-200">
-          <Navigation />
-          <main>
-            <Routes>
-              {/* Pages principales */}
-              <Route path="/" element={<Home />} />
-              <Route path="/coran" element={<Corans />} />
-              <Route path="/hadiths" element={<Hadiths />} />
-              <Route path="/hadith/albukhari" element={<AlBukhari />} />
-              <Route path="/hadith/albukhari/part1" element={<part1 />} />
-              <Route path="/dhikrs" element={<Dhikrs />} />
-              <Route path="/douaas" element={<Douaas />} />
-              <Route path="/paroles" element={<Paroles />} />
-              <Route path="/biographies" element={<Biographies />} />
-              <Route path="/multimedia" element={<Multimedia />} />
-              <Route path="/prayer-times" element={<PrayerTimesPage />} />
+      {/* LazyMotion fournit les animations aux composants `m.` de framer-motion.
+          Sans lui, ils restent figés à leur état `initial` (opacity: 0) => page blanche.
+          Mode NON strict : les pages encore en `motion.` continuent de fonctionner. */}
+      <LazyMotion features={domAnimation}>
+        <Router>
+          <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-200">
+            <Navigation />
+            <main>
+              <Routes>
+                {/* Pages principales */}
+                <Route path="/" element={<Home />} />
+                <Route path="/coran" element={<Corans />} />
+                <Route path="/hadiths" element={<Hadiths />} />
+                <Route path="/hadith/albukhari" element={<AlBukhari />} />
+                <Route path="/hadith/albukhari/part1" element={<part1 />} />
+                <Route path="/dhikrs" element={<Dhikrs />} />
+                <Route path="/douaas" element={<Douaas />} />
+                <Route path="/paroles" element={<Paroles />} />
+                <Route path="/biographies" element={<Biographies />} />
+                <Route path="/multimedia" element={<Multimedia />} />
+                <Route path="/prayer-times" element={<PrayerTimesPage />} />
 
-              {/* Écoles (Madhaheb) */}
-              <Route path="/ecoles" element={<Madhaheb />} />
-              <Route path="/ecoles/Hanafi" element={<Hanafi />} />
-              <Route path="/ecoles/Malikite" element={<Malikite />} />
-              <Route path="/ecoles/Shafii" element={<Shafii />} />
-              <Route path="/ecoles/Hanbalite" element={<Hanbalite />} />
-            </Routes>
-          </main>
-        </div>
-      </Router>
+                {/* Écoles (Madhaheb) */}
+                <Route path="/ecoles" element={<Madhaheb />} />
+                <Route path="/ecoles/Hanafi" element={<Hanafi />} />
+                <Route path="/ecoles/Malikite" element={<Malikite />} />
+                <Route path="/ecoles/Shafii" element={<Shafii />} />
+                <Route path="/ecoles/Hanbalite" element={<Hanbalite />} />
+              </Routes>
+            </main>
+          </div>
+        </Router>
+      </LazyMotion>
     </ThemeProvider>
   );
 }
