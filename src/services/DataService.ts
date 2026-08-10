@@ -13,19 +13,26 @@ import type {
 
 // ============================================================
 // Path B : le front interroge Supabase DIRECTEMENT (via RPC).
-// Fonctions SQL : supabase/setup.sql, setup_paroles.sql, setup_home.sql.
-// Plus aucun appel à l'API Express.
+// Fonctions SQL : supabase/setup.sql, setup_paroles.sql, setup_home.sql,
+// setup_fixes.sql. Plus aucun appel à l'API Express.
 // ============================================================
 
-/** Compteurs renvoyés par getStats() (clés = noms des tables). */
+/** Compteurs renvoyés par getStats() (plusieurs alias de clés côté SQL). */
 export interface SiteStats {
   hadiths: number;
   dhikrs: number;
   douaas: number;
   coran: number;
+  versets: number;
   paroles: number;
+  savants: number;
   multimedia: number;
+  videos: number;
 }
+
+// Chargement "tout" par défaut : suffisant tant que les tables sont petites.
+// (À repasser en pagination si un jour une table dépasse quelques milliers de lignes.)
+const LOAD_ALL: PaginationParams = { page: 0, pageSize: 1000 };
 
 function sanitizeInput(value: string): string {
   return value.trim().slice(0, 300).replace(/[<>"']/g, '');
@@ -74,10 +81,10 @@ async function rpcTags(fn: string): Promise<string[]> {
 class DataService {
   // ================= Hadiths =================
   async getHadiths(params?: PaginationParams): Promise<PaginatedResponse<Hadith>> {
-    return rpcSearch<Hadith>('search_hadiths', '', null, 'tag_filter', params ?? { page: 0, pageSize: 50 });
+    return rpcSearch<Hadith>('search_hadiths', '', null, 'tag_filter', params ?? LOAD_ALL);
   }
   async searchHadiths(searchTerm: string, tag?: string | null, params?: PaginationParams): Promise<PaginatedResponse<Hadith>> {
-    return rpcSearch<Hadith>('search_hadiths', searchTerm, tag ?? null, 'tag_filter', params);
+    return rpcSearch<Hadith>('search_hadiths', searchTerm, tag ?? null, 'tag_filter', params ?? LOAD_ALL);
   }
   async getHadithTags(): Promise<string[]> {
     return rpcTags('tags_hadiths');
@@ -85,10 +92,10 @@ class DataService {
 
   // ================= Coran =================
   async getCoran(params?: PaginationParams): Promise<PaginatedResponse<Coran>> {
-    return rpcSearch<Coran>('search_coran', '', null, 'tag_filter', params ?? { page: 0, pageSize: 50 });
+    return rpcSearch<Coran>('search_coran', '', null, 'tag_filter', params ?? LOAD_ALL);
   }
   async searchCoran(searchTerm: string, tag?: string | null, params?: PaginationParams): Promise<PaginatedResponse<Coran>> {
-    return rpcSearch<Coran>('search_coran', searchTerm, tag ?? null, 'tag_filter', params);
+    return rpcSearch<Coran>('search_coran', searchTerm, tag ?? null, 'tag_filter', params ?? LOAD_ALL);
   }
   async getCoranTags(): Promise<string[]> {
     return rpcTags('tags_coran');
@@ -96,10 +103,10 @@ class DataService {
 
   // ================= Dhikrs =================
   async getDhikrs(params?: PaginationParams): Promise<PaginatedResponse<Dhikr>> {
-    return rpcSearch<Dhikr>('search_dhikrs', '', null, 'tag_filter', params ?? { page: 0, pageSize: 50 });
+    return rpcSearch<Dhikr>('search_dhikrs', '', null, 'tag_filter', params ?? LOAD_ALL);
   }
   async searchDhikrs(searchTerm: string, tag?: string | null, params?: PaginationParams): Promise<PaginatedResponse<Dhikr>> {
-    return rpcSearch<Dhikr>('search_dhikrs', searchTerm, tag ?? null, 'tag_filter', params);
+    return rpcSearch<Dhikr>('search_dhikrs', searchTerm, tag ?? null, 'tag_filter', params ?? LOAD_ALL);
   }
   async getDhikrTags(): Promise<string[]> {
     return rpcTags('tags_dhikrs');
@@ -107,10 +114,10 @@ class DataService {
 
   // ================= Douaas =================
   async getDouaas(params?: PaginationParams): Promise<PaginatedResponse<Douaa>> {
-    return rpcSearch<Douaa>('search_douaas', '', null, 'tag_filter', params ?? { page: 0, pageSize: 50 });
+    return rpcSearch<Douaa>('search_douaas', '', null, 'tag_filter', params ?? LOAD_ALL);
   }
   async searchDouaas(searchTerm: string, tag?: string | null, params?: PaginationParams): Promise<PaginatedResponse<Douaa>> {
-    return rpcSearch<Douaa>('search_douaas', searchTerm, tag ?? null, 'tag_filter', params);
+    return rpcSearch<Douaa>('search_douaas', searchTerm, tag ?? null, 'tag_filter', params ?? LOAD_ALL);
   }
   async getDouaaTags(): Promise<string[]> {
     return rpcTags('tags_douaas');
@@ -118,10 +125,10 @@ class DataService {
 
   // ================= Paroles (table `paroles`, route /paroles) =================
   async getParoles(params?: PaginationParams): Promise<PaginatedResponse<Parole>> {
-    return rpcSearch<Parole>('search_paroles', '', null, 'tag_filter', params ?? { page: 0, pageSize: 50 });
+    return rpcSearch<Parole>('search_paroles', '', null, 'tag_filter', params ?? LOAD_ALL);
   }
   async searchParoles(searchTerm: string, tag?: string | null, params?: PaginationParams): Promise<PaginatedResponse<Parole>> {
-    return rpcSearch<Parole>('search_paroles', searchTerm, tag ?? null, 'tag_filter', params);
+    return rpcSearch<Parole>('search_paroles', searchTerm, tag ?? null, 'tag_filter', params ?? LOAD_ALL);
   }
   async getParoleTags(): Promise<string[]> {
     return rpcTags('tags_paroles');
@@ -136,7 +143,7 @@ class DataService {
     categorie?: string | null,
     params?: PaginationParams,
   ): Promise<{ data: Multimedia[]; total: number; page: number; pageSize: number }> {
-    const res = await rpcSearch<Multimedia>('search_multimedia', searchTerm, categorie ?? null, 'categorie_filter', params);
+    const res = await rpcSearch<Multimedia>('search_multimedia', searchTerm, categorie ?? null, 'categorie_filter', params ?? LOAD_ALL);
     return { data: res.data, total: res.total, page: res.page, pageSize: res.pageSize };
   }
   async getMultimediaCategories(): Promise<MultimediaCategory[]> {
@@ -149,7 +156,7 @@ class DataService {
   async getStats(): Promise<SiteStats> {
     const { data, error } = await supabase.rpc('site_stats');
     if (error) throw error;
-    return (data ?? { hadiths: 0, dhikrs: 0, douaas: 0, coran: 0, paroles: 0, multimedia: 0 }) as SiteStats;
+    return (data ?? {}) as SiteStats;
   }
   async getDailyHadith(day: number): Promise<Hadith | null> {
     const { data, error } = await supabase.rpc('daily_hadith', { day });
