@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+# À ajouter lors du passage au vrai domaine :
+# Sitemap: https://votre-domaine.com/sitemap.xml
