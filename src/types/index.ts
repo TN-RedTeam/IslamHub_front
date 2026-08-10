@@ -10,7 +10,7 @@ export interface BaseText {
   texte_francais: string | null;
   phonétique: string | null;
   explication: string | null;
-  tag: string | null;
+  tag: string;
 }
 
 /** Hadith - Parole du Prophète (ﷺ) */
@@ -35,19 +35,13 @@ export interface Douaa extends BaseText {
   commentaire: string | null;
 }
 
-/** Citation de savant */
-export interface Savant extends BaseText {
+/** Parole de savant (table `paroles`) */
+export interface Parole extends BaseText {
   savant: string;             // Nom du savant
 }
 
-/** Hadith en arabe — texte recopié verbatim depuis sunnaonline.org */
-export interface HadithArabe {
-  id: number;
-  sujet: string;
-  texte_arabe: string;
-  source_url: string;
-  date_site: string | null;
-}
+/** Alias historique — `Parole` est le nom canonique. */
+export type Savant = Parole;
 
 /** Vidéo YouTube (lien externe, pas de contenu Arabe/Français) */
 export interface Multimedia {
@@ -119,10 +113,10 @@ export interface SearchFilters {
 // Union type pour tous les textes
 // ==========================================
 
-export type IslamicText = Hadith | Coran | Dhikr | Douaa | Savant;
+export type IslamicText = Hadith | Coran | Dhikr | Douaa | Parole;
 
 // ==========================================
-// Types pour la pagination (futur Supabase)
+// Types pour la pagination
 // ==========================================
 
 export interface PaginatedResponse<T> {
