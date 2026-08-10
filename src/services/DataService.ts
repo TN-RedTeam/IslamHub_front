@@ -4,7 +4,7 @@ import type {
   Coran,
   Dhikr,
   Douaa,
-  Savant,
+  Parole,
   Multimedia,
   MultimediaCategory,
   PaginatedResponse,
@@ -13,16 +13,14 @@ import type {
 
 // ============================================================
 // Path B : le front interroge Supabase DIRECTEMENT (via RPC).
-// Les fonctions SQL sont définies dans supabase/setup.sql.
-// Plus aucun appel à l'API Express — Render n'est plus utilisé.
+// Les fonctions SQL sont définies dans supabase/setup.sql et
+// supabase/setup_paroles.sql. Plus aucun appel à l'API Express.
 // ============================================================
 
 function sanitizeInput(value: string): string {
   return value.trim().slice(0, 300).replace(/[<>"']/g, '');
 }
 
-// Chaque RPC de recherche renvoie { total, data }. On uniformise vers la forme
-// attendue par les pages (data + count + total + pagination).
 function shapeResult<T>(payload: unknown, page: number, pageSize: number) {
   const p = (payload ?? {}) as { total?: number; data?: T[] };
   const total = p.total ?? 0;
@@ -108,18 +106,18 @@ class DataService {
     return rpcTags('tags_douaas');
   }
 
-  // ================= Savants (table `parole`) =================
-  async getSavants(params?: PaginationParams): Promise<PaginatedResponse<Savant>> {
-    return rpcSearch<Savant>('search_parole', '', null, 'tag_filter', params ?? { page: 0, pageSize: 50 });
+  // ================= Paroles (table `paroles`, route /paroles) =================
+  async getParoles(params?: PaginationParams): Promise<PaginatedResponse<Parole>> {
+    return rpcSearch<Parole>('search_paroles', '', null, 'tag_filter', params ?? { page: 0, pageSize: 50 });
   }
-  async searchSavants(searchTerm: string, tag?: string | null, params?: PaginationParams): Promise<PaginatedResponse<Savant>> {
-    return rpcSearch<Savant>('search_parole', searchTerm, tag ?? null, 'tag_filter', params);
+  async searchParoles(searchTerm: string, tag?: string | null, params?: PaginationParams): Promise<PaginatedResponse<Parole>> {
+    return rpcSearch<Parole>('search_paroles', searchTerm, tag ?? null, 'tag_filter', params);
   }
-  async getSavantTags(): Promise<string[]> {
-    return rpcTags('tags_parole');
+  async getParoleTags(): Promise<string[]> {
+    return rpcTags('tags_paroles');
   }
-  async getSavantNames(): Promise<string[]> {
-    return rpcTags('names_parole');
+  async getParoleNames(): Promise<string[]> {
+    return rpcTags('names_paroles');
   }
 
   // ================= Multimedia =================

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
+import { m, AnimatePresence } from 'framer-motion';
 import { Book, Heart, Wind, Users, GraduationCap, Video, Clock, BookOpen, Moon, Sun, Menu, X, Bookmark, ScrollText } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 import moment from 'moment-hijri';
@@ -10,7 +10,7 @@ const navItems = [
     { to: '/hadiths', icon: Book, label: 'Hadiths' },
     { to: '/dhikrs', icon: Wind, label: 'Dhikrs' },
     { to: '/douaas', icon: Heart, label: 'Douaas' },
-    { to: '/savants', icon: GraduationCap, label: 'Savants' },
+    { to: '/paroles', icon: GraduationCap, label: 'Paroles' },
     { to: '/biographies', icon: ScrollText, label: 'Biographies' },
     { to: '/multimedia', icon: Video, label: 'Multimedia' },
     { to: '/ecoles', icon: BookOpen, label: 'Madhaheb' },
@@ -99,7 +99,7 @@ export const Navigation: React.FC = () => {
 
                 <AnimatePresence>
                     {isMenuOpen && (
-                        <motion.div
+                        <m.div
                             initial={{ opacity: 0, height: 0 }}
                             animate={{ opacity: 1, height: 'auto' }}
                             exit={{ opacity: 0, height: 0 }}
@@ -125,7 +125,7 @@ export const Navigation: React.FC = () => {
                                     );
                                 })}
                             </div>
-                        </motion.div>
+                        </m.div>
                     )}
                 </AnimatePresence>
             </div>

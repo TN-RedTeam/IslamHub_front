@@ -5,7 +5,7 @@ import { Home } from './pages/Home';
 import { Hadiths } from './pages/Hadiths';
 import { Dhikrs } from './pages/Dhikrs';
 import { Douaas } from './pages/Douaas';
-import { Savants } from './pages/Savants';
+import { Paroles } from './pages/Paroles';
 import { Corans } from './pages/Coran';
 import { Biographies } from './pages/Biographies';
 import { Multimedia } from './pages/Multimedia';
@@ -39,7 +39,7 @@ function App() {
               <Route path="/hadith/albukhari/part1" element={<part1 />} />
               <Route path="/dhikrs" element={<Dhikrs />} />
               <Route path="/douaas" element={<Douaas />} />
-              <Route path="/savants" element={<Savants />} />
+              <Route path="/paroles" element={<Paroles />} />
               <Route path="/biographies" element={<Biographies />} />
               <Route path="/multimedia" element={<Multimedia />} />
               <Route path="/prayer-times" element={<PrayerTimesPage />} />
