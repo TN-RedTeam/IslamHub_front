@@ -26,7 +26,7 @@ const mockQuote = {
 
 interface SiteStats {
   hadiths: number;
-  savants: number;
+  paroles: number;
   douaas: number;
   dhikrs: number;
   videos: number;
@@ -77,7 +77,7 @@ export const Home: React.FC = () => {
 
   const [stats, setStats] = useState<SiteStats>({
     hadiths: 0,
-    savants: 0,
+    paroles: 0,
     douaas: 0,
     dhikrs: 0,
     videos: 0,
@@ -119,7 +119,7 @@ export const Home: React.FC = () => {
 
   const siteStatsConfig = [
     { label: 'Hadiths', value: stats.hadiths, icon: Book, color: 'from-emerald-500 to-teal-500', path: '/hadiths' },
-    { label: 'Savants', value: stats.savants, icon: GraduationCap, color: 'from-blue-500 to-indigo-500', path: '/savants' },
+    { label: 'Paroles', value: stats.paroles, icon: GraduationCap, color: 'from-blue-500 to-indigo-500', path: '/paroles' },
     { label: 'Douaas', value: stats.douaas, icon: Heart, color: 'from-rose-500 to-pink-500', path: '/douaas' },
     { label: 'Dhikrs', value: stats.dhikrs, icon: Wind, color: 'from-cyan-500 to-blue-500', path: '/dhikrs' },
     { label: 'Vidéos', value: stats.videos, icon: Video, color: 'from-purple-500 to-violet-500', path: '/multimedia' },
