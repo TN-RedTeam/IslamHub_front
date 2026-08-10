@@ -4,15 +4,10 @@ import App from './App.tsx';
 import './index.css';
 import { DhikrProvider } from './context/DhikrProvider.tsx';
 import ErrorBoundary from './components/ErrorBoundary.tsx';
-import { registerSW } from 'virtual:pwa-register';
 
-if (import.meta.env.PROD && !('Capacitor' in window)) {
-  // Production web : la PWA est active.
-  registerSW({ immediate: true });
-} else if ('serviceWorker' in navigator) {
-  // Dev (ou Capacitor) : AUCUN service worker ne doit tourner.
-  // On purge automatiquement tout SW + cache résiduel d'une ancienne PWA,
-  // pour tous les navigateurs, sans manipulation manuelle dans DevTools.
+// PWA retirée pour l'instant. Nettoyage : supprime tout service worker + cache
+// résiduel d'une ancienne installation PWA, sur tous les navigateurs.
+if ('serviceWorker' in navigator) {
   navigator.serviceWorker.getRegistrations()
     .then((regs) => regs.forEach((r) => r.unregister()))
     .catch(() => {});

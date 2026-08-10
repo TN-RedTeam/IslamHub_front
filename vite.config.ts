@@ -1,79 +1,12 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
-import { VitePWA } from 'vite-plugin-pwa';
 
 // https://vitejs.dev/config/
 export default defineConfig({
   // './' works for both GitHub Pages (HashRouter) and Capacitor Android WebView.
   // '/IslamHub_front/' would break all asset paths inside the Android WebView.
   base: './',
-  plugins: [
-    react(),
-    VitePWA({
-      registerType: 'autoUpdate',
-      includeAssets: ['vite.svg'],
-      manifest: {
-        name: 'IslamicHub',
-        short_name: 'IslamicHub',
-        description: 'Hadiths, douaas, dhikrs, Coran et vidéos islamiques',
-        lang: 'fr',
-        start_url: './',
-        scope: './',
-        display: 'standalone',
-        background_color: '#064e3b',
-        theme_color: '#065f46',
-        icons: [
-          { src: 'pwa-192x192.png', sizes: '192x192', type: 'image/png' },
-          { src: 'pwa-512x512.png', sizes: '512x512', type: 'image/png' },
-          { src: 'pwa-512x512.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' },
-        ],
-      },
-      workbox: {
-        globPatterns: ['**/*.{js,css,html,svg,png,woff2}'],
-        navigateFallback: 'index.html',
-        runtimeCaching: [
-          // Feuilles de style Google Fonts : revalidées en arrière-plan
-          {
-            urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
-            handler: 'StaleWhileRevalidate',
-            options: { cacheName: 'google-fonts-stylesheets' },
-          },
-          // Fichiers de polices : immuables, cache 1 an
-          {
-            urlPattern: /^https:\/\/fonts\.gstatic\.com\/.*/i,
-            handler: 'CacheFirst',
-            options: {
-              cacheName: 'google-fonts-webfonts',
-              expiration: { maxEntries: 20, maxAgeSeconds: 60 * 60 * 24 * 365 },
-              cacheableResponse: { statuses: [0, 200] },
-            },
-          },
-          // Thumbnails YouTube (page Multimedia)
-          {
-            urlPattern: /^https:\/\/i\.ytimg\.com\/.*/i,
-            handler: 'CacheFirst',
-            options: {
-              cacheName: 'youtube-thumbnails',
-              expiration: { maxEntries: 200, maxAgeSeconds: 60 * 60 * 24 * 30 },
-              cacheableResponse: { statuses: [0, 200] },
-            },
-          },
-          // API IslamHub : réseau d'abord, cache en secours (consultation hors-ligne
-          // des recherches déjà effectuées)
-          {
-            urlPattern: /^https?:\/\/.*\/api\/.*/i,
-            handler: 'NetworkFirst',
-            options: {
-              cacheName: 'api-cache',
-              networkTimeoutSeconds: 5,
-              expiration: { maxEntries: 100, maxAgeSeconds: 60 * 60 * 24 * 7 },
-              cacheableResponse: { statuses: [0, 200] },
-            },
-          },
-        ],
-      },
-    }),
-  ],
+  plugins: [react()],
   optimizeDeps: {
     exclude: ['lucide-react'],
   },
