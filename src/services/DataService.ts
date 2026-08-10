@@ -13,9 +13,19 @@ import type {
 
 // ============================================================
 // Path B : le front interroge Supabase DIRECTEMENT (via RPC).
-// Les fonctions SQL sont définies dans supabase/setup.sql et
-// supabase/setup_paroles.sql. Plus aucun appel à l'API Express.
+// Fonctions SQL : supabase/setup.sql, setup_paroles.sql, setup_home.sql.
+// Plus aucun appel à l'API Express.
 // ============================================================
+
+/** Compteurs renvoyés par getStats() (clés = noms des tables). */
+export interface SiteStats {
+  hadiths: number;
+  dhikrs: number;
+  douaas: number;
+  coran: number;
+  paroles: number;
+  multimedia: number;
+}
 
 function sanitizeInput(value: string): string {
   return value.trim().slice(0, 300).replace(/[<>"']/g, '');
@@ -133,6 +143,28 @@ class DataService {
     const { data, error } = await supabase.rpc('categories_multimedia');
     if (error) throw error;
     return (data ?? []) as MultimediaCategory[];
+  }
+
+  // ================= Accueil (Home) =================
+  async getStats(): Promise<SiteStats> {
+    const { data, error } = await supabase.rpc('site_stats');
+    if (error) throw error;
+    return (data ?? { hadiths: 0, dhikrs: 0, douaas: 0, coran: 0, paroles: 0, multimedia: 0 }) as SiteStats;
+  }
+  async getDailyHadith(day: number): Promise<Hadith | null> {
+    const { data, error } = await supabase.rpc('daily_hadith', { day });
+    if (error) throw error;
+    return (data ?? null) as Hadith | null;
+  }
+  async getDailyDouaa(day: number): Promise<Douaa | null> {
+    const { data, error } = await supabase.rpc('daily_douaa', { day });
+    if (error) throw error;
+    return (data ?? null) as Douaa | null;
+  }
+  async getDailyCoran(day: number): Promise<Coran | null> {
+    const { data, error } = await supabase.rpc('daily_coran', { day });
+    if (error) throw error;
+    return (data ?? null) as Coran | null;
   }
 
   // ================= Utilitaires =================
