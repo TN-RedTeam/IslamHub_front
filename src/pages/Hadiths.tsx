@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { m, AnimatePresence } from 'framer-motion';
 import { BookOpen, Search, Filter, X, Star, ChevronRight, Loader } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { dataService } from '../services/DataService';
@@ -35,7 +35,7 @@ const TOPIC_ROUTES: Record<string, string> = {
 };
 
 const HadithCard: React.FC<{ hadith: Hadith; onClick: () => void }> = ({ hadith, onClick }) => (
-    <motion.div
+    <m.div
         whileHover={{ scale: 1.01 }}
         onClick={onClick}
         className="relative bg-gradient-to-br from-amber-50 to-emerald-50 dark:from-emerald-900 dark:to-amber-900 rounded-2xl p-6 shadow-xl border border-amber-200 dark:border-emerald-800 space-y-4 overflow-hidden cursor-pointer h-full flex flex-col"
@@ -76,14 +76,14 @@ const HadithCard: React.FC<{ hadith: Hadith; onClick: () => void }> = ({ hadith,
 
       <div className="flex flex-wrap gap-2">
         {hadith.tag.split(',').map(tag => (
-            <motion.span
+            <m.span
                 key={tag.trim()}
                 whileHover={{ scale: 1.05 }}
                 className="text-xs bg-amber-100 dark:bg-emerald-800 text-amber-800 dark:text-emerald-200 px-3 py-1 rounded-full flex items-center"
             >
               <ChevronRight className="h-3 w-3 mr-1" />
               {tag.trim()}
-            </motion.span>
+            </m.span>
         ))}
       </div>
 
@@ -92,18 +92,18 @@ const HadithCard: React.FC<{ hadith: Hadith; onClick: () => void }> = ({ hadith,
           Lire la suite...
         </button>
       </div>
-    </motion.div>
+    </m.div>
 );
 
 const HadithModal: React.FC<{ hadith: Hadith; onClose: () => void }> = ({ hadith, onClose }) => (
-    <motion.div
+    <m.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4"
         onClick={onClose}
     >
-      <motion.div
+      <m.div
           initial={{ scale: 0.9, y: 50 }}
           animate={{ scale: 1, y: 0 }}
           exit={{ scale: 0.9, y: 50 }}
@@ -181,8 +181,8 @@ const HadithModal: React.FC<{ hadith: Hadith; onClose: () => void }> = ({ hadith
             ))}
           </div>
         </div>
-      </motion.div>
-    </motion.div>
+      </m.div>
+    </m.div>
 );
 
 export const Hadiths: React.FC = () => {
@@ -342,7 +342,7 @@ export const Hadiths: React.FC = () => {
 
   return (
       <div className="min-h-screen bg-gradient-to-b from-amber-50 to-emerald-50 dark:from-gray-900 dark:to-emerald-950">
-        <motion.header
+        <m.header
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             className="relative py-20 bg-emerald-800 dark:bg-emerald-950 overflow-hidden"
@@ -351,21 +351,21 @@ export const Hadiths: React.FC = () => {
           <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-amber-50 dark:from-gray-900" />
 
           <div className="relative container mx-auto px-4 text-center">
-            <motion.h1
+            <m.h1
                 initial={{ scale: 0.9 }}
                 animate={{ scale: 1 }}
                 className="text-5xl md:text-6xl font-bold text-white mb-6 font-amiri"
             >
               Hadiths du Prophète
-            </motion.h1>
+            </m.h1>
             <p className="text-xl text-emerald-200 max-w-3xl mx-auto">
               Explorez la sagesse prophétique à travers une collection authentique
             </p>
           </div>
-        </motion.header>
+        </m.header>
 
         <main className="container mx-auto px-4 py-12 -mt-12 relative z-10">
-          <motion.section
+          <m.section
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.2 }}
@@ -376,7 +376,7 @@ export const Hadiths: React.FC = () => {
             </h2>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
               {topics.map((topic, i) => (
-                  <motion.div
+                  <m.div
                       key={topic}
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
@@ -391,12 +391,12 @@ export const Hadiths: React.FC = () => {
                     <span className="text-sm font-medium text-emerald-800 dark:text-emerald-300">
                       {topic}
                     </span>
-                  </motion.div>
+                  </m.div>
               ))}
             </div>
-          </motion.section>
+          </m.section>
 
-          <motion.section
+          <m.section
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.4 }}
@@ -441,7 +441,7 @@ export const Hadiths: React.FC = () => {
             </div>
 
             {selectedTag && (
-                <motion.div
+                <m.div
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     className="mt-4 flex items-center justify-between bg-emerald-50 dark:bg-emerald-900/30 rounded-lg px-4 py-2"
@@ -456,14 +456,14 @@ export const Hadiths: React.FC = () => {
                   >
                     <X className="h-5 w-5" />
                   </button>
-                </motion.div>
+                </m.div>
             )}
-          </motion.section>
+          </m.section>
 
           <section className="pb-16">
             <AnimatePresence>
               {filteredHadiths.length === 0 ? (
-                  <motion.div
+                  <m.div
                       key="no-results"
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
@@ -485,20 +485,20 @@ export const Hadiths: React.FC = () => {
                         Réinitialiser
                       </button>
                     </div>
-                  </motion.div>
+                  </m.div>
               ) : (
                   <>
-                    <motion.p
+                    <m.p
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         className="text-sm font-medium text-emerald-700 dark:text-emerald-400 mb-6"
                     >
                       {filteredHadiths.length} hadith{filteredHadiths.length > 1 ? 's' : ''} trouvé{filteredHadiths.length > 1 ? 's' : ''}
-                    </motion.p>
+                    </m.p>
 
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                       {filteredHadiths.map((hadith, index) => (
-                          <motion.div
+                          <m.div
                               key={`${hadith.id}-${index}`}
                               initial={{ opacity: 0, y: 20 }}
                               animate={{ opacity: 1, y: 0 }}
@@ -509,7 +509,7 @@ export const Hadiths: React.FC = () => {
                                 hadith={hadith}
                                 onClick={() => setSelectedHadith(hadith)}
                             />
-                          </motion.div>
+                          </m.div>
                       ))}
                     </div>
                   </>

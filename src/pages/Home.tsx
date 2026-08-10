@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { m } from 'framer-motion';
+import { m, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { BookOpen, ChevronRight, Sun, Moon, Sunrise, Sunset, Book, Heart, Wind, GraduationCap, Video, Loader2 } from 'lucide-react';
 import { PrayerTimes } from '../components/PrayerTimes';
