@@ -11,22 +11,10 @@ export default defineConfig({
     exclude: ['lucide-react'],
   },
 
-  // Optimisation du build
   build: {
-    // Code splitting pour réduire la taille du bundle initial
-    rollupOptions: {
-      output: {
-        manualChunks: {
-          // Séparer les librairies volumineuses
-          'vendor-react': ['react', 'react-dom', 'react-router-dom'],
-          'vendor-animation': ['framer-motion'],
-          'vendor-utils': ['date-fns', 'moment-hijri', 'axios'],
-          'vendor-ui': ['lucide-react'],
-        },
-      },
-    },
-    // Limite d'avertissement pour la taille des chunks
-    chunkSizeWarningLimit: 500,
+    // NB : pas de `manualChunks` en objet — Vite 8 (Rolldown) exige une fonction.
+    // On laisse Rolldown découper automatiquement (résultat déjà très correct).
+    chunkSizeWarningLimit: 800,
     // Source maps désactivés en production
     sourcemap: false,
   },
