@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { m, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { BookOpen, ChevronRight, Sun, Moon, Sunrise, Sunset, Book, Heart, Wind, GraduationCap, Video, Loader2 } from 'lucide-react';
+import { BookOpen, ChevronRight, Sun, Moon, Book, Heart, Wind, GraduationCap, Video, Loader2 } from 'lucide-react';
 import { PrayerTimes } from '../components/PrayerTimes';
 import { DailyQuote } from '../components/DailyQuote';
 import { dataService } from '../services/DataService';
@@ -33,33 +33,11 @@ interface SiteStats {
   coran: number;
 }
 
-const getTimeOfDay = (): 'morning' | 'afternoon' | 'evening' | 'night' => {
-  const hour = new Date().getHours();
-  if (hour >= 5 && hour < 12) return 'morning';
-  if (hour >= 12 && hour < 17) return 'afternoon';
-  if (hour >= 17 && hour < 21) return 'evening';
-  return 'night';
-};
-
-const getTimeIcon = (time: string) => {
-  switch (time) {
-    case 'morning': return <Sunrise className="w-6 h-6" />;
-    case 'afternoon': return <Sun className="w-6 h-6" />;
-    case 'evening': return <Sunset className="w-6 h-6" />;
-    case 'night': return <Moon className="w-6 h-6" />;
-    default: return <Sun className="w-6 h-6" />;
-  }
-};
-
-const getTimeLabel = (time: string): string => {
-  switch (time) {
-    case 'morning': return 'Doua du matin';
-    case 'afternoon': return 'Doua de l\'après-midi';
-    case 'evening': return 'Doua du soir';
-    case 'night': return 'Doua de la nuit';
-    default: return 'Doua du jour';
-  }
-};
+// La douaa du jour est fixée par jour de l'année (elle ne change pas dans la
+// journée). Son libellé passe à "de la nuit" UNIQUEMENT si elle porte un tag
+// contenant "nuit" ; sinon c'est "Douaa du jour".
+const isNightDouaa = (douaa: Douaa | null): boolean =>
+  (douaa?.tag ?? '').toLowerCase().includes('nuit');
 
 const getDayOfYear = (): number => {
   const today = new Date();
@@ -69,7 +47,6 @@ const getDayOfYear = (): number => {
 export const Home: React.FC = () => {
   usePageTitle();
   const [selectedCity] = useState("Paris");
-  const [timeOfDay] = useState<'morning' | 'afternoon' | 'evening' | 'night'>(getTimeOfDay());
   // Horaires via API désactivés pour l'instant — réactiver en remplaçant
   // l'implémentation de src/hooks/usePrayerTimes.ts par l'API choisie :
   // const { times: prayerTimes } = usePrayerTimes(selectedCity);
@@ -219,7 +196,7 @@ export const Home: React.FC = () => {
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {/* Hadith du jour */}
+              {/* Hadith du jour — carte cliquable vers /hadiths */}
               <m.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -228,7 +205,7 @@ export const Home: React.FC = () => {
                 className="relative bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-amber-200 dark:border-emerald-800 overflow-hidden group"
               >
                 <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-emerald-500 to-teal-500" />
-                <div className="p-6">
+                <Link to="/hadiths" className="block p-6">
                   <div className="flex items-center gap-3 mb-4">
                     <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center text-white shadow-lg">
                       <Book className="w-6 h-6" />
@@ -261,9 +238,9 @@ export const Home: React.FC = () => {
                         <span className="text-xs text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/30 px-3 py-1 rounded-full">
                           {dailyHadith.rapporteur || dailyHadith.sujet}
                         </span>
-                        <Link to="/hadiths" className="text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 transition-colors">
+                        <span className="text-emerald-600 dark:text-emerald-400 group-hover:translate-x-1 transition-transform">
                           <ChevronRight className="w-5 h-5" />
-                        </Link>
+                        </span>
                       </div>
                     </>
                   ) : (
@@ -271,10 +248,11 @@ export const Home: React.FC = () => {
                       Aucun hadith disponible
                     </p>
                   )}
-                </div>
+                </Link>
               </m.div>
 
-              {/* Doua du moment */}
+              {/* Douaa du jour — carte cliquable vers /douaas.
+                  Libellé "de la nuit" si la douaa porte un tag contenant "nuit". */}
               <m.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -283,14 +261,14 @@ export const Home: React.FC = () => {
                 className="relative bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-amber-200 dark:border-emerald-800 overflow-hidden group"
               >
                 <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-rose-500 to-pink-500" />
-                <div className="p-6">
+                <Link to="/douaas" className="block p-6">
                   <div className="flex items-center gap-3 mb-4">
                     <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-rose-500 to-pink-500 flex items-center justify-center text-white shadow-lg">
-                      {getTimeIcon(timeOfDay)}
+                      {isNightDouaa(dailyDouaa) ? <Moon className="w-6 h-6" /> : <Sun className="w-6 h-6" />}
                     </div>
                     <div>
                       <h3 className="text-lg font-bold text-rose-800 dark:text-rose-300 font-amiri">
-                        {getTimeLabel(timeOfDay)}
+                        {isNightDouaa(dailyDouaa) ? 'Douaa de la nuit' : 'Douaa du jour'}
                       </h3>
                       {dailyDouaa?.sujet && (
                         <p className="text-xs text-gray-500 dark:text-gray-400">
@@ -319,20 +297,20 @@ export const Home: React.FC = () => {
                       )}
 
                       <div className="flex justify-end">
-                        <Link to="/douaas" className="text-rose-600 dark:text-rose-400 hover:text-rose-700 dark:hover:text-rose-300 transition-colors">
+                        <span className="text-rose-600 dark:text-rose-400 group-hover:translate-x-1 transition-transform">
                           <ChevronRight className="w-5 h-5" />
-                        </Link>
+                        </span>
                       </div>
                     </>
                   ) : (
                     <p className="text-gray-500 dark:text-gray-400 text-center py-4">
-                      Aucune doua disponible
+                      Aucune douaa disponible
                     </p>
                   )}
-                </div>
+                </Link>
               </m.div>
 
-              {/* Verset à méditer */}
+              {/* Verset à méditer — carte cliquable vers /coran */}
               <m.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -341,7 +319,7 @@ export const Home: React.FC = () => {
                 className="relative bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-amber-200 dark:border-emerald-800 overflow-hidden group"
               >
                 <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-amber-500 to-orange-500" />
-                <div className="p-6">
+                <Link to="/coran" className="block p-6">
                   <div className="flex items-center gap-3 mb-4">
                     <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center text-white shadow-lg">
                       <BookOpen className="w-6 h-6" />
@@ -371,9 +349,9 @@ export const Home: React.FC = () => {
                       )}
 
                       <div className="flex justify-end">
-                        <Link to="/coran" className="text-amber-600 dark:text-amber-400 hover:text-amber-700 dark:hover:text-amber-300 transition-colors">
+                        <span className="text-amber-600 dark:text-amber-400 group-hover:translate-x-1 transition-transform">
                           <ChevronRight className="w-5 h-5" />
-                        </Link>
+                        </span>
                       </div>
                     </>
                   ) : (
@@ -381,7 +359,7 @@ export const Home: React.FC = () => {
                       Aucun verset disponible
                     </p>
                   )}
-                </div>
+                </Link>
               </m.div>
             </div>
           )}
