@@ -8,9 +8,7 @@ import { Dhikrs } from './pages/Dhikrs';
 import { Douaas } from './pages/Douaas';
 import { Paroles } from './pages/Paroles';
 import { Corans } from './pages/Coran';
-import { Biographies } from './pages/Biographies';
 import { Multimedia } from './pages/Multimedia';
-import { PrayerTimesPage } from './pages/PrayerTimes';
 import { ThemeProvider } from './context/ThemeContext';
 import { Madhaheb } from './pages/Madhaheb';
 import AlBukhari from './pages/hadith/Al-Bukhari/AlBukhari';
@@ -28,7 +26,6 @@ function App() {
   return (
     <ThemeProvider>
       {/* LazyMotion fournit les animations aux composants `m.` de framer-motion.
-          Sans lui, ils restent figés à leur état `initial` (opacity: 0) => page blanche.
           Mode NON strict : les pages encore en `motion.` continuent de fonctionner. */}
       <LazyMotion features={domAnimation}>
         <Router>
@@ -45,9 +42,7 @@ function App() {
                 <Route path="/dhikrs" element={<Dhikrs />} />
                 <Route path="/douaas" element={<Douaas />} />
                 <Route path="/paroles" element={<Paroles />} />
-                <Route path="/biographies" element={<Biographies />} />
                 <Route path="/multimedia" element={<Multimedia />} />
-                <Route path="/prayer-times" element={<PrayerTimesPage />} />
 
                 {/* Écoles (Madhaheb) */}
                 <Route path="/ecoles" element={<Madhaheb />} />

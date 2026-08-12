@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { m, AnimatePresence } from 'framer-motion';
-import { Book, Heart, Wind, Users, GraduationCap, Video, Clock, BookOpen, Moon, Sun, Menu, X, Bookmark, ScrollText } from 'lucide-react';
+import { Book, Heart, Wind, GraduationCap, Video, BookOpen, Moon, Sun, Menu, X, Bookmark } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 import moment from 'moment-hijri';
 
@@ -11,10 +11,8 @@ const navItems = [
     { to: '/dhikrs', icon: Wind, label: 'Dhikrs' },
     { to: '/douaas', icon: Heart, label: 'Douaas' },
     { to: '/paroles', icon: GraduationCap, label: 'Paroles' },
-    { to: '/biographies', icon: ScrollText, label: 'Biographies' },
     { to: '/multimedia', icon: Video, label: 'Multimedia' },
     { to: '/ecoles', icon: BookOpen, label: 'Madhaheb' },
-    { to: '/prayer-times', icon: Clock, label: 'Horaires' },
 ];
 
 export const Navigation: React.FC = () => {

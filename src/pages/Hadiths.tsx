@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { m, AnimatePresence } from 'framer-motion';
-import { BookOpen, Search, Filter, X, Star, ChevronRight, Loader } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { Search, Filter, X, Star, ChevronRight, Loader } from 'lucide-react';
 import { dataService } from '../services/DataService';
 import type { Hadith as HadithType } from '../types';
 
@@ -17,22 +16,6 @@ interface Hadith extends HadithType {
   explication: string | null;
   tag: string;
 }
-
-const TOPIC_ROUTES: Record<string, string> = {
-  'Sahih Al Bukhari': '/hadith/albukhari',
-  'Sahih Muslim': '/hadith/muslim',
-  'رياض الصالحين': '/hadith/riyadhassalihin',
-  'كتاب ذكر الموت': '/hadith/dhikralmout',
-  'الأربعون في التصوف': '/hadith/arbaoune-tasawwuf',
-  'المنتقى من صحيح مسلم': '/hadith/montaqa-sahihmuslim',
-  'Croyance': '/hadith/croyance',
-  'Salat': '/hadith/salat',
-  'Jeûne': '/hadith/jeune',
-  'Zakat': '/hadith/zakat',
-  'Mariage': '/hadith/mariage',
-  'Ventes': '/hadith/ventes',
-  'Famille': '/hadith/famille',
-};
 
 const HadithCard: React.FC<{ hadith: Hadith; onClick: () => void }> = ({ hadith, onClick }) => (
     <m.div
@@ -186,7 +169,6 @@ const HadithModal: React.FC<{ hadith: Hadith; onClose: () => void }> = ({ hadith
 );
 
 export const Hadiths: React.FC = () => {
-  const navigate = useNavigate();
   const [hadithsData, setHadithsData] = useState<Hadith[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -196,8 +178,6 @@ export const Hadiths: React.FC = () => {
   const [filteredHadiths, setFilteredHadiths] = useState<Hadith[]>([]);
   const [selectedHadith, setSelectedHadith] = useState<Hadith | null>(null);
   const [isSearching, setIsSearching] = useState(false);
-
-  const topics = Object.keys(TOPIC_ROUTES);
 
   useEffect(() => {
     loadHadiths();
@@ -293,15 +273,6 @@ export const Hadiths: React.FC = () => {
     return () => clearTimeout(timeoutId);
   }, [searchTerm, selectedTag, hadithsData]);
 
-  const handleTopicClick = (topic: string) => {
-    const route = TOPIC_ROUTES[topic];
-    if (route) {
-      navigate(route);
-    } else {
-      console.warn(`Aucune route définie pour le thème : ${topic}`);
-    }
-  };
-
   const handleResetFilters = () => {
     setSearchTerm('');
     setSelectedTag(null);
@@ -347,7 +318,7 @@ export const Hadiths: React.FC = () => {
             animate={{ opacity: 1, y: 0 }}
             className="relative py-20 bg-emerald-800 dark:bg-emerald-950 overflow-hidden"
         >
-          <div className="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/arabesque.png')]" />
+          <div className="absolute inset-0 opacity-20 bg-arabesque" />
           <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-amber-50 dark:from-gray-900" />
 
           <div className="relative container mx-auto px-4 text-center">
@@ -359,43 +330,12 @@ export const Hadiths: React.FC = () => {
               Hadiths du Prophète ﷺ
             </m.h1>
             <p className="text-xl text-emerald-200 max-w-3xl mx-auto">
-              Explorez les Hadiths a travers cette page ﷺ
+              Explorez les Hadiths à travers cette page
             </p>
           </div>
         </m.header>
 
         <main className="container mx-auto px-4 py-12 -mt-12 relative z-10">
-          <m.section
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.2 }}
-              className="mb-16"
-          >
-            <h2 className="text-2xl font-bold text-emerald-900 dark:text-emerald-300 mb-6 font-amiri text-center">
-              Collections principales
-            </h2>
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
-              {topics.map((topic, i) => (
-                  <m.div
-                      key={topic}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.1 + Math.min(i, 10) * 0.05 }}
-                      whileHover={{ y: -5 }}
-                      className="cursor-pointer bg-white dark:bg-gray-800 hover:bg-emerald-50 dark:hover:bg-emerald-900/50 text-center rounded-xl p-4 shadow-lg border border-emerald-100 dark:border-emerald-800 transition-all"
-                      onClick={() => handleTopicClick(topic)}
-                  >
-                    <div className="bg-emerald-100 dark:bg-emerald-900/50 w-12 h-12 mx-auto rounded-full flex items-center justify-center mb-2">
-                      <BookOpen className="h-6 w-6 text-emerald-600 dark:text-emerald-400" />
-                    </div>
-                    <span className="text-sm font-medium text-emerald-800 dark:text-emerald-300">
-                      {topic}
-                    </span>
-                  </m.div>
-              ))}
-            </div>
-          </m.section>
-
           <m.section
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -523,7 +463,7 @@ export const Hadiths: React.FC = () => {
             <p className="text-emerald-300 mb-4 font-amiri text-xl">
               "On n'obéit pas à une créature pour désobéir au Créateur"
             </p>
-            <p className="text-emerald-200">© 2023 Collection de Hadiths</p>
+            <p className="text-emerald-200">© {new Date().getFullYear()} Collection de Hadiths</p>
           </div>
         </footer>
 
