@@ -356,10 +356,10 @@ export const Hadiths: React.FC = () => {
                 animate={{ scale: 1 }}
                 className="text-5xl md:text-6xl font-bold text-white mb-6 font-amiri"
             >
-              Hadiths du Prophète
+              Hadiths du Prophète ﷺ
             </m.h1>
             <p className="text-xl text-emerald-200 max-w-3xl mx-auto">
-              Explorez la sagesse prophétique à travers une collection authentique
+              Explorez les Hadiths a travers cette page ﷺ
             </p>
           </div>
         </m.header>
