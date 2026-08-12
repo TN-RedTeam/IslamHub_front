@@ -3,10 +3,14 @@ import { m, AnimatePresence } from 'framer-motion';
 import { ChevronDown, BookOpen } from 'lucide-react';
 import type { FemmesChapitre } from '../types';
 
+// Découpe un texte en paragraphes sur les retours à la ligne (simples ou multiples).
+const toParagraphs = (txt: string): string[] =>
+  txt.split(/\n+/).map((p) => p.trim()).filter((p) => p.length > 0);
+
 /**
  * Accordéon dédié au format "matn + commentaire" (texte de base + explication).
  * Chaque segment : la phrase de base dans un encadré, son commentaire en dessous.
- * Aéré et lisible, pas un gros bloc.
+ * Le commentaire (souvent long) est rendu paragraphe par paragraphe, aéré.
  */
 export const FemmesAccordion: React.FC<{ chapitres: FemmesChapitre[] }> = ({ chapitres }) => {
   const [openChap, setOpenChap] = useState<string | null>(chapitres[0]?.chapitre ?? null);
@@ -48,7 +52,7 @@ export const FemmesAccordion: React.FC<{ chapitres: FemmesChapitre[] }> = ({ cha
                   transition={{ duration: 0.2 }}
                   className="overflow-hidden"
                 >
-                  <div className="px-5 pb-6 space-y-5">
+                  <div className="px-5 pb-6 space-y-6">
                     {chap.segments.map((seg) => (
                       <div key={seg.id} className="space-y-2">
                         {seg.texte_arabe && (
@@ -68,13 +72,15 @@ export const FemmesAccordion: React.FC<{ chapitres: FemmesChapitre[] }> = ({ cha
                         {seg.commentaire && (
                           <div className={seg.matn ? 'px-4 pt-1' : ''}>
                             {seg.matn && (
-                              <p className="text-xs font-semibold uppercase tracking-wide text-amber-600 dark:text-amber-400 mb-1">
+                              <p className="text-xs font-semibold uppercase tracking-wide text-amber-600 dark:text-amber-400 mb-2">
                                 Commentaire
                               </p>
                             )}
-                            <p className="text-gray-700 dark:text-gray-300 leading-relaxed whitespace-pre-line">
-                              {seg.commentaire}
-                            </p>
+                            {toParagraphs(seg.commentaire).map((para, i) => (
+                              <p key={i} className="text-gray-700 dark:text-gray-300 leading-relaxed mb-3 last:mb-0">
+                                {para}
+                              </p>
+                            ))}
                           </div>
                         )}
 
