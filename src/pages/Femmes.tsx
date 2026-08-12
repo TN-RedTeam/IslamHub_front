@@ -2,11 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { m } from 'framer-motion';
 import { Loader2, Sparkles } from 'lucide-react';
 import { dataService } from '../services/DataService';
-import { FiqhAccordion } from '../components/FiqhAccordion';
-import type { FiqhChapitre } from '../types';
+import { FemmesAccordion } from '../components/FemmesAccordion';
+import type { FemmesChapitre } from '../types';
 
 export const Femmes: React.FC = () => {
-  const [chapitres, setChapitres] = useState<FiqhChapitre[]>([]);
+  const [chapitres, setChapitres] = useState<FemmesChapitre[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -52,7 +52,7 @@ export const Femmes: React.FC = () => {
             Le contenu sera bientôt disponible.
           </p>
         ) : (
-          <FiqhAccordion chapitres={chapitres} />
+          <FemmesAccordion chapitres={chapitres} />
         )}
       </main>
     </div>

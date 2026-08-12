@@ -8,6 +8,7 @@ import type {
   Multimedia,
   MultimediaCategory,
   FiqhChapitre,
+  FemmesChapitre,
   PaginatedResponse,
   PaginationParams,
 } from '../types';
@@ -149,16 +150,18 @@ class DataService {
     return (data ?? []) as MultimediaCategory[];
   }
 
-  // ================= Fiqh / Madhaheb / Femmes =================
+  // ================= Fiqh / Madhaheb =================
   async getFiqhByEcole(ecole: string): Promise<FiqhChapitre[]> {
     const { data, error } = await supabase.rpc('fiqh_by_ecole', { ecole_param: ecole });
     if (error) throw error;
     return (data ?? []) as FiqhChapitre[];
   }
-  async getFemmes(): Promise<FiqhChapitre[]> {
+
+  // ================= Femmes (matn + commentaire) =================
+  async getFemmes(): Promise<FemmesChapitre[]> {
     const { data, error } = await supabase.rpc('femmes_all');
     if (error) throw error;
-    return (data ?? []) as FiqhChapitre[];
+    return (data ?? []) as FemmesChapitre[];
   }
 
   // ================= Accueil (Home) =================

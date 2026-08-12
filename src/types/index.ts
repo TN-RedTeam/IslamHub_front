@@ -62,10 +62,10 @@ export interface MultimediaCategory {
 }
 
 // ==========================================
-// Fiqh / Madhaheb / Femmes
+// Fiqh / Madhaheb (points de jurisprudence par école)
 // ==========================================
 
-/** Un point de jurisprudence (tables `fiqh` et `femmes`) */
+/** Un point de jurisprudence (table `fiqh`) */
 export interface FiqhPoint {
   id: number;
   sujet: string | null;
@@ -76,10 +76,29 @@ export interface FiqhPoint {
   tag: string | null;
 }
 
-/** Un chapitre regroupant des points (pour l'accordéon) */
+/** Un chapitre regroupant des points de fiqh (pour l'accordéon école) */
 export interface FiqhChapitre {
   chapitre: string;
   points: FiqhPoint[];
+}
+
+// ==========================================
+// Femmes (format matn + commentaire)
+// ==========================================
+
+/** Un segment : phrase du texte de base (matn) + son commentaire */
+export interface FemmesSegment {
+  id: number;
+  matn: string | null;         // phrase du texte de base (vide pour intro/titre)
+  commentaire: string | null;  // explication (ou paragraphe libre)
+  texte_arabe: string | null;
+  source: string | null;
+}
+
+/** Un chapitre regroupant des segments (pour l'accordéon Femmes) */
+export interface FemmesChapitre {
+  chapitre: string;
+  segments: FemmesSegment[];
 }
 
 // ==========================================
