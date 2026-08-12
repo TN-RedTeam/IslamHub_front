@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { m, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { BookOpen, Users, Star, ChevronRight, Scale, Globe, Building, Heart, ChevronDown, ChevronUp, Shield, Sparkles, Calendar, BookMarked } from 'lucide-react';
+import { EcoleFiqhSection } from '../../components/EcoleFiqhSection';
+
 
 interface SectionProps {
     title: string;
@@ -413,6 +415,9 @@ const Malikite: React.FC = () => {
                         </div>
                     </div>
                 </m.section>
+
+                {/* Jurisprudence (fiqh) de l'école — contenu dynamique depuis Supabase */}
+                <EcoleFiqhSection ecole="Malikite" titre="Jurisprudence de l'école Malikite" />
 
                 {/* Autres écoles */}
                 <m.section
