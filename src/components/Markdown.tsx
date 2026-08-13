@@ -44,11 +44,8 @@ const mdComponents: Components = {
   },
   hr: (props) => <hr className="my-4 border-gray-200 dark:border-gray-700" {...props} />,
   sup: (props) => <sup className="text-xs text-emerald-600 dark:text-emerald-400 font-semibold" {...props} />,
-  // Section des notes de bas de page : trait de séparation + texte plus petit.
-  section: (props) =>
-    (props as { 'data-footnotes'?: unknown })['data-footnotes'] !== undefined
-      ? <section className="mt-5 pt-4 border-t border-gray-200 dark:border-gray-700 text-sm text-gray-600 dark:text-gray-400" {...props} />
-      : <section {...props} />,
+  // La section des notes de bas de page (className="footnotes") est stylée
+  // globalement dans index.css : plus petite, grisée, avec trait de séparation.
   table: (props) => (
     <div className="overflow-x-auto my-3">
       <table className="min-w-full text-sm border border-gray-200 dark:border-gray-700" {...props} />

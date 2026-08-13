@@ -11,6 +11,41 @@ html {
     scroll-behavior: smooth;
 }
 
+/* Notes de bas de page Markdown (remark-gfm génère <section class="footnotes">).
+   Rendu discret : petit texte grisé + trait de séparation. Le style s'applique
+   ici (et pas via un composant React) car la classe .footnotes est fiable,
+   contrairement à l'attribut data-footnotes selon les versions de react-markdown. */
+.footnotes {
+    margin-top: 1.25rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid rgb(229 231 235); /* gray-200 */
+    font-size: 0.78rem;
+    line-height: 1.45;
+    color: rgb(107 114 128); /* gray-500 */
+}
+.dark .footnotes {
+    border-top-color: rgb(55 65 81); /* gray-700 */
+    color: rgb(156 163 175); /* gray-400 */
+}
+.footnotes ol {
+    padding-left: 1.1rem;
+    margin: 0;
+}
+.footnotes li {
+    color: inherit;
+    margin: 0.1rem 0;
+    line-height: 1.45;
+}
+.footnotes li::marker {
+    color: rgb(156 163 175); /* gray-400 : chiffre discret */
+    font-size: 0.85em;
+}
+.footnotes p {
+    color: inherit;
+    margin: 0;
+    display: inline;
+}
+
 ::-webkit-scrollbar {
     width: 6px;
     height: 6px;
