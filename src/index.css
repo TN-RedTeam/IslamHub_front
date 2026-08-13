@@ -1,3 +1,8 @@
+/* Inter (latin) : la police par défaut du site la référençait mais ne la
+   chargeait pas. On la charge ici pour un rendu latin net et cohérent, l'arabe
+   étant géré par Amiri via la pile de polices (voir tailwind.config.js). */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
