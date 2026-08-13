@@ -30,7 +30,18 @@ const mdComponents: Components = {
   strong: (props) => <strong className="font-semibold text-gray-900 dark:text-white" {...props} />,
   em: (props) => <em className="italic" {...props} />,
   blockquote: (props) => <blockquote className="border-l-4 border-emerald-400 pl-4 italic text-gray-600 dark:text-gray-400 my-3" {...props} />,
-  a: (props) => <a className="text-emerald-600 dark:text-emerald-400 underline" target="_blank" rel="noopener noreferrer" {...props} />,
+  a: (props) => {
+    const href = (props as { href?: string }).href ?? '';
+    // Flèche de retour "↩" de la note : inutile ici (pas de navigation), on la masque.
+    if (href.startsWith('#user-content-fnref')) return null;
+    // Référence de note [^1] : petit chiffre en exposant, NON cliquable.
+    // (un lien #user-content-fn casserait le HashRouter du site, et les ids
+    //  se répètent entre entrées puisque la numérotation repart à 1 à chaque fois.)
+    if (href.startsWith('#user-content-fn')) {
+      return <span className="text-emerald-600 dark:text-emerald-400 font-semibold">{props.children}</span>;
+    }
+    return <a className="text-emerald-600 dark:text-emerald-400 underline" target="_blank" rel="noopener noreferrer" {...props} />;
+  },
   hr: (props) => <hr className="my-4 border-gray-200 dark:border-gray-700" {...props} />,
   sup: (props) => <sup className="text-xs text-emerald-600 dark:text-emerald-400 font-semibold" {...props} />,
   // Section des notes de bas de page : trait de séparation + texte plus petit.
