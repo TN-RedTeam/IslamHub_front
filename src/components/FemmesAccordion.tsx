@@ -1,25 +1,8 @@
 import React, { useState } from 'react';
 import { m, AnimatePresence } from 'framer-motion';
 import { ChevronDown, BookOpen } from 'lucide-react';
-import ReactMarkdown from 'react-markdown';
-import remarkGfm from 'remark-gfm';
-import type { Components } from 'react-markdown';
+import { Markdown } from './Markdown';
 import type { FemmesChapitre } from '../types';
-
-// Rendu Markdown stylé (titres, listes, sous-listes, gras...) sans plugin typography.
-const mdComponents: Components = {
-  h1: (props) => <h3 className="text-xl font-bold text-emerald-800 dark:text-emerald-300 mt-4 mb-2 font-amiri" {...props} />,
-  h2: (props) => <h4 className="text-lg font-bold text-emerald-800 dark:text-emerald-300 mt-4 mb-2 font-amiri" {...props} />,
-  h3: (props) => <h4 className="text-lg font-bold text-emerald-800 dark:text-emerald-300 mt-4 mb-2 font-amiri" {...props} />,
-  p: (props) => <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-3" {...props} />,
-  ul: (props) => <ul className="list-disc pl-6 mb-3 space-y-1 marker:text-emerald-500" {...props} />,
-  ol: (props) => <ol className="list-decimal pl-6 mb-3 space-y-1 marker:text-emerald-500" {...props} />,
-  li: (props) => <li className="text-gray-700 dark:text-gray-300 leading-relaxed" {...props} />,
-  strong: (props) => <strong className="font-semibold text-gray-900 dark:text-white" {...props} />,
-  em: (props) => <em className="italic" {...props} />,
-  blockquote: (props) => <blockquote className="border-l-4 border-emerald-400 pl-4 italic text-gray-600 dark:text-gray-400 my-3" {...props} />,
-  a: (props) => <a className="text-emerald-600 dark:text-emerald-400 underline" target="_blank" rel="noopener noreferrer" {...props} />,
-};
 
 /**
  * Accordéon dédié aux cours "femmes".
@@ -92,9 +75,7 @@ export const FemmesAccordion: React.FC<{ chapitres: FemmesChapitre[] }> = ({ cha
                                 Commentaire
                               </p>
                             )}
-                            <ReactMarkdown remarkPlugins={[remarkGfm]} components={mdComponents}>
-                              {seg.commentaire}
-                            </ReactMarkdown>
+                            <Markdown>{seg.commentaire}</Markdown>
                           </div>
                         )}
 

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { m, AnimatePresence } from 'framer-motion';
 import { ChevronDown, BookOpen } from 'lucide-react';
+import { Markdown } from './Markdown';
 import type { FiqhChapitre } from '../types';
 
 /**
@@ -74,11 +75,7 @@ export const FiqhAccordion: React.FC<{ chapitres: FiqhChapitre[] }> = ({ chapitr
                           </p>
                         )}
 
-                        {pt.texte && (
-                          <p className="text-gray-700 dark:text-gray-300 leading-relaxed whitespace-pre-line">
-                            {pt.texte}
-                          </p>
-                        )}
+                        {pt.texte && <Markdown>{pt.texte}</Markdown>}
 
                         {pt.source && (
                           <p className="text-xs italic text-gray-500 dark:text-gray-400 mt-2">
