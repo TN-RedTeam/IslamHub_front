@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { m } from 'framer-motion';
 import { Loader2, Sparkles } from 'lucide-react';
 import { dataService } from '../services/DataService';
-import { FemmesAccordion } from '../components/FemmesAccordion';
+import { FemmesReader } from '../components/FemmesReader';
 import type { FemmesChapitre } from '../types';
 
 export const Femmes: React.FC = () => {
@@ -42,7 +42,7 @@ export const Femmes: React.FC = () => {
         </div>
       </m.header>
 
-      <main className="container mx-auto px-4 py-12 max-w-4xl">
+      <main className="container mx-auto px-4 py-12 max-w-6xl">
         {loading ? (
           <div className="flex justify-center py-16">
             <Loader2 className="w-8 h-8 text-emerald-600 animate-spin" />
@@ -52,7 +52,7 @@ export const Femmes: React.FC = () => {
             Le contenu sera bientôt disponible.
           </p>
         ) : (
-          <FemmesAccordion chapitres={chapitres} />
+          <FemmesReader chapitres={chapitres} />
         )}
       </main>
     </div>
