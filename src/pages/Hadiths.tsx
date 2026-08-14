@@ -12,8 +12,7 @@ export const Hadiths: React.FC = () =>
     searchPlaceholder: 'Rechercher un hadith, un thème…',
     noun: ['hadith', 'hadiths'],
     footerQuote: "« On n'obéit pas à une créature pour désobéir au Créateur »",
-    load: (p) => dataService.getHadiths(p),
-    search: (t, tag, p) => dataService.searchHadiths(t, tag, p),
+    fetch: ({ term, tag, params }) => dataService.searchHadiths(term, tag, params),
     getTags: () => dataService.getHadithTags(),
     fields: {
       author: (h) => h.rapporteur,

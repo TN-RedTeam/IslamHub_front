@@ -12,8 +12,7 @@ export const Paroles: React.FC = () =>
     searchPlaceholder: 'Rechercher une parole, un savant…',
     noun: ['parole', 'paroles'],
     footerQuote: '« La science est un héritage des prophètes »',
-    load: (p) => dataService.getParoles(p),
-    search: (t, tag, p) => dataService.searchParoles(t, tag, p),
+    fetch: ({ term, tag, params }) => dataService.searchParoles(term, tag, params),
     getTags: () => dataService.getParoleTags(),
     fields: {
       author: (p) => p.savant,

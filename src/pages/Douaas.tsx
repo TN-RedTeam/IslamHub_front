@@ -15,8 +15,7 @@ export const Douaas: React.FC = () => {
     noun: ['douaa', 'douaas'],
     footerQuote: '« Invoquez-Moi, Je vous répondrai »',
     footerSource: 'Sourate Ghafir, verset 60',
-    load: (p) => dataService.getDouaas(p),
-    search: (t, tag, p) => dataService.searchDouaas(t, tag, p),
+    fetch: ({ term, tag, params }) => dataService.searchDouaas(term, tag, params),
     getTags: () => dataService.getDouaaTags(),
     fields: {
       commentaire: (d) => d.commentaire,

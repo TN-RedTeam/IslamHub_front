@@ -16,8 +16,7 @@ export const Dhikrs: React.FC = () => {
     tasbih: true,
     footerQuote: '« Et glorifiez-Le matin et soir »',
     footerSource: 'Sourate Al-Ahzab, verset 42',
-    load: (p) => dataService.getDhikrs(p),
-    search: (t, tag, p) => dataService.searchDhikrs(t, tag, p),
+    fetch: ({ term, tag, params }) => dataService.searchDhikrs(term, tag, params),
     getTags: () => dataService.getDhikrTags(),
     fields: {
       commentaire: (d) => d.commentaire,

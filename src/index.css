@@ -2,6 +2,8 @@
    chargeait pas. On la charge ici pour un rendu latin net et cohérent, l'arabe
    étant géré par Amiri via la pile de polices (voir tailwind.config.js). */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+/* Scheherazade New : police arabe soignée (essai en cours pour le texte arabe). */
+@import url('https://fonts.googleapis.com/css2?family=Scheherazade+New:wght@400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -9,6 +11,14 @@
 
 html {
     scroll-behavior: smooth;
+}
+
+/* Tout texte marqué lang="ar" (hadiths, dhikrs, fiqh, femmes...) utilise
+   Scheherazade New. Un seul point de bascule : remplacer la pile ici suffit
+   à revenir à Amiri si l'essai ne convient pas. */
+[lang="ar"] {
+    font-family: 'Scheherazade New', 'Amiri', 'Noto Naskh Arabic', serif !important;
+    line-height: 2;
 }
 
 /* Notes de bas de page Markdown (remark-gfm génère <section class="footnotes">).

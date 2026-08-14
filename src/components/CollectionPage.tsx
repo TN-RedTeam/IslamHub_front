@@ -1,21 +1,28 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { m, AnimatePresence } from 'framer-motion';
-import { Search, X, Loader, RotateCcw, Plus, Minus } from 'lucide-react';
+import { Search, X, Loader, RotateCcw, Plus, Minus, SlidersHorizontal } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import type { BaseText, PaginatedResponse, PaginationParams } from '../types';
 
 // ============================================================
 // Page de collection générique (Hadiths, Paroles, Dhikrs, Douaas).
-// Un seul composant => cartes + recherche + filtres 100 % cohérents.
+// Pagination côté serveur (charge par lots) => tient à des milliers d'entrées.
 // ============================================================
 
 export interface CollectionFields<T> {
   author?: (i: T) => string | null | undefined;   // rapporteur / savant
-  authorLabel?: string;                            // "Rapporteur", "Savant"...
+  authorLabel?: string;
   author2?: (i: T) => string | null | undefined;  // narrateur (modal)
   author2Label?: string;
   badge?: (i: T) => string | null | undefined;    // statut (authenticité)
   commentaire?: (i: T) => string | null | undefined;
+}
+
+/** Une facette de filtrage (ex. statut, rapporteur). Nécessite le support RPC. */
+export interface FacetDef {
+  key: string;
+  label: string;
+  getOptions: () => Promise<string[]>;
 }
 
 export interface CollectionConfig<T extends BaseText> {
@@ -25,15 +32,21 @@ export interface CollectionConfig<T extends BaseText> {
   searchPlaceholder: string;
   footerQuote?: string;
   footerSource?: string;
-  load: (p: PaginationParams) => Promise<PaginatedResponse<T>>;
-  search: (term: string, tag: string | null, p: PaginationParams) => Promise<PaginatedResponse<T>>;
+  /** Récupère un lot. `facets` = filtres structurés optionnels (statut, rapporteur…). */
+  fetch: (args: {
+    term: string;
+    tag: string | null;
+    facets: Record<string, string>;
+    params: PaginationParams;
+  }) => Promise<PaginatedResponse<T>>;
   getTags: () => Promise<string[]>;
+  facets?: FacetDef[];
   fields?: CollectionFields<T>;
-  tasbih?: boolean;            // affiche un compteur (dhikrs)
-  noun?: [string, string];     // singulier/pluriel pour "X résultats"
+  tasbih?: boolean;
+  noun?: [string, string];
 }
 
-const PAGE: PaginationParams = { page: 0, pageSize: 1000 };
+const PAGE_SIZE = 24;
 const splitTags = (t: string | null | undefined) =>
   (t ?? '').split(',').map((x) => x.trim()).filter(Boolean);
 
@@ -43,29 +56,17 @@ const Tasbih: React.FC = () => {
   return (
     <div className="flex items-center gap-3 bg-emerald-50 dark:bg-emerald-900/30 rounded-xl px-4 py-3">
       <span className="text-sm font-semibold text-emerald-800 dark:text-emerald-200">Compteur</span>
-      <button
-        type="button"
-        onClick={() => setN((v) => Math.max(0, v - 1))}
-        aria-label="Diminuer"
-        className="w-8 h-8 rounded-lg bg-white dark:bg-gray-700 border border-emerald-200 dark:border-emerald-700 flex items-center justify-center text-emerald-700 dark:text-emerald-300"
-      >
+      <button type="button" onClick={() => setN((v) => Math.max(0, v - 1))} aria-label="Diminuer"
+        className="w-8 h-8 rounded-lg bg-white dark:bg-gray-700 border border-emerald-200 dark:border-emerald-700 flex items-center justify-center text-emerald-700 dark:text-emerald-300">
         <Minus className="w-4 h-4" />
       </button>
       <span className="min-w-[2.5rem] text-center text-2xl font-bold text-emerald-700 dark:text-emerald-300 tabular-nums">{n}</span>
-      <button
-        type="button"
-        onClick={() => setN((v) => v + 1)}
-        aria-label="Augmenter"
-        className="w-10 h-10 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white flex items-center justify-center shadow"
-      >
+      <button type="button" onClick={() => setN((v) => v + 1)} aria-label="Augmenter"
+        className="w-10 h-10 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white flex items-center justify-center shadow">
         <Plus className="w-5 h-5" />
       </button>
-      <button
-        type="button"
-        onClick={() => setN(0)}
-        aria-label="Réinitialiser le compteur"
-        className="ml-auto text-emerald-600 dark:text-emerald-400 hover:text-emerald-800 p-1"
-      >
+      <button type="button" onClick={() => setN(0)} aria-label="Réinitialiser le compteur"
+        className="ml-auto text-emerald-600 dark:text-emerald-400 hover:text-emerald-800 p-1">
         <RotateCcw className="w-4 h-4" />
       </button>
     </div>
@@ -81,55 +82,36 @@ function ItemCard<T extends BaseText>({ item, cfg, onOpen, onTag }: {
   const tags = splitTags(item.tag);
   return (
     <m.article
-      layout
-      whileHover={{ y: -3 }}
-      onClick={onOpen}
+      layout whileHover={{ y: -3 }} onClick={onOpen}
       className="cursor-pointer h-full flex flex-col bg-white dark:bg-gray-800 rounded-2xl border border-emerald-100 dark:border-emerald-900 shadow-sm hover:shadow-lg transition-shadow p-6"
     >
       <div className="flex items-start justify-between gap-3 mb-3">
-        <h3 className="text-lg font-bold text-emerald-900 dark:text-emerald-300 font-amiri leading-snug">
-          {item.sujet}
-        </h3>
+        <h3 className="text-lg font-bold text-emerald-900 dark:text-emerald-300 font-amiri leading-snug">{item.sujet}</h3>
         {badge && (
-          <span className="shrink-0 text-xs font-semibold px-2.5 py-1 rounded-full bg-amber-100 dark:bg-amber-900/40 text-amber-800 dark:text-amber-200">
-            {badge}
-          </span>
+          <span className="shrink-0 text-xs font-semibold px-2.5 py-1 rounded-full bg-amber-100 dark:bg-amber-900/40 text-amber-800 dark:text-amber-200">{badge}</span>
         )}
       </div>
-
       {author && (
         <p className="text-xs text-emerald-700 dark:text-emerald-400 italic mb-3">
           {cfg.fields?.authorLabel ? `${cfg.fields.authorLabel} : ` : ''}{author}
         </p>
       )}
-
       {item.texte_arabe && (
-        <p lang="ar" dir="rtl" className="text-2xl font-amiri leading-loose text-gray-900 dark:text-white text-right line-clamp-3">
-          {item.texte_arabe}
-        </p>
+        <p lang="ar" dir="rtl" className="text-2xl font-arabic leading-loose text-gray-900 dark:text-white text-right line-clamp-3">{item.texte_arabe}</p>
       )}
-
       {item.texte_francais && (
-        <p className="mt-3 pl-3 border-l-2 border-amber-300 dark:border-emerald-700 text-sm text-gray-700 dark:text-gray-300 line-clamp-3">
-          {item.texte_francais}
-        </p>
+        <p className="mt-3 pl-3 border-l-2 border-amber-300 dark:border-emerald-700 text-sm text-gray-700 dark:text-gray-300 line-clamp-3">{item.texte_francais}</p>
       )}
-
       {tags.length > 0 && (
         <div className="mt-4 flex flex-wrap gap-1.5">
           {tags.slice(0, 4).map((t) => (
-            <button
-              key={t}
-              type="button"
-              onClick={(e) => { e.stopPropagation(); onTag(t); }}
-              className="text-xs px-2.5 py-1 rounded-full bg-emerald-50 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-100 dark:hover:bg-emerald-800 transition-colors"
-            >
+            <button key={t} type="button" onClick={(e) => { e.stopPropagation(); onTag(t); }}
+              className="text-xs px-2.5 py-1 rounded-full bg-emerald-50 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-100 dark:hover:bg-emerald-800 transition-colors">
               #{t}
             </button>
           ))}
         </div>
       )}
-
       <span className="mt-auto pt-4 text-sm font-medium text-emerald-600 dark:text-emerald-400">Lire →</span>
     </m.article>
   );
@@ -152,45 +134,24 @@ function DetailModal<T extends BaseText>({ item, cfg, onClose }: {
   }, [onClose]);
 
   return (
-    <m.div
-      initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-      className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4"
-      onClick={onClose}
-    >
-      <m.div
-        initial={{ scale: 0.95, y: 30 }} animate={{ scale: 1, y: 0 }} exit={{ scale: 0.95, y: 30 }}
+    <m.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+      className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4" onClick={onClose}>
+      <m.div initial={{ scale: 0.95, y: 30 }} animate={{ scale: 1, y: 0 }} exit={{ scale: 0.95, y: 30 }}
         onClick={(e) => e.stopPropagation()}
-        className="bg-white dark:bg-gray-800 rounded-2xl p-6 sm:p-8 max-w-2xl w-full max-h-[90vh] overflow-y-auto relative"
-      >
+        className="bg-white dark:bg-gray-800 rounded-2xl p-6 sm:p-8 max-w-2xl w-full max-h-[90vh] overflow-y-auto relative">
         <button onClick={onClose} aria-label="Fermer" className="absolute top-4 right-4 p-2 text-gray-400 hover:text-gray-700 dark:hover:text-gray-200">
           <X className="w-6 h-6" />
         </button>
-
         <div className="pr-8 mb-5">
           <div className="flex items-center gap-2 flex-wrap">
             <h2 className="text-2xl font-bold text-emerald-900 dark:text-emerald-300 font-amiri">{item.sujet}</h2>
-            {badge && (
-              <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-amber-100 dark:bg-amber-900/40 text-amber-800 dark:text-amber-200">{badge}</span>
-            )}
+            {badge && <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-amber-100 dark:bg-amber-900/40 text-amber-800 dark:text-amber-200">{badge}</span>}
           </div>
-          {author && (
-            <p className="text-sm text-emerald-700 dark:text-emerald-400 mt-1">
-              {cfg.fields?.authorLabel ? `${cfg.fields.authorLabel} : ` : ''}{author}
-            </p>
-          )}
-          {author2 && (
-            <p className="text-sm text-gray-500 dark:text-gray-400">
-              {cfg.fields?.author2Label ? `${cfg.fields.author2Label} : ` : ''}{author2}
-            </p>
-          )}
+          {author && <p className="text-sm text-emerald-700 dark:text-emerald-400 mt-1">{cfg.fields?.authorLabel ? `${cfg.fields.authorLabel} : ` : ''}{author}</p>}
+          {author2 && <p className="text-sm text-gray-500 dark:text-gray-400">{cfg.fields?.author2Label ? `${cfg.fields.author2Label} : ` : ''}{author2}</p>}
         </div>
-
         <div className="space-y-4">
-          {item.texte_arabe && (
-            <p lang="ar" dir="rtl" className="text-3xl font-amiri leading-loose text-gray-900 dark:text-white text-right">
-              {item.texte_arabe}
-            </p>
-          )}
+          {item.texte_arabe && <p lang="ar" dir="rtl" className="text-3xl font-arabic leading-loose text-gray-900 dark:text-white text-right">{item.texte_arabe}</p>}
           {item.phonétique && (
             <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4">
               <p className="text-xs font-semibold uppercase tracking-wide text-amber-600 dark:text-amber-400 mb-1">Phonétique</p>
@@ -218,9 +179,7 @@ function DetailModal<T extends BaseText>({ item, cfg, onClose }: {
           {cfg.tasbih && <Tasbih />}
           {tags.length > 0 && (
             <div className="flex flex-wrap gap-1.5 pt-1">
-              {tags.map((t) => (
-                <span key={t} className="text-xs px-2.5 py-1 rounded-full bg-emerald-50 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-300">#{t}</span>
-              ))}
+              {tags.map((t) => <span key={t} className="text-xs px-2.5 py-1 rounded-full bg-emerald-50 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-300">#{t}</span>)}
             </div>
           )}
         </div>
@@ -231,66 +190,86 @@ function DetailModal<T extends BaseText>({ item, cfg, onClose }: {
 
 /* ---------------- Page ---------------- */
 export function CollectionPage<T extends BaseText>(cfg: CollectionConfig<T>) {
-  const [all, setAll] = useState<T[]>([]);
   const [items, setItems] = useState<T[]>([]);
-  const [tags, setTags] = useState<string[]>([]);
+  const [total, setTotal] = useState(0);
+  const [page, setPage] = useState(0);
+  const [loading, setLoading] = useState(true);     // 1er chargement
+  const [refetching, setRefetching] = useState(false); // recherche/filtre
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
   const [term, setTerm] = useState('');
   const [tag, setTag] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [searching, setSearching] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [facetVals, setFacetVals] = useState<Record<string, string>>({});
+  const [tags, setTags] = useState<string[]>([]);
+  const [facetOpts, setFacetOpts] = useState<Record<string, string[]>>({});
+  const [showFilters, setShowFilters] = useState(false);
   const [open, setOpen] = useState<T | null>(null);
+
   const debounce = useRef<ReturnType<typeof setTimeout>>();
+  const sentinel = useRef<HTMLDivElement>(null);
+  const firstLoad = useRef(true);
+  const reqId = useRef(0); // évite les réponses obsolètes (course conditions)
 
   const [sing, plur] = cfg.noun ?? ['résultat', 'résultats'];
+  const hasMore = items.length < total;
+  const activeFacets = useMemo(
+    () => Object.fromEntries(Object.entries(facetVals).filter(([, v]) => v)),
+    [facetVals],
+  );
+  const activeFilter = !!(term.trim() || tag || Object.keys(activeFacets).length);
 
-  const loadAll = useCallback(async () => {
-    setLoading(true); setError(null);
-    try {
-      const res = await cfg.load(PAGE);
-      setAll(res.data); setItems(res.data);
-    } catch {
-      setError('Erreur lors du chargement. Veuillez réessayer.');
-    } finally {
-      setLoading(false);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
+  // Options des filtres (tags + facettes), une fois.
   useEffect(() => {
-    loadAll();
     cfg.getTags().then((t) => setTags([...new Set(t)].sort((a, b) => a.localeCompare(b)))).catch(() => {});
+    (cfg.facets ?? []).forEach((f) => {
+      f.getOptions().then((opts) => setFacetOpts((prev) => ({ ...prev, [f.key]: opts }))).catch(() => {});
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const fetchPage = async (pageNum: number, mode: 'reset' | 'more') => {
+    const my = ++reqId.current;
+    if (mode === 'more') setLoadingMore(true);
+    else { if (firstLoad.current) setLoading(true); else setRefetching(true); }
+    setError(null);
+    try {
+      const res = await cfg.fetch({ term, tag, facets: activeFacets, params: { page: pageNum, pageSize: PAGE_SIZE } });
+      if (my !== reqId.current) return; // une requête plus récente a pris le relais
+      setTotal(res.count);
+      setItems((prev) => (mode === 'reset' ? res.data : [...prev, ...res.data]));
+      setPage(pageNum);
+    } catch {
+      if (my === reqId.current) setError('Erreur lors du chargement. Veuillez réessayer.');
+    } finally {
+      if (my === reqId.current) { setLoading(false); setRefetching(false); setLoadingMore(false); firstLoad.current = false; }
+    }
+  };
+
+  // Recherche / filtres -> refetch page 0 (débounce).
   useEffect(() => {
     clearTimeout(debounce.current);
-    debounce.current = setTimeout(async () => {
-      if (!term.trim() && !tag) { setItems(all); return; }
-      setSearching(true);
-      try {
-        const res = await cfg.search(term, tag, PAGE);
-        setItems(res.data);
-      } catch {
-        // repli local (insensible casse/accents)
-        const norm = (s: string) => s.normalize('NFD').replace(/\p{Diacritic}/gu, '').toLowerCase();
-        const q = norm(term.trim());
-        setItems(all.filter((it) => {
-          const okTag = !tag || splitTags(it.tag).map((x) => x.toLowerCase()).includes(tag.toLowerCase());
-          const hay = norm(`${it.sujet} ${it.texte_francais ?? ''} ${it.explication ?? ''} ${it.tag}`);
-          return okTag && (!q || hay.includes(q));
-        }));
-      } finally {
-        setSearching(false);
-      }
-    }, 300);
+    debounce.current = setTimeout(() => fetchPage(0, 'reset'), firstLoad.current ? 0 : 300);
     return () => clearTimeout(debounce.current);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [term, tag, all]);
+  }, [term, tag, JSON.stringify(activeFacets)]);
 
-  const reset = () => { setTerm(''); setTag(null); };
+  // Infinite scroll.
+  useEffect(() => {
+    const el = sentinel.current;
+    if (!el) return;
+    const io = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting && hasMore && !loadingMore && !refetching && !loading) {
+        fetchPage(page + 1, 'more');
+      }
+    }, { rootMargin: '400px' });
+    io.observe(el);
+    return () => io.disconnect();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [page, hasMore, loadingMore, refetching, loading]);
+
+  const reset = () => { setTerm(''); setTag(null); setFacetVals({}); };
   const Icon = cfg.icon;
-  const activeFilter = term.trim() || tag;
   const topTags = useMemo(() => tags.slice(0, 14), [tags]);
 
   return (
@@ -310,53 +289,72 @@ export function CollectionPage<T extends BaseText>(cfg: CollectionConfig<T>) {
       <main className="container mx-auto px-4 py-10 -mt-10 relative z-10">
         {/* Recherche + filtres */}
         <section className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-5 sm:p-6 mb-8 sticky top-20 z-20 border border-emerald-100 dark:border-emerald-900">
-          <div className="relative">
-            <Search className="w-5 h-5 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
-            <input
-              type="search"
-              aria-label={cfg.searchPlaceholder}
-              placeholder={cfg.searchPlaceholder}
-              value={term}
-              onChange={(e) => setTerm(e.target.value)}
-              className="w-full pl-11 pr-10 py-3 rounded-xl border border-emerald-200 dark:border-emerald-800 bg-white dark:bg-gray-900 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
-            />
-            {searching && <Loader className="w-5 h-5 text-emerald-500 animate-spin absolute right-3 top-1/2 -translate-y-1/2" />}
+          <div className="flex gap-3">
+            <div className="relative flex-1">
+              <Search className="w-5 h-5 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+              <input
+                type="search" aria-label={cfg.searchPlaceholder} placeholder={cfg.searchPlaceholder}
+                value={term} onChange={(e) => setTerm(e.target.value)}
+                className="w-full pl-11 pr-10 py-3 rounded-xl border border-emerald-200 dark:border-emerald-800 bg-white dark:bg-gray-900 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+              />
+              {refetching && <Loader className="w-5 h-5 text-emerald-500 animate-spin absolute right-3 top-1/2 -translate-y-1/2" />}
+            </div>
+            {(cfg.facets?.length ?? 0) > 0 && (
+              <button
+                type="button" onClick={() => setShowFilters((v) => !v)}
+                className={`shrink-0 px-4 rounded-xl border font-medium flex items-center gap-2 ${showFilters || Object.keys(activeFacets).length ? 'bg-emerald-600 text-white border-transparent' : 'border-emerald-200 dark:border-emerald-800 text-emerald-700 dark:text-emerald-300'}`}
+              >
+                <SlidersHorizontal className="w-4 h-4" /> Filtres
+                {Object.keys(activeFacets).length > 0 && <span className="text-xs bg-white/25 rounded-full px-1.5">{Object.keys(activeFacets).length}</span>}
+              </button>
+            )}
           </div>
+
+          {/* Facettes (statut, rapporteur…) */}
+          {showFilters && (cfg.facets?.length ?? 0) > 0 && (
+            <div className="mt-4 grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+              {cfg.facets!.map((f) => (
+                <label key={f.key} className="text-sm">
+                  <span className="block mb-1 font-medium text-gray-600 dark:text-gray-300">{f.label}</span>
+                  <select
+                    value={facetVals[f.key] ?? ''}
+                    onChange={(e) => setFacetVals((prev) => ({ ...prev, [f.key]: e.target.value }))}
+                    className="w-full px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-white"
+                  >
+                    <option value="">Tous</option>
+                    {(facetOpts[f.key] ?? []).map((o) => <option key={o} value={o}>{o}</option>)}
+                  </select>
+                </label>
+              ))}
+            </div>
+          )}
 
           {topTags.length > 0 && (
             <div className="mt-4 flex flex-wrap gap-2">
-              <button
-                type="button"
-                onClick={() => setTag(null)}
-                className={`text-sm px-3 py-1.5 rounded-full font-medium transition-colors ${!tag ? 'bg-emerald-600 text-white' : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'}`}
-              >
+              <button type="button" onClick={() => setTag(null)}
+                className={`text-sm px-3 py-1.5 rounded-full font-medium transition-colors ${!tag ? 'bg-emerald-600 text-white' : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'}`}>
                 Tout
               </button>
               {topTags.map((t) => (
-                <button
-                  key={t}
-                  type="button"
-                  onClick={() => setTag(t === tag ? null : t)}
-                  className={`text-sm px-3 py-1.5 rounded-full font-medium transition-colors ${t === tag ? 'bg-emerald-600 text-white' : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'}`}
-                >
+                <button key={t} type="button" onClick={() => setTag(t === tag ? null : t)}
+                  className={`text-sm px-3 py-1.5 rounded-full font-medium transition-colors ${t === tag ? 'bg-emerald-600 text-white' : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'}`}>
                   {t}
                 </button>
               ))}
             </div>
           )}
 
-          {activeFilter && (
-            <div className="mt-4 flex items-center justify-between bg-emerald-50 dark:bg-emerald-900/30 rounded-lg px-4 py-2 text-sm">
-              <span className="text-emerald-800 dark:text-emerald-200">
-                {items.length} {items.length > 1 ? plur : sing}
-                {tag && <> · thème <b>{tag}</b></>}
-                {term.trim() && <> · « {term.trim()} »</>}
-              </span>
-              <button onClick={reset} aria-label="Réinitialiser" className="text-emerald-600 dark:text-emerald-400 hover:text-emerald-800 p-1">
-                <X className="w-4 h-4" />
+          <div className="mt-4 flex items-center justify-between text-sm">
+            <span className="text-emerald-800 dark:text-emerald-200 font-medium">
+              {total} {total > 1 ? plur : sing}
+              {tag && <> · <b>{tag}</b></>}
+            </span>
+            {activeFilter && (
+              <button onClick={reset} className="flex items-center gap-1 text-emerald-600 dark:text-emerald-400 hover:text-emerald-800">
+                <X className="w-4 h-4" /> Réinitialiser
               </button>
-            </div>
-          )}
+            )}
+          </div>
         </section>
 
         {/* Résultats */}
@@ -370,27 +368,38 @@ export function CollectionPage<T extends BaseText>(cfg: CollectionConfig<T>) {
             <div className="text-center py-16 bg-white dark:bg-gray-800 rounded-2xl shadow-xl">
               <div className="text-6xl mb-4">😔</div>
               <p className="text-red-600 dark:text-red-400 mb-4">{error}</p>
-              <button onClick={loadAll} className="px-6 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg">Réessayer</button>
+              <button onClick={() => fetchPage(0, 'reset')} className="px-6 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg">Réessayer</button>
             </div>
           ) : items.length === 0 ? (
             <div className="text-center py-16 bg-white dark:bg-gray-800 rounded-2xl shadow-xl">
               <div className="text-6xl mb-4">🔍</div>
               <h3 className="text-xl font-bold text-gray-700 dark:text-gray-300 mb-2">Aucun résultat</h3>
-              <p className="text-gray-500 dark:text-gray-400 mb-6">Essayez d'autres mots-clés.</p>
-              <button onClick={reset} className="px-6 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg">Réinitialiser</button>
+              <p className="text-gray-500 dark:text-gray-400 mb-6">Essayez d'autres mots-clés ou filtres.</p>
+              {activeFilter && <button onClick={reset} className="px-6 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg">Réinitialiser</button>}
             </div>
           ) : (
             <>
-              {!activeFilter && (
-                <p className="text-sm font-medium text-emerald-700 dark:text-emerald-400 mb-6">
-                  {items.length} {items.length > 1 ? plur : sing}
-                </p>
-              )}
-              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+              <div className={`grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 transition-opacity ${refetching ? 'opacity-60' : ''}`}>
                 {items.map((it) => (
-                  <ItemCard key={it.id} item={it} cfg={cfg} onOpen={() => setOpen(it)} onTag={(t) => { setTag(t); window.scrollTo({ top: 0, behavior: 'smooth' }); }} />
+                  <ItemCard key={it.id} item={it} cfg={cfg} onOpen={() => setOpen(it)}
+                    onTag={(t) => { setTag(t); window.scrollTo({ top: 0, behavior: 'smooth' }); }} />
                 ))}
               </div>
+
+              {/* Sentinelle infinite-scroll + bouton de secours */}
+              <div ref={sentinel} className="h-1" />
+              {hasMore && (
+                <div className="flex justify-center mt-10">
+                  <button onClick={() => fetchPage(page + 1, 'more')} disabled={loadingMore}
+                    className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 disabled:opacity-60 text-white font-medium shadow">
+                    {loadingMore ? <Loader className="w-5 h-5 animate-spin" /> : null}
+                    {loadingMore ? 'Chargement…' : `Charger plus (${items.length}/${total})`}
+                  </button>
+                </div>
+              )}
+              {!hasMore && items.length > PAGE_SIZE && (
+                <p className="text-center text-sm text-gray-400 mt-10">— Fin des résultats —</p>
+              )}
             </>
           )}
         </section>
