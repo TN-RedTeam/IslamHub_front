@@ -13,10 +13,10 @@ html {
     scroll-behavior: smooth;
 }
 
-/* Tout texte marqué lang="ar" (hadiths, dhikrs, fiqh, femmes...) utilise
-   Scheherazade New. Un seul point de bascule : remplacer la pile ici suffit
-   à revenir à Amiri si l'essai ne convient pas. */
-[lang="ar"] {
+/* Texte arabe (marqué lang="ar" OU via la classe .font-arabic) : Scheherazade New.
+   Un seul point de bascule : remplacer la pile ici suffit à revenir à Amiri. */
+[lang="ar"],
+.font-arabic {
     font-family: 'Scheherazade New', 'Amiri', 'Noto Naskh Arabic', serif !important;
     line-height: 2;
 }
