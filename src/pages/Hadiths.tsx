@@ -489,9 +489,23 @@ export const Hadiths: React.FC = () => {
               <div className="text-center py-20 bg-white/70 dark:bg-gray-800/70 rounded-2xl border border-emerald-100 dark:border-emerald-900">
                 <div className="text-6xl mb-4">🔍</div>
                 <h3 className="text-xl font-bold text-gray-700 dark:text-gray-300 mb-2 font-amiri">Recherchez un hadith</h3>
-                <p className="text-gray-500 dark:text-gray-400 max-w-md mx-auto">
+                <p className="text-gray-500 dark:text-gray-400 max-w-md mx-auto mb-6">
                   Saisissez un mot-clé ou choisissez un filtre (thème, authenticité, rapporteur, narrateur) pour afficher les hadiths.
                 </p>
+                {allTags.length > 0 && (
+                  <div className="flex flex-wrap gap-2 justify-center max-w-lg mx-auto">
+                    <span className="w-full text-sm text-gray-400 mb-1">Suggestions :</span>
+                    {allTags.slice(0, 8).map((t) => (
+                      <button
+                        key={t}
+                        onClick={() => setSelectedTag(t)}
+                        className="px-4 py-2 rounded-full text-sm font-medium bg-amber-100 dark:bg-emerald-800/60 text-amber-800 dark:text-emerald-200 hover:bg-amber-200 dark:hover:bg-emerald-700 transition-colors"
+                      >
+                        #{t}
+                      </button>
+                    ))}
+                  </div>
+                )}
               </div>
             ) : (
             <AnimatePresence>
