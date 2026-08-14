@@ -15,7 +15,7 @@ export const FiqhReader: React.FC<{ chapitres: FiqhChapitre[] }> = ({ chapitres 
     items: chap.points.map((pt) => ({
       key: String(pt.id),
       title: pt.sujet || chap.chapitre,
-      search: `${pt.sujet ?? ''} ${pt.texte ?? ''}`,
+      search: `${pt.sujet ?? ''} ${pt.tag ?? ''} ${chap.chapitre} ${pt.texte ?? ''}`,
       content: (
         <div className="space-y-3">
           {pt.type && (

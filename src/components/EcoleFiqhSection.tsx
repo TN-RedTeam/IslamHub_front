@@ -27,7 +27,7 @@ export const EcoleFiqhSection: React.FC<{ ecole: string; titre?: string }> = ({ 
   }, [ecole]);
 
   return (
-    <section className="max-w-6xl mx-auto px-4 py-10">
+    <section className="py-10">
       <h2 className="text-2xl font-bold text-emerald-900 dark:text-emerald-300 mb-6 font-amiri text-center">
         {titre ?? 'Points de jurisprudence'}
       </h2>

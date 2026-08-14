@@ -29,17 +29,27 @@ export const DocReader: React.FC<{
     [sections],
   );
   const total = flat.length;
+  // Groupé (fiqh : chapitres) vs plat (femmes : liste de cours).
+  const grouped = useMemo(() => sections.some((s) => s.chapitre), [sections]);
 
-  const [selected, setSelected] = useState<string>(flat[0]?.key ?? '');
+  // À l'arrivée : sommaire replié + aucun sujet ouvert si groupé ;
+  // liste plate -> on ouvre directement le premier.
+  const [selected, setSelected] = useState<string>(() => (grouped ? '' : flat[0]?.key ?? ''));
   const [query, setQuery] = useState('');
   const [tocOpen, setTocOpen] = useState(false); // mobile
-  const [closed, setClosed] = useState<Record<string, boolean>>({});
+  const [closed, setClosed] = useState<Record<string, boolean>>(() => {
+    const o: Record<string, boolean> = {};
+    if (grouped) sections.forEach((s) => { if (s.chapitre) o[s.chapitre] = true; });
+    return o;
+  });
   const readRef = useRef<HTMLDivElement>(null);
 
-  const q = query.trim().toLowerCase();
-  const matches = (it: ReaderItem) => !q || it.title.toLowerCase().includes(q) || it.search.toLowerCase().includes(q);
+  // Recherche insensible à la casse ET aux accents (é = e).
+  const norm = (s: string) => s.normalize('NFD').replace(/\p{Diacritic}/gu, '').toLowerCase();
+  const q = norm(query.trim());
+  const matches = (it: ReaderItem) => !q || norm(it.title).includes(q) || norm(it.search).includes(q);
 
-  const current = flat.find((it) => it.key === selected) ?? flat[0];
+  const current = selected ? flat.find((it) => it.key === selected) ?? null : null;
 
   const pick = (key: string) => {
     setSelected(key);
@@ -67,16 +77,18 @@ export const DocReader: React.FC<{
           <span className="text-xs text-gray-400 font-medium">{total} sujets</span>
         </div>
 
-        <div className="px-4 pb-3 relative">
-          <Search className="w-4 h-4 text-gray-400 absolute left-6 top-1/2 -translate-y-1/2 pointer-events-none" />
-          <input
-            type="search"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder={searchPlaceholder}
-            aria-label="Rechercher dans le sommaire"
-            className="w-full pl-9 pr-3 py-2 rounded-lg text-sm bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
-          />
+        <div className="px-4 pb-3">
+          <div className="relative">
+            <Search className="w-4 h-4 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+            <input
+              type="search"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder={searchPlaceholder}
+              aria-label="Rechercher dans le sommaire"
+              className="w-full pl-9 pr-3 py-2 rounded-lg text-sm bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+            />
+          </div>
         </div>
 
         {/* bouton mobile pour dérouler le sommaire */}
@@ -144,9 +156,9 @@ export const DocReader: React.FC<{
       {/* ---------- Volet de lecture ---------- */}
       <article
         ref={readRef}
-        className="scroll-mt-24 bg-white dark:bg-gray-800 rounded-2xl border border-emerald-100 dark:border-emerald-900 shadow-sm px-5 sm:px-8 lg:px-10 py-8 min-h-[50vh]"
+        className="scroll-mt-24 bg-white dark:bg-gray-800 rounded-2xl border border-emerald-100 dark:border-emerald-900 shadow-sm px-5 sm:px-8 lg:px-10 py-8"
       >
-        {current && (
+        {current ? (
           <>
             <div className="flex items-center gap-2 text-xs font-semibold text-gray-400 mb-3 flex-wrap">
               {current.chapitre && (
@@ -165,6 +177,11 @@ export const DocReader: React.FC<{
             </h2>
             <div className="max-w-[70ch]">{current.content}</div>
           </>
+        ) : (
+          <div className="flex flex-col items-center justify-center text-center py-16 text-gray-400 dark:text-gray-500">
+            <BookOpen className="w-9 h-9 mb-3 opacity-60" />
+            <p className="text-sm">Choisissez un sujet dans le sommaire pour commencer la lecture.</p>
+          </div>
         )}
       </article>
     </div>
