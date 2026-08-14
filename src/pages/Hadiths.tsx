@@ -305,6 +305,8 @@ export const Hadiths: React.FC = () => {
     [filteredHadiths, selectedStatut, selectedRapporteur, selectedNarrateur],
   );
   const hasRubricFilter = !!(selectedStatut || selectedRapporteur || selectedNarrateur);
+  // Rien ne s'affiche tant qu'aucune recherche/filtre n'est actif (comme le Coran).
+  const hasQuery = !!(searchTerm.trim() || selectedTag || hasRubricFilter);
 
   if (isLoading) {
     return (
@@ -483,6 +485,15 @@ export const Hadiths: React.FC = () => {
           </m.section>
 
           <section className="pb-16">
+            {!hasQuery ? (
+              <div className="text-center py-20 bg-white/70 dark:bg-gray-800/70 rounded-2xl border border-emerald-100 dark:border-emerald-900">
+                <div className="text-6xl mb-4">🔍</div>
+                <h3 className="text-xl font-bold text-gray-700 dark:text-gray-300 mb-2 font-amiri">Recherchez un hadith</h3>
+                <p className="text-gray-500 dark:text-gray-400 max-w-md mx-auto">
+                  Saisissez un mot-clé ou choisissez un filtre (thème, authenticité, rapporteur, narrateur) pour afficher les hadiths.
+                </p>
+              </div>
+            ) : (
             <AnimatePresence>
               {displayedHadiths.length === 0 ? (
                   <m.div
@@ -537,6 +548,7 @@ export const Hadiths: React.FC = () => {
                   </>
               )}
             </AnimatePresence>
+            )}
           </section>
         </main>
 
