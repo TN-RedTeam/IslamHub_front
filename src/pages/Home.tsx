@@ -150,7 +150,7 @@ export const Home: React.FC = () => {
           className="mb-16"
         >
           <h2 className="text-2xl font-bold text-emerald-900 dark:text-emerald-300 mb-8 font-amiri text-center">
-            Votre dose quotidienne de spiritualité
+            Votre source quotidienne de savoir
           </h2>
 
           {isLoading ? (

@@ -36,3 +36,5 @@ json_to_sql.py
 
 # Dumps de base de données (générés localement)
 /*.sql
+
+test.md
