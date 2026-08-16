@@ -282,7 +282,7 @@ const Hanafi: React.FC = () => {
                         <p className="mb-4">
                             L'Imam Abou Hanifah a expliqué la croyance en Allah et a confirmé dans son livre Al-Fiqhou l-'Akbar que Allah ta^ala existe sans endroit et sans direction, et que Allah ne ressemble pas à Ses créatures. Il a dit, que Allah l'agrée :
                         </p>
-                        <p className="mb-4 text-right font-amiri text-xl leading-loose">
+                        <p lang="ar" dir="rtl" className="mb-4 text-center font-amiri text-xl leading-loose">
                             (كانَ اللهُ ولا مكان، كانَ قبلَ أن يَخْلُقَ الخلق كانَ ولم يكن أينٌ ولا خَلقٌ ولا شىء وهو خالقُ كل شىء)
                         </p>
                         <p className="mb-4 italic">
@@ -295,7 +295,7 @@ const Hanafi: React.FC = () => {
                         <p className="mb-4">
                             Et il a dit :
                         </p>
-                        <p className="mb-4 text-right font-amiri text-xl leading-loose">
+                        <p lang="ar" dir="rtl" className="mb-4 text-center font-amiri text-xl leading-loose">
                             (والله تعالى يُرَى في الآخرة ويراه المؤمنون وهم في الجنة بأعين رؤوسهم بلا تشبيه ولا كمِّيَّة ولا يكون بينه وبين خلقه مسافة)
                         </p>
                         <p className="mb-4 italic">
@@ -308,7 +308,7 @@ const Hanafi: React.FC = () => {
                         <p className="mb-4">
                             Il a dit aussi :
                         </p>
-                        <p className="mb-4 text-right font-amiri text-xl leading-loose">
+                        <p lang="ar" dir="rtl" className="mb-4 text-center font-amiri text-xl leading-loose">
                             (لا يوصف الله بصفات المخلوقين وغضبُه ورضاه صفتان من صفاته بلا كيف، وهو قول أهل السنة والجماعة وهو يغضب ويرضى ولا يقال غضبُه عقوبته ورضاه ثوابه ونصفه كما وصف نفسه أحدٌ صمدٌ لم يلد ولم يولد ولم يكن له كفواً أحد)
                         </p>
                         <p className="mb-4 italic">
@@ -321,7 +321,7 @@ const Hanafi: React.FC = () => {
                         <p className="mb-4">
                             Et il a dit :
                         </p>
-                        <p className="mb-4 text-right font-amiri text-xl leading-loose">
+                        <p lang="ar" dir="rtl" className="mb-4 text-center font-amiri text-xl leading-loose">
                             (ويده صفة بلا كيف)
                         </p>
                         <p className="mb-4 italic">
@@ -334,7 +334,7 @@ const Hanafi: React.FC = () => {
                         <p className="mb-4">
                             Et il a dit :
                         </p>
-                        <p className="mb-4 text-right font-amiri text-xl leading-loose">
+                        <p lang="ar" dir="rtl" className="mb-4 text-center font-amiri text-xl leading-loose">
                             (وليس اللهُ بِعَرَضٍ ولا جَوْهَرٍ ولا مُتَحَيِّزٍ)
                         </p>
                         <p className="mb-4 italic">
@@ -442,7 +442,7 @@ const Hanafi: React.FC = () => {
                         <p className="mb-4">
                             L'Imam Abou Hanifah a dit :
                         </p>
-                        <p className="mb-4 text-right font-amiri text-xl leading-loose">
+                        <p lang="ar" dir="rtl" className="mb-4 text-center font-amiri text-xl leading-loose">
                             (له يد ووجه ونفس كما ذكر الله تعالى في القرءان فما ذكره الله تعالى في القرءان من ذكر الوجه واليد والنفس فهو له صفات بلا كيف ولا يقال إن يده قدرته أو نعمته لأن فيه إبطال الصفة وهو قول أهل القدر والاعتزال ولكن يده صفة بلا كيف)
                         </p>
                         <p className="mb-4 italic">
@@ -559,7 +559,7 @@ const Hanafi: React.FC = () => {
                         <p className="mb-4">
                             Le grand savant Ibnou Hajar Al-^Asqalaniyy a dit au sujet de l'Imam Abou Hanifah :
                         </p>
-                        <p className="mb-4 text-right font-amiri text-xl leading-loose">
+                        <p lang="ar" dir="rtl" className="mb-4 text-center font-amiri text-xl leading-loose">
                             (هُوَ الفَقِيهُ المشهور أحد الأئمة أخرج له ابن ماجه والترمذي والنسائي من حديثه مجتنباً ما ينفرد به)
                         </p>
                         <p className="mb-4 italic">
@@ -572,7 +572,7 @@ const Hanafi: React.FC = () => {
                         <p className="mb-4">
                             Le grand savant Al-Kawthariyy a dit au sujet du livre de l'Imam Abou Hanifah Al-^Alim wa l-Mouta^allim :
                         </p>
-                        <p className="mb-4 text-right font-amiri text-xl leading-loose">
+                        <p lang="ar" dir="rtl" className="mb-4 text-center font-amiri text-xl leading-loose">
                             (هو أقدم كتاب في علم التوحيد)
                         </p>
                         <p className="mb-4 italic">
@@ -585,7 +585,7 @@ const Hanafi: React.FC = () => {
                         <p className="mb-4">
                             Le Chaykh ^Abdou l-Lah Al-Harariyy a dit :
                         </p>
-                        <p className="mb-4 text-right font-amiri text-xl leading-loose">
+                        <p lang="ar" dir="rtl" className="mb-4 text-center font-amiri text-xl leading-loose">
                             (جدد الإمام أبو حنيفة علم الفقه وعلم التوحيد)
                         </p>
                         <p className="mb-4 italic">

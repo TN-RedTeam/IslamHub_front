@@ -19,6 +19,11 @@ html {
 .font-arabic {
     font-family: 'Scheherazade New', 'Amiri', 'Noto Naskh Arabic', serif !important;
     line-height: 2;
+    /* Sens d'écriture arabe : corrige la position des parenthèses coraniques
+       ﴿ ﴾ (sinon inversées) et des chiffres/ponctuations. */
+    direction: rtl;
+    unicode-bidi: isolate;
+    text-align: center;
 }
 
 /* Notes de bas de page Markdown (remark-gfm génère <section class="footnotes">).
