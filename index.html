@@ -19,7 +19,7 @@
     <meta name="twitter:card" content="summary" />
 
     <!-- Security headers (en prod, préférer de vrais headers HTTP côté hébergeur) -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https: wss: http://localhost:* ws://localhost:*; img-src 'self' data: https:; frame-src https://www.youtube.com https://www.youtube-nocookie.com;" />    <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https: wss: http://localhost:* ws://localhost:*; img-src 'self' data: https:; frame-src https://www.youtube.com https://www.youtube-nocookie.com;" />    <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin" />
     <meta http-equiv="X-Content-Type-Options" content="nosniff" />
 
     <!-- Applique le thème sombre avant le premier rendu (anti-flash blanc).
@@ -35,5 +35,10 @@
   </head>
   <body>
     <div id="root"></div>
+
+    <!-- Cloudflare Web Analytics — REMPLACE le token ci-dessous par le tien
+         (Cloudflare -> Web Analytics -> Add a site -> copie la valeur "token"). -->
+    <script defer src="https://static.cloudflareinsights.com/beacon.min.js"
+            data-cf-beacon='{"token": "c52673c6bb5e4f3e80fafd2080781844"}'></script>
   </body>
 </html>
