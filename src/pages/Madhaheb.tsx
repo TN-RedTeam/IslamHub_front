@@ -178,6 +178,17 @@ export const Madhaheb: React.FC = () => {
 
                                         {/* En-tête avec dégradé */}
                                         <div className={`relative bg-gradient-to-r ${madhab.color} p-6 text-white`}>
+                                            {/* Badge (ligne du haut, pour ne pas coller à l'icône) */}
+                                            <div className="flex justify-end mb-4">
+                                                <div className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-full px-3 py-1 shadow-lg">
+                                                    <div className="flex items-center gap-1">
+                                                        <Star className="h-3 w-3 text-amber-500" />
+                                                        <span className="text-xs font-medium text-gray-700 dark:text-gray-300">
+                                                            École {madhab.name}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
                                             <div className="flex items-center justify-between">
                                                 <div>
                                                     <h3 className="text-2xl font-bold font-amiri mb-1">
@@ -226,17 +237,6 @@ export const Madhaheb: React.FC = () => {
                                             </div>
                                         </div>
 
-                                        {/* Badge */}
-                                        <div className="absolute top-4 right-4">
-                                            <div className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-full px-3 py-1 shadow-lg">
-                                                <div className="flex items-center gap-1">
-                                                    <Star className="h-3 w-3 text-amber-500" />
-                                                    <span className="text-xs font-medium text-gray-700 dark:text-gray-300">
-                            École {madhab.name}
-                          </span>
-                                                </div>
-                                            </div>
-                                        </div>
                                     </div>
                                 </Link>
                             </m.div>
