@@ -69,7 +69,7 @@ export const DocReader: React.FC<{
     .filter((s) => s.items.length > 0);
 
   return (
-    <div className="grid gap-6 lg:grid-cols-[300px_minmax(0,1fr)] items-start">
+    <div className="grid gap-6 lg:grid-cols-[280px_minmax(0,1fr)] items-start max-w-6xl mx-auto">
       {/* ---------- Sommaire ---------- */}
       <aside className="lg:sticky lg:top-24 bg-white dark:bg-gray-800 rounded-2xl border border-emerald-100 dark:border-emerald-900 shadow-sm overflow-hidden">
         <div className="flex items-center justify-between px-4 pt-4 pb-2">
@@ -159,7 +159,7 @@ export const DocReader: React.FC<{
         className="scroll-mt-24 bg-white dark:bg-gray-800 rounded-2xl border border-emerald-100 dark:border-emerald-900 shadow-sm px-5 sm:px-8 lg:px-10 py-8"
       >
         {current ? (
-          <>
+          <div className="mx-auto max-w-[72ch]">
             <div className="flex items-center gap-2 text-xs font-semibold text-gray-400 mb-3 flex-wrap">
               {current.chapitre && (
                 <>
@@ -175,8 +175,8 @@ export const DocReader: React.FC<{
             <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white font-amiri leading-tight mb-6">
               {current.title}
             </h2>
-            <div className="max-w-[70ch]">{current.content}</div>
-          </>
+            <div>{current.content}</div>
+          </div>
         ) : (
           <div className="flex flex-col items-center justify-center text-center py-16 text-gray-400 dark:text-gray-500">
             <BookOpen className="w-9 h-9 mb-3 opacity-60" />
