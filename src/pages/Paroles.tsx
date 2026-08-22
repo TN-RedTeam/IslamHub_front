@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { m, AnimatePresence } from 'framer-motion';
-import { Search, Filter, X, Star, ChevronRight, Loader, GraduationCap } from 'lucide-react';
+import { Search, Filter, X, Star, ChevronRight, Loader, GraduationCap, GraduationCap as SavantIcon } from 'lucide-react';
 import { dataService } from '../services/DataService';
 import type { Parole } from '../types';
 
@@ -150,6 +150,7 @@ export const Paroles: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
+  const [selectedSavant, setSelectedSavant] = useState('');
   const [allTags, setAllTags] = useState<string[]>([]);
   const [filtered, setFiltered] = useState<Parole[]>([]);
   const [selected, setSelected] = useState<Parole | null>(null);
@@ -199,9 +200,21 @@ export const Paroles: React.FC = () => {
   const handleResetFilters = () => {
     setSearchTerm('');
     setSelectedTag(null);
+    setSelectedSavant('');
   };
-  // Rien ne s'affiche tant qu'aucune recherche/thème n'est actif (comme le Coran).
-  const hasQuery = !!(searchTerm.trim() || selectedTag);
+  // Liste des savants (depuis les données chargées) pour le filtre par savant.
+  const savants = useMemo(
+    () => Array.from(new Set(paroles.map((p) => p.savant).filter((v): v is string => !!v && v.trim().length > 0)))
+      .sort((a, b) => a.localeCompare(b)),
+    [paroles],
+  );
+  // Résultat = recherche/thème (filtered) + filtre par savant (côté client).
+  const displayed = useMemo(
+    () => filtered.filter((p) => !selectedSavant || p.savant === selectedSavant),
+    [filtered, selectedSavant],
+  );
+  // Rien ne s'affiche tant qu'aucune recherche/thème/savant n'est actif (comme le Coran).
+  const hasQuery = !!(searchTerm.trim() || selectedTag || selectedSavant);
 
   if (isLoading) {
     return (
@@ -294,21 +307,42 @@ export const Paroles: React.FC = () => {
                   ))}
                 </select>
               </div>
+
+              {savants.length > 0 && (
+                <div className="relative md:w-64">
+                  <div className="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none">
+                    <SavantIcon className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
+                  </div>
+                  <select
+                      aria-label="Filtrer par savant"
+                      className="w-full pl-4 pr-10 py-3 rounded-xl border border-emerald-200 dark:border-emerald-800 bg-white dark:bg-gray-800 text-gray-900 dark:text-white appearance-none font-medium"
+                      value={selectedSavant}
+                      onChange={(e) => setSelectedSavant(e.target.value)}
+                  >
+                    <option value="">Tous les savants</option>
+                    {savants.map((s) => (
+                        <option key={s} value={s}>{s}</option>
+                    ))}
+                  </select>
+                </div>
+              )}
             </div>
 
-            {selectedTag && (
+            {(selectedTag || selectedSavant) && (
                 <m.div
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     className="mt-4 flex items-center justify-between bg-emerald-50 dark:bg-emerald-900/30 rounded-lg px-4 py-2"
                 >
-                  <span className="font-medium text-emerald-800 dark:text-emerald-200">
-                    Filtre : <span className="font-bold">{selectedTag}</span>
+                  <span className="font-medium text-emerald-800 dark:text-emerald-200 flex flex-wrap items-center gap-2">
+                    Filtres :
+                    {selectedTag && <span className="font-bold">#{selectedTag}</span>}
+                    {selectedSavant && <span className="px-2 py-0.5 bg-emerald-100 dark:bg-emerald-800 rounded-full text-sm">{selectedSavant}</span>}
                   </span>
                   <button
-                      onClick={() => setSelectedTag(null)}
-                      aria-label="Retirer le filtre"
-                      className="text-emerald-600 dark:text-emerald-400 hover:text-emerald-800 dark:hover:text-emerald-200 p-1"
+                      onClick={handleResetFilters}
+                      aria-label="Retirer les filtres"
+                      className="text-emerald-600 dark:text-emerald-400 hover:text-emerald-800 dark:hover:text-emerald-200 p-1 shrink-0"
                   >
                     <X className="h-5 w-5" />
                   </button>
@@ -341,7 +375,7 @@ export const Paroles: React.FC = () => {
               </div>
             ) : (
             <AnimatePresence>
-              {filtered.length === 0 ? (
+              {displayed.length === 0 ? (
                   <m.div
                       key="no-results"
                       initial={{ opacity: 0 }}
@@ -363,11 +397,11 @@ export const Paroles: React.FC = () => {
                         animate={{ opacity: 1 }}
                         className="text-sm font-medium text-emerald-700 dark:text-emerald-400 mb-6"
                     >
-                      {filtered.length} parole{filtered.length > 1 ? 's' : ''} trouvée{filtered.length > 1 ? 's' : ''}
+                      {displayed.length} parole{displayed.length > 1 ? 's' : ''} trouvée{displayed.length > 1 ? 's' : ''}
                     </m.p>
 
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                      {filtered.map((parole, index) => (
+                      {displayed.map((parole, index) => (
                           <m.div
                               key={`${parole.id}-${index}`}
                               initial={{ opacity: 0, y: 20 }}
