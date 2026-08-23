@@ -38,6 +38,7 @@ export interface Douaa extends BaseText {
 /** Parole de savant (table `paroles`) */
 export interface Parole extends BaseText {
   savant: string;
+  ecole?: string | null; // école du savant (dénormalisée) : Hanafi, Malikite...
 }
 
 /** Alias historique — `Parole` est le nom canonique. */

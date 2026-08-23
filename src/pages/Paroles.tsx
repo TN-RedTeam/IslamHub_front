@@ -1,8 +1,29 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { m, AnimatePresence } from 'framer-motion';
-import { Search, Filter, X, Star, ChevronRight, Loader, GraduationCap, GraduationCap as SavantIcon } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { Search, Filter, X, Star, ChevronRight, Loader, GraduationCap, GraduationCap as SavantIcon, Landmark } from 'lucide-react';
 import { dataService } from '../services/DataService';
 import type { Parole } from '../types';
+
+// Mappe le nom d'école (colonne `ecole`) vers le segment d'URL de sa page.
+const ECOLE_ROUTE: Record<string, string> = {
+  'Hanafi': 'Hanafi',
+  'Malikite': 'Malikite',
+  'Ach-Chafi^iyy': 'Shafii',
+  'Hanbali': 'Hanbalite',
+};
+const EcoleBadge: React.FC<{ ecole: string }> = ({ ecole }) => {
+  const slug = ECOLE_ROUTE[ecole];
+  const cls = 'inline-flex items-center gap-1 text-xs font-semibold px-2.5 py-1 rounded-full bg-emerald-100 dark:bg-emerald-800/60 text-emerald-800 dark:text-emerald-200';
+  const inner = <><Landmark className="w-3.5 h-3.5" /> École {ecole}</>;
+  return slug ? (
+    <Link to={`/ecoles/${slug}`} onClick={(e) => e.stopPropagation()} className={`${cls} hover:bg-emerald-200 dark:hover:bg-emerald-700 transition-colors`}>
+      {inner}
+    </Link>
+  ) : (
+    <span className={cls}>{inner}</span>
+  );
+};
 
 const ParoleCard: React.FC<{ parole: Parole; onClick: () => void }> = ({ parole, onClick }) => (
     <m.div
@@ -25,9 +46,14 @@ const ParoleCard: React.FC<{ parole: Parole; onClick: () => void }> = ({ parole,
           </div>
       )}
 
-      {parole.savant && (
-          <div className="text-sm text-emerald-700 dark:text-emerald-300 italic">
-            Savant : {parole.savant}
+      {(parole.savant || parole.ecole) && (
+          <div className="flex items-center justify-between gap-2 flex-wrap">
+            {parole.savant && (
+                <span className="text-sm text-emerald-700 dark:text-emerald-300 italic">
+                  Savant : {parole.savant}
+                </span>
+            )}
+            {parole.ecole && <EcoleBadge ecole={parole.ecole} />}
           </div>
       )}
 
@@ -99,6 +125,7 @@ const ParoleModal: React.FC<{ parole: Parole | null; onClose: () => void }> = ({
                     Savant : {parole.savant}
                   </p>
               )}
+              {parole.ecole && <div className="mt-2"><EcoleBadge ecole={parole.ecole} /></div>}
             </div>
 
             <div className="bg-amber-50 dark:bg-gray-700 p-6 rounded-lg">
