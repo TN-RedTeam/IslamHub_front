@@ -58,7 +58,7 @@ const HadithCard: React.FC<{ hadith: Hadith; onClick: () => void }> = ({ hadith,
       </div>
 
       <div className="flex flex-wrap gap-2">
-        {hadith.tag.split(',').map(tag => (
+        {(hadith.tag || '').split(',').filter(Boolean).map(tag => (
             <m.span
                 key={tag.trim()}
                 whileHover={{ scale: 1.05 }}
@@ -154,7 +154,7 @@ const HadithModal: React.FC<{ hadith: Hadith; onClose: () => void }> = ({ hadith
           )}
 
           <div className="flex flex-wrap gap-2">
-            {hadith.tag.split(',').map(tag => (
+            {(hadith.tag || '').split(',').filter(Boolean).map(tag => (
                 <span
                     key={tag.trim()}
                     className="text-xs bg-amber-100 dark:bg-emerald-800 text-amber-800 dark:text-emerald-200 px-3 py-1 rounded-full"
@@ -213,7 +213,7 @@ export const Hadiths: React.FC = () => {
       if (hadithsData.length > 0) {
         const tags = new Set<string>();
         hadithsData.forEach(hadith => {
-          hadith.tag.split(',')
+          (hadith.tag || '').split(',').filter(Boolean)
               .map(t => t.trim())
               .filter(t => t.length > 0)
               .forEach(tag => tags.add(tag));
@@ -245,7 +245,7 @@ export const Hadiths: React.FC = () => {
         if (selectedTag) {
           const tagToFind = selectedTag.toLowerCase();
           results = results.filter(hadith =>
-              hadith.tag.split(',')
+              (hadith.tag || '').split(',').filter(Boolean)
                   .map(t => t.trim().toLowerCase())
                   .includes(tagToFind)
           );

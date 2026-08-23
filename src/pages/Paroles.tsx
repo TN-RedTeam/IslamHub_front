@@ -45,7 +45,7 @@ const ParoleCard: React.FC<{ parole: Parole; onClick: () => void }> = ({ parole,
       </div>
 
       <div className="flex flex-wrap gap-2">
-        {parole.tag.split(',').map(tag => (
+        {(parole.tag || '').split(',').filter(Boolean).map(tag => (
             <m.span
                 key={tag.trim()}
                 whileHover={{ scale: 1.05 }}
@@ -129,7 +129,7 @@ const ParoleModal: React.FC<{ parole: Parole | null; onClose: () => void }> = ({
             )}
 
             <div className="flex flex-wrap gap-2">
-              {parole.tag.split(',').map(tag => (
+              {(parole.tag || '').split(',').filter(Boolean).map(tag => (
                   <span
                       key={tag.trim()}
                       className="text-xs bg-amber-100 dark:bg-emerald-800 text-amber-800 dark:text-emerald-200 px-3 py-1 rounded-full"
