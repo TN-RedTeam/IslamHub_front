@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { m, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Users, BookOpen, Scale, Star, ChevronRight, GraduationCap, ChevronDown, ChevronUp, Heart, Globe, Shield, Sparkles, Calendar, BookMarked } from 'lucide-react';
+import { EcoleFiqhSection } from '../../components/EcoleFiqhSection';
 
 interface SectionProps {
     title: string;
@@ -608,6 +609,9 @@ const Hanbalite: React.FC = () => {
                         </div>
                     </div>
                 </m.section>
+
+                {/* Jurisprudence (fiqh) de l'école — contenu dynamique depuis Supabase */}
+                <EcoleFiqhSection ecole="Hanbalite" titre="Jurisprudence de l'école Hanbali" />
 
                 {/* Autres écoles */}
                 <m.section

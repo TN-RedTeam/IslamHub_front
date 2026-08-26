@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { m, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { Scale, BookOpen, Users, Star, ChevronRight, Lightbulb, Globe, ChevronDown, ChevronUp, Heart, Shield, Sparkles, Calendar, BookMarked } from 'lucide-react';
+import { Scale, BookOpen, Users, Star, ChevronRight, Lightbulb, Globe, ChevronDown, ChevronUp, Heart, Shield, Sparkles, Calendar, BookMarked, Brain, HeartCrack } from 'lucide-react';
+import { EcoleFiqhSection } from '../../components/EcoleFiqhSection';
 
 interface SectionProps {
     title: string;
@@ -99,7 +100,7 @@ const Hanafi: React.FC = () => {
         },
         {
             title: 'La Sunna',
-            description: 'Les enseignements et pratiques du Prophète (paix sur lui).',
+            description: 'Les enseignements et pratiques du Prophète ﷺ.',
             icon: Star
         },
         {
@@ -168,7 +169,7 @@ const Hanafi: React.FC = () => {
                         transition={{ delay: 0.3 }}
                         className="text-emerald-300 max-w-2xl mx-auto font-amiri"
                     >
-                        Fondée par l'Imam Abou Hanifa an-Nou'man (699-767 EC)
+                        Fondée par l'Imam Abou Hanifa an-Nou'man
                     </m.p>
                 </div>
             </m.header>
@@ -257,69 +258,31 @@ const Hanafi: React.FC = () => {
                         <p className="mb-4">
                             Al-Fiqhou l-'Akbar compte parmi les premiers ouvrages écrits au sujet de la science de la croyance, en conformité avec la croyance de Ahlou s-Sounnah wa l-Jama^ah.
                         </p>
-                    </CollapsibleSection>
+                        <p className="mb-4">
+                            Il a également composé 4 autres livres concernant la science du Tawhid qui constituent encore une référence de nos jours : Al-Fiqhou l-‘Akbar,
 
-                    <CollapsibleSection
-                        title="Paroles de Savants à son Sujet"
-                        icon={<Star className="w-5 h-5" />}
-                    >
-                        <p className="mb-4">
-                            Le grand savant Ibnou Hajar Al-^Asqalaniyy a dit au sujet de l'Imam Abou Hanifah :
-                        </p>
-                        <p className="mb-4 text-right font-amiri text-xl leading-loose">
-                            (هُوَ الفَقِيهُ المشهور أحد الأئمة أخرج له ابن ماجه والترمذي والنسائي من حديثه مجتنباً ما ينفرد به)
-                        </p>
-                        <p className="mb-4 italic">
-                            (houwa l-faqihou l-mach-hour 'ahadou l-'a'immati 'akhraja lahou Ibnou Majah wa t-Tirmidhiyy wa n-Naça'iyy min hadithi mouj-taniban ma yanfaridou bih)
-                        </p>
-                        <p className="mb-6">
-                            « C'est le Faqih célèbre, l'un des Imams. Ibnou Majah, At-Tirmidhiyy et An-Naça'iyy ont rapporté des hadith de sa part, à l'exception de ceux qu'il rapporte seul. »
-                        </p>
+                            Al-Fiqhou l-‘Absat,
 
-                        <p className="mb-4">
-                            Le grand savant Al-Kawthariyy a dit au sujet du livre de l'Imam Abou Hanifah Al-^Alim wa l-Mouta^allim :
-                        </p>
-                        <p className="mb-4 text-right font-amiri text-xl leading-loose">
-                            (هو أقدم كتاب في علم التوحيد)
-                        </p>
-                        <p className="mb-4 italic">
-                            (houwa 'aqdamou kitabin fi ^ilmi t-tawhid)
-                        </p>
-                        <p className="mb-6">
-                            « C'est le livre le plus ancien au sujet de la science de la croyance. »
-                        </p>
+                            Ar-Riçalah,
 
-                        <p className="mb-4">
-                            Le Chaykh ^Abdou l-Lah Al-Harariyy a dit :
-                        </p>
-                        <p className="mb-4 text-right font-amiri text-xl leading-loose">
-                            (جدد الإمام أبو حنيفة علم الفقه وعلم التوحيد)
-                        </p>
-                        <p className="mb-4 italic">
-                            (jaddada l-'Imam Abou Hanifah ^ilma l-fiqhi wa ^ilma t-tawhid)
-                        </p>
-                        <p className="mb-4">
-                            « L'Imam Abou Hanifah a renouvelé la science de la jurisprudence et la science de la croyance. »
+                            Al-^Alim wal-Mouta^allim et
+
+                            Al-Wasiyyah.
                         </p>
                     </CollapsibleSection>
 
-                    <CollapsibleSection
-                        title="Son Décès"
-                        icon={<Heart className="w-5 h-5" />}
-                    >
-                        <p className="mb-4">
-                            Il est décédé en 150 de l'Hégire. Un très grand nombre de personnes ont assisté à son enterrement. Sa tombe est actuellement à Bagdad, que Allah l'agrée.
-                        </p>
-                    </CollapsibleSection>
 
                     <CollapsibleSection
                         title="Sa Croyance en Allah"
                         icon={<Shield className="w-5 h-5" />}
                     >
                         <p className="mb-4">
+                            <strong><h2>Au sujet de la non ressemblance absolue du Créateur avec les créatures</h2></strong>
+                        </p>
+                        <p className="mb-4">
                             L'Imam Abou Hanifah a expliqué la croyance en Allah et a confirmé dans son livre Al-Fiqhou l-'Akbar que Allah ta^ala existe sans endroit et sans direction, et que Allah ne ressemble pas à Ses créatures. Il a dit, que Allah l'agrée :
                         </p>
-                        <p className="mb-4 text-right font-amiri text-xl leading-loose">
+                        <p lang="ar" dir="rtl" className="mb-4 text-center font-amiri text-xl leading-loose">
                             (كانَ اللهُ ولا مكان، كانَ قبلَ أن يَخْلُقَ الخلق كانَ ولم يكن أينٌ ولا خَلقٌ ولا شىء وهو خالقُ كل شىء)
                         </p>
                         <p className="mb-4 italic">
@@ -332,7 +295,7 @@ const Hanafi: React.FC = () => {
                         <p className="mb-4">
                             Et il a dit :
                         </p>
-                        <p className="mb-4 text-right font-amiri text-xl leading-loose">
+                        <p lang="ar" dir="rtl" className="mb-4 text-center font-amiri text-xl leading-loose">
                             (والله تعالى يُرَى في الآخرة ويراه المؤمنون وهم في الجنة بأعين رؤوسهم بلا تشبيه ولا كمِّيَّة ولا يكون بينه وبين خلقه مسافة)
                         </p>
                         <p className="mb-4 italic">
@@ -345,7 +308,7 @@ const Hanafi: React.FC = () => {
                         <p className="mb-4">
                             Il a dit aussi :
                         </p>
-                        <p className="mb-4 text-right font-amiri text-xl leading-loose">
+                        <p lang="ar" dir="rtl" className="mb-4 text-center font-amiri text-xl leading-loose">
                             (لا يوصف الله بصفات المخلوقين وغضبُه ورضاه صفتان من صفاته بلا كيف، وهو قول أهل السنة والجماعة وهو يغضب ويرضى ولا يقال غضبُه عقوبته ورضاه ثوابه ونصفه كما وصف نفسه أحدٌ صمدٌ لم يلد ولم يولد ولم يكن له كفواً أحد)
                         </p>
                         <p className="mb-4 italic">
@@ -358,7 +321,7 @@ const Hanafi: React.FC = () => {
                         <p className="mb-4">
                             Et il a dit :
                         </p>
-                        <p className="mb-4 text-right font-amiri text-xl leading-loose">
+                        <p lang="ar" dir="rtl" className="mb-4 text-center font-amiri text-xl leading-loose">
                             (ويده صفة بلا كيف)
                         </p>
                         <p className="mb-4 italic">
@@ -371,7 +334,7 @@ const Hanafi: React.FC = () => {
                         <p className="mb-4">
                             Et il a dit :
                         </p>
-                        <p className="mb-4 text-right font-amiri text-xl leading-loose">
+                        <p lang="ar" dir="rtl" className="mb-4 text-center font-amiri text-xl leading-loose">
                             (وليس اللهُ بِعَرَضٍ ولا جَوْهَرٍ ولا مُتَحَيِّزٍ)
                         </p>
                         <p className="mb-4 italic">
@@ -380,6 +343,72 @@ const Hanafi: React.FC = () => {
                         <p className="mb-6">
                             « Allah n'est pas un attribut, ni un corps, et Il n'est pas dans un endroit. »
                         </p>
+                        <p className="mb-6">
+                            Parmi les paroles précieuses que l’imam Abou Hanifah a dites au sujet de l’exemption de Allah ta^ala de toutes caractéristiques des corps, il y a sa parole dans son livre Al-Fiqhou l-‘Akbar :
+                        </p>
+                        <p lang="ar" dir="rtl" className="mb-4 text-center font-amiri text-xl leading-loose">
+                            (والله واحد لا من طريق العدد ولكن من طريق أنه لا شريك له، لم يلد ولم يولد ولم يكن له كفوًا أحد، لا جسم ولا عَرَض ولا حَدَّ له ولا ضد ولا ند ولا مثل، لا يشبه شيئًا من خلقه، ولا يشبهه شىء من خلقه، وهو شىء لا كالأشياء)
+                        </p>
+                        <p className="mb-4">
+                            (wal-Lahou wahidoun la min tariqi l-^adad walakin min tariqi ‘annahou la charika lah lam yalid walam youlad walam yakoun lahou koufouwan ‘ahad, la jismoun wala ^aradoun wala haddoun lahou wala diddoun wala niddoun wala mithl, la youchbihou chay’an min khalqihi wala youchbihouhou chay’oun min khalqih, wa houwa chay’oun la kal-‘achya’)
+                        </p>
+                        <p className="mb-4">
+                            <strong>ce qui signifie:</strong> « Dieu est unique, non pas dans le sens numérique mais dans le sens qu’Il n’a pas d’associé, Il n’engendre pas et n’est pas engendré et Il n’a pas d’équivalent. Il n’est pas un corps, ni une caractéristique d’un corps, Il est donc exempt d’avoir une limite –grande ou petite–, un opposé, un semblable ou un ressemblant. Il n’a pas de ressemblance avec quoi que ce soit dans Sa création et rien de Sa création n’a de ressemblance avec lui. Il existe [Dieu] mais pas comme tout ce qui existe.».
+                        </p>
+                        <p className="mb-6">
+                            Il a dit également :
+                        </p>
+                        <p lang="ar" dir="rtl" className="mb-4 text-center font-amiri text-xl leading-loose">
+                            (أنىَّ يشبه الخالق مخلوقه)
+                        </p>
+                        <p className="mb-6">
+                            (‘anna youchbihou l-khaliqou makhlouqah)
+                        </p>
+                        <p className="mb-4">
+                          <strong>ce qui signifie:</strong>  « Comment serait-il possible que le Créateur ait une ressemblance avec ce qu’Il crée ? »
+                        </p>
+                        <p className="mb-4">
+                            <strong><h2>Au sujet de la parole de Dieu</h2></strong>
+                        </p>
+                        <p className="mb-6">
+                            Abou Hanifah était de ceux qui exemptaient Allah de la voix, des lettres et de la langue. Il a en effet précisé que la parole de Allah qui est Son attribut propre à Son Être de toute éternité, exempt de début et de fin, n’est pas composée de lettres et n’est pas une voix. Il a dit dans son livre Al-Fiqhou l-‘Absat ce qui suit :
+                        </p>
+                        <p lang="ar" dir="rtl" className="mb-4 text-center font-amiri text-xl leading-loose">
+                            (واللهُ يتكلّم بكلام لا يشبهُ كلامَنا نحن نتكلّم بالآلات من المخارج والحروف والله متكلّم بلا آلةٍ ولا حرفٍ، فصفاته غير مخلوقة ولا مُحْدثة، والتغير والاختلاف في الأحوال يحدث في المخلوقين، ومن قال إنها مُحدثة أو مخلوقة أو توقف أو شك فهو كافر)
+                        </p>
+                        <p className="mb-6">
+                            (wal-Lahou yatakallamou bikalamin la youchbihou kalamana nahnou natakallamou bil-‘alati mina makhariji wal-houroufi wal-Lahou moutakallimoun bila ‘alatin wala harf)
+                        </p>
+                        <p className="mb-4">
+                            <strong>ce qui signifie:</strong>  « Dieu parle d’une parole qui n’est pas comme la nôtre, nous parlons par le moyen d’organes à partir de points de prononciation et de lettres mais Dieu parle sans organe ni lettre. Ses attributs ne sont pas créés, ni entrés en existence. Le changement et la modification des états ont lieu pour les créatures et si quelqu’un croit que les attributs de Allah sont entrés en existence ou qu’ils sont créés ou s’abstient en ne voulant pas se prononcer ou en doute, il n’est pas musulman. »
+                        </p>
+                        <p className="mb-6">
+                            Au sujet de la vision de Allah dans l’au-delà
+                        </p>
+                        <p className="mb-6">
+                            L’imam de l’école hanafite, qui est l’un des savants du Salaf les plus réputés a dit :
+                        </p>
+                        <p lang="ar" dir="rtl" className="mb-4 text-center font-amiri text-xl leading-loose">
+                            (واللهُ تعلى يُرى في الآخرة ويراه المؤمنون وهم في الجنّة يأعين رؤوسهم بلا تشبيه ولا كميّة ولا يكون بينه وبين خلقه مسافة)
+                        </p>
+                        <p className="mb-6">
+                            (wal-Lahou ta^ala youra fi l-‘akhirah, wayarahou l-mou’minouna wahoum fi l-jannah bi ’a^youni rou’oucihim bila tachbihin wala kammiyyah wala yakounou baynahou wabayna khalqihi maçafah)
+                        </p>
+                        <p className="mb-4">
+                            <strong>ce qui signifie:</strong>  « Allah ta^ala sera vu dans l’au-delà, les croyants le verront alors qu’ils seront eux au Paradis, avec les yeux de leur tête, sans aucune ressemblance ni aucune forme, et il n’y aura pas de distance entre Lui et Ses créatures. » Il a cité cela dans son livre Al-Fiqhou l-‘Akbar.
+                        </p>
+                        <p className="mb-6">
+                            Il a dit également dans son livre Al-Wasiyyah page 4 :
+                        </p>
+                        <p lang="ar" dir="rtl" className="mb-4 text-center font-amiri text-xl leading-loose">
+                            (ولقاء الله تعالى لأهل الجنّة بلا كيف ولا تشبيه ولا جهةٍ حقّ)
+                        </p>
+                        <p className="mb-6">
+                            (wa liqa’ou l-Lahi ta^ala li ’ahli l-jannati bila kayfin wala tachbihin wala jihatin haqq)
+                        </p>
+                        <p className="mb-6">
+                            <strong>ce qui signifie:</strong> « La vision de Allah par les gens du Paradis sans comment, sans ressemblance et sans direction, est une vérité. »
+                        </p>
 
                         <p className="mb-4">
                             Ces paroles sont claires et nettes, ce sont les paroles du Salaf, des savants des trois premiers siècles de l'Hégire, qui sont les meilleurs siècles de cette communauté. Un savant de la taille de l'Imam Abou Hanifah, qu'on appelle le plus grand des Imams, déclare sans hésitation que Allah existe sans endroit et que ce qui est évoqué dans le Qour'an comme le yad ou le wajh au sujet de Allah, ne sont pas à comprendre au sens physique, c'est-à-dire que le yad de Allah est un attribut qui ne ressemble pas aux attributs des créatures, en d'autres termes, il ne s'agit pas de dire que le yad de Allah c'est une main ou un membre ou une direction ou un endroit ou quelque chose de physique, car tout cela ce sont des attributs des créatures, et pas les attributs de Allah.
@@ -387,14 +416,71 @@ const Hanafi: React.FC = () => {
                     </CollapsibleSection>
 
                     <CollapsibleSection
-                        title="Les Attributs de Allah"
+                        title="l'interprétation des versets non explicites"
                         icon={<Sparkles className="w-5 h-5" />}
                     >
                         <p className="mb-4">
+                            On trouve dans le Qour’an des versets explicites et des versets non explicites. Certains savants tels que Abou Hanifah ont interprété les versets non explicites, ils leur ont donné un sens conforme à la Sounnah et aux versets explicites.
+                        </p>
+                        <p className="mb-4">
+                            L’interprétation globale des versets non explicites
+                        </p>
+                        <p className="mb-4">
+                            L’imam Abou Hanifah fait partie des successeurs, né en 80 il est mort en 150 de l’Hégire et fait donc partie du Salaf dont le Prophète a fait l’éloge. Il a eu l’immense honneur de voir les compagnons, des gens qui avaient vu et vécu avec notre Prophète bien-aimé, Mouhammad fils de ^Abdou l-Lah.
+                        </p>
+                        <p className="mb-4">
+                            Dans le Qour’an honoré figurent :
+                        </p>
+                        <p className="mb-4">
+                            1. <b><u>des versets explicites</u></b> : ce sont les versets qui n’admettent qu’un seul sens du point de vue de la langue, ou encore ceux dont le sens qui est visé a été clairement connu. C’est le cas de la parole de Allah :
+                        </p>
+                        <p lang="ar" dir="rtl" className="mb-4 text-center font-amiri text-xl leading-loose">
+                            ﴿لَيْسَ كَمِثْلِهِ شَىْء﴾
+                        </p>
+                        <p className="mb-4 italic text-center">
+                            [Ach-Choura / 11] (layça kamithlihi chay’)
+                        </p>
+                        <p className="mb-4 text-center">
+                            <strong>ce qui signifie:</strong> « Rien n’est tel que Lui ».
+                        </p>
+                        <p className="mb-4">
+                            1. <b><u>et des versets non explicites</u></b> : ce qui est non explicite, c’est ce qui admet plusieurs sens selon la langue, et qui nécessite donc une exégèse pour lui donner le sens qui est en conformité avec les ‘ayah explicites. C’est le cas de la parole de Allah :
+                        </p>
+                        <p lang="ar" dir="rtl" className="mb-4 text-center font-amiri text-xl leading-loose">
+                            ﴿الرَّحْمَنُ عَلَى الْعَرْشِ اسْتَوَى﴾
+                        </p>
+                        <p className="mb-4 italic text-center">
+                            [sourat Taha / 5] (Ar-Rahmanou ^ala l-^archi stawa)
+                        </p>
+                        <p className="mb-4">
+                            Les savants tels que Abou Hanifah ont interprété les versets équivoques, ils leur ont donné un sens conforme à la Sounnah et aux versets clairs.
+                        </p>
+                        <p className="mb-4">
+                            Ainsi, l’imam Abou Hanifah est dans la lignée des savants du Salaf, qui, comme l’ont dit An-Nawawiyy et d’autres préféraient ne pas interpréter en détail mais ils interprétaient globalement, en disant « sans comment » et c’est exactement ce que Abou Hanifah a fait. Il a dit clairement que les attributs de Allah sont « sans comment » ce qui est totalement différent du fait de dire “on ne sait pas comment.“
+                        </p>
+                        <p className="mb-4">
+                            <strong><h2>Au sujet du yad de Allah</h2></strong>
+                        </p>
+                        <p className="mb-4">
+                            Parmi les précieuses paroles que l’imam Abou Hanifah a dites au sujet de l’exemption de Allah de toute caractéristique des corps, il y a sa parole dans son livre Al-Fiqhou l-‘Akbar :
+                        </p>
+                        <p lang="ar" dir="rtl" className="mb-4 text-center font-amiri text-xl leading-loose">
+                            يدُهُ صفتُهُ بلا كيف
+                        </p>
+                        <p className="mb-4 italic text-center">
+                            (yadouhou sifatouhou bila kayf)
+                        </p>
+                        <p className="mb-4 text-center">
+                            <strong>ce qui signifie:</strong> « Son (yad) est un de Ses attributs sans comment. »
+                        </p>
+                        <p className="mb-4">
+                            Al-yad) est un attribut de Allah sans que ce soit une main c’est-à-dire sans que ce soit un organe. En effet (al-yad) est un attribut de Allah cité à plusieurs reprises dans le Qour’an. Ce qui est visé par l’attribut de Dieu (al-yad) n’est pas le sens qui vient communément à l’esprit en arabe pour le mot (yad) : la main, l’organe, le membre. Mais son sens est tel que l’a dit l’imam Abou Hanifah, c’est un attribut sans comment, qu’il est impossible de s’imaginer ou se représenter..
+                        </p>
+                        <p className="mb-4">
                             L'Imam Abou Hanifah a dit :
                         </p>
-                        <p className="mb-4 text-right font-amiri text-xl leading-loose">
-                            (له يد ووجه ونفس كما ذكر الله تعالى في القرءان فما ذكره الله تعالى في القرءان من ذكر الوجه واليد والنفس فهو له صفات بلا كيف ولا يقال إن يده قدرته أو نعمته لأن فيه إبطال الصفة وهو قول أهل القدر والاعتزال ولكن يده صفة بلا كيف)
+                        <p lang="ar" dir="rtl" className="mb-4 text-center font-amiri text-xl leading-loose">
+                            له يد ووجه ونفس كما ذكر الله تعالى في القرءان فما ذكره الله تعالى في القرءان من ذكر الوجه واليد والنفس فهو له صفات بلا كيف ولا يقال إن يده قدرته أو نعمته لأن فيه إبطال الصفة وهو قول أهل القدر والاعتزال ولكن يده صفة بلا كيف
                         </p>
                         <p className="mb-4 italic">
                             (lahou yadoun wa wajhoun wa nafsoun kama dhakara l-Lahou ta^ala fi l-Qour'an, fama dhakarahou l-Lahou ta^ala fi l-Qour'ani min dhikri l-wajhi wa l-yadi wa n-nafsi fahouwa lahou çifatoun bila kayf, wa la youqalou 'inna yadahou qoudratouhou 'aw ni^matouhou li 'anna fihi 'ibtal as-çifati wa houwa qawlou 'ahli l-qadari wa l-'i^tizal, wa lakinna yadahou çifatoun bila kayf)
@@ -407,9 +493,188 @@ const Hanafi: React.FC = () => {
                             C'est-à-dire que l'Imam Abou Hanifah nous enseigne que le yad qui est attribué à Allah dans le Qour'an ou dans les hadith, n'est pas à l'image du yad des créatures, ce n'est pas une main, ce n'est pas un membre, ce n'est pas un organe, ce n'est pas un corps. Mais en même temps, l'Imam Abou Hanifah nous enseigne de ne pas nier complètement le yad comme l'ont fait les mou^tazilah, les gens de la mauvaise secte des mou^tazilah ont dit que le yad de Allah signifie la puissance, l'Imam Abou Hanifah, le plus grand des Imams, leur a répondu il y a plus de 1200 ans : non ! Le yad est un attribut de Allah, mais ce n'est pas la puissance, ça existe, mais ça ne ressemble pas aux attributs des créatures.
                         </p>
                         <p className="mb-4">
+                            <strong><h2>Au sujet de l’istiwa’</h2></strong>
+                        </p>
+                        <p className="mb-4">
+                            L’imam Abou Hanifah a dit dans le livre Al-Wasiyyah :
+                        </p>
+                        <p lang="ar" dir="rtl" className="mb-4 text-center font-amiri text-xl leading-loose">
+                            (نقِرُّ بأنّ اللهَ على العرش استوى من غير أن يكونَ لهُ حاجةٌ إليه واستقرارٌ عليه وهو الحافظُ لِلعرشِ وغيرِ العرشِ من غير احتياجٍ ، فلو كان محتاجًا لما قدَرَ على إِيجادِ العالم وتدبيره كالمخلوق ولو كان محتاجًا إلى الجلوس والقرار فقَبلَ خلقِ العرش أينَ كان اللهُ تعالى عن ذلك علوّا كبيرًا)
+
+                        </p>
+                        <p className="mb-4 italic">
+                            (nouqirrou bi ’anna l-Laha ^ala l-^archi stawa min ghayri ‘an yakouna lahou hajatoun ‘ilayhi wastiqraroun ^alayhi wahouwa l-Hafidhou li l-^archi waghayri l-^archi min ghayri htiyajin falaw kana mouhtajan lama qadara ^ala ‘ijadi l-^alami watadbirihi kal-makhlouqi walaw kana mouhtajan ‘ila l-joulouci wal-qarar faqabla khalqi l-^archi ‘ayna kana l-Lahou ta^ala, ta^ala l-Lahou ^an dhalika ^oulouwan kabira)
+                        </p>
+                        <p className="mb-4 text-center">
+                            <strong>ce qui signifie:</strong> « Nous reconnaissons tout comme il a été rapporté dans le Qour’an que Allah istawa ^ala l-^arch sans qu’Il en ait besoin <b>du trône</b> ni qu’Il s’installe ou de s’établisse dessus, et Il est Al-Hafidh, Celui Qui préserve le Trône et autre que cela sans nécessiter de le faire. Car s’Il avait un quelconque besoin, Il ne serait pas tout puissant à faire exister le monde et à prédestiner tout ce qui lui arrive, Il serait comme les créatures. Et s’Il avait besoin de s’asseoir (al-joulous) et de s’établir (al-istiqrar), alors avant de créer le Trône, où donc aurait-Il été ?! Allah est exempt de ce que lui attribuent les injustes. »
+                        </p>
+                        <p className="mb-4">
+                            Ainsi l’istiwa’ de Allah cité dans le Qour’an dans le verset 5 de sourat Taha n’a pas le sens de la position assise qui vient communément à l’esprit ; c’est un istiwa’ sans comment.
+                        </p>
+                        <p className="mb-4">
+                            Cette parole est citée dans le livre Al-Wasiyyah de Abou Hanifah authentifié par Al-Kawthariyy page 2 et Moulla ^Aliyy Al-Qari l’a citée dans le commentaire du livre Al-Fiqhou l-‘Akbar page 70 au sujet de la parole de l’imam : « Son yad est un attribut qui est sans comment. »
+                        </p>
+                        <p className="mb-4">
                             Ceci est la compréhension correcte des attributs de Allah, c'est la croyance de Ahlou s-Sounnah, c'est ce que les savants des trois premiers siècles ont enseigné.
                         </p>
                     </CollapsibleSection>
+
+                    <CollapsibleSection
+                        title="La science et la forte capacité de riposte de l’Imam Abou Hanifah"
+                        icon={<Brain className="w-5 h-5" />}
+                    >
+                        <p className="mb-4">
+                            Abou Hanifah était la référence des savants sunnites –les savants de Ahlou s-Sounnah–, le plus réputé d’entre eux pour répliquer aux gens qui suivent leurs passions et plus particulièrement les mou^tazilah. Ach-Chafi^iyy a dit : « Celui qui veut approfondir ses connaissances dans la jurisprudence sera comme un enfant par rapport à Abou Hanifah. »
+                        </p>
+                        <p className="mb-4">
+                            <strong><h2>Ses répliques contre les détracteurs de l’Islam</h2></strong>
+                        </p>
+                        <p className="mb-4">
+                            L’Imam Abou Hanifah, que Allah l’agrée, était un moujtahid absolu, qui avait une forte capacité de riposte et d’argumentation. À son époque, il était le défenseur de la Sounnah contre l’égarement des mou^tazilah –un groupe se réclamant de l’Islam qui a innové dans la croyance en disant notamment que Dieu aurait créé les humains en leur donnant le pouvoir de créer leurs actes et que suite à cela Dieu n’aurait plus eu de pouvoir sur eux–. Une à une, il avait recherché leurs assemblées dans le pays pour débattre avec eux et leur répliquer avec l’argument décisif qui les faisait taire. Il avait montré l’infondé de leurs prétentions et révélé leurs supercheries.
+                        </p>
+                        <p className="mb-4">
+                            <strong><h2>Sa maîtrise de la science du Tawhid</h2></strong>
+                        </p>
+                        <p className="mb-4">
+                            Il avait atteint un degré tel dans la science du Tawhid qu’il est devenu la référence auprès des gens, le soutien de Ahlou s-Sounnah et le plus connu dans la riposte contre les gens de l’égarement, particulièrement les mou^tazilah.
+                        </p>
+                        <p className="mb-4">
+                            La science du Tawhid, c’est la science de la croyance en l’unicité. Cette science concerne la connaissance des attributs qui sont obligatoires au sujet de Allah, des attributs qui sont impossibles à Son sujet et de ce qui est possible à Son sujet ta^ala. C’est une science louable. L’imam Abou Hanifah était parmi les gens de son époque, celui qui s’en préoccupait le plus. Ses deux livres Al-Fiqhou l-‘Akbar et Al-Fiqhou l-‘Absat sont une preuve claire qu’il maîtrisait la science du Tawhid par le biais des preuves selon la raison et selon les textes qu’il avait réunies conformément à la voie sunnite –la voie de Ahlou s-Sounnah wal-Jama^ah.
+                        </p>
+                        <p className="mb-4">
+                            <strong><h2>Ceux qui ont fait ses éloges</h2></strong>
+                        </p>
+                        <p className="mb-4">
+                            L’auteur du livre At-Tabsiratou l-Baghdadiyyah a rapporté de l’imam Abou ^Abdi l-Lah As–Saymariyy que l’Imam Abou Hanifah était le spécialiste de la science du Kalam de cette communauté dans son époque ainsi que le spécialiste de référence dans la jurisprudence, c’est-à-dire dans le licite et l’interdit.
+                        </p>
+                        <p className="mb-4">
+                            Al-Khatib a rapporté dans son livre Tarikh Baghdad sur l’Histoire de Bagdad, d’après Harmalah Ibnou Yahya d’après Ach-Chafi^iyy qu’il a dit : « Celui qui veut approfondir ses connaissances dans la jurisprudence sera comme un enfant par rapport à Abou Hanifah. »
+                        </p>
+                        <p className="mb-4">
+                            Il a été rapporté également de Ach-Chafi^iyy qu’on a dit à Malik que Allah l’agrée : « Est-ce que tu as rencontré l’Imam Abou Hanifah ? » Il a dit : « Oui, et j’ai vu un homme qui, s’il te disait qu’il transformerait ce pilier en or, par la puissance de ses arguments il saurait t’en convaincre. » –C’est une métaphore arabe qui montre la force de ses démonstrations et cela ne veut pas dire qu’il aurait menti
+                        </p>
+                        <p className="mb-4">
+                            Al-Khatib a également dit dans Tarikh Baghdad que Abou Hanifah a vu dans le rêve comme s’il creusait la tombe du Messager de Allah صلى الله عليه وسلم . Il a fait interroger Ibnou Sirin au sujet de ce rêve. –Ibnou Sirin est un savant et un saint à qui Dieu a donné la science de l’interprétation des rêves– Il a dit : « Celui qui a vu ce rêve va faire jaillir une connaissance à laquelle personne n’était parvenu avant lui. »
+                        </p>
+                    </CollapsibleSection>
+
+                    <CollapsibleSection
+                        title="Le haut degré de l’Imam Abou Hanifah"
+                        icon={<Scale className="w-5 h-5" />}
+                    >
+                        <p className="mb-4">
+                            Les spécialistes de l’histoire des biographies attribuent à l’Imam Abou Hanifah de nombreux évènements indiquant son intelligence et sa grande perspicacité.
+                        </p>
+                        <p className="mb-4">
+                            L’Imam moujtahid Abou Hanifah que Allah l’agrée, n’aurait pas eu tant de science ni cette formidable capacité de donner des arguments s’il n’avait pas été extrêmement perspicace et s’il n’avait pas une capacité de mémorisation exceptionnelle. En effet, il a été confirmé à son sujet une multitude de choses étonnantes et surprenantes aussi bien dans le qada’ c’est-à-dire lorsqu’il prononçait les sentences entre les parties adverses, que dans la jurisprudence, ce qui témoigne de son haut degré et de son intelligence.
+                        </p>
+                        <p className="mb-4">
+                            <strong><h2>Un sage conseil</h2></strong>
+                        </p>
+                        <p className="mb-4">
+                            Parmi cela, il a été rapporté qu’un homme était venu à lui. Il lui a dit : « Imam, j’ai enterré de l’argent il y a longtemps mais j’ai oublié l’endroit où je l’ai enterré. »
+
+                            C’est alors que l’Imam lui a dit « Va et passe toute la nuit en prières jusqu’au matin, tu te rappelleras si Allah le veut où tu as enterré cet argent. » L’homme a fait ce qu’il lui avait dit et avant même que ne s’écoule le premier quart de la nuit, il s’est souvenu de l’endroit où il avait enterré son argent. Il est alors parti voir l’Imam Abou Hanifah et lui a raconté cela. Abou Hanifah lui a dit : « Je savais que le chaytan –le diable– ne te laisserait pas passer toute la nuit à faire des prières. Maintenant, si tu passais le restant de la nuit en prières pour remercier Allah ? »
+                        </p>
+                        <p className="mb-4">
+                            <strong><h2>Sa piété</h2></strong>
+                        </p>
+
+                        <p className="mb-4">
+                            L’Imam Abou Hanifah, que Allah l’agrée, était un homme ascète, ayant la crainte de Allah, pieux, ayant beaucoup de crainte et d’humilité à l’égard de Allah et qui invoquait en permanence Allah ta^ala. Ibnou Khillikan a rapporté dans son livre Wafayatou l-‘A^yan d’après Açad fils de ^Amr qu’il a dit : « Abou Hanifah récitait tout le Qour’an dans un seul cycle de prière (rak^ah). Et on l’entendait pleurer pendant la nuit au point que ses voisins compatissaient avec lui. On a retenu de lui qu’il a récité sept mille fois le Qour’an du début jusqu’à la fin dans l’endroit où il est mort. »
+                        </p>
+
+                        <p className="mb-4">
+                            <strong><h2>Un de ses prodiges</h2></strong>
+                        </p>
+
+                        <p className="mb-4">
+                            Yazid Ibnou l-Koumayt a dit : « Abou Hanifah était de ceux qui avait une intense crainte de Allah dans leur cœur. » Il raconte « Un soir, ^Aliyy Ibnou l-Houçayn, a récité durant la prière du ^icha’ la sourate Az–Zalzalah alors qu’Abou Hanifah était derrière lui dans l’assemblée de prière. Lorsqu’il termina la prière et que les gens étaient partis, j’ai dirigé mon regard vers Abou Hanifah et il était encore assis, il méditait et il soupirait. Lorsque je suis sorti, j’ai laissé la chandelle contenant un tout petit peu d’huile. Elle était proche de l’extinction. Je suis revenu après la levée de l’aube et Abou Hanifah était debout. Il tenait sa barbe et disait : “Ô Toi Qui rétribue pour un grain de bien par du bien, ô Toi Qui rétribue pour un grain de mal par du mal, évite à Ton esclave An-Nou^man le feu de l’enfer et le mal qui rapproche du feu de l’enfer et accorde lui une part dans Ta large miséricorde.” Yazid a dit : “J’ai fait l’appel à la prière et la chandelle était toujours allumée.” –c’est-à-dire que la veille il l’avait laissée proche de l’extinction et le lendemain, elle brillait plus intensément– Lorsque je suis entré, il m’a dit : “Garde pour toi ce que tu as vu ! ” –en effet, ceci était un prodige que Allah a accordé à l’imam Abou Hanifah et il ne voulait pas être dévoilé– Et il a accompli deux rak^ah –c’est-à-dire une prière surérogatoire de deux cycles–, puis il s’est assis jusqu’à ce que je fasse l’appel à la prière. Il s’est levé et a fait la prière avec nous, la prière du matin avec le woudou’ du début de la nuit. »
+                        </p>
+
+                        <p className="mb-4">
+                            Le Calife Al-Mansour avait voulu élever Abou Hanifah au rang de juge et Abou Hanifah lui avait répondu : « Crains Allah et ne confie ta sécurité qu’à quelqu’un qui craint Allah car par Allah je ne suis pas préservé de la satisfaction alors comment serais-je préservé de la colère ? Je ne conviens pas pour cela. » Al-Mansour avait dit : « tu mens, c’est toi qui conviens pour cela. » Alors il avait répondu : « Ainsi tu as jugé en ma faveur contre toi-même, comment élèveras-tu au rang de juge quelqu’un de menteur ? »
+                        </p>
+
+                        <p className="mb-4">
+                            Yazid fils de ^Amr fils de Houbayrah Al-Fazzariyy, un émir, avait voulu qu’il soit juge à Koufa au temps de Marwan Ibnou l-Hakam mais il avait refusé. Il l’avait donc frappé de cent dix coups de fouet à raison de dix coup par jour, mais lorsqu’il avait constaté son obstination à refuser d’être juge, il avait fini par le relâcher.
+                        </p>
+
+                        <p className="mb-4">
+                            <h2>Haroun Ar-Rachid témoigne en faveur de Abou Hanifah</h2>
+                        </p>
+
+                        <p className="mb-4">
+                            Abou Youçouf Al-Qadi, que Allah lui fasse miséricorde, a grandi orphelin –dans la loi de l’Islam, l’orphelin est l’enfant qui n’a pas atteint l’âge de la puberté et dont le père est décédé– et fut le compagnon de Abou Hanifah, il a appris auprès de lui. Il demeura longtemps auprès d’Abou Hanifah sans occuper d’apprendre un métier grâce auquel il puisse vivre. C’est alors que la mère de Abou Youçouf était venue auprès de Abou Hanifah et s’en était plainte en le blâmant. Elle avait dit : « Il est la prunelle de mes yeux. » Abou Hanifah avait répondu à la mère de Abou Youçouf : « Réjouis ton cœur, il est en train d’apprendre comment manger du faloudhaj –c’est une sorte de plat sucré très raffiné– à l’huile de pistache. » Effectivement, lorsqu’il eut grandi, il est devenu le Qadi des qadi et mangeait auprès de Haroun Ar-Rachid qui était l’Émir des musulmans. On avait rapporté à Ar-Rachid cet événement et il avait dit : « Abou Hanifah voit grâce à une lumière que Allah lui accorde », c’est-à-dire qu’il a eu un dévoilement (kachf), Allah le lui a fait savoir.
+                        </p>
+
+
+                    </CollapsibleSection>
+
+                    <CollapsibleSection
+                        title="La croyance des savants hanafites"
+                        icon={<Star className="w-5 h-5" />}
+                    >
+                        <p className="mb-4">
+                            Les savants hanafites étaient et n’ont jamais cessé d’être sur la croyance du tanzih, c’est-à-dire de l’exemption de Allah de tout attribut des créatures tel que l’endroit, la direction ou le comment.
+                        </p>
+                        <p className="mb-4">
+                            <strong><h2>At-Tahawiyy</h2></strong>
+                        </p>
+                        <p className="mb-4">
+                            L’Imam, le Hafidh spécialiste de la transmission du hadith, le Faqih spécialiste de la jurisprudence Abou Ja^far ‘Ahmad Ibnou Salamah At–Tahawiyy le hanafite (mort en 321 de l’Hégire) que Allah l’agrée, a dit dans son traité Al-^Aqidatou t–Tahawiyyah : « Allah est exempt des limites, des fins, des côtés, des organes et des membres. Les six directions ne Le délimitent pas, contrairement à toutes les créatures ».
+                        </p>
+                        <p className="mb-4">
+                            At–Tahawiyy fait partie des savants du Salaf. Il a dit au tout début de son Traité de croyance : « Ceci est l’énoncé de l’exposé de la croyance de Ahlou s-Sounnah wa l-Jama^ah ». C’est-à-dire qu’il s’agit de la croyance du Salaf parmi les compagnons et les tabi^iyy –les successeurs– et les successeurs des successeurs concernant l’exemption de Allah de l’endroit, de la direction et du corps. La parole de At–Tahawiyy est extrêmement importante car il fait partie des savants du hadith et des savants de la jurisprudence ; c’est un savant hanafite. Cette croyance est enseignée partout dans le monde, dans les instituts et les universités islamiques.
+                        </p>
+                        <p className="mb-4">
+                            <strong><h2>An-Naçafiyy</h2></strong>
+                        </p>
+                        <p className="mb-4">
+                            Le Mouhaddith Abou Hafs Najmou d-Din ^Oumar Ibnou Mouhammad An–Naçafiyy, le hanafite (mort en 537 de l’Hégire), l’auteur du traité de croyance connu sous le nom de Croyance Naçafiyyah a dit dans Al-^Aqidatou n-Naçafiyyah –comprise dans Le Recueil des Traités de base Importants–, p 28 : « Celui qui a fait entrer en existence ce monde, c’est Allah ta^ala et Allah n’est pas une substance, Il est existence sans comment et Il n’est pas dans un endroit ».
+                        </p>
+                        <p className="mb-4">
+                            <h2>Moulla ^Aliyy Al-Qari</h2>
+                        </p>
+                        <p className="mb-4">
+                            Le Chaykh Moulla ^Aliyy Al-Qari Al-Hanafiyy mort en 1014 de l’Hégire a dit dans le Commentaire de Al-Fiqhou l-‘Akbar après qu’il a terminé le commentaire des Raça’il de l’Imam Abou Hanifah p 196, 197 : « Quant à Son ^oulouww, ta^ala, par rapport à Ses créatures qui est tiré de ce qui est de l’ordre de la parole de Allah ta^ala :
+                        </p>
+                        <p lang="ar" dir="rtl" className="mb-4 text-center font-amiri text-xl leading-loose">
+                            ﴿وَهُوَ القَاهِرُ فَوْقَ عِبَادِهِ﴾
+                        </p>
+                        <p className="mb-4 italic text-center">
+                            sourat ‘Ali ^Imran / 18 (wa houwa l-Qahirou fawqa ^ibadih), il s’agit d’un ^oulouww –élévation– par le degré et non pas d’une élévation par l’endroit, conformément à ce qui est décrété chez les gens de ‘Ahlou s-Sounnah wa l-Jama^ah ».
+                        </p>
+
+                    </CollapsibleSection>
+
+                    <CollapsibleSection
+                        title="Son Décès"
+                        icon={<HeartCrack className="w-5 h-5" />}
+                    >
+                        <p className="mb-4">
+                            L’Imam Abou Hanifah est décédé en 150 de l’hégire, l’année de la naissance de l’Imam Ach-Chafi^iyy. L’imam Malik a été contemporain des Imams Abou Hanifah et Ach-Chafi^iyy. Ces trois savants fondèrent trois écoles de jurisprudence encore largement enseignées et pratiquées de nos jours.
+                        </p>
+                        <p className="mb-4">
+                            <strong><h2>Son décès</h2></strong>
+                        </p>
+                        <p className="mb-4">
+                            Il est décédé en l’an 150 de l’Hégire, l’année même de la naissance de l’Imam Ach-Chafi^iyy. Il a été dit « Une lune est morte et une lune est née », c’est-à-dire que Abou Hanifah était comparé à une lune par l’éclat de sa science et Ach-Chafi^iyy le fut également. Il a été dit qu’il est mort en prison en raison de son refus d’accepter la charge de juge ; mais il a aussi été dit que non. Environ cinquante mille personnes ont fait la prière funéraire en sa faveur et ont suivi son convoi funéraire.
+                        </p>
+                        <p className="mb-4">
+                            <strong><h2>Se recueillir sur sa tombe</h2></strong>
+                        </p>
+                        <p className="mb-4">
+                            Il a été enterré dans le cimetière de Al-Khayzaran à Bagdad, en Irak, que Allah lui accorde de larges miséricordes.
+                        </p>
+                        <p className="mb-4">
+                            Le Hafidh Ahmad Ibnou ^Aliyy Abou Bakr Al-Khatib Al-Baghdadiyy –mort en l’an 462 de l’hégire– dans son livre Tarikh Baghdad sur l’histoire de Bagdad (tome 1 / page 123) avec une bonne chaîne de transmission a dit ce qui suit, d’après ce qu’a rapporté ^Aliyy Ibnou Maymoun : « J’ai entendu Ach-Chafi^iyy dire : “Je recherche les bénédictions (tabbarouk) par Abou Hanifah et je me rends à sa tombe chaque jour. Si j’ai un besoin, j’accomplis deux cycles de prière (rak^ah) puis je me rends à sa tombe et je demande à Allah ta^ala qu’Il m’accorde la chose dont j’ai besoin et ce, auprès de sa tombe. Après cela mon affaire est rapidement réglée.” »
+                        </p>
+                    </CollapsibleSection>
+
+
+
+
                 </m.section>
 
                 {/* Section des principes */}
@@ -478,6 +743,9 @@ const Hanafi: React.FC = () => {
                         </div>
                     </div>
                 </m.section>
+
+                {/* Jurisprudence (fiqh) de l'école — contenu dynamique depuis Supabase */}
+                <EcoleFiqhSection ecole="Hanafi" titre="Jurisprudence de l'école Hanafite" />
 
                 {/* Autres écoles */}
                 <m.section

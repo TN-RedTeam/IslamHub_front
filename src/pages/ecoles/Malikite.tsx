@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { m, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { BookOpen, Users, Star, ChevronRight, Scale, Globe, Building, Heart, ChevronDown, ChevronUp, Shield, Sparkles, Calendar, BookMarked } from 'lucide-react';
+import { EcoleFiqhSection } from '../../components/EcoleFiqhSection';
+
 
 interface SectionProps {
     title: string;
@@ -242,7 +244,7 @@ const Malikite: React.FC = () => {
                         <p className="mb-4">
                             Le livre Al-Mouwatta' (Le Livre rendu facile) de l'Imam Malik est un des ouvrages de référence dans la jurisprudence et le hadith. L'Imam Ach-Chafi^iyy a dit à propos de ce livre :
                         </p>
-                        <p className="mb-4 text-right font-amiri text-xl leading-loose">
+                        <p lang="ar" dir="rtl" className="mb-4 text-center font-amiri text-xl leading-loose">
                             (مَا عَلَى وَجْهِ الأرضِ كِتَابٌ بَعْدَ كِتَابِ اللهِ أَكْثَرَ صَوَابًا مِنَ المُوَطَّإِ)
                         </p>
                         <p className="mb-4 italic">
@@ -263,7 +265,7 @@ const Malikite: React.FC = () => {
                         <p className="mb-4">
                             L'Imam Ach-Chafi^iyy a dit au sujet de l'Imam Malik :
                         </p>
-                        <p className="mb-4 text-right font-amiri text-xl leading-loose">
+                        <p lang="ar" dir="rtl" className="mb-4 text-center font-amiri text-xl leading-loose">
                             (إِذَا جَاءَ الأَثَرُ فَمَالِكٌ النَّجْمُ)
                         </p>
                         <p className="mb-4 italic">
@@ -276,7 +278,7 @@ const Malikite: React.FC = () => {
                         <p className="mb-4">
                             L'Imam Ach-Chafi^iyy a dit également :
                         </p>
-                        <p className="mb-4 text-right font-amiri text-xl leading-loose">
+                        <p lang="ar" dir="rtl" className="mb-4 text-center font-amiri text-xl leading-loose">
                             (مَالِكٌ مُعَلِّمِي)
                         </p>
                         <p className="mb-4 italic">
@@ -307,7 +309,7 @@ const Malikite: React.FC = () => {
                         <p className="mb-4">
                             L'Imam Malik, que Allah l'agrée, a confirmé dans sa croyance que Allah ta^ala existe sans endroit et sans direction. Il a enseigné que Allah n'est pas un corps et qu'Il ne ressemble à aucune de Ses créatures. Il est rapporté de sa part :
                         </p>
-                        <p className="mb-4 text-right font-amiri text-xl leading-loose">
+                        <p lang="ar" dir="rtl" className="mb-4 text-center font-amiri text-xl leading-loose">
                             (اللهُ فِي السَّمَاءِ وعِلْمُهُ فِي كُلِّ مَكَانٍ)
                         </p>
                         <p className="mb-4 italic">
@@ -319,7 +321,7 @@ const Malikite: React.FC = () => {
                         <p className="mb-4">
                             Cette parole signifie que Allah a un haut degré et non pas qu'Il serait dans le ciel en tant qu'endroit. Car l'Imam Malik fait partie de ceux qui ont dit :
                         </p>
-                        <p className="mb-4 text-right font-amiri text-xl leading-loose">
+                        <p lang="ar" dir="rtl" className="mb-4 text-center font-amiri text-xl leading-loose">
                             (الاسْتِوَاءُ مَعْلُومٌ وَالكَيْفُ غَيْرُ مَعْقُولٍ)
                         </p>
                         <p className="mb-4 italic">
@@ -413,6 +415,9 @@ const Malikite: React.FC = () => {
                         </div>
                     </div>
                 </m.section>
+
+                {/* Jurisprudence (fiqh) de l'école — contenu dynamique depuis Supabase */}
+                <EcoleFiqhSection ecole="Malikite" titre="Jurisprudence de l'école Malikite" />
 
                 {/* Autres écoles */}
                 <m.section

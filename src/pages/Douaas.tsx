@@ -329,7 +329,7 @@ export const Douaas: React.FC = () => {
 
                 {/* Barre de recherche */}
                 <m.section initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-                                className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-6 mb-12 sticky top-20 z-20 border border-emerald-100 dark:border-emerald-900">
+                                className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-6 mb-12 border border-emerald-100 dark:border-emerald-900">
                     <div className="flex flex-col md:flex-row gap-6">
                         <div className="flex-1 relative">
                             <div className="absolute left-3 top-1/2 transform -translate-y-1/2">

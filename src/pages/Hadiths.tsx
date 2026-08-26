@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { m, AnimatePresence } from 'framer-motion';
-import { BookOpen, Search, Filter, X, Star, ChevronRight, Loader } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { Search, Filter, X, Star, ChevronRight, Loader, SlidersHorizontal } from 'lucide-react';
 import { dataService } from '../services/DataService';
 import type { Hadith as HadithType } from '../types';
 
@@ -17,22 +16,6 @@ interface Hadith extends HadithType {
   explication: string | null;
   tag: string;
 }
-
-const TOPIC_ROUTES: Record<string, string> = {
-  'Sahih Al Bukhari': '/hadith/albukhari',
-  'Sahih Muslim': '/hadith/muslim',
-  'رياض الصالحين': '/hadith/riyadhassalihin',
-  'كتاب ذكر الموت': '/hadith/dhikralmout',
-  'الأربعون في التصوف': '/hadith/arbaoune-tasawwuf',
-  'المنتقى من صحيح مسلم': '/hadith/montaqa-sahihmuslim',
-  'Croyance': '/hadith/croyance',
-  'Salat': '/hadith/salat',
-  'Jeûne': '/hadith/jeune',
-  'Zakat': '/hadith/zakat',
-  'Mariage': '/hadith/mariage',
-  'Ventes': '/hadith/ventes',
-  'Famille': '/hadith/famille',
-};
 
 const HadithCard: React.FC<{ hadith: Hadith; onClick: () => void }> = ({ hadith, onClick }) => (
     <m.div
@@ -75,7 +58,7 @@ const HadithCard: React.FC<{ hadith: Hadith; onClick: () => void }> = ({ hadith,
       </div>
 
       <div className="flex flex-wrap gap-2">
-        {hadith.tag.split(',').map(tag => (
+        {(hadith.tag || '').split(',').filter(Boolean).map(tag => (
             <m.span
                 key={tag.trim()}
                 whileHover={{ scale: 1.05 }}
@@ -171,7 +154,7 @@ const HadithModal: React.FC<{ hadith: Hadith; onClose: () => void }> = ({ hadith
           )}
 
           <div className="flex flex-wrap gap-2">
-            {hadith.tag.split(',').map(tag => (
+            {(hadith.tag || '').split(',').filter(Boolean).map(tag => (
                 <span
                     key={tag.trim()}
                     className="text-xs bg-amber-100 dark:bg-emerald-800 text-amber-800 dark:text-emerald-200 px-3 py-1 rounded-full"
@@ -186,7 +169,6 @@ const HadithModal: React.FC<{ hadith: Hadith; onClose: () => void }> = ({ hadith
 );
 
 export const Hadiths: React.FC = () => {
-  const navigate = useNavigate();
   const [hadithsData, setHadithsData] = useState<Hadith[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -196,8 +178,10 @@ export const Hadiths: React.FC = () => {
   const [filteredHadiths, setFilteredHadiths] = useState<Hadith[]>([]);
   const [selectedHadith, setSelectedHadith] = useState<Hadith | null>(null);
   const [isSearching, setIsSearching] = useState(false);
-
-  const topics = Object.keys(TOPIC_ROUTES);
+  // Filtres par rubrique (statut / rapporteur / narrateur) appliqués côté client.
+  const [selectedStatut, setSelectedStatut] = useState('');
+  const [selectedRapporteur, setSelectedRapporteur] = useState('');
+  const [selectedNarrateur, setSelectedNarrateur] = useState('');
 
   useEffect(() => {
     loadHadiths();
@@ -229,7 +213,7 @@ export const Hadiths: React.FC = () => {
       if (hadithsData.length > 0) {
         const tags = new Set<string>();
         hadithsData.forEach(hadith => {
-          hadith.tag.split(',')
+          (hadith.tag || '').split(',').filter(Boolean)
               .map(t => t.trim())
               .filter(t => t.length > 0)
               .forEach(tag => tags.add(tag));
@@ -261,7 +245,7 @@ export const Hadiths: React.FC = () => {
         if (selectedTag) {
           const tagToFind = selectedTag.toLowerCase();
           results = results.filter(hadith =>
-              hadith.tag.split(',')
+              (hadith.tag || '').split(',').filter(Boolean)
                   .map(t => t.trim().toLowerCase())
                   .includes(tagToFind)
           );
@@ -293,19 +277,36 @@ export const Hadiths: React.FC = () => {
     return () => clearTimeout(timeoutId);
   }, [searchTerm, selectedTag, hadithsData]);
 
-  const handleTopicClick = (topic: string) => {
-    const route = TOPIC_ROUTES[topic];
-    if (route) {
-      navigate(route);
-    } else {
-      console.warn(`Aucune route définie pour le thème : ${topic}`);
-    }
-  };
-
   const handleResetFilters = () => {
     setSearchTerm('');
     setSelectedTag(null);
+    setSelectedStatut('');
+    setSelectedRapporteur('');
+    setSelectedNarrateur('');
   };
+
+  // Valeurs distinctes pour les listes déroulantes (depuis toutes les données).
+  const distinct = (get: (h: Hadith) => string | null) =>
+    Array.from(new Set(hadithsData.map(get).filter((v): v is string => !!v && v.trim().length > 0)))
+      .sort((a, b) => a.localeCompare(b));
+  const statuts = useMemo(() => distinct((h) => h.statut), [hadithsData]);
+  const rapporteurs = useMemo(() => distinct((h) => h.rapporteur), [hadithsData]);
+  const narrateurs = useMemo(() => distinct((h) => h.narrateur), [hadithsData]);
+
+  // Résultat final = recherche/thème (filteredHadiths) + filtres par rubrique.
+  const displayedHadiths = useMemo(
+    () =>
+      filteredHadiths.filter(
+        (h) =>
+          (!selectedStatut || h.statut === selectedStatut) &&
+          (!selectedRapporteur || h.rapporteur === selectedRapporteur) &&
+          (!selectedNarrateur || h.narrateur === selectedNarrateur),
+      ),
+    [filteredHadiths, selectedStatut, selectedRapporteur, selectedNarrateur],
+  );
+  const hasRubricFilter = !!(selectedStatut || selectedRapporteur || selectedNarrateur);
+  // Rien ne s'affiche tant qu'aucune recherche/filtre n'est actif (comme le Coran).
+  const hasQuery = !!(searchTerm.trim() || selectedTag || hasRubricFilter);
 
   if (isLoading) {
     return (
@@ -347,7 +348,7 @@ export const Hadiths: React.FC = () => {
             animate={{ opacity: 1, y: 0 }}
             className="relative py-20 bg-emerald-800 dark:bg-emerald-950 overflow-hidden"
         >
-          <div className="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/arabesque.png')]" />
+          <div className="absolute inset-0 opacity-20 bg-arabesque" />
           <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-amber-50 dark:from-gray-900" />
 
           <div className="relative container mx-auto px-4 text-center">
@@ -359,7 +360,7 @@ export const Hadiths: React.FC = () => {
               Hadiths du Prophète ﷺ
             </m.h1>
             <p className="text-xl text-emerald-200 max-w-3xl mx-auto">
-              Explorez les Hadiths a travers cette page ﷺ
+              Explorez les Hadiths à travers cette page
             </p>
           </div>
         </m.header>
@@ -368,39 +369,8 @@ export const Hadiths: React.FC = () => {
           <m.section
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ delay: 0.2 }}
-              className="mb-16"
-          >
-            <h2 className="text-2xl font-bold text-emerald-900 dark:text-emerald-300 mb-6 font-amiri text-center">
-              Collections principales
-            </h2>
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
-              {topics.map((topic, i) => (
-                  <m.div
-                      key={topic}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.1 + Math.min(i, 10) * 0.05 }}
-                      whileHover={{ y: -5 }}
-                      className="cursor-pointer bg-white dark:bg-gray-800 hover:bg-emerald-50 dark:hover:bg-emerald-900/50 text-center rounded-xl p-4 shadow-lg border border-emerald-100 dark:border-emerald-800 transition-all"
-                      onClick={() => handleTopicClick(topic)}
-                  >
-                    <div className="bg-emerald-100 dark:bg-emerald-900/50 w-12 h-12 mx-auto rounded-full flex items-center justify-center mb-2">
-                      <BookOpen className="h-6 w-6 text-emerald-600 dark:text-emerald-400" />
-                    </div>
-                    <span className="text-sm font-medium text-emerald-800 dark:text-emerald-300">
-                      {topic}
-                    </span>
-                  </m.div>
-              ))}
-            </div>
-          </m.section>
-
-          <m.section
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
               transition={{ delay: 0.4 }}
-              className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-6 mb-12 sticky top-20 z-20 border border-emerald-100 dark:border-emerald-900"
+              className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-6 mb-12 border border-emerald-100 dark:border-emerald-900"
           >
             <div className="flex flex-col md:flex-row gap-6">
               <div className="flex-1 relative">
@@ -440,19 +410,73 @@ export const Hadiths: React.FC = () => {
               </div>
             </div>
 
-            {selectedTag && (
+            {/* Filtres par rubrique */}
+            {(statuts.length > 0 || rapporteurs.length > 0 || narrateurs.length > 0) && (
+                <div className="mt-4 grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                  {statuts.length > 0 && (
+                      <label className="text-sm">
+                        <span className="flex items-center gap-1.5 mb-1 font-medium text-gray-600 dark:text-gray-300">
+                          <SlidersHorizontal className="h-3.5 w-3.5" /> Authenticité
+                        </span>
+                        <select
+                            aria-label="Filtrer par statut"
+                            className="w-full px-3 py-2 rounded-lg border border-emerald-200 dark:border-emerald-800 bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                            value={selectedStatut}
+                            onChange={(e) => setSelectedStatut(e.target.value)}
+                        >
+                          <option value="">Tous les statuts</option>
+                          {statuts.map((s) => <option key={s} value={s}>{s}</option>)}
+                        </select>
+                      </label>
+                  )}
+                  {rapporteurs.length > 0 && (
+                      <label className="text-sm">
+                        <span className="mb-1 font-medium text-gray-600 dark:text-gray-300 block">Rapporteur</span>
+                        <select
+                            aria-label="Filtrer par rapporteur"
+                            className="w-full px-3 py-2 rounded-lg border border-emerald-200 dark:border-emerald-800 bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                            value={selectedRapporteur}
+                            onChange={(e) => setSelectedRapporteur(e.target.value)}
+                        >
+                          <option value="">Tous les rapporteurs</option>
+                          {rapporteurs.map((r) => <option key={r} value={r}>{r}</option>)}
+                        </select>
+                      </label>
+                  )}
+                  {narrateurs.length > 0 && (
+                      <label className="text-sm">
+                        <span className="mb-1 font-medium text-gray-600 dark:text-gray-300 block">Narrateur</span>
+                        <select
+                            aria-label="Filtrer par narrateur"
+                            className="w-full px-3 py-2 rounded-lg border border-emerald-200 dark:border-emerald-800 bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                            value={selectedNarrateur}
+                            onChange={(e) => setSelectedNarrateur(e.target.value)}
+                        >
+                          <option value="">Tous les narrateurs</option>
+                          {narrateurs.map((n) => <option key={n} value={n}>{n}</option>)}
+                        </select>
+                      </label>
+                  )}
+                </div>
+            )}
+
+            {(selectedTag || hasRubricFilter) && (
                 <m.div
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     className="mt-4 flex items-center justify-between bg-emerald-50 dark:bg-emerald-900/30 rounded-lg px-4 py-2"
                 >
-                  <span className="font-medium text-emerald-800 dark:text-emerald-200">
-                    Filtre : <span className="font-bold">{selectedTag}</span>
+                  <span className="font-medium text-emerald-800 dark:text-emerald-200 flex flex-wrap items-center gap-2">
+                    Filtres :
+                    {selectedTag && <span className="font-bold">#{selectedTag}</span>}
+                    {selectedStatut && <span className="px-2 py-0.5 bg-amber-100 dark:bg-amber-900/40 text-amber-800 dark:text-amber-200 rounded-full text-sm">{selectedStatut}</span>}
+                    {selectedRapporteur && <span className="px-2 py-0.5 bg-emerald-100 dark:bg-emerald-800 rounded-full text-sm">{selectedRapporteur}</span>}
+                    {selectedNarrateur && <span className="px-2 py-0.5 bg-emerald-100 dark:bg-emerald-800 rounded-full text-sm">{selectedNarrateur}</span>}
                   </span>
                   <button
-                      onClick={() => setSelectedTag(null)}
-                      aria-label="Retirer le filtre"
-                      className="text-emerald-600 dark:text-emerald-400 hover:text-emerald-800 dark:hover:text-emerald-200 p-1"
+                      onClick={handleResetFilters}
+                      aria-label="Retirer les filtres"
+                      className="text-emerald-600 dark:text-emerald-400 hover:text-emerald-800 dark:hover:text-emerald-200 p-1 shrink-0"
                   >
                     <X className="h-5 w-5" />
                   </button>
@@ -461,8 +485,31 @@ export const Hadiths: React.FC = () => {
           </m.section>
 
           <section className="pb-16">
+            {!hasQuery ? (
+              <div className="text-center py-20 bg-white/70 dark:bg-gray-800/70 rounded-2xl border border-emerald-100 dark:border-emerald-900">
+                <div className="text-6xl mb-4">🔍</div>
+                <h3 className="text-xl font-bold text-gray-700 dark:text-gray-300 mb-2 font-amiri">Recherchez un hadith</h3>
+                <p className="text-gray-500 dark:text-gray-400 max-w-md mx-auto mb-6">
+                  Saisissez un mot-clé ou choisissez un filtre (thème, authenticité, rapporteur, narrateur) pour afficher les hadiths.
+                </p>
+                {allTags.length > 0 && (
+                  <div className="flex flex-wrap gap-2 justify-center max-w-lg mx-auto">
+                    <span className="w-full text-sm text-gray-400 mb-1">Suggestions :</span>
+                    {allTags.slice(0, 8).map((t) => (
+                      <button
+                        key={t}
+                        onClick={() => setSelectedTag(t)}
+                        className="px-4 py-2 rounded-full text-sm font-medium bg-amber-100 dark:bg-emerald-800/60 text-amber-800 dark:text-emerald-200 hover:bg-amber-200 dark:hover:bg-emerald-700 transition-colors"
+                      >
+                        #{t}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+            ) : (
             <AnimatePresence>
-              {filteredHadiths.length === 0 ? (
+              {displayedHadiths.length === 0 ? (
                   <m.div
                       key="no-results"
                       initial={{ opacity: 0 }}
@@ -493,11 +540,11 @@ export const Hadiths: React.FC = () => {
                         animate={{ opacity: 1 }}
                         className="text-sm font-medium text-emerald-700 dark:text-emerald-400 mb-6"
                     >
-                      {filteredHadiths.length} hadith{filteredHadiths.length > 1 ? 's' : ''} trouvé{filteredHadiths.length > 1 ? 's' : ''}
+                      {displayedHadiths.length} hadith{displayedHadiths.length > 1 ? 's' : ''} trouvé{displayedHadiths.length > 1 ? 's' : ''}
                     </m.p>
 
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                      {filteredHadiths.map((hadith, index) => (
+                      {displayedHadiths.map((hadith, index) => (
                           <m.div
                               key={`${hadith.id}-${index}`}
                               initial={{ opacity: 0, y: 20 }}
@@ -515,6 +562,7 @@ export const Hadiths: React.FC = () => {
                   </>
               )}
             </AnimatePresence>
+            )}
           </section>
         </main>
 
@@ -523,7 +571,7 @@ export const Hadiths: React.FC = () => {
             <p className="text-emerald-300 mb-4 font-amiri text-xl">
               "On n'obéit pas à une créature pour désobéir au Créateur"
             </p>
-            <p className="text-emerald-200">© 2023 Collection de Hadiths</p>
+            <p className="text-emerald-200">© {new Date().getFullYear()} Collection de Hadiths</p>
           </div>
         </footer>
 

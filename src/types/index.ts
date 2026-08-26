@@ -15,14 +15,14 @@ export interface BaseText {
 
 /** Hadith - Parole du Prophète (ﷺ) */
 export interface Hadith extends BaseText {
-  rapporteur: string | null;  // Ex: "Al-Bukhari", "Muslim"
-  narrateur: string | null;   // Ex: "`Aichah", "Omar"
-  statut: string | null;      // Ex: "Sahih", "Hassan"
+  rapporteur: string | null;
+  narrateur: string | null;
+  statut: string | null;
 }
 
 /** Verset du Coran */
 export interface Coran extends BaseText {
-  sourate: string | null;     // Ex: "Al-Baqarah / 26"
+  sourate: string | null;
 }
 
 /** Dhikr - Évocation/Rappel */
@@ -37,13 +37,14 @@ export interface Douaa extends BaseText {
 
 /** Parole de savant (table `paroles`) */
 export interface Parole extends BaseText {
-  savant: string;             // Nom du savant
+  savant: string;
+  ecole?: string | null; // école du savant (dénormalisée) : Hanafi, Malikite...
 }
 
 /** Alias historique — `Parole` est le nom canonique. */
 export type Savant = Parole;
 
-/** Vidéo YouTube (lien externe, pas de contenu Arabe/Français) */
+/** Vidéo YouTube (lien externe) */
 export interface Multimedia {
   id: number;
   youtube_id: string;
@@ -59,6 +60,46 @@ export interface Multimedia {
 export interface MultimediaCategory {
   categorie: string;
   count: number;
+}
+
+// ==========================================
+// Fiqh / Madhaheb (points de jurisprudence par école)
+// ==========================================
+
+/** Un point de jurisprudence (table `fiqh`) */
+export interface FiqhPoint {
+  id: number;
+  sujet: string | null;
+  type: string | null;         // jugement / preuve / avis... (libre)
+  texte: string | null;        // contenu français
+  texte_arabe: string | null;  // contenu arabe (optionnel)
+  source: string | null;
+  tag: string | null;
+}
+
+/** Un chapitre regroupant des points de fiqh (pour l'accordéon école) */
+export interface FiqhChapitre {
+  chapitre: string;
+  points: FiqhPoint[];
+}
+
+// ==========================================
+// Femmes (format matn + commentaire)
+// ==========================================
+
+/** Un segment : phrase du texte de base (matn) + son commentaire */
+export interface FemmesSegment {
+  id: number;
+  matn: string | null;         // phrase du texte de base (vide pour intro/titre)
+  commentaire: string | null;  // explication (ou paragraphe libre)
+  texte_arabe: string | null;
+  source: string | null;
+}
+
+/** Un chapitre regroupant des segments (pour l'accordéon Femmes) */
+export interface FemmesChapitre {
+  chapitre: string;
+  segments: FemmesSegment[];
 }
 
 // ==========================================
