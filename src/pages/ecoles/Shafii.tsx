@@ -127,7 +127,7 @@ const Shafii: React.FC = () => {
     ];
 
     const teachers = [
-        "Mouchè l'Imam Malik",
+        "L'Imam Malik",
         "Mouslim fils de Khalid Az-Zinjiyy",
         "Soufyan fils de ^Ouyaynah",
         "Ibrahim fils de Sa^d",

@@ -210,7 +210,7 @@ const Hanbalite: React.FC = () => {
                         defaultOpen={true}
                     >
                         <p className="mb-4">
-                            ^Adiyy a extrait son ascendance : il s'agit de Ahmad fils de Mouhammad fils de Hanbal fils de Hilal fils de Açad. L'Imam Ahmad a grandi orphelin. En effet, son père Mouhammad est mort jeune.
+                            Il s'agit de Ahmad fils de Mouhammad fils de Hanbal fils de Hilal fils de Açad. L'Imam Ahmad a grandi orphelin. En effet, son père Mouhammad est mort jeune.
                         </p>
                         <p className="mb-4">
                             Il a commencé à apprendre la science de la religion très tôt puis a appris la science du hadith alors qu'il avait 15 ans, c'est-à-dire en l'an 179, année durant laquelle le fondateur de l'école malikite, l'Imam Malik, que Allah l'agrée, est décédé.
@@ -363,24 +363,24 @@ const Hanbalite: React.FC = () => {
 
                         <h4 className="font-bold text-lg text-emerald-700 dark:text-emerald-300 mb-2 mt-6">L'Imam Ahmad exemptait Allah de la forme et de l'image</h4>
                         <p className="mb-4">
-                            Dans son livre: I^tiqadou l-'Imami l-Moubajjali Ahmad Ibnou Hanbal –La Croyance de l'Imam Ahmad Ibnou Hanbal–, Abou l-Fadl At-Tamimiyy Al-hanbaliyy rapporte que l'Imam Ahmad a dit : (mahma tasawwarta bibalik fal-Lahou bikhilafi dhalika) ce qui signifie : « Quoi que tu imagines en ton esprit Dieu en est différent. ». Cette parole est en fait tirée du hadith du Prophète صلى الله عليه وسلم :
+                            Dans son livre: I^tiqadou l-'Imami l-Moubajjali Ahmad Ibnou Hanbal –La Croyance de l'Imam Ahmad Ibnou Hanbal–, Abou l-Fadl At-Tamimiyy Al-hanbaliyy rapporte que l'Imam Ahmad a dit : (mahma tasawwarta bibalik fal-Lahou bikhilafi dhalika) ce qui signifie : « Quoi que tu imagines en ton esprit Dieu en est différent. ». Cette parole est en fait tirée du hadith du Prophète ﷺ  :
                         </p>
-                        <p className="mb-4 text-center font-amiri text-lg">
+                        <p lang="ar" dir="rtl" className="mb-4 text-center font-amiri text-xl leading-loose">
                             ((لا فِكْرَةَ في الرَّبِّ))
                         </p>
-                        <p className="mb-4">
+                        <p className="mb-4 text-center">
                             [rapporté par Abou l-Qaçim Al-'Ansariyy] (la fikrata fi r-Rabb)
                         </p>
-                        <p className="mb-4">
+                        <p className="mb-4 text-center">
                             « On ne peut pas atteindre la réalité de Dieu par l'imagination. »
                         </p>
                         <p className="mb-4">
                             Elle est aussi tirée de la ayah du Qour'an :
                         </p>
-                        <p className="mb-4 text-center font-amiri text-lg">
+                        <p lang="ar" dir="rtl" className="mb-4 text-center font-amiri text-xl leading-loose">
                             ﴿وأنّ إلى ربِّكَ المُنتَهى﴾
                         </p>
-                        <p className="mb-4">
+                        <p className="mb-4 text-center">
                             [Sourat An-Najm / 42] (wa'anna 'ila Rabbika l-mountaha). Ce verset a été interprété par le célèbre compagnon Oubayy Ibnou Ka^b de la façon suivante : « L'imagination de celui qui imagine s'arrête lorsqu'il s'agit du Créateur, ainsi les imaginations ne peuvent L'atteindre. »
                         </p>
                         <p className="mb-4">
@@ -402,16 +402,16 @@ const Hanbalite: React.FC = () => {
                         <p className="mb-4">
                             Az–Zarkachiyy a rapporté dans son livre Tachnifou l-Maçami^ de l'auteur du livre Al-Khisal qu'il a dit : l'Imam Ahmad Ibnou Hanbal a dit :
                         </p>
-                        <p className="mb-4 text-center font-amiri text-lg">
+                        <p lang="ar" dir="rtl" className="mb-4 text-center font-amiri text-xl leading-loose">
                             (مَنْ قَالَ إِنَّ اللهَ جِسْمٌ لاَ كَالأَجْسَامِ كَفَرَ)
                         </p>
-                        <p className="mb-4">
+                        <p className="mb-4 text-center">
                             (man qala 'inna l-Laha jismoun la ka l-'ajsami kafar)
                         </p>
-                        <p className="mb-4">
+                        <p className="mb-4 text-center">
                             « Quiconque dit que Allah est un corps qui n'est pas comme les corps n'est pas musulman ».
                         </p>
-                        <p className="mb-4">
+                        <p className="mb-4 text-center">
                             (tome 2 page 249 de cette édition)
                         </p>
                         <p>
@@ -422,35 +422,35 @@ const Hanbalite: React.FC = () => {
                         <p className="mb-4">
                             Il a interprété lui-même le verset 22 de Sourate Al-Fajr :
                         </p>
-                        <p className="mb-4 text-center font-amiri text-lg">
+                        <p lang="ar" dir="rtl" className="mb-4 text-center font-amiri text-xl leading-loose">
                             ﴿وَجَاءَ رَبُّكَ والْمَلَكُ صَفًّا صَفًّا﴾
                         </p>
-                        <p className="mb-4">
+                        <p className="mb-4 text-center">
                             (wa ja'a Rabbouka wal-malakou saffan saffa) en disant : (ja'a 'amrouh) ce qui signifie : « Son ordre viendra… » et dans une autre version, il a dit (ja'at qoudratouh) ce qui signifie : « des manifestations de Sa toute-puissance viendront… » c'est-à-dire qu'au Jour du jugement, Allah montrera aux gens des choses terribles qu'Il a prédestinées. Par conséquent, si l'Imam Ahmad avait eu pour croyance l'assimilation de Allah à Ses créatures, comme ces gens qui prétendent faire partie du salaf, il n'aurait pas interprété ce verset (ayah) mais l'aurait pris selon son sens apparent.
                         </p>
                         <p>
                             Les gens de ce groupe disent que l'interprétation revient à nier les attributs de Dieu, ils disent (at-ta'wilou ta^til) c'est-à-dire que celui qui pratique l'inter­prétation des textes tomberait d'après eux dans la négation de l'existence de Dieu et de Ses attributs. Selon eux, l'Imam Ahmad serait mécréant puisqu'il a interprété cette ayah. Comment peuvent-ils encore, après cela, se réclamer de l'école de l'Imam Ahmad ?
                         </p>
 
-                        <h4 className="font-bold text-lg text-emerald-700 dark:text-emerald-300 mb-2 mt-6">L'Imam Ahmad considérait permise la recherche des bénédictions de la tombe du Prophète صلى الله عليه وسلم</h4>
+                        <h4 className="font-bold text-lg text-emerald-700 dark:text-emerald-300 mb-2 mt-6">L'Imam Ahmad considérait permise la recherche des bénédictions de la tombe du Prophète ﷺ </h4>
                         <p className="mb-4">
                             ^Abdou l-Lah le fils de l'Imam Ahmad a rapporté de son père qu'il a dit dans le livre Al-^Ilalou waMa^rifatou r-Rijal : « Je l'ai interrogé –c'est-à-dire qu'il a posé la question à son père l'Imam Ahmad– au sujet d'un homme qui toucherait ou embrasserait le minbar du Prophète pour en rechercher les bénédictions (tabarrouk) et qui agirait de la même manière avec la tombe ou ce qui est de cet ordre en voulant par-là se rapprocher de l'agrément de Allah ». Il lui a dit : « Il n'y a pas de mal en cela. »
                         </p>
                         <p>
-                            Or certains extrémistes propagent de nos jours que rechercher les bénédictions –faire le tabarrouk– par les traces du Messager صلى الله عليه وسلم serait une forme d'association et que celui qui le fait ne serait plus musulman. D'après eux, Ahmad et son fils sont mécréants.
+                            Or certains extrémistes propagent de nos jours que rechercher les bénédictions –faire le tabarrouk– par les traces du Messager ﷺ  serait une forme d'association et que celui qui le fait ne serait plus musulman. D'après eux, Ahmad et son fils sont mécréants.
                         </p>
 
                         <h4 className="font-bold text-lg text-emerald-700 dark:text-emerald-300 mb-2 mt-6">L'Imam Ahmad considérait permise l'invocation par le degré des Prophètes et des saints</h4>
                         <p className="mb-4">
-                            Il a été rapporté par l'Imam Al-Mardawiyy, dans son livre Al-'Insaf, que l'Imam Ahmad a écrit dans son Mansak adressé à Al-Marwadhiyy qu'il est recommandé à celui qui demande à Allah la pluie de faire l'invocation par le degré du Prophète صلى الله عليه وسلم.
+                            Il a été rapporté par l'Imam Al-Mardawiyy, dans son livre Al-'Insaf, que l'Imam Ahmad a écrit dans son Mansak adressé à Al-Marwadhiyy qu'il est recommandé à celui qui demande à Allah la pluie de faire l'invocation par le degré du Prophète ﷺ .
                         </p>
                         <p>
                             Pourquoi certains égarés disent-ils maintenant que l'invocation par le degré du Prophète serait interdite et qu'elle serait une forme d'association ? Ils sont allés jusqu'à inventer une règle qui n'existe pas dans l'Islam selon laquelle appeler quelqu'un qui n'est pas vivant et présent serait de l'associa­tion(chirk).
                         </p>
 
-                        <h4 className="font-bold text-lg text-emerald-700 dark:text-emerald-300 mb-2 mt-6">L'Imam Ahmad ne jugeait pas interdit de voyager pour visiter la tombe du Prophète صلى الله عليه وسلم</h4>
+                        <h4 className="font-bold text-lg text-emerald-700 dark:text-emerald-300 mb-2 mt-6">L'Imam Ahmad ne jugeait pas interdit de voyager pour visiter la tombe du Prophète ﷺ </h4>
                         <p className="mb-4">
-                            Bien au contraire, il considérait ce voyage comme une chose recommandée, contrairement aux extrémistes qui considèrent ce voyage comme une désobéissance et même de la mécréance si c'est par recherche des bénédictions. Or les spécialistes de la jurisprudence hanbalite sont unanimes qu'il est recommandé pour celui qui termine son pèlerinage de voyager de la Mecque honorée vers Médine l'Illuminée pour visiter la tombe du Bien-aimé, le Prophète Mouhammad صلى الله عليه وسلم, ce qui fait largement la distance du voyage.
+                            Bien au contraire, il considérait ce voyage comme une chose recommandée, contrairement aux extrémistes qui considèrent ce voyage comme une désobéissance et même de la mécréance si c'est par recherche des bénédictions. Or les spécialistes de la jurisprudence hanbalite sont unanimes qu'il est recommandé pour celui qui termine son pèlerinage de voyager de la Mecque honorée vers Médine l'Illuminée pour visiter la tombe du Bien-aimé, le Prophète Mouhammad ﷺ , ce qui fait largement la distance du voyage.
                         </p>
                         <p className="mb-4">
                             Ibnou Qoudamah a dit dans Al-Mouqni^ page 35 : « Quand le pèlerin termine son pèlerinage, il lui est recommandé de visiter la tombe du Prophète et celles de ses deux compagnons, que Dieu les agrée tous les deux. »
@@ -545,13 +545,13 @@ const Hanbalite: React.FC = () => {
                         <p className="mb-4">
                             Dieu nous dit dans le Livre honoré :
                         </p>
-                        <p className="mb-4 text-center font-amiri text-lg">
+                        <p lang="ar" dir="rtl" className="mb-4 text-center font-amiri text-xl leading-loose">
                             ﴿إنّا نحنُ نزّلنا الذِّكرَ وإِنّا لَهُ لَحافِظينَ﴾
                         </p>
-                        <p className="mb-4">
+                        <p className="mb-4 text-center">
                             [sourat Al-Hijr / 9] ('inna nahnou nazzalna dh-dhikra wa'inna lahou lahafidhin)
                         </p>
-                        <p className="mb-4">
+                        <p className="mb-4 text-center">
                             « C'est Nous Qui avons fait descendre le Livre révélé et c'est Nous Qui le gardons. »
                         </p>
                         <p>
