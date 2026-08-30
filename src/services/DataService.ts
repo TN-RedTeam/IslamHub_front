@@ -9,6 +9,7 @@ import type {
   MultimediaCategory,
   FiqhChapitre,
   FemmesChapitre,
+  SavantInfo,
   PaginatedResponse,
   PaginationParams,
 } from '../types';
@@ -162,6 +163,13 @@ class DataService {
     const { data, error } = await supabase.rpc('femmes_all');
     if (error) throw error;
     return (data ?? []) as FemmesChapitre[];
+  }
+
+  // ================= Savants (fiches + biographie) =================
+  async getSavants(): Promise<SavantInfo[]> {
+    const { data, error } = await supabase.rpc('savants_all');
+    if (error) throw error;
+    return (data ?? []) as SavantInfo[];
   }
 
   // ================= Accueil (Home) =================

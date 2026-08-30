@@ -1,30 +1,11 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { m, AnimatePresence } from 'framer-motion';
-import { Link } from 'react-router-dom';
-import { Search, Filter, X, Star, ChevronRight, Loader, GraduationCap, GraduationCap as SavantIcon, Landmark } from 'lucide-react';
+import { Link, useSearchParams } from 'react-router-dom';
+import { Search, Filter, X, Star, ChevronRight, Loader, GraduationCap, GraduationCap as SavantIcon, Users } from 'lucide-react';
 import { dataService } from '../services/DataService';
 import { Markdown } from '../components/Markdown';
+import { EcoleBadge } from '../components/EcoleBadge';
 import type { Parole } from '../types';
-
-// Mappe le nom d'école (colonne `ecole`) vers le segment d'URL de sa page.
-const ECOLE_ROUTE: Record<string, string> = {
-  'Hanafi': 'Hanafi',
-  'Malikite': 'Malikite',
-  'Ach-Chafi^iyy': 'Shafii',
-  'Hanbali': 'Hanbalite',
-};
-const EcoleBadge: React.FC<{ ecole: string }> = ({ ecole }) => {
-  const slug = ECOLE_ROUTE[ecole];
-  const cls = 'inline-flex items-center gap-1 text-xs font-semibold px-2.5 py-1 rounded-full bg-emerald-100 dark:bg-emerald-800/60 text-emerald-800 dark:text-emerald-200';
-  const inner = <><Landmark className="w-3.5 h-3.5" /> École {ecole}</>;
-  return slug ? (
-    <Link to={`/ecoles/${slug}`} onClick={(e) => e.stopPropagation()} className={`${cls} hover:bg-emerald-200 dark:hover:bg-emerald-700 transition-colors`}>
-      {inner}
-    </Link>
-  ) : (
-    <span className={cls}>{inner}</span>
-  );
-};
 
 const ParoleCard: React.FC<{ parole: Parole; onClick: () => void }> = ({ parole, onClick }) => (
     <m.div
@@ -54,7 +35,7 @@ const ParoleCard: React.FC<{ parole: Parole; onClick: () => void }> = ({ parole,
                   Savant : {parole.savant}
                 </span>
             )}
-            {parole.ecole && <EcoleBadge ecole={parole.ecole} />}
+            {parole.ecole && <EcoleBadge ecole={parole.ecole} onClick={(e) => e.stopPropagation()} />}
           </div>
       )}
 
@@ -184,11 +165,19 @@ export const Paroles: React.FC = () => {
   const [selected, setSelected] = useState<Parole | null>(null);
   const [isSearching, setIsSearching] = useState(false);
 
+  const [searchParams] = useSearchParams();
+
   useEffect(() => {
     loadParoles();
     dataService.getParoleTags().then(setAllTags).catch(() => {});
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // Pré-filtre par savant si on arrive depuis la page /savants (?savant=Nom).
+  useEffect(() => {
+    const s = searchParams.get('savant');
+    if (s) setSelectedSavant(s);
+  }, [searchParams]);
 
   const loadParoles = async () => {
     setIsLoading(true);
@@ -289,6 +278,12 @@ export const Paroles: React.FC = () => {
             <p className="text-xl text-emerald-200 max-w-3xl mx-auto">
               Explorez les paroles des savants de Ahlu s-Sounnah
             </p>
+            <Link
+              to="/savants"
+              className="inline-flex items-center gap-2 mt-6 px-5 py-2.5 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white font-medium transition-colors"
+            >
+              <Users className="h-5 w-5" /> Découvrir les savants
+            </Link>
           </div>
         </m.header>
 

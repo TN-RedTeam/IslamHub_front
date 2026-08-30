@@ -7,6 +7,7 @@ import { Hadiths } from './pages/Hadiths';
 import { Dhikrs } from './pages/Dhikrs';
 import { Douaas } from './pages/Douaas';
 import { Paroles } from './pages/Paroles';
+import { Savants } from './pages/Savants';
 import { Corans } from './pages/Coran';
 import { Multimedia } from './pages/Multimedia';
 import { Femmes } from './pages/Femmes';
@@ -43,6 +44,7 @@ function App() {
                 <Route path="/dhikrs" element={<Dhikrs />} />
                 <Route path="/douaas" element={<Douaas />} />
                 <Route path="/paroles" element={<Paroles />} />
+                <Route path="/savants" element={<Savants />} />
                 <Route path="/multimedia" element={<Multimedia />} />
                 <Route path="/femmes" element={<Femmes />} />
 

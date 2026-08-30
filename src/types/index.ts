@@ -44,6 +44,16 @@ export interface Parole extends BaseText {
 /** Alias historique — `Parole` est le nom canonique. */
 export type Savant = Parole;
 
+/** Fiche savant (table `savants`) pour la page /savants */
+export interface SavantInfo {
+  id: number;
+  nom: string;
+  ecole: string | null;       // nom de l'école (Hanafi, Malikite...)
+  ecole_slug: string | null;  // segment d'URL de la page école
+  biographie: string | null;  // Markdown
+  nb_paroles: number;         // nombre de paroles rattachées
+}
+
 /** Vidéo YouTube (lien externe) */
 export interface Multimedia {
   id: number;
