@@ -3,6 +3,7 @@ import { m, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Search, Filter, X, Star, ChevronRight, Loader, GraduationCap, GraduationCap as SavantIcon, Landmark } from 'lucide-react';
 import { dataService } from '../services/DataService';
+import { Markdown } from '../components/Markdown';
 import type { Parole } from '../types';
 
 // Mappe le nom d'école (colonne `ecole`) vers le segment d'URL de sa page.
@@ -151,7 +152,7 @@ const ParoleModal: React.FC<{ parole: Parole | null; onClose: () => void }> = ({
             {parole.explication && (
                 <div className="mt-6 bg-emerald-50 dark:bg-emerald-900/30 p-6 rounded-lg">
                   <p className="text-lg font-bold text-emerald-800 dark:text-emerald-300 mb-3">Explication :</p>
-                  <p className="text-gray-700 dark:text-gray-300">{parole.explication}</p>
+                  <Markdown>{parole.explication}</Markdown>
                 </div>
             )}
 
