@@ -508,15 +508,12 @@ const Hanbalite: React.FC = () => {
                         <p className="mb-4">
                             – Nombreux sont les savants qui ont innocenté l’Imâm Ahmad de la croyance des moujassimah (corporalistes). Parmi eux :
                         </p>
-                        <p className="mb-4">
-                             Le grand savant Hanbalite, l’Imâm Ibnou l-Jawzi (رحمه الله), un pilier dans l’école de l’Imâm Ahmad, qui a dit : « <b>Ahmad</b> (C’est-à-dire l’Imâm Ahmad Ibnou Hanbal) <b>n’a jamais attribué de direction à Al-Bârî</b> (Le Créateur : c’est-à-dire Allâh)» [Daf’ou Choubahi t-Tachbîh]
-                        </p>
-                        <p className="mb-4">
-                            Le Qâdî Badrou d-Dîn Ibnou Jamâ’ah (رحمه الله) qui a dit : <b>« Certes l’Imâm Ahmad Ibnou Hanbal n’a jamais attribué de direction à Al-Bârî (Le Créateur : c’est-à-dire Allâh)»</b> [Îdâhou d-Dalîl]
-                        </p>
-                        <p className="mb-4">
-                            Le Chaykh Ibn ‘Allân As-Siddîqi (رحمه الله) qui a dit : <b>« Allâh ta’âlâ est exempt de la direction, de l’endroit, du corps et de toutes les caractéristiques de ce qui entre en existence. Ceci est la croyance des gens de la vérité, parmi lesquels figure l’Imâm Ahmad [Ibn Hanbal]. Quant à ce que certains lui ont attribué comme parole affirmant une direction ou des choses semblables, c’est un mensonge manifeste à son encontre ainsi qu’à l’encontre de ses premiers compagnons, comme l’a expliqué Ibn Al-Jawzi, l’un des grands savants hanbalites»</b> [Al-Foutoûhâtou r-Rabbâniyyah]
-                        </p>
+                        <ul className="list-disc pl-6 space-y-2 marker:text-emerald-500 mb-4">
+                            <li>Le grand savant Hanbalite, l’Imâm Ibnou l-Jawzi (رحمه الله), un pilier dans l’école de l’Imâm Ahmad, qui a dit : <b>« Ahmad (C’est-à-dire l’Imâm Ahmad Ibnou Hanbal) n’a jamais attribué de direction à Al-Bârî (Le Créateur : c’est-à-dire Allâh)»</b> [Daf’ou Choubahi t-Tachbîh]</li>
+                            <li>Le Qâdî Badrou d-Dîn Ibnou Jamâ’ah (رحمه الله) qui a dit : « Certes l’Imâm Ahmad Ibnou Hanbal n’a jamais attribué de direction à Al-Bârî (Le Créateur : c’est-à-dire Allâh)» [Îdâhou d-Dalîl]</li>
+                            <li>Le Chaykh Ibn ‘Allân As-Siddîqi (رحمه الله) qui a dit : <b>« Allâh ta’âlâ est exempt de la direction, de l’endroit, du corps et de toutes les caractéristiques de ce qui entre en existence. Ceci est la croyance des gens de la vérité, parmi lesquels figure l’Imâm Ahmad [Ibn Hanbal]. Quant à ce que certains lui ont attribué comme parole affirmant une direction ou des choses semblables, c’est un mensonge manifeste à son encontre ainsi qu’à l’encontre de ses premiers compagnons, comme l’a expliqué Ibn Al-Jawzi, l’un des grands savants hanbalites»</b> [Al-Foutoûhâtou r-Rabbâniyyah]</li>
+                        </ul>
+
                         <p className="mb-4">
                             Le Hâfidh Taqiyyou d-Dîn Ibnou Salâh (m.643 H.) a dit : <b>« Allâh a éprouvé deux imams à travers leurs compagnons, alors qu’ils sont innocents [de leurs égarements] :  Ahmad Ibnou Hambal a été éprouvé par les moujassimah (corporalistes) et Ja’far As-Sâdiq a été éprouvé par les râfidah (groupe chiite) »</b> [rapporté par Tâjou d-Dîn As-Soubki dans Tabaqâtou ch-Châfi’iyyah Al-Koubrâ]
                         </p>
@@ -532,36 +529,18 @@ const Hanbalite: React.FC = () => {
                         <p className="mb-4">
                             – L’Imâm Ahmad [Ibn Hambal] a été interrogé au sujet de l’istiwâ [de Allâh], il a dit : <b>« Istawâ tel qu’Il l’a porté à notre connaissance, et non pas comme cela pourrait passer par l’imagination des humains.»</b> [Rapporté par l’Imâm Ahmad Ar-Rifâ’i]
                         </p>
-                        <p className="mb-4">
-                            – Cette citation de l’Imâm Ahmad a également été rapportée par :
-                        </p>
-                        <p className="mb-4">
-                            L’Imâm Ibnou ‘Abdi s-Salâm dans son livre « Hallou r-Roumoûz » ;
-                        </p>
-                        <p className="mb-4">
-                            Le Chaykh Taqiyyou d-Dîn Al-Hisni dans son livre « Daf’ou choubahi man chabbaha wa tamarrad » ;
-                        </p>
-                        <p className="mb-4">
-                            Le Chaykh Moujîrou d-Dîn Al-‘Oulaymi Al-Hambali dans son tafsîr ;
-                        </p>
-                        <p className="mb-4">
-                            Le Chaykh Ahmad Zarroûq Al-Fâçi dans son Charh ‘Aqîdati l-Imâm Al-Ghazâli ;
-                        </p>
-                        <p className="mb-4">
-                            Le Chaykh Chihâbou d-Dîn Ar-Ramli dans ses fatâwâ ;
-                        </p>
-                        <p className="mb-4">
-                            Le Chaykh ‘Alwân Ibn ‘Atiyyah Al-Houçayni Al-Hamawi dans son livre « Bayân Al-Ma’âni » ;
-                        </p>
-                        <p className="mb-4">
-                            Le Chaykh An-Nafrâwi Al-Azhari dans son livre « Al-Fawâkih Ad-Dawâni » ;
-                        </p>
-                        <p className="mb-4">
-                            Le Chaykh Mouhammad Ibnou Soulaymân Al-Halabi dans son livre « Noukhbatou l-La-âlî » ;
-                        </p>
-                        <p className="mb-4">
-                            Et d’autres qu’eux.
-                        </p>
+                        <ul className="list-disc pl-6 space-y-2 marker:text-emerald-500 mb-4">
+                            <li>L'Imâm Ibnou 'Abdi s-Salâm dans son livre « Hallou r-Roumoûz » ;</li>
+                            <li>Le Chaykh Taqiyyou d-Dîn Al-Hisni dans son livre « Daf'ou choubahi man chabbaha wa tamarrad » ;</li>
+                            <li>Le Chaykh Moujîrou d-Dîn Al-'Oulaymi Al-Hambali dans son tafsîr ;</li>
+                            <li>Le Chaykh Ahmad Zarroûq Al-Fâçi dans son Charh 'Aqîdati l-Imâm Al-Ghazâli ;</li>
+                            <li>Le Chaykh Chihâbou d-Dîn Ar-Ramli dans ses fatâwâ ;</li>
+                            <li>Le Chaykh 'Alwân Ibn 'Atiyyah Al-Houçayni Al-Hamawi dans son livre « Bayân Al-Ma'âni » ;</li>
+                            <li>Le Chaykh An-Nafrâwi Al-Azhari dans son livre « Al-Fawâkih Ad-Dawâni » ;</li>
+                            <li>Le Chaykh Mouhammad Ibnou Soulaymân Al-Halabi dans son livre « Noukhbatou l-La-âlî » ;</li>
+                            <li>Et d'autres qu'eux.</li>
+                        </ul>
+
                         <p className="mb-4">
                             – Ibnou Kathîr mentionne également la position de l’Imâm Ahmad concernant l’istiwâ de Allâh, qui est d’y croire sans assimilation, sans comment et sans prendre le sens apparent (comme la position assise ou l’établissement). [Dans son Tafsîr]
                         </p>
@@ -578,15 +557,18 @@ const Hanbalite: React.FC = () => {
                         <p className="mb-4">
                             – Cette interprétation de l’Imâm Ahmad Ibn Hanbal a été mentionnée dans de nombreux ouvrages de savants. Parmi eux :
                         </p>
+                       <ul className="list-disc pl-6 space-y-2 marker:text-emerald-500 mb-4">
+                           <li>Le Hâfidh Al-Bayhaqi, avec une chaîne de transmission authentique comme le mentionne Ibnou Kathîr [Dans son livre Al-Bidâyah wa n-Nihâyah]</li>
+                           <li>L’Imâm Ibnou l-Jawzi Al-Hanbali [dans son livre Daf’ou Choubahi t-Tachbîh]</li>
+                           <li>Le Chaykh Ahmad Ibn Hamdân Al-Hanbali [dans son livre Nihâyatou l-Moubtadi-în]</li>
+                           <li>Le Chaykh Taqiyyou d-Dîn Al-Hisni [Dans son livre Daf’ou choubahi man chabbaha wa tamarrad]</li>
+                           <li>Le Chaykh As-Sa’idi Al-Hanbali [Dans son livre Al-Jawhar Al-Mouhsal fî Manâqibi l-Imâm Ahmad Ibnou Hanbal]</li>
+                           <li>Le Chaykh Moujîrou d-Dîn Al-‘Oulaymi Al-Hanbali [dans son tafsîr]</li>
+                           <li>Le Chaykh Al-Kawthari [dans son introduction du livre Al-Asmâ-ou wa s-Sifât]</li>
+                       </ul>
+
                         <p className="mb-4">
-                            – Cette interprétation de l’Imâm Ahmad Ibn Hanbal a été mentionnée dans de nombreux ouvrages de savants. Parmi eux :
-                        </p>
-
-
-
-                        <h4 className="font-bold text-lg text-emerald-700 dark:text-emerald-300 mb-2 mt-6">Ach-Chafi^iyy a recherché les bénédictions par l'Imam Ahmad</h4>
-                        <p className="mb-4">
-                            Al-Bayhaqiyy rapporte que Ar-Rabi^ a dit : « Ach-Chafi^iyy m'a confié une lettre à remettre à Ahmad. Je l'ai donc rencontré juste après qu'il a accompli la prière du matin (as–soubh) et la lui ai remise. Il m'a demandé : "L'as-tu lue ?" Je lui ai répondu : "Non." Il l'a prise et quand il en termina la lecture il a pleuré. Je lui ai demandé alors : « Ya 'Aba ^Abdi l-Lah, qu'as-tu lu ? » Il a répondu : « Ach-Chafi^iyy m'informe qu'il a vu le Prophète dans le rêve lui dire ce qui signifie : Écris à Abou ^Abdi l-Lah Ahmad Ibnou Hanbal, passe lui mon salam et dis-lui : Tu seras éprouvé pour que tu dises que le Qour'an est créé. Alors ne les écoute pas, Allah t'en rétribuera jusqu'au Jour dernier. » J'ai dit alors à Ahmad Ibnou Hanbal : « Quelle est ma récompense pour cette nouvelle ? » Il a retiré le vêtement qu'il portait et me l'a remis. Lorsque je suis retourné chez Ach-Chafi^iyy, je l'ai informé de ce qui s'était passé, alors il m'a dit : « Je ne vais pas t'attrister en te demandant ce vêtement mais trempe-le dans l'eau et donne-moi de cette eau pour les bénédictions. »
+                            – Le Chaykh Ibn Hamdân Al-Hanbali a dit : « Et [l’Imâm] Ahmad a certes interprété certains versets et certains hadîths comme le verset de an-najwâ, ainsi que Sa parole{' '} <span lang="ar" dir="rtl" className="font-arabic">ُ﴿ أَن يَأْتِيَهُمُ اللّهُ ﴾</span>{' '} [an ya-tiyahoumou l-Lâh] et il a dit qu’il s’agit de Sa puissance (c’est-à-dire les manifestations de Sa toute puissance) et Son ordre. Et Sa parole{' '} <span lang="ar" dir="rtl" className="font-arabic">﴿ وَجَاء رَبُّكَ ﴾</span>{' '} [wa jâ-a rabbouk] et il a dit qu’il s’agit de Sa puissance. Et Ibnou l-Jawzi [Al-Hambali] a mentionné ces deux interprétations [de l’Imâm Ahmad] dans « Al-Minhâj » et il a, quant à lui, penché vers le fait de prendre les versets tels qu’ils sont parvenus sans en donner d’explications, et Ibn ‘Aqîl [Al-Hambali] a interprété de nombreux versets et khabar. Et [l’Imâm] Ahmad a interprété la parole du prophète ﷺ : {' '} <span lang="ar" dir="rtl" className="font-arabic whitespace-nowrap"> « الحجر الأسود يمين الله في الارض » </span>{' '} [al-hajarou l-aswad yamînou l-Lâhi fi l-ard] et ce qui est similaire » [Nihâyatou l-Moubtadi-în]. Cela nous indique que bien que la voie majoritaire des savants du Salaf était de ne pas procéder à l’interprétation, il est toutefois arrivé que certains d’entre eux, à l’image de l’Imâm Ahmad Ibn Hambal, la pratiquait dans certains cas. Et il en est de même concernant les savants du madhhab Hambalite.
                         </p>
                     </CollapsibleSection>
 
