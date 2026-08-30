@@ -390,9 +390,21 @@ export const Douaas: React.FC = () => {
                                 <h3 className="text-3xl font-bold text-emerald-800 dark:text-emerald-200 mb-4 font-amiri">
                                     Recherchez parmi les invocations
                                 </h3>
-                                <p className="text-gray-600 dark:text-gray-400 mb-8 leading-relaxed text-lg">
-                                    Saisissez un mot-clé ou sélectionnez un tag pour trouver une douaa.
+                                <p className="text-gray-600 dark:text-gray-400 mb-6 leading-relaxed text-lg">
+                                    Saisissez un mot-clé, sélectionnez un tag — ou affichez tout.
                                 </p>
+                                <button
+                                    onClick={async () => {
+                                        setIsLoading(true);
+                                        try {
+                                            const res = await dataService.searchDouaas('', null, { page: 0, pageSize: 1000 });
+                                            setDouaas(res.data ?? []); setTotalCount(res.count ?? 0); setHasSearched(true);
+                                        } finally { setIsLoading(false); }
+                                    }}
+                                    className="inline-flex items-center gap-2 px-6 py-3 mb-8 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-medium shadow"
+                                >
+                                    Tout afficher
+                                </button>
                                 {allTags.length > 0 && (
                                     <div className="flex flex-wrap gap-2 justify-center">
                                         <p className="w-full text-sm text-gray-500 dark:text-gray-400 mb-2">Suggestions :</p>
