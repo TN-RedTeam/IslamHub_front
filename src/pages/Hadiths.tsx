@@ -206,20 +206,16 @@ export const Hadiths: React.FC = () => {
   };
 
   const loadTags = async () => {
+    // `allTags` contient désormais les SUJETS (filtre déroulant par sujet).
     try {
-      const tags = await dataService.getHadithTags();
-      setAllTags(tags);
+      const sujets = await dataService.getHadithSujets();
+      setAllTags(sujets);
     } catch (err) {
-      console.error('Error loading tags:', err);
+      console.error('Error loading sujets:', err);
       if (hadithsData.length > 0) {
-        const tags = new Set<string>();
-        hadithsData.forEach(hadith => {
-          (hadith.tag || '').split(',').filter(Boolean)
-              .map(t => t.trim())
-              .filter(t => t.length > 0)
-              .forEach(tag => tags.add(tag));
-        });
-        setAllTags(Array.from(tags).sort((a, b) => a.localeCompare(b)));
+        const sujets = new Set<string>();
+        hadithsData.forEach(h => { if (h.sujet && h.sujet.trim()) sujets.add(h.sujet.trim()); });
+        setAllTags(Array.from(sujets).sort((a, b) => a.localeCompare(b)));
       }
     }
   };
@@ -244,12 +240,8 @@ export const Hadiths: React.FC = () => {
         let results = [...hadithsData];
 
         if (selectedTag) {
-          const tagToFind = selectedTag.toLowerCase();
-          results = results.filter(hadith =>
-              (hadith.tag || '').split(',').filter(Boolean)
-                  .map(t => t.trim().toLowerCase())
-                  .includes(tagToFind)
-          );
+          const sujetToFind = selectedTag.toLowerCase();
+          results = results.filter(hadith => (hadith.sujet || '').trim().toLowerCase() === sujetToFind);
         }
 
         if (searchTerm.trim()) {
@@ -398,12 +390,12 @@ export const Hadiths: React.FC = () => {
                   <Filter className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
                 </div>
                 <select
-                    aria-label="Filtrer par thème"
+                    aria-label="Filtrer par sujet"
                     className="w-full pl-4 pr-10 py-3 rounded-xl border border-emerald-200 dark:border-emerald-800 bg-white dark:bg-gray-800 text-gray-900 dark:text-white appearance-none font-medium"
                     value={selectedTag || ''}
                     onChange={(e) => setSelectedTag(e.target.value || null)}
                 >
-                  <option value="">Tous les thèmes</option>
+                  <option value="">Tous les sujets</option>
                   {allTags.map(tag => (
                       <option key={tag} value={tag}>{tag}</option>
                   ))}
@@ -469,7 +461,7 @@ export const Hadiths: React.FC = () => {
                 >
                   <span className="font-medium text-emerald-800 dark:text-emerald-200 flex flex-wrap items-center gap-2">
                     Filtres :
-                    {selectedTag && <span className="font-bold">#{selectedTag}</span>}
+                    {selectedTag && <span className="px-2 py-0.5 bg-emerald-100 dark:bg-emerald-800 rounded-full text-sm">{selectedTag}</span>}
                     {selectedStatut && <span className="px-2 py-0.5 bg-amber-100 dark:bg-amber-900/40 text-amber-800 dark:text-amber-200 rounded-full text-sm">{selectedStatut}</span>}
                     {selectedRapporteur && <span className="px-2 py-0.5 bg-emerald-100 dark:bg-emerald-800 rounded-full text-sm">{selectedRapporteur}</span>}
                     {selectedNarrateur && <span className="px-2 py-0.5 bg-emerald-100 dark:bg-emerald-800 rounded-full text-sm">{selectedNarrateur}</span>}
@@ -491,7 +483,7 @@ export const Hadiths: React.FC = () => {
                 <div className="text-6xl mb-4">🔍</div>
                 <h3 className="text-xl font-bold text-gray-700 dark:text-gray-300 mb-2 font-amiri">Recherchez un hadith</h3>
                 <p className="text-gray-500 dark:text-gray-400 max-w-md mx-auto mb-6">
-                  Saisissez un mot-clé ou choisissez un filtre (thème, authenticité, rapporteur, narrateur) — ou affichez tout.
+                  Saisissez un mot-clé (cherche aussi dans les tags) ou choisissez un filtre (sujet, authenticité, rapporteur, narrateur) — ou affichez tout.
                 </p>
                 <button
                   onClick={() => setShowAll(true)}
@@ -501,14 +493,14 @@ export const Hadiths: React.FC = () => {
                 </button>
                 {allTags.length > 0 && (
                   <div className="flex flex-wrap gap-2 justify-center max-w-lg mx-auto">
-                    <span className="w-full text-sm text-gray-400 mb-1">Suggestions :</span>
-                    {allTags.slice(0, 8).map((t) => (
+                    <span className="w-full text-sm text-gray-400 mb-1">Sujets :</span>
+                    {allTags.slice(0, 10).map((t) => (
                       <button
                         key={t}
                         onClick={() => setSelectedTag(t)}
                         className="px-4 py-2 rounded-full text-sm font-medium bg-amber-100 dark:bg-emerald-800/60 text-amber-800 dark:text-emerald-200 hover:bg-amber-200 dark:hover:bg-emerald-700 transition-colors"
                       >
-                        #{t}
+                        {t}
                       </button>
                     ))}
                   </div>

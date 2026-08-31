@@ -136,6 +136,13 @@ class DataService {
     return rpcTags('names_paroles');
   }
 
+  // ===== Sujets (liste des sujets distincts, pour le menu déroulant) =====
+  async getHadithSujets(): Promise<string[]> { return rpcTags('sujets_hadiths'); }
+  async getCoranSujets(): Promise<string[]> { return rpcTags('sujets_coran'); }
+  async getDhikrSujets(): Promise<string[]> { return rpcTags('sujets_dhikrs'); }
+  async getDouaaSujets(): Promise<string[]> { return rpcTags('sujets_douaas'); }
+  async getParoleSujets(): Promise<string[]> { return rpcTags('sujets_paroles'); }
+
   // ================= Multimedia =================
   async searchMultimedia(
     searchTerm: string,

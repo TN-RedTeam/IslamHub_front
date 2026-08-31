@@ -170,7 +170,7 @@ export const Paroles: React.FC = () => {
 
   useEffect(() => {
     loadParoles();
-    dataService.getParoleTags().then(setAllTags).catch(() => {});
+    dataService.getParoleSujets().then(setAllTags).catch(() => {});
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -320,12 +320,12 @@ export const Paroles: React.FC = () => {
                   <Filter className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
                 </div>
                 <select
-                    aria-label="Filtrer par thème"
+                    aria-label="Filtrer par sujet"
                     className="w-full pl-4 pr-10 py-3 rounded-xl border border-emerald-200 dark:border-emerald-800 bg-white dark:bg-gray-800 text-gray-900 dark:text-white appearance-none font-medium"
                     value={selectedTag || ''}
                     onChange={(e) => setSelectedTag(e.target.value || null)}
                 >
-                  <option value="">Tous les thèmes</option>
+                  <option value="">Tous les sujets</option>
                   {allTags.map(tag => (
                       <option key={tag} value={tag}>{tag}</option>
                   ))}
@@ -380,7 +380,7 @@ export const Paroles: React.FC = () => {
                 <div className="text-6xl mb-4">🔍</div>
                 <h3 className="text-xl font-bold text-gray-700 dark:text-gray-300 mb-2 font-amiri">Recherchez une parole</h3>
                 <p className="text-gray-500 dark:text-gray-400 max-w-md mx-auto mb-6">
-                  Saisissez un mot-clé, un savant, choisissez un thème — ou affichez tout.
+                  Saisissez un mot-clé (cherche aussi les tags), un savant, choisissez un sujet — ou affichez tout.
                 </p>
                 <button
                   onClick={() => setShowAll(true)}
@@ -390,14 +390,14 @@ export const Paroles: React.FC = () => {
                 </button>
                 {allTags.length > 0 && (
                   <div className="flex flex-wrap gap-2 justify-center max-w-lg mx-auto">
-                    <span className="w-full text-sm text-gray-400 mb-1">Suggestions :</span>
+                    <span className="w-full text-sm text-gray-400 mb-1">Sujets :</span>
                     {allTags.slice(0, 8).map((t) => (
                       <button
                         key={t}
                         onClick={() => setSelectedTag(t)}
                         className="px-4 py-2 rounded-full text-sm font-medium bg-amber-100 dark:bg-emerald-800/60 text-amber-800 dark:text-emerald-200 hover:bg-amber-200 dark:hover:bg-emerald-700 transition-colors"
                       >
-                        #{t}
+                        {t}
                       </button>
                     ))}
                   </div>
