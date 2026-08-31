@@ -252,7 +252,7 @@ const TagSelector: React.FC<{
         <div className="flex items-center gap-2">
           <Filter className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
           <span className="font-medium">
-            {selectedTag ? `Mot-clé: ${selectedTag}` : 'Filtrer par mot-clé'}
+            {selectedTag ? `Sujet : ${selectedTag}` : 'Filtrer par sujet'}
           </span>
         </div>
         <ChevronDown className={`h-5 w-5 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} />
@@ -271,7 +271,7 @@ const TagSelector: React.FC<{
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
                 <input
                   type="text"
-                  placeholder="Rechercher un mot-clé..."
+                  placeholder="Rechercher un sujet..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="w-full pl-9 pr-3 py-2 rounded-lg border border-emerald-200 dark:border-emerald-700 bg-gray-50 dark:bg-gray-900 text-sm focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
@@ -285,8 +285,8 @@ const TagSelector: React.FC<{
                 className={`w-full text-left px-4 py-2 hover:bg-emerald-50 dark:hover:bg-emerald-900/50 transition-colors ${!selectedTag ? 'bg-emerald-100 dark:bg-emerald-900/30 font-medium' : ''}`}
               >
                 <div className="flex items-center justify-between">
-                  <span>🏷️ Tous les mots-clés</span>
-                  <span className="text-xs text-gray-500">{allTags.length} mots-clés</span>
+                  <span>🏷️ Tous les sujets</span>
+                  <span className="text-xs text-gray-500">{allTags.length} sujets</span>
                 </div>
               </button>
 
@@ -309,7 +309,7 @@ const TagSelector: React.FC<{
                 })
               ) : (
                 <div className="px-4 py-8 text-center text-gray-500">
-                  Aucun mot-clé trouvé pour "{searchQuery}"
+                  Aucun sujet trouvé pour "{searchQuery}"
                 </div>
               )}
             </div>
@@ -345,10 +345,11 @@ export const Corans: React.FC = () => {
   const loadMoreRef = useRef<HTMLDivElement>(null);
   const debounceRef = useRef<ReturnType<typeof setTimeout>>();
 
-  // Preload all tag names
+  // Précharge les SUJETS (le menu déroulant filtre par sujet ; les tags se
+  // cherchent en texte libre dans la barre de recherche).
   useEffect(() => {
-    dataService.getCoranTags()
-      .then(tags => setAllTags([...new Set(tags)].sort((a, b) => a.localeCompare(b))))
+    dataService.getCoranSujets()
+      .then(sujets => setAllTags([...new Set(sujets)].sort((a, b) => a.localeCompare(b))))
       .catch(() => {});
   }, []);
 
@@ -431,8 +432,17 @@ export const Corans: React.FC = () => {
     return () => obs.disconnect();
   }, [hasMore, isLoadingMore, isLoading, hasSearched, currentPage, searchTerm, selectedTag, doSearch]);
 
+  // Un clic sur un TAG lance une recherche en texte libre (les tags ne sont
+  // plus un filtre : ils vivent dans la barre de recherche).
   const handleTagClick = (tag: string) => {
-    setSelectedTag(tag);
+    setSelectedTag(null);
+    setSearchTerm(tag);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  // Un clic sur un SUJET (suggestions) applique le filtre par sujet.
+  const handleSujetClick = (sujet: string) => {
+    setSelectedTag(sujet);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -500,7 +510,7 @@ export const Corans: React.FC = () => {
                   <> / <span className="font-bold">{totalCount}</span></>
                 )}
                 {' '}verset{corans.length !== 1 ? 's' : ''}
-                {selectedTag && <> pour le mot-clé <span className="font-bold">{selectedTag}</span></>}
+                {selectedTag && <> pour le sujet <span className="font-bold">{selectedTag}</span></>}
                 {searchTerm && <> pour "<span className="font-bold">{searchTerm}</span>"</>}
               </p>
             </div>
@@ -599,11 +609,8 @@ export const Corans: React.FC = () => {
                 <span className="font-medium text-emerald-800 dark:text-emerald-200">Filtre actif :</span>
                 {selectedTag && (
                   <span className="inline-flex items-center gap-1 px-2 py-1 bg-emerald-600 text-white rounded-full text-sm">
-                    <Hash className="h-3 w-3" />
+                    <Filter className="h-3 w-3" />
                     {selectedTag}
-                    {tagCounts.get(selectedTag) ? (
-                      <span className="text-xs opacity-75 ml-1">({tagCounts.get(selectedTag)})</span>
-                    ) : null}
                   </span>
                 )}
                 {searchTerm && (
@@ -687,16 +694,16 @@ export const Corans: React.FC = () => {
                 </button>
                 {allTags.length > 0 && (
                   <div className="flex flex-wrap gap-2 justify-center">
-                    <p className="w-full text-sm text-gray-500 dark:text-gray-400 mb-2">Suggestions :</p>
-                    {allTags.slice(0, 8).map(tag => (
+                    <p className="w-full text-sm text-gray-500 dark:text-gray-400 mb-2">Sujets :</p>
+                    {allTags.slice(0, 8).map(sujet => (
                       <m.button
-                        key={tag}
+                        key={sujet}
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
-                        onClick={() => handleTagClick(tag)}
+                        onClick={() => handleSujetClick(sujet)}
                         className="px-4 py-2 bg-amber-100 dark:bg-emerald-800/60 text-amber-800 dark:text-emerald-200 rounded-full text-sm font-medium hover:bg-amber-200 dark:hover:bg-emerald-700 transition-colors border border-amber-200 dark:border-emerald-700"
                       >
-                        #{tag}
+                        {sujet}
                       </m.button>
                     ))}
                   </div>

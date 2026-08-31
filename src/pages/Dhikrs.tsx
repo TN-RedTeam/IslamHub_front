@@ -32,10 +32,11 @@ export const Dhikrs: React.FC = () => {
 
     const debounceRef = useRef<ReturnType<typeof setTimeout>>();
 
-    // Charger les tags au montage (léger, sans les dhikrs)
+    // Charger les SUJETS au montage (le menu déroulant filtre par sujet ; les
+    // tags se cherchent en texte libre dans la barre de recherche).
     useEffect(() => {
-        dataService.getDhikrTags()
-            .then(tags => setAllTags([...new Set(tags)].sort((a, b) => a.localeCompare(b))))
+        dataService.getDhikrSujets()
+            .then(sujets => setAllTags([...new Set(sujets)].sort((a, b) => a.localeCompare(b))))
             .catch(() => {});
     }, []);
 
@@ -84,8 +85,17 @@ export const Dhikrs: React.FC = () => {
         ? dhikrs.filter(d => d.categorie === selectedCategory)
         : dhikrs;
 
+    // Clic sur un TAG → recherche en texte libre (les tags ne sont plus un filtre).
     const handleTagClick = (tag: string) => {
-        setSelectedTag(tag);
+        setSelectedTag(null);
+        setSelectedCategory(null);
+        setSearchQuery(tag);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
+    // Clic sur un SUJET (suggestions) → applique le filtre par sujet.
+    const handleSujetClick = (sujet: string) => {
+        setSelectedTag(sujet);
         setSelectedCategory(null);
         window.scrollTo({ top: 0, behavior: 'smooth' });
     };
@@ -230,16 +240,14 @@ export const Dhikrs: React.FC = () => {
                                 <Filter className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
                             </div>
                             <select
-                                aria-label="Filtrer par mot-clé"
+                                aria-label="Filtrer par sujet"
                                 className="w-full pl-4 pr-10 py-3 rounded-xl border border-emerald-200 dark:border-emerald-800 bg-white dark:bg-gray-800 text-gray-900 dark:text-white appearance-none font-medium cursor-pointer"
                                 value={selectedTag || ''}
                                 onChange={(e) => { setSelectedTag(e.target.value || null); setSelectedCategory(null); }}
                             >
-                                <option value="">🏷️ Tous les mots-clés</option>
-                                {allTags.map(tag => (
-                                    <option key={tag} value={tag}>
-                                        {tag}{tagCounts.get(tag) ? ` (${tagCounts.get(tag)})` : ''}
-                                    </option>
+                                <option value="">🏷️ Tous les sujets</option>
+                                {allTags.map(sujet => (
+                                    <option key={sujet} value={sujet}>{sujet}</option>
                                 ))}
                             </select>
                         </div>
@@ -260,7 +268,7 @@ export const Dhikrs: React.FC = () => {
                                 )}
                                 {selectedTag && (
                                     <span className="inline-flex items-center gap-1 px-2 py-1 bg-amber-600 text-white rounded-full text-sm">
-                                        <Hash className="h-3 w-3" />{selectedTag}
+                                        <Filter className="h-3 w-3" />{selectedTag}
                                     </span>
                                 )}
                                 {searchQuery && (
@@ -308,7 +316,7 @@ export const Dhikrs: React.FC = () => {
                                     Recherchez parmi les dhikrs
                                 </h3>
                                 <p className="text-gray-600 dark:text-gray-400 mb-6 leading-relaxed text-lg">
-                                    Saisissez un mot-clé, sélectionnez un tag — ou affichez tout.
+                                    Saisissez un mot-clé, sélectionnez un sujet — ou affichez tout.
                                 </p>
                                 <button
                                     onClick={async () => {
@@ -324,16 +332,16 @@ export const Dhikrs: React.FC = () => {
                                 </button>
                                 {allTags.length > 0 && (
                                     <div className="flex flex-wrap gap-2 justify-center">
-                                        <p className="w-full text-sm text-gray-500 dark:text-gray-400 mb-2">Suggestions :</p>
-                                        {allTags.slice(0, 8).map(tag => (
+                                        <p className="w-full text-sm text-gray-500 dark:text-gray-400 mb-2">Sujets :</p>
+                                        {allTags.slice(0, 8).map(sujet => (
                                             <m.button
-                                                key={tag}
+                                                key={sujet}
                                                 whileHover={{ scale: 1.05 }}
                                                 whileTap={{ scale: 0.95 }}
-                                                onClick={() => handleTagClick(tag)}
+                                                onClick={() => handleSujetClick(sujet)}
                                                 className="px-4 py-2 bg-amber-100 dark:bg-emerald-800/60 text-amber-800 dark:text-emerald-200 rounded-full text-sm font-medium hover:bg-amber-200 dark:hover:bg-emerald-700 transition-colors border border-amber-200 dark:border-emerald-700"
                                             >
-                                                #{tag}
+                                                {sujet}
                                             </m.button>
                                         ))}
                                     </div>
