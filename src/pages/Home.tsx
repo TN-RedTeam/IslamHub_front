@@ -9,7 +9,7 @@ import type { Hadith, Douaa, Coran } from '../types';
 
 const mockQuote = {
   text: "Celui pour qui Allah veut le bien, lui facilite l'apprentissage de la religion",
-  author: "Prophet Muhammad ﷺ",
+  author: "Hadith du Prophète ﷺ",
   source: "Sahih Al-Bukhari"
 };
 
