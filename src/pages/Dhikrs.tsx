@@ -405,19 +405,19 @@ export const Dhikrs: React.FC = () => {
                                                             {dhikr.phonétique && (
                                                                 <div className="mb-3 p-3 bg-amber-100/50 dark:bg-emerald-900/30 rounded-lg">
                                                                     <p className="text-sm text-amber-700 dark:text-amber-300 mb-1 font-medium">Phonétique :</p>
-                                                                    <p className="text-gray-700 dark:text-gray-300 italic whitespace-pre-wrap">{dhikr.phonétique}</p>
+                                                                    <p className="text-gray-700 dark:text-gray-300 italic whitespace-pre-wrap [unicode-bidi:plaintext]">{dhikr.phonétique}</p>
                                                                 </div>
                                                             )}
                                                             {dhikr.texte_francais && (
                                                                 <div className="mb-4 pl-4 border-l-4 border-emerald-500">
                                                                     <p className="text-sm text-emerald-700 dark:text-emerald-400 mb-1 font-medium">Traduction :</p>
-                                                                    <p className="text-gray-700 dark:text-gray-300 leading-relaxed whitespace-pre-wrap">{dhikr.texte_francais}</p>
+                                                                    <p className="text-gray-700 dark:text-gray-300 leading-relaxed whitespace-pre-wrap [unicode-bidi:plaintext]">{dhikr.texte_francais}</p>
                                                                 </div>
                                                             )}
                                                             {dhikr.commentaire && (
                                                                 <div className="flex items-start gap-2 p-3 bg-amber-50 dark:bg-emerald-900/20 rounded-lg mt-3">
                                                                     <BookOpen className="w-5 h-5 text-emerald-600 dark:text-emerald-400 flex-shrink-0 mt-0.5" />
-                                                                    <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed whitespace-pre-wrap">{dhikr.commentaire}</p>
+                                                                    <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed whitespace-pre-wrap [unicode-bidi:plaintext]">{dhikr.commentaire}</p>
                                                                 </div>
                                                             )}
                                                             {tags.length > 0 && (

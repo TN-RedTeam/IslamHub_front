@@ -47,7 +47,7 @@ const ParoleCard: React.FC<{ parole: Parole; onClick: () => void }> = ({ parole,
         {parole.texte_francais && (
             <div className="mt-4 pl-4 border-l-4 border-amber-300 dark:border-emerald-600 line-clamp-2">
               <p className="text-sm text-amber-700 dark:text-amber-200 mb-1">Signification :</p>
-              <p className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap">{parole.texte_francais}</p>
+              <p className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap [unicode-bidi:plaintext]">{parole.texte_francais}</p>
             </div>
         )}
       </div>
@@ -118,14 +118,14 @@ const ParoleModal: React.FC<{ parole: Parole | null; onClose: () => void }> = ({
               {parole['phonétique'] && (
                   <div className="mt-6 bg-white dark:bg-gray-600 p-4 rounded">
                     <p className="text-sm text-amber-700 dark:text-amber-300 mb-2">Phonétique :</p>
-                    <p className="text-gray-700 dark:text-gray-200 whitespace-pre-wrap">{parole['phonétique']}</p>
+                    <p className="text-gray-700 dark:text-gray-200 whitespace-pre-wrap [unicode-bidi:plaintext]">{parole['phonétique']}</p>
                   </div>
               )}
 
               {parole.texte_francais && (
                   <div className="mt-6 pl-4 border-l-4 border-emerald-500">
                     <p className="text-sm text-emerald-700 dark:text-emerald-400 mb-2">Traduction :</p>
-                    <p className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap">{parole.texte_francais}</p>
+                    <p className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap [unicode-bidi:plaintext]">{parole.texte_francais}</p>
                   </div>
               )}
             </div>
