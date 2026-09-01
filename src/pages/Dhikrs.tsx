@@ -400,24 +400,24 @@ export const Dhikrs: React.FC = () => {
                                                         <div className="flex-1">
                                                             <h3 className="text-2xl font-bold text-amber-800 dark:text-amber-200 mb-3 font-amiri">{dhikr.sujet}</h3>
                                                             <div className="bg-white/50 dark:bg-gray-800/50 p-5 rounded-lg mb-4 border border-amber-100 dark:border-emerald-800">
-                                                                <p className="text-3xl font-arabic text-right leading-loose text-gray-900 dark:text-white font-amiri">{dhikr.texte_arabe}</p>
+                                                                <p className="text-3xl font-arabic text-right leading-loose text-gray-900 dark:text-white font-amiri whitespace-pre-wrap">{dhikr.texte_arabe}</p>
                                                             </div>
                                                             {dhikr.phonétique && (
                                                                 <div className="mb-3 p-3 bg-amber-100/50 dark:bg-emerald-900/30 rounded-lg">
                                                                     <p className="text-sm text-amber-700 dark:text-amber-300 mb-1 font-medium">Phonétique :</p>
-                                                                    <p className="text-gray-700 dark:text-gray-300 italic">{dhikr.phonétique}</p>
+                                                                    <p className="text-gray-700 dark:text-gray-300 italic whitespace-pre-wrap">{dhikr.phonétique}</p>
                                                                 </div>
                                                             )}
                                                             {dhikr.texte_francais && (
                                                                 <div className="mb-4 pl-4 border-l-4 border-emerald-500">
                                                                     <p className="text-sm text-emerald-700 dark:text-emerald-400 mb-1 font-medium">Traduction :</p>
-                                                                    <p className="text-gray-700 dark:text-gray-300 leading-relaxed">{dhikr.texte_francais}</p>
+                                                                    <p className="text-gray-700 dark:text-gray-300 leading-relaxed whitespace-pre-wrap">{dhikr.texte_francais}</p>
                                                                 </div>
                                                             )}
                                                             {dhikr.commentaire && (
                                                                 <div className="flex items-start gap-2 p-3 bg-amber-50 dark:bg-emerald-900/20 rounded-lg mt-3">
                                                                     <BookOpen className="w-5 h-5 text-emerald-600 dark:text-emerald-400 flex-shrink-0 mt-0.5" />
-                                                                    <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">{dhikr.commentaire}</p>
+                                                                    <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed whitespace-pre-wrap">{dhikr.commentaire}</p>
                                                                 </div>
                                                             )}
                                                             {tags.length > 0 && (

@@ -52,11 +52,11 @@ const DouaaCard: React.FC<{ douaa: Douaa; onClick: () => void; onTagClick?: (tag
                 </div>
             )}
             <div className="bg-white dark:bg-gray-800/80 p-4 rounded-lg border border-amber-100 dark:border-emerald-800 flex-grow">
-                <p className="text-2xl text-gray-900 dark:text-white font-arabic leading-loose text-right line-clamp-3">{douaa.texte_arabe}</p>
+                <p className="text-2xl text-gray-900 dark:text-white font-arabic leading-loose text-right line-clamp-3 whitespace-pre-wrap">{douaa.texte_arabe}</p>
                 {douaa.texte_francais && (
                     <div className="mt-4 pl-4 border-l-4 border-amber-300 dark:border-emerald-600 line-clamp-2">
                         <p className="text-sm text-amber-700 dark:text-amber-200 mb-1">Signification :</p>
-                        <p className="text-gray-700 dark:text-gray-300">{douaa.texte_francais}</p>
+                        <p className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap">{douaa.texte_francais}</p>
                     </div>
                 )}
             </div>
@@ -95,29 +95,29 @@ const DouaaModal: React.FC<{ douaa: Douaa; onClose: () => void; onTagClick?: (ta
                 <div className="space-y-6">
                     <h2 className="text-2xl font-bold text-amber-800 dark:text-amber-200 font-amiri">{douaa.sujet}</h2>
                     <div className="bg-amber-50 dark:bg-gray-700 p-6 rounded-lg">
-                        <p className="text-3xl text-gray-900 dark:text-white font-arabic leading-loose text-right">{douaa.texte_arabe}</p>
+                        <p className="text-3xl text-gray-900 dark:text-white font-arabic leading-loose text-right whitespace-pre-wrap">{douaa.texte_arabe}</p>
                         {douaa.phonétique && (
                             <div className="mt-6 bg-white dark:bg-gray-600 p-4 rounded">
                                 <p className="text-sm text-amber-700 dark:text-amber-300 mb-2">Phonétique:</p>
-                                <p className="text-gray-700 dark:text-gray-200">{douaa.phonétique}</p>
+                                <p className="text-gray-700 dark:text-gray-200 whitespace-pre-wrap">{douaa.phonétique}</p>
                             </div>
                         )}
                         {douaa.texte_francais && (
                             <div className="mt-6 pl-4 border-l-4 border-emerald-500">
                                 <p className="text-sm text-emerald-700 dark:text-emerald-400 mb-2">Traduction:</p>
-                                <p className="text-gray-700 dark:text-gray-300">{douaa.texte_francais}</p>
+                                <p className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap">{douaa.texte_francais}</p>
                             </div>
                         )}
                         {douaa.explication && (
                             <div className="mt-6 bg-emerald-50 dark:bg-emerald-900/30 p-6 rounded-lg">
                                 <p className="text-lg font-bold text-emerald-800 dark:text-emerald-300 mb-3">Explication:</p>
-                                <p className="text-gray-700 dark:text-gray-300">{douaa.explication}</p>
+                                <p className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap">{douaa.explication}</p>
                             </div>
                         )}
                         {douaa.commentaire && (
                             <div className="mt-6 bg-emerald-50 dark:bg-emerald-900/30 p-6 rounded-lg">
                                 <p className="text-lg font-bold text-emerald-800 dark:text-emerald-300 mb-3">Commentaire:</p>
-                                <p className="text-gray-700 dark:text-gray-300">{douaa.commentaire}</p>
+                                <p className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap">{douaa.commentaire}</p>
                             </div>
                         )}
                     </div>
