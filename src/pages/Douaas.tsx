@@ -56,7 +56,7 @@ const DouaaCard: React.FC<{ douaa: Douaa; onClick: () => void; onTagClick?: (tag
                 {douaa.texte_francais && (
                     <div className="mt-4 pl-4 border-l-4 border-amber-300 dark:border-emerald-600 line-clamp-2">
                         <p className="text-sm text-amber-700 dark:text-amber-200 mb-1">Signification :</p>
-                        <p className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap">{douaa.texte_francais}</p>
+                        <p className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap [unicode-bidi:plaintext]">{douaa.texte_francais}</p>
                     </div>
                 )}
             </div>
@@ -99,25 +99,25 @@ const DouaaModal: React.FC<{ douaa: Douaa; onClose: () => void; onTagClick?: (ta
                         {douaa.phonétique && (
                             <div className="mt-6 bg-white dark:bg-gray-600 p-4 rounded">
                                 <p className="text-sm text-amber-700 dark:text-amber-300 mb-2">Phonétique:</p>
-                                <p className="text-gray-700 dark:text-gray-200 whitespace-pre-wrap">{douaa.phonétique}</p>
+                                <p className="text-gray-700 dark:text-gray-200 whitespace-pre-wrap [unicode-bidi:plaintext]">{douaa.phonétique}</p>
                             </div>
                         )}
                         {douaa.texte_francais && (
                             <div className="mt-6 pl-4 border-l-4 border-emerald-500">
                                 <p className="text-sm text-emerald-700 dark:text-emerald-400 mb-2">Traduction:</p>
-                                <p className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap">{douaa.texte_francais}</p>
+                                <p className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap [unicode-bidi:plaintext]">{douaa.texte_francais}</p>
                             </div>
                         )}
                         {douaa.explication && (
                             <div className="mt-6 bg-emerald-50 dark:bg-emerald-900/30 p-6 rounded-lg">
                                 <p className="text-lg font-bold text-emerald-800 dark:text-emerald-300 mb-3">Explication:</p>
-                                <p className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap">{douaa.explication}</p>
+                                <p className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap [unicode-bidi:plaintext]">{douaa.explication}</p>
                             </div>
                         )}
                         {douaa.commentaire && (
                             <div className="mt-6 bg-emerald-50 dark:bg-emerald-900/30 p-6 rounded-lg">
                                 <p className="text-lg font-bold text-emerald-800 dark:text-emerald-300 mb-3">Commentaire:</p>
-                                <p className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap">{douaa.commentaire}</p>
+                                <p className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap [unicode-bidi:plaintext]">{douaa.commentaire}</p>
                             </div>
                         )}
                     </div>
