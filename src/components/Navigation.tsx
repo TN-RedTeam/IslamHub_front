@@ -4,7 +4,6 @@ import { m, AnimatePresence } from 'framer-motion';
 import { Book, Heart, Wind, GraduationCap, Video, BookOpen, Sparkles, Moon, Sun, Menu, X, Bookmark } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 import { InstallPWA } from './InstallPWA';
-import { VERSION_LABEL } from '../version';
 import moment from 'moment-hijri';
 
 const navItems = [
@@ -76,12 +75,6 @@ export const Navigation: React.FC = () => {
 
                     {/* Droite : installer l'app + thème (desktop) + boutons mobile */}
                     <div className="flex items-center shrink-0 gap-2">
-                        <span
-                            className="hidden lg:inline text-[11px] text-gray-400 dark:text-gray-500 whitespace-nowrap"
-                            title="Version du site"
-                        >
-                            {VERSION_LABEL}
-                        </span>
                         <div className="hidden md:block">
                             <InstallPWA />
                         </div>
@@ -141,9 +134,6 @@ export const Navigation: React.FC = () => {
                                     );
                                 })}
                                 <InstallPWA className="flex w-full items-center gap-3 px-4 py-3 mt-1 rounded-md text-base font-medium bg-emerald-600 text-white hover:bg-emerald-700 transition-colors" />
-                                <p className="mt-3 pt-3 border-t border-gray-100 dark:border-gray-700 text-center text-xs text-gray-400 dark:text-gray-500">
-                                    {VERSION_LABEL}
-                                </p>
                             </div>
                         </m.div>
                     )}

@@ -1,43 +1,19 @@
-import { readFileSync } from 'node:fs';
-import { execSync } from 'node:child_process';
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
 
-// Identifiant de build injecté dans l'app (affiché discrètement + dans le
-// bandeau de mise à jour). Le hash du commit change à chaque déploiement, ce
-// qui permet de vérifier d'un coup d'œil qu'une nouvelle version est en ligne.
-const pkg = JSON.parse(readFileSync('./package.json', 'utf-8')) as { version: string };
-const buildSha =
-  (process.env.GITHUB_SHA ?? '').slice(0, 7) ||
-  (() => {
-    try {
-      return execSync('git rev-parse --short HEAD').toString().trim();
-    } catch {
-      return 'local';
-    }
-  })();
-const buildTime = new Date().toISOString();
-
 // https://vitejs.dev/config/
 export default defineConfig({
-  define: {
-    __APP_VERSION__: JSON.stringify(pkg.version),
-    __BUILD_SHA__: JSON.stringify(buildSha),
-    __BUILD_TIME__: JSON.stringify(buildTime),
-  },
   // './' works for both GitHub Pages (HashRouter) and Capacitor Android WebView.
   // '/IslamHub_front/' would break all asset paths inside the Android WebView.
   base: './',
   plugins: [
     react(),
     VitePWA({
-      // Mode « prompt » : quand un nouveau build est déployé, on affiche un
-      // bandeau discret « Nouvelle version disponible » (composant PwaUpdater)
-      // plutôt qu'un rechargement silencieux. Si l'utilisateur l'ignore, la
-      // nouvelle version s'applique quand même à la prochaine ouverture de l'app.
-      registerType: 'prompt',
-      // On enregistre le SW nous-mêmes (main.tsx) pour pouvoir le désactiver
+      // Mise à jour automatique et silencieuse : un nouveau build déployé
+      // remplace l'ancien sans message ni bandeau (aucune mention à l'écran).
+      registerType: 'autoUpdate',
+      // On enregistre le SW nous-mêmes (PwaUpdater) pour pouvoir le désactiver
       // en dev et dans la WebView Capacitor. Pas d'injection automatique.
       injectRegister: null,
       // JAMAIS de service worker en développement (cause du bug d'origine :
