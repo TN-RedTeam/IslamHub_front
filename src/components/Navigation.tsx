@@ -3,6 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { m, AnimatePresence } from 'framer-motion';
 import { Book, Heart, Wind, GraduationCap, Video, BookOpen, Sparkles, Moon, Sun, Menu, X, Bookmark } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
+import { InstallPWA } from './InstallPWA';
 import moment from 'moment-hijri';
 
 const navItems = [
@@ -72,8 +73,11 @@ export const Navigation: React.FC = () => {
                         })}
                     </div>
 
-                    {/* Droite : thème (desktop) + boutons mobile */}
-                    <div className="flex items-center shrink-0">
+                    {/* Droite : installer l'app + thème (desktop) + boutons mobile */}
+                    <div className="flex items-center shrink-0 gap-2">
+                        <div className="hidden md:block">
+                            <InstallPWA />
+                        </div>
                         <button
                             onClick={toggleTheme}
                             aria-label="Basculer le thème"
@@ -129,6 +133,7 @@ export const Navigation: React.FC = () => {
                                         </Link>
                                     );
                                 })}
+                                <InstallPWA className="flex w-full items-center gap-3 px-4 py-3 mt-1 rounded-md text-base font-medium bg-emerald-600 text-white hover:bg-emerald-700 transition-colors" />
                             </div>
                         </m.div>
                     )}
