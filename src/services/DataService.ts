@@ -7,14 +7,15 @@ import type {
   Parole,
   Multimedia,
   MultimediaCategory,
+  FiqhChapitre,
+  FemmesChapitre,
+  SavantInfo,
   PaginatedResponse,
   PaginationParams,
 } from '../types';
 
 // ============================================================
 // Path B : le front interroge Supabase DIRECTEMENT (via RPC).
-// Fonctions SQL : supabase/setup.sql, setup_paroles.sql, setup_home.sql,
-// setup_fixes.sql. Plus aucun appel à l'API Express.
 // ============================================================
 
 /** Compteurs renvoyés par getStats() (plusieurs alias de clés côté SQL). */
@@ -30,8 +31,6 @@ export interface SiteStats {
   videos: number;
 }
 
-// Chargement "tout" par défaut : suffisant tant que les tables sont petites.
-// (À repasser en pagination si un jour une table dépasse quelques milliers de lignes.)
 const LOAD_ALL: PaginationParams = { page: 0, pageSize: 1000 };
 
 function sanitizeInput(value: string): string {
@@ -123,7 +122,7 @@ class DataService {
     return rpcTags('tags_douaas');
   }
 
-  // ================= Paroles (table `paroles`, route /paroles) =================
+  // ================= Paroles =================
   async getParoles(params?: PaginationParams): Promise<PaginatedResponse<Parole>> {
     return rpcSearch<Parole>('search_paroles', '', null, 'tag_filter', params ?? LOAD_ALL);
   }
@@ -136,6 +135,13 @@ class DataService {
   async getParoleNames(): Promise<string[]> {
     return rpcTags('names_paroles');
   }
+
+  // ===== Sujets (liste des sujets distincts, pour le menu déroulant) =====
+  async getHadithSujets(): Promise<string[]> { return rpcTags('sujets_hadiths'); }
+  async getCoranSujets(): Promise<string[]> { return rpcTags('sujets_coran'); }
+  async getDhikrSujets(): Promise<string[]> { return rpcTags('sujets_dhikrs'); }
+  async getDouaaSujets(): Promise<string[]> { return rpcTags('sujets_douaas'); }
+  async getParoleSujets(): Promise<string[]> { return rpcTags('sujets_paroles'); }
 
   // ================= Multimedia =================
   async searchMultimedia(
@@ -150,6 +156,27 @@ class DataService {
     const { data, error } = await supabase.rpc('categories_multimedia');
     if (error) throw error;
     return (data ?? []) as MultimediaCategory[];
+  }
+
+  // ================= Fiqh / Madhaheb =================
+  async getFiqhByEcole(ecole: string): Promise<FiqhChapitre[]> {
+    const { data, error } = await supabase.rpc('fiqh_by_ecole', { ecole_param: ecole });
+    if (error) throw error;
+    return (data ?? []) as FiqhChapitre[];
+  }
+
+  // ================= Femmes (matn + commentaire) =================
+  async getFemmes(): Promise<FemmesChapitre[]> {
+    const { data, error } = await supabase.rpc('femmes_all');
+    if (error) throw error;
+    return (data ?? []) as FemmesChapitre[];
+  }
+
+  // ================= Savants (fiches + biographie) =================
+  async getSavants(): Promise<SavantInfo[]> {
+    const { data, error } = await supabase.rpc('savants_all');
+    if (error) throw error;
+    return (data ?? []) as SavantInfo[];
   }
 
   // ================= Accueil (Home) =================

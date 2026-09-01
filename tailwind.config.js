@@ -5,10 +5,11 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['Inter', 'system-ui', 'sans-serif'],
+        // Latin -> Inter ; Arabe -> Amiri (placé AVANT system-ui pour que
+        // l'arabe des textes mixtes FR/AR utilise Amiri, pas la police système).
+        sans: ['Inter', 'Amiri', '"Noto Naskh Arabic"', 'system-ui', 'sans-serif'],
         amiri: ['Amiri', 'serif'],
         arabic: ['"Noto Naskh Arabic"', 'serif'],
-        
       },
       colors: {
         emerald: {

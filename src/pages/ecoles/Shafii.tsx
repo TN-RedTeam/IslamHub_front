@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { m, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { GraduationCap, BookOpen, Users, Star, ChevronRight, Scale, Globe, Shield, Heart, ChevronDown, ChevronUp, Calendar, Scroll } from 'lucide-react';
+import { EcoleFiqhSection } from '../../components/EcoleFiqhSection';
+
 
 interface SectionProps {
     title: string;
@@ -125,7 +127,7 @@ const Shafii: React.FC = () => {
     ];
 
     const teachers = [
-        "Mouchè l'Imam Malik",
+        "L'Imam Malik",
         "Mouslim fils de Khalid Az-Zinjiyy",
         "Soufyan fils de ^Ouyaynah",
         "Ibrahim fils de Sa^d",
@@ -681,6 +683,9 @@ const Shafii: React.FC = () => {
                         </div>
                     </div>
                 </m.section>
+
+                {/* Jurisprudence (fiqh) de l'école — contenu dynamique depuis Supabase */}
+                <EcoleFiqhSection ecole="Shafii" titre="Jurisprudence de l'école Ach-Chafi^iyy" />
 
                 {/* Autres écoles */}
                 <m.section

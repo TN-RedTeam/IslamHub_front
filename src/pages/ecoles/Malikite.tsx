@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { m, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { BookOpen, Users, Star, ChevronRight, Scale, Globe, Building, Heart, ChevronDown, ChevronUp, Shield, Sparkles, Calendar, BookMarked } from 'lucide-react';
+import { EcoleFiqhSection } from '../../components/EcoleFiqhSection';
+
 
 interface SectionProps {
     title: string;
@@ -216,11 +218,57 @@ const Malikite: React.FC = () => {
                         defaultOpen={true}
                     >
                         <p className="mb-4">
-                            L'Imam Malik, que Allah l'agrée, est né en 93 de l'Hégire, dans la ville de Médine l'Illuminée (Al-Madinatou l-mounawwarah). Son nom est Malik fils de Anas fils de Malik fils de Abi ^Amir Al-'Asbahiyy. Son école de jurisprudence est connue sous le nom de l'école malikite (Al-Madhhabou l-Malikiyy).
+                            Il est surnommé Abou ^Abdi l-Lah et s’appelle Malik fils de Anas fils de Malik fils de Abou ^Amir Anas fils de Al-Harith fils de Ghayman Al-‘Asbahiyy Al-Madaniyy.
                         </p>
                         <p className="mb-4">
-                            Il est le deuxième des quatre grands Imams moujtahid, ce sont ceux qui ont mis au point une méthodologie d'extraction des lois à partir des textes, pour eux-mêmes et pour ceux qui les suivent. Leur méthodologie a un fondement et des règles et elle s'est transmise aux gens par tawatour – c'est-à-dire par un grand nombre de personnes – de sorte que toute altération en est exclue.
+                            Son ascendance remonte jusqu’à Ya^rab fils de Yachjab fils de Qahtan. Son grand-père s’appelle Malik fils de Anas et faisait partie des grands successeurs des compagnons, l’un de ceux qui ont porté le corps du Calife ^Outhman Ibnou ^Affan que Allah l’agrée, de nuit jusqu’à sa tombe tout comme cela a été mentionné par Al-Qouchayriyy.
                         </p>
+                        <p className="mb-4">
+                            Son arrière-grand-père est le compagnon Abou Malik qui a participé à toutes les batailles aux côtés du Messager de Allah صلى الله عليه وسلم mis à part celle de Badr.
+                        </p>
+                        <p className="mb-4">
+                            Quant à la mère de l’Imam Malik, que Allah l’agrée, elle s’appelle Al-^Aliyah fille de Charik fils de ^Abdou r-Rahman Al-‘Asdiyah.
+                        </p>
+                        <p className="mb-4">
+                            Les fils de l’Imam Malik sont Yahya, Mouhammad et Hammad.
+                        </p>
+                        <p className="mb-4">
+                            L’Imam Malik est le fondateur de l’une des quatre écoles de jurisprudence qui a été conservée, réputée et diffusée dans les pays musulmans.
+                        </p>
+                        <p className="mb-4">
+                            L’Imam Malik est né à Médine l’Illuminée en l’an 95 de l’hégire. Il a grandi avec beaucoup d’application pour l’apprentissage de la science et le fait de rapporter le hadith. Il a pris la science et il l’a rapportée d’un grand nombre de successeurs des compagnons et de successeurs des successeurs des compagnons comptés par centaines, parmi lesquels on mentionne :
+                        </p>
+                        <p className="mb-4">
+                            - Nafi^ l’esclave affranchi du fils de ^Oumar.
+                        </p>
+                        <p className="mb-4">
+                            - Il y a aussi Ibnou Chihab Az–Zouhriyy.
+                        </p>
+                        <p className="mb-4">
+                           - Il y a Abou z–Zinad
+                        </p>
+                        <p className="mb-4">
+                           - et ^A’ichah Bint Sa^d Ibni Abi Waqas,
+                        </p>
+                        <p className="mb-4">
+                            ou encore Yahya Ibnou Sa^id Al-‘Ansariyy.
+                        </p>
+                        <p className="mb-4">
+                            Il était, que Allah lui fasse miséricorde, l’Imam de la Terre de l’Émigration, Médine. Sa science s’est propagée dans les différentes contrées. Il était réputé dans plusieurs pays et on effectuait des voyages pour venir à lui des différentes régions.
+                        </p>
+                        <p className="mb-4">
+                            Il enseignait déjà alors qu’il était un jeune homme de dix-sept ans. Il continua à donner des avis de jurisprudence et à enseigner aux gens au point que plusieurs de ses Chaykh ont rapporté de lui –c’est-à-dire qu’ils lui avaient donné la science puis il avait appris chez d’autres et leur avait transmis à son tour:
+                        </p>
+                        <p className="mb-4">- Mouhammad Ibnou Chihab Az–Zouhriyy,</p>
+                        <p className="mb-4">- Rabi^ah Ibnou ‘Abi ^Abdi r-Rahman le spécialiste de jurisprudence des gens de Médine,</p>
+                        <p className="mb-4">- Yahya Ibnou Sa^id Al-‘Ansariyy,</p>
+                        <p className="mb-4">- Mouça Ibnou ^Ouqbah ;</p>
+                        <p className="mb-4">
+                            Beaucoup de rapporteurs de hadith ont rapporté de lui, au point que le Qadi ^Iyad a composé un livre dans lequel il a dénombré mille trois cent noms de ceux qui ont rapporté de l’Imam Malik, que Allah l’agrée. Les plus connus d’entre eux étaient
+                        </p>
+                        <p className="mb-4">- Soufyan Ath-Thawriyy</p>
+                        <p className="mb-4">- l’Imam le Moujtahid Mouhammad Ibnou Idris Ach-Chafi^iyy</p>
+                        <p className="mb-4">et ^Abdou l-Lah Ibnou l-Moubarak.</p>
                     </CollapsibleSection>
 
                     <CollapsibleSection
@@ -242,10 +290,10 @@ const Malikite: React.FC = () => {
                         <p className="mb-4">
                             Le livre Al-Mouwatta' (Le Livre rendu facile) de l'Imam Malik est un des ouvrages de référence dans la jurisprudence et le hadith. L'Imam Ach-Chafi^iyy a dit à propos de ce livre :
                         </p>
-                        <p className="mb-4 text-right font-amiri text-xl leading-loose">
+                        <p lang="ar" dir="rtl" className="mb-4 text-center font-amiri text-xl leading-loose">
                             (مَا عَلَى وَجْهِ الأرضِ كِتَابٌ بَعْدَ كِتَابِ اللهِ أَكْثَرَ صَوَابًا مِنَ المُوَطَّإِ)
                         </p>
-                        <p className="mb-4 italic">
+                        <p className="mb-4 italic text-center">
                             (ma ^ala wajhi l-'ardi kitaboun ba^da kitabi l-Lahi 'aktharou sawaban mina l-Mouwatta')
                         </p>
                         <p className="mb-6">
@@ -263,7 +311,7 @@ const Malikite: React.FC = () => {
                         <p className="mb-4">
                             L'Imam Ach-Chafi^iyy a dit au sujet de l'Imam Malik :
                         </p>
-                        <p className="mb-4 text-right font-amiri text-xl leading-loose">
+                        <p lang="ar" dir="rtl" className="mb-4 text-center font-amiri text-xl leading-loose">
                             (إِذَا جَاءَ الأَثَرُ فَمَالِكٌ النَّجْمُ)
                         </p>
                         <p className="mb-4 italic">
@@ -276,7 +324,7 @@ const Malikite: React.FC = () => {
                         <p className="mb-4">
                             L'Imam Ach-Chafi^iyy a dit également :
                         </p>
-                        <p className="mb-4 text-right font-amiri text-xl leading-loose">
+                        <p lang="ar" dir="rtl" className="mb-4 text-center font-amiri text-xl leading-loose">
                             (مَالِكٌ مُعَلِّمِي)
                         </p>
                         <p className="mb-4 italic">
@@ -307,7 +355,7 @@ const Malikite: React.FC = () => {
                         <p className="mb-4">
                             L'Imam Malik, que Allah l'agrée, a confirmé dans sa croyance que Allah ta^ala existe sans endroit et sans direction. Il a enseigné que Allah n'est pas un corps et qu'Il ne ressemble à aucune de Ses créatures. Il est rapporté de sa part :
                         </p>
-                        <p className="mb-4 text-right font-amiri text-xl leading-loose">
+                        <p lang="ar" dir="rtl" className="mb-4 text-center font-amiri text-xl leading-loose">
                             (اللهُ فِي السَّمَاءِ وعِلْمُهُ فِي كُلِّ مَكَانٍ)
                         </p>
                         <p className="mb-4 italic">
@@ -319,7 +367,7 @@ const Malikite: React.FC = () => {
                         <p className="mb-4">
                             Cette parole signifie que Allah a un haut degré et non pas qu'Il serait dans le ciel en tant qu'endroit. Car l'Imam Malik fait partie de ceux qui ont dit :
                         </p>
-                        <p className="mb-4 text-right font-amiri text-xl leading-loose">
+                        <p lang="ar" dir="rtl" className="mb-4 text-center font-amiri text-xl leading-loose">
                             (الاسْتِوَاءُ مَعْلُومٌ وَالكَيْفُ غَيْرُ مَعْقُولٍ)
                         </p>
                         <p className="mb-4 italic">
@@ -413,6 +461,9 @@ const Malikite: React.FC = () => {
                         </div>
                     </div>
                 </m.section>
+
+                {/* Jurisprudence (fiqh) de l'école — contenu dynamique depuis Supabase */}
+                <EcoleFiqhSection ecole="Malikite" titre="Jurisprudence de l'école Malikite" />
 
                 {/* Autres écoles */}
                 <m.section

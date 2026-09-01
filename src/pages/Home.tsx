@@ -1,22 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { m, AnimatePresence } from 'framer-motion';
+import { m } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { BookOpen, ChevronRight, Sun, Moon, Book, Heart, Wind, GraduationCap, Video, Loader2 } from 'lucide-react';
-import { PrayerTimes } from '../components/PrayerTimes';
 import { DailyQuote } from '../components/DailyQuote';
 import { dataService } from '../services/DataService';
-// import { usePrayerTimes } from '../hooks/usePrayerTimes'; // API horaires désactivée en attendant une API plus fiable
 import { usePageTitle } from '../hooks/usePageTitle';
 import type { Hadith, Douaa, Coran } from '../types';
-
-const mockPrayerTimes = {
-  fajr: "05:30",
-  sunrise: "06:45",
-  dhuhr: "12:30",
-  asr: "15:45",
-  maghrib: "18:15",
-  isha: "19:30"
-};
 
 const mockQuote = {
   text: "Celui pour qui Allah veut le bien, lui facilite l'apprentissage de la religion",
@@ -46,11 +35,6 @@ const getDayOfYear = (): number => {
 
 export const Home: React.FC = () => {
   usePageTitle();
-  const [selectedCity] = useState("Paris");
-  // Horaires via API désactivés pour l'instant — réactiver en remplaçant
-  // l'implémentation de src/hooks/usePrayerTimes.ts par l'API choisie :
-  // const { times: prayerTimes } = usePrayerTimes(selectedCity);
-  const prayerTimes = mockPrayerTimes;
 
   const [stats, setStats] = useState<SiteStats>({
     hadiths: 0,
@@ -70,8 +54,6 @@ export const Home: React.FC = () => {
     const fetchData = async () => {
       setIsLoading(true);
       try {
-        // Compteurs sans transfert de données + une seule ligne par "item du jour",
-        // au lieu de télécharger les tables entières (ex-pageSize: 1000).
         const dayOfYear = getDayOfYear();
         const [siteStats, hadith, douaa, verse] = await Promise.all([
           dataService.getStats(),
@@ -122,7 +104,7 @@ export const Home: React.FC = () => {
             lang="ar"
             dir="rtl"
           >
-            بِسْمِ ٱللَّٰهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ
+            بِسْمِ ٱللَّٰهِ ٱلرَّحْمٰنِ ٱلرَّحِيمِ
           </m.h1>
           <p className="text-xl text-emerald-200 max-w-3xl mx-auto">
             Bienvenue sur IslamHub - Votre source de savoir islamique
@@ -131,20 +113,20 @@ export const Home: React.FC = () => {
       </m.header>
 
       <main className="container mx-auto px-4 py-12 -mt-12 relative z-10">
-        {/* Section principale avec citation et horaires */}
+        {/* Citation du jour (pleine largeur) */}
         <m.section
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.2 }}
           className="mb-16"
         >
-          <div className="grid md:grid-cols-2 gap-8">
+          <div className="max-w-3xl mx-auto">
             <m.div
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
             >
-              <div className="relative bg-gradient-to-br from-amber-50 to-emerald-50 dark:from-emerald-900 dark:to-amber-900 rounded-2xl p-6 shadow-xl border border-amber-200 dark:border-emerald-800 h-full">
+              <div className="relative bg-gradient-to-br from-amber-50 to-emerald-50 dark:from-emerald-900 dark:to-amber-900 rounded-2xl p-6 shadow-xl border border-amber-200 dark:border-emerald-800">
                 <div className="absolute top-0 right-0 w-24 h-24 opacity-20">
                   <svg viewBox="0 0 100 100" className="text-amber-500 dark:text-emerald-400">
                     <path
@@ -155,25 +137,6 @@ export const Home: React.FC = () => {
                   </svg>
                 </div>
                 <DailyQuote quote={mockQuote} />
-              </div>
-            </m.div>
-
-            <m.div
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.4 }}
-            >
-              <div className="relative bg-gradient-to-br from-amber-50 to-emerald-50 dark:from-emerald-900 dark:to-amber-900 rounded-2xl p-6 shadow-xl border border-amber-200 dark:border-emerald-800 h-full">
-                <div className="absolute top-0 right-0 w-24 h-24 opacity-20">
-                  <svg viewBox="0 0 100 100" className="text-amber-500 dark:text-emerald-400">
-                    <path
-                      fill="currentColor"
-                      d="M20,20 Q30,10 40,20 T60,20 T80,20 T100,20"
-                      className="transform rotate-45"
-                    />
-                  </svg>
-                </div>
-                <PrayerTimes times={prayerTimes} city={selectedCity} />
               </div>
             </m.div>
           </div>
@@ -187,7 +150,7 @@ export const Home: React.FC = () => {
           className="mb-16"
         >
           <h2 className="text-2xl font-bold text-emerald-900 dark:text-emerald-300 mb-8 font-amiri text-center">
-            Les paroles du jour
+            Votre source quotidienne de savoir
           </h2>
 
           {isLoading ? (
@@ -365,8 +328,7 @@ export const Home: React.FC = () => {
           )}
         </m.section>
 
-        {/* Section statistiques : whileInView pour animer à l'arrivée dans le
-            viewport (la section est sous la ligne de flottaison). */}
+        {/* Section statistiques */}
         <m.section
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}

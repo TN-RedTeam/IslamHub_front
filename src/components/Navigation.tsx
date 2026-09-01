@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { m, AnimatePresence } from 'framer-motion';
-import { Book, Heart, Wind, Users, GraduationCap, Video, Clock, BookOpen, Moon, Sun, Menu, X, Bookmark, ScrollText } from 'lucide-react';
+import { Book, Heart, Wind, GraduationCap, Video, BookOpen, Sparkles, Moon, Sun, Menu, X, Bookmark } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
+import { InstallPWA } from './InstallPWA';
 import moment from 'moment-hijri';
 
 const navItems = [
@@ -11,10 +12,9 @@ const navItems = [
     { to: '/dhikrs', icon: Wind, label: 'Dhikrs' },
     { to: '/douaas', icon: Heart, label: 'Douaas' },
     { to: '/paroles', icon: GraduationCap, label: 'Paroles' },
-    { to: '/biographies', icon: ScrollText, label: 'Biographies' },
     { to: '/multimedia', icon: Video, label: 'Multimedia' },
     { to: '/ecoles', icon: BookOpen, label: 'Madhaheb' },
-    { to: '/prayer-times', icon: Clock, label: 'Horaires' },
+    { to: '/femmes', icon: Sparkles, label: 'Femmes' },
 ];
 
 export const Navigation: React.FC = () => {
@@ -39,61 +39,70 @@ export const Navigation: React.FC = () => {
     return (
         <nav className="bg-white dark:bg-gray-800 shadow-lg sticky top-0 z-50 transition-colors duration-200">
             <div className="max-w-7xl mx-auto px-4">
-                <div className="flex justify-between h-16">
-                    <div className="flex items-center space-x-4">
+                <div className="flex items-center justify-between h-16 gap-4">
+                    {/* Gauche : logo + date hijri */}
+                    <div className="flex items-center gap-3 shrink-0">
                         <Link to="/" className="flex items-center group">
                             <span className="text-2xl font-bold text-emerald-600 dark:text-emerald-400 font-amiri group-hover:text-emerald-700 dark:group-hover:text-emerald-300 transition-colors">
                                 IslamicHub
                             </span>
                         </Link>
-                        <span className="text-lg text-gray-600 dark:text-gray-300 font-amiri whitespace-nowrap">
+                        <span className="hidden lg:inline text-base text-gray-600 dark:text-gray-300 font-amiri whitespace-nowrap">
                             {hijriDate}
                         </span>
                     </div>
 
-                    <div className="flex items-center md:hidden">
-                        <button
-                            onClick={toggleTheme}
-                            aria-label="Basculer le thème"
-                            className="p-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors mr-2"
-                        >
-                            {theme === 'dark' ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
-                        </button>
-                        <button
-                            onClick={() => setIsMenuOpen(!isMenuOpen)}
-                            aria-label={isMenuOpen ? 'Fermer le menu' : 'Ouvrir le menu'}
-                            aria-expanded={isMenuOpen}
-                            className="p-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
-                        >
-                            {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-                        </button>
-                    </div>
-
-                    <div className="hidden md:flex items-center space-x-1">
+                    {/* Centre : liens (desktop) */}
+                    <div className="hidden md:flex items-center justify-center flex-1 gap-1">
                         {navItems.map(({ to, icon: Icon, label }) => {
                             const isActive = location.pathname === to;
                             return (
                                 <Link
                                     key={to}
                                     to={to}
-                                    className={`flex items-center px-4 py-2 rounded-md text-sm font-medium transition-all duration-200 mx-1 ${
+                                    className={`flex items-center px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 ${
                                         isActive
                                             ? 'text-emerald-700 dark:text-emerald-300 bg-emerald-100 dark:bg-emerald-900/40'
                                             : 'text-gray-700 dark:text-gray-200 hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-900/20'
                                     }`}
                                 >
-                                    <Icon className="w-4 h-4 mr-2" />
-                                    <span className="font-amiri truncate max-w-[100px]">{label}</span>
+                                    <Icon className="w-4 h-4 mr-1.5 shrink-0" />
+                                    <span className="font-amiri">{label}</span>
                                 </Link>
                             );
                         })}
+                    </div>
+
+                    {/* Droite : installer l'app + thème (desktop) + boutons mobile */}
+                    <div className="flex items-center shrink-0 gap-2">
+                        <div className="hidden md:block">
+                            <InstallPWA />
+                        </div>
                         <button
                             onClick={toggleTheme}
                             aria-label="Basculer le thème"
-                            className="p-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors ml-2"
+                            className="hidden md:inline-flex p-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
                         >
                             {theme === 'dark' ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
                         </button>
+
+                        <div className="flex items-center md:hidden">
+                            <button
+                                onClick={toggleTheme}
+                                aria-label="Basculer le thème"
+                                className="p-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors mr-2"
+                            >
+                                {theme === 'dark' ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+                            </button>
+                            <button
+                                onClick={() => setIsMenuOpen(!isMenuOpen)}
+                                aria-label={isMenuOpen ? 'Fermer le menu' : 'Ouvrir le menu'}
+                                aria-expanded={isMenuOpen}
+                                className="p-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                            >
+                                {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+                            </button>
+                        </div>
                     </div>
                 </div>
 
@@ -124,6 +133,7 @@ export const Navigation: React.FC = () => {
                                         </Link>
                                     );
                                 })}
+                                <InstallPWA className="flex w-full items-center gap-3 px-4 py-3 mt-1 rounded-md text-base font-medium bg-emerald-600 text-white hover:bg-emerald-700 transition-colors" />
                             </div>
                         </m.div>
                     )}

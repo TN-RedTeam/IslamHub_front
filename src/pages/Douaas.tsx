@@ -169,7 +169,7 @@ const TagSelector: React.FC<{
                     className="w-full flex items-center justify-between gap-2 px-4 py-3 rounded-xl border border-emerald-200 dark:border-emerald-800 bg-white dark:bg-gray-800 text-gray-900 dark:text-white hover:border-emerald-300 transition-colors">
                 <div className="flex items-center gap-2">
                     <Filter className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
-                    <span className="font-medium">{selectedTag ? `Mot-clé: ${selectedTag}` : 'Filtrer par mot-clé'}</span>
+                    <span className="font-medium">{selectedTag ? `Sujet : ${selectedTag}` : 'Filtrer par sujet'}</span>
                 </div>
                 <ChevronDown className={`h-5 w-5 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} />
             </button>
@@ -180,7 +180,7 @@ const TagSelector: React.FC<{
                         <div className="p-3 border-b border-emerald-200 dark:border-emerald-800">
                             <div className="relative">
                                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
-                                <input type="text" placeholder="Rechercher un mot-clé..." value={searchQuery}
+                                <input type="text" placeholder="Rechercher un sujet..." value={searchQuery}
                                        onChange={(e) => setSearchQuery(e.target.value)}
                                        className="w-full pl-9 pr-3 py-2 rounded-lg border border-emerald-200 dark:border-emerald-700 bg-gray-50 dark:bg-gray-900 text-sm focus:ring-2 focus:ring-emerald-500 focus:border-transparent" />
                             </div>
@@ -189,8 +189,8 @@ const TagSelector: React.FC<{
                             <button onClick={() => { onTagSelect(null); setIsOpen(false); setSearchQuery(''); }}
                                     className={`w-full text-left px-4 py-2 hover:bg-emerald-50 dark:hover:bg-emerald-900/50 transition-colors ${!selectedTag ? 'bg-emerald-100 dark:bg-emerald-900/30 font-medium' : ''}`}>
                                 <div className="flex items-center justify-between">
-                                    <span>🏷️ Tous les mots-clés</span>
-                                    <span className="text-xs text-gray-500">{allTags.length} mots-clés</span>
+                                    <span>🏷️ Tous les sujets</span>
+                                    <span className="text-xs text-gray-500">{allTags.length} sujets</span>
                                 </div>
                             </button>
                             {filteredTags.length > 0 ? filteredTags.map(tag => (
@@ -202,7 +202,7 @@ const TagSelector: React.FC<{
                                     {tagCounts.get(tag) ? <span className="text-xs text-gray-500">({tagCounts.get(tag)})</span> : null}
                                 </button>
                             )) : (
-                                <div className="px-4 py-8 text-center text-gray-500">Aucun mot-clé trouvé pour "{searchQuery}"</div>
+                                <div className="px-4 py-8 text-center text-gray-500">Aucun sujet trouvé pour "{searchQuery}"</div>
                             )}
                         </div>
                     </m.div>
@@ -229,10 +229,11 @@ export const Douaas: React.FC = () => {
 
     const debounceRef = useRef<ReturnType<typeof setTimeout>>();
 
-    // Charger les tags au montage
+    // Charger les SUJETS au montage (le menu déroulant filtre par sujet ; les
+    // tags se cherchent en texte libre dans la barre de recherche).
     useEffect(() => {
-        dataService.getDouaaTags()
-            .then(tags => setAllTags([...new Set(tags)].sort((a, b) => a.localeCompare(b))))
+        dataService.getDouaaSujets()
+            .then(sujets => setAllTags([...new Set(sujets)].sort((a, b) => a.localeCompare(b))))
             .catch(() => {});
     }, []);
 
@@ -270,7 +271,10 @@ export const Douaas: React.FC = () => {
         return () => clearTimeout(debounceRef.current);
     }, [searchTerm, selectedTag, doSearch]);
 
-    const handleTagClick = (tag: string) => { setSelectedTag(tag); window.scrollTo({ top: 0, behavior: 'smooth' }); };
+    // Clic sur un TAG → recherche en texte libre (les tags ne sont plus un filtre).
+    const handleTagClick = (tag: string) => { setSelectedTag(null); setSearchTerm(tag); window.scrollTo({ top: 0, behavior: 'smooth' }); };
+    // Clic sur un SUJET (suggestions) → applique le filtre par sujet.
+    const handleSujetClick = (sujet: string) => { setSelectedTag(sujet); window.scrollTo({ top: 0, behavior: 'smooth' }); };
     const handleResetFilters = () => { setSearchTerm(''); setSelectedTag(null); };
 
     return (
@@ -329,7 +333,7 @@ export const Douaas: React.FC = () => {
 
                 {/* Barre de recherche */}
                 <m.section initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-                                className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-6 mb-12 sticky top-20 z-20 border border-emerald-100 dark:border-emerald-900">
+                                className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-6 mb-12 border border-emerald-100 dark:border-emerald-900">
                     <div className="flex flex-col md:flex-row gap-6">
                         <div className="flex-1 relative">
                             <div className="absolute left-3 top-1/2 transform -translate-y-1/2">
@@ -352,8 +356,7 @@ export const Douaas: React.FC = () => {
                                 <span className="font-medium text-emerald-800 dark:text-emerald-200">Filtre actif :</span>
                                 {selectedTag && (
                                     <span className="inline-flex items-center gap-1 px-2 py-1 bg-emerald-600 text-white rounded-full text-sm">
-                                        <Hash className="h-3 w-3" />{selectedTag}
-                                        {tagCounts.get(selectedTag) ? <span className="text-xs opacity-75 ml-1">({tagCounts.get(selectedTag)})</span> : null}
+                                        <Filter className="h-3 w-3" />{selectedTag}
                                     </span>
                                 )}
                                 {searchTerm && (
@@ -390,17 +393,29 @@ export const Douaas: React.FC = () => {
                                 <h3 className="text-3xl font-bold text-emerald-800 dark:text-emerald-200 mb-4 font-amiri">
                                     Recherchez parmi les invocations
                                 </h3>
-                                <p className="text-gray-600 dark:text-gray-400 mb-8 leading-relaxed text-lg">
-                                    Saisissez un mot-clé ou sélectionnez un tag pour trouver une douaa.
+                                <p className="text-gray-600 dark:text-gray-400 mb-6 leading-relaxed text-lg">
+                                    Saisissez un mot-clé, sélectionnez un sujet — ou affichez tout.
                                 </p>
+                                <button
+                                    onClick={async () => {
+                                        setIsLoading(true);
+                                        try {
+                                            const res = await dataService.searchDouaas('', null, { page: 0, pageSize: 1000 });
+                                            setDouaas(res.data ?? []); setTotalCount(res.count ?? 0); setHasSearched(true);
+                                        } finally { setIsLoading(false); }
+                                    }}
+                                    className="inline-flex items-center gap-2 px-6 py-3 mb-8 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-medium shadow"
+                                >
+                                    Tout afficher
+                                </button>
                                 {allTags.length > 0 && (
                                     <div className="flex flex-wrap gap-2 justify-center">
-                                        <p className="w-full text-sm text-gray-500 dark:text-gray-400 mb-2">Suggestions :</p>
-                                        {allTags.slice(0, 8).map(tag => (
-                                            <m.button key={tag} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
-                                                           onClick={() => handleTagClick(tag)}
+                                        <p className="w-full text-sm text-gray-500 dark:text-gray-400 mb-2">Sujets :</p>
+                                        {allTags.slice(0, 8).map(sujet => (
+                                            <m.button key={sujet} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
+                                                           onClick={() => handleSujetClick(sujet)}
                                                            className="px-4 py-2 bg-amber-100 dark:bg-emerald-800/60 text-amber-800 dark:text-emerald-200 rounded-full text-sm font-medium hover:bg-amber-200 dark:hover:bg-emerald-700 transition-colors border border-amber-200 dark:border-emerald-700">
-                                                #{tag}
+                                                {sujet}
                                             </m.button>
                                         ))}
                                     </div>

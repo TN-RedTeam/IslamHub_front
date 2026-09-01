@@ -1,0 +1,62 @@
+name: Déploiement GitHub Pages
+
+# Build + déploiement automatique du site à chaque push sur `main`.
+# (Déclenchable aussi à la main via l'onglet Actions → « Run workflow ».)
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Droits nécessaires au déploiement Pages via l'API officielle.
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Un seul déploiement à la fois ; on annule un run en cours si un nouveau arrive.
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Récupérer le code
+        uses: actions/checkout@v4
+
+      - name: Installer Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Installer les dépendances
+        run: npm ci
+
+      - name: Compiler le site
+        run: npm run build
+        # Les clés Supabase sont injectées au build depuis les secrets du dépôt
+        # (Settings → Secrets and variables → Actions). Sans elles, le site
+        # déployé n'aurait pas d'accès à la base.
+        env:
+          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
+
+      - name: Préparer l'artefact Pages
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    name: Déploiement
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Publier sur GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

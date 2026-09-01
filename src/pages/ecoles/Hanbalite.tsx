@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { m, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Users, BookOpen, Scale, Star, ChevronRight, GraduationCap, ChevronDown, ChevronUp, Heart, Globe, Shield, Sparkles, Calendar, BookMarked } from 'lucide-react';
+import { EcoleFiqhSection } from '../../components/EcoleFiqhSection';
+import { Markdown } from '../../components/Markdown';   // en haut du fichier
 
 interface SectionProps {
     title: string;
@@ -209,7 +211,7 @@ const Hanbalite: React.FC = () => {
                         defaultOpen={true}
                     >
                         <p className="mb-4">
-                            ^Adiyy a extrait son ascendance : il s'agit de Ahmad fils de Mouhammad fils de Hanbal fils de Hilal fils de Açad. L'Imam Ahmad a grandi orphelin. En effet, son père Mouhammad est mort jeune.
+                            Il s'agit de Ahmad fils de Mouhammad fils de Hanbal fils de Hilal fils de Açad. L'Imam Ahmad a grandi orphelin. En effet, son père Mouhammad est mort jeune.
                         </p>
                         <p className="mb-4">
                             Il a commencé à apprendre la science de la religion très tôt puis a appris la science du hadith alors qu'il avait 15 ans, c'est-à-dire en l'an 179, année durant laquelle le fondateur de l'école malikite, l'Imam Malik, que Allah l'agrée, est décédé.
@@ -362,24 +364,24 @@ const Hanbalite: React.FC = () => {
 
                         <h4 className="font-bold text-lg text-emerald-700 dark:text-emerald-300 mb-2 mt-6">L'Imam Ahmad exemptait Allah de la forme et de l'image</h4>
                         <p className="mb-4">
-                            Dans son livre: I^tiqadou l-'Imami l-Moubajjali Ahmad Ibnou Hanbal –La Croyance de l'Imam Ahmad Ibnou Hanbal–, Abou l-Fadl At-Tamimiyy Al-hanbaliyy rapporte que l'Imam Ahmad a dit : (mahma tasawwarta bibalik fal-Lahou bikhilafi dhalika) ce qui signifie : « Quoi que tu imagines en ton esprit Dieu en est différent. ». Cette parole est en fait tirée du hadith du Prophète صلى الله عليه وسلم :
+                            Dans son livre: I^tiqadou l-'Imami l-Moubajjali Ahmad Ibnou Hanbal –La Croyance de l'Imam Ahmad Ibnou Hanbal–, Abou l-Fadl At-Tamimiyy Al-hanbaliyy rapporte que l'Imam Ahmad a dit : (mahma tasawwarta bibalik fal-Lahou bikhilafi dhalika) ce qui signifie : « Quoi que tu imagines en ton esprit Dieu en est différent. ». Cette parole est en fait tirée du hadith du Prophète ﷺ  :
                         </p>
-                        <p className="mb-4 text-center font-amiri text-lg">
+                        <p lang="ar" dir="rtl" className="mb-4 text-center font-amiri text-xl leading-loose">
                             ((لا فِكْرَةَ في الرَّبِّ))
                         </p>
-                        <p className="mb-4">
+                        <p className="mb-4 text-center">
                             [rapporté par Abou l-Qaçim Al-'Ansariyy] (la fikrata fi r-Rabb)
                         </p>
-                        <p className="mb-4">
+                        <p className="mb-4 text-center">
                             « On ne peut pas atteindre la réalité de Dieu par l'imagination. »
                         </p>
                         <p className="mb-4">
                             Elle est aussi tirée de la ayah du Qour'an :
                         </p>
-                        <p className="mb-4 text-center font-amiri text-lg">
+                        <p lang="ar" dir="rtl" className="mb-4 text-center font-amiri text-xl leading-loose">
                             ﴿وأنّ إلى ربِّكَ المُنتَهى﴾
                         </p>
-                        <p className="mb-4">
+                        <p className="mb-4 text-center">
                             [Sourat An-Najm / 42] (wa'anna 'ila Rabbika l-mountaha). Ce verset a été interprété par le célèbre compagnon Oubayy Ibnou Ka^b de la façon suivante : « L'imagination de celui qui imagine s'arrête lorsqu'il s'agit du Créateur, ainsi les imaginations ne peuvent L'atteindre. »
                         </p>
                         <p className="mb-4">
@@ -401,16 +403,16 @@ const Hanbalite: React.FC = () => {
                         <p className="mb-4">
                             Az–Zarkachiyy a rapporté dans son livre Tachnifou l-Maçami^ de l'auteur du livre Al-Khisal qu'il a dit : l'Imam Ahmad Ibnou Hanbal a dit :
                         </p>
-                        <p className="mb-4 text-center font-amiri text-lg">
+                        <p lang="ar" dir="rtl" className="mb-4 text-center font-amiri text-xl leading-loose">
                             (مَنْ قَالَ إِنَّ اللهَ جِسْمٌ لاَ كَالأَجْسَامِ كَفَرَ)
                         </p>
-                        <p className="mb-4">
+                        <p className="mb-4 text-center">
                             (man qala 'inna l-Laha jismoun la ka l-'ajsami kafar)
                         </p>
-                        <p className="mb-4">
+                        <p className="mb-4 text-center">
                             « Quiconque dit que Allah est un corps qui n'est pas comme les corps n'est pas musulman ».
                         </p>
-                        <p className="mb-4">
+                        <p className="mb-4 text-center">
                             (tome 2 page 249 de cette édition)
                         </p>
                         <p>
@@ -421,35 +423,35 @@ const Hanbalite: React.FC = () => {
                         <p className="mb-4">
                             Il a interprété lui-même le verset 22 de Sourate Al-Fajr :
                         </p>
-                        <p className="mb-4 text-center font-amiri text-lg">
+                        <p lang="ar" dir="rtl" className="mb-4 text-center font-amiri text-xl leading-loose">
                             ﴿وَجَاءَ رَبُّكَ والْمَلَكُ صَفًّا صَفًّا﴾
                         </p>
-                        <p className="mb-4">
+                        <p className="mb-4 text-center">
                             (wa ja'a Rabbouka wal-malakou saffan saffa) en disant : (ja'a 'amrouh) ce qui signifie : « Son ordre viendra… » et dans une autre version, il a dit (ja'at qoudratouh) ce qui signifie : « des manifestations de Sa toute-puissance viendront… » c'est-à-dire qu'au Jour du jugement, Allah montrera aux gens des choses terribles qu'Il a prédestinées. Par conséquent, si l'Imam Ahmad avait eu pour croyance l'assimilation de Allah à Ses créatures, comme ces gens qui prétendent faire partie du salaf, il n'aurait pas interprété ce verset (ayah) mais l'aurait pris selon son sens apparent.
                         </p>
                         <p>
                             Les gens de ce groupe disent que l'interprétation revient à nier les attributs de Dieu, ils disent (at-ta'wilou ta^til) c'est-à-dire que celui qui pratique l'inter­prétation des textes tomberait d'après eux dans la négation de l'existence de Dieu et de Ses attributs. Selon eux, l'Imam Ahmad serait mécréant puisqu'il a interprété cette ayah. Comment peuvent-ils encore, après cela, se réclamer de l'école de l'Imam Ahmad ?
                         </p>
 
-                        <h4 className="font-bold text-lg text-emerald-700 dark:text-emerald-300 mb-2 mt-6">L'Imam Ahmad considérait permise la recherche des bénédictions de la tombe du Prophète صلى الله عليه وسلم</h4>
+                        <h4 className="font-bold text-lg text-emerald-700 dark:text-emerald-300 mb-2 mt-6">L'Imam Ahmad considérait permise la recherche des bénédictions de la tombe du Prophète ﷺ </h4>
                         <p className="mb-4">
                             ^Abdou l-Lah le fils de l'Imam Ahmad a rapporté de son père qu'il a dit dans le livre Al-^Ilalou waMa^rifatou r-Rijal : « Je l'ai interrogé –c'est-à-dire qu'il a posé la question à son père l'Imam Ahmad– au sujet d'un homme qui toucherait ou embrasserait le minbar du Prophète pour en rechercher les bénédictions (tabarrouk) et qui agirait de la même manière avec la tombe ou ce qui est de cet ordre en voulant par-là se rapprocher de l'agrément de Allah ». Il lui a dit : « Il n'y a pas de mal en cela. »
                         </p>
                         <p>
-                            Or certains extrémistes propagent de nos jours que rechercher les bénédictions –faire le tabarrouk– par les traces du Messager صلى الله عليه وسلم serait une forme d'association et que celui qui le fait ne serait plus musulman. D'après eux, Ahmad et son fils sont mécréants.
+                            Or certains extrémistes propagent de nos jours que rechercher les bénédictions –faire le tabarrouk– par les traces du Messager ﷺ  serait une forme d'association et que celui qui le fait ne serait plus musulman. D'après eux, Ahmad et son fils sont mécréants.
                         </p>
 
                         <h4 className="font-bold text-lg text-emerald-700 dark:text-emerald-300 mb-2 mt-6">L'Imam Ahmad considérait permise l'invocation par le degré des Prophètes et des saints</h4>
                         <p className="mb-4">
-                            Il a été rapporté par l'Imam Al-Mardawiyy, dans son livre Al-'Insaf, que l'Imam Ahmad a écrit dans son Mansak adressé à Al-Marwadhiyy qu'il est recommandé à celui qui demande à Allah la pluie de faire l'invocation par le degré du Prophète صلى الله عليه وسلم.
+                            Il a été rapporté par l'Imam Al-Mardawiyy, dans son livre Al-'Insaf, que l'Imam Ahmad a écrit dans son Mansak adressé à Al-Marwadhiyy qu'il est recommandé à celui qui demande à Allah la pluie de faire l'invocation par le degré du Prophète ﷺ .
                         </p>
                         <p>
                             Pourquoi certains égarés disent-ils maintenant que l'invocation par le degré du Prophète serait interdite et qu'elle serait une forme d'association ? Ils sont allés jusqu'à inventer une règle qui n'existe pas dans l'Islam selon laquelle appeler quelqu'un qui n'est pas vivant et présent serait de l'associa­tion(chirk).
                         </p>
 
-                        <h4 className="font-bold text-lg text-emerald-700 dark:text-emerald-300 mb-2 mt-6">L'Imam Ahmad ne jugeait pas interdit de voyager pour visiter la tombe du Prophète صلى الله عليه وسلم</h4>
+                        <h4 className="font-bold text-lg text-emerald-700 dark:text-emerald-300 mb-2 mt-6">L'Imam Ahmad ne jugeait pas interdit de voyager pour visiter la tombe du Prophète ﷺ </h4>
                         <p className="mb-4">
-                            Bien au contraire, il considérait ce voyage comme une chose recommandée, contrairement aux extrémistes qui considèrent ce voyage comme une désobéissance et même de la mécréance si c'est par recherche des bénédictions. Or les spécialistes de la jurisprudence hanbalite sont unanimes qu'il est recommandé pour celui qui termine son pèlerinage de voyager de la Mecque honorée vers Médine l'Illuminée pour visiter la tombe du Bien-aimé, le Prophète Mouhammad صلى الله عليه وسلم, ce qui fait largement la distance du voyage.
+                            Bien au contraire, il considérait ce voyage comme une chose recommandée, contrairement aux extrémistes qui considèrent ce voyage comme une désobéissance et même de la mécréance si c'est par recherche des bénédictions. Or les spécialistes de la jurisprudence hanbalite sont unanimes qu'il est recommandé pour celui qui termine son pèlerinage de voyager de la Mecque honorée vers Médine l'Illuminée pour visiter la tombe du Bien-aimé, le Prophète Mouhammad ﷺ , ce qui fait largement la distance du voyage.
                         </p>
                         <p className="mb-4">
                             Ibnou Qoudamah a dit dans Al-Mouqni^ page 35 : « Quand le pèlerin termine son pèlerinage, il lui est recommandé de visiter la tombe du Prophète et celles de ses deux compagnons, que Dieu les agrée tous les deux. »
@@ -464,6 +466,112 @@ const Hanbalite: React.FC = () => {
                             Tout ceci n'est qu'un faible échantillon des différences entre la croyance de l'Imam Ahmad et la croyance de ceux qui se réclament mensongèrement de son école. Ils se proclament hanbalites alors que l'Imam Ahmad n'a rien à voir avec eux.
                         </p>
                     </CollapsibleSection>
+
+                    {/* Les mensonges à l'égard de l'Imam Ahmad */}
+                    <CollapsibleSection
+                        title="Les mensonges à son égard"
+                        icon={<Star className="w-5 h-5" />}
+                    >
+                        <p className="mb-4">
+                            Dans son livre « Al-Fatâwâ Al-Hadîthiyyah » (page 415 de cette édition), le Chaykh Ibnou Hajar Al-Haytami a dit :
+                        </p>
+                        <p lang="ar" dir="rtl" className="mb-4 text-center font-amiri text-xl leading-loose">
+                            « عقيدة إمام السنة أحمد بن حنبل رضي الله عنه وأرضاه وجعل جنان المعارف متقلَّبه ومأواه وأفاض علينا وعليه من سوابغ إمتنانه وبوأه الفردوس الأعلى من جنانه، موافقة لعقيدة أهل السنة والجماعة من المبالغة التامة في تنزيه الله تعالى عما يقول الظالمون والجاحدون علوًا كبيرًا من الجهة والجسمية وغيرهما من سائر سمات النقص، بل وعن كل وَصْف ليس فيه كمال مطلق، وما اشتهر بين جهلة المنسوبين إلى هذا الإمام الأعظم المجتهد من أنه قائل بشيء من الجهة أو نحوها فكذب وبُهتان وافتراء عليه، فلعن الله من نسب ذلك إليه، أو رماه بشيء من هذه المثالب التي برَّأه الله منها، وقد بيّـن الحافظ الحجة القدوة الإمام أبو الفرج بن الجوزي من أئمة مذهبه المبرئّيـن من هذه الوصمة القبيحة الشنيعة، أنَّ كل ما نسب إليه من ذلك كذب عليه وافتراء وبهتان وأن نصوصه صريحة في بطلان ذلك، وتنزيه الله تعالى عنه فاعلم ذلك فإنه مهم »
+                        </p>
+                        <p className="mb-4 font-bold">
+                            « La croyance de l’Imâm de la Sounnah, Ahmad Ibn Hanbal (رضي الله عنه), est conforme à la croyance de Ahlou s-Sounnah wa l-Jamâ’ah en ce qui concerne l’exemption totale et parfaite de Allâh ta’âlâ de ce que disent les injustes, et les négateurs, d’une totale exemption de la direction et de la corporalité et autre que cela de parmi l’ensemble des attributs d’imperfection, plus encore, Il est exempt de tous les attributs ne comportant pas une perfection absolue. Et ce qui s’est propagé chez les ignorants qui se réclament de cet illustre Imam Moujtahid, qu’il aurait dit quelque chose au sujet de la direction ou ce qui est de cet ordre, ce ne sont que des mensonges et des calomnies qui lui sont attribués mensongèrement. Que Allâh maudisse celui qui lui attribue cela ou l’accuse de ces défauts dont Allâh l’a innocenté. Le Hâfidh, preuve et modèle, l’Imâm Abou l-Farâj Ibnou l-Jawzi, qui est l’un des imams de son école, et qui est innocent de cette horrible et ignoble souillure, a clarifié que tout ce qui lui a été attribué à ce sujet n’est que mensonge, invention et calomnie, et que ses textes sont explicites quant à la fausseté de cela et quant à l’exemption de Allâh ta’âlâ de ces choses. Sache donc cela, car c’est important. »
+                        </p>
+                        <p className="mb-4 font-bold">
+                            Informations utiles :
+                        </p>
+                        <p className="mb-4">
+                            – L’Illustre savant du salaf, le Moujtahid (jurisconsulte), l’Imâm Aboû ‘Abdi l-Lâh Ahmad Ibnou Mouhammad Ibnou Hanbal Ach-Chaybâni est né en 164 à Baghdâd et il est décédé en 241 de l’Hégire à Baghdâd (رحمه الله), c’est-à-dire il y a plus de 1190 ans. Il est l’Imâm de l’école Hanbalite, l’un des quatre Imams.
+                        </p>
+                        <p className="mb-4">
+                            – Le Chaykh Chihâbou d-Dîn Ahmad Ibnou Mouhammad Ibnou Hajar Al-Haytami Al-Makki est né en 907 en Egypte et il est décédé en 974 de l’Hégire à La Mecque (رحمه الله), c’est-à-dire il y a environ 460 ans. Il était un savant dans l’école de jurisprudence (madh-hab) Chafi’ite. On peut citer de parmi ses chouyoûkh : Chaykh Al-Islâm Zakariyyâ Al-Ansâri, le Chaykh Chihâbou d-Dîn Ar-Ramli et bien d’autres…
+                        </p>
+                        <p className="mb-4">
+                            – Ici, le Chaykh Al-Haytami parle de la croyance de l’Imâm Ahmad Ibn Hanbal et confirme qu’elle était conforme à celle de Ahlou s-Sounnah wa l-Jama’âh. Il confirme que l’Imâm Ahmad reniait le corps et la direction au sujet de Allâh, ainsi que tous les attributs d’imperfection.
+                        </p>
+                        <p className="mb-4">
+                            – Il mentionne également que l’Imâm Ibnou l-Jawzi a innocenté l’Imâm Ahmad des mensonges et calomnies propagés par les moujassimah (anthropomorphistes).
+                        </p>
+                        <p className="mb-4">
+                            – L’Imâm, le Hâfidh (spécialiste des chaînes de transmission du hadîth), le Moufassir (exégète) ‘Abdou r-Rahmân Ibnou ‘Ali connu sous le nom de Ibnou l-Jawzi le Hanbalite, est né en 508 à Baghdâd et il est décédé en 597 de l’Hégire à Baghdâd  (رحمه الله), c’est-à-dire il y a plus de 845 ans.
+                        </p>
+                        <p className="mb-4">
+                            – Ibnou l-Jawzi fait partie des piliers des hanbalites. Il a écrit un livre appelé « Daf’ou Choubahi t-Tachbîh » pour répliquer à ceux qui ont attribué le corps à Allâh tout en se réclamant de l’école de l’Imâm Ahmad alors que l’Imâm Ahmad est innocent de ce qu’ils ont pris pour croyance. L’Imâm Ibnou l-Jawzi est à lui seul une armée contre les moujassimah qui se réclament hanbalites.
+                        </p>
+                        <p className="mb-4">
+                            – Ibnou l-Jawzi fait partie des piliers des hanbalites. Il a écrit un livre appelé « Daf’ou Choubahi t-Tachbîh » pour répliquer à ceux qui ont attribué le corps à Allâh tout en se réclamant de l’école de l’Imâm Ahmad alors que l’Imâm Ahmad est innocent de ce qu’ils ont pris pour croyance. L’Imâm Ibnou l-Jawzi est à lui seul une armée contre les moujassimah qui se réclament hanbalites.
+                        </p>
+                        <p className="mb-4">
+                            – Nombreux sont les savants qui ont innocenté l’Imâm Ahmad de la croyance des moujassimah (corporalistes). Parmi eux :
+                        </p>
+                        <ul className="list-disc pl-6 space-y-2 marker:text-emerald-500 mb-4">
+                            <li>Le grand savant Hanbalite, l’Imâm Ibnou l-Jawzi (رحمه الله), un pilier dans l’école de l’Imâm Ahmad, qui a dit : <b>« Ahmad (C’est-à-dire l’Imâm Ahmad Ibnou Hanbal) n’a jamais attribué de direction à Al-Bârî (Le Créateur : c’est-à-dire Allâh)»</b> [Daf’ou Choubahi t-Tachbîh]</li>
+                            <li>Le Qâdî Badrou d-Dîn Ibnou Jamâ’ah (رحمه الله) qui a dit : « Certes l’Imâm Ahmad Ibnou Hanbal n’a jamais attribué de direction à Al-Bârî (Le Créateur : c’est-à-dire Allâh)» [Îdâhou d-Dalîl]</li>
+                            <li>Le Chaykh Ibn ‘Allân As-Siddîqi (رحمه الله) qui a dit : <b>« Allâh ta’âlâ est exempt de la direction, de l’endroit, du corps et de toutes les caractéristiques de ce qui entre en existence. Ceci est la croyance des gens de la vérité, parmi lesquels figure l’Imâm Ahmad [Ibn Hanbal]. Quant à ce que certains lui ont attribué comme parole affirmant une direction ou des choses semblables, c’est un mensonge manifeste à son encontre ainsi qu’à l’encontre de ses premiers compagnons, comme l’a expliqué Ibn Al-Jawzi, l’un des grands savants hanbalites»</b> [Al-Foutoûhâtou r-Rabbâniyyah]</li>
+                        </ul>
+
+                        <p className="mb-4">
+                            Le Hâfidh Taqiyyou d-Dîn Ibnou Salâh (m.643 H.) a dit : <b>« Allâh a éprouvé deux imams à travers leurs compagnons, alors qu’ils sont innocents [de leurs égarements] :  Ahmad Ibnou Hambal a été éprouvé par les moujassimah (corporalistes) et Ja’far As-Sâdiq a été éprouvé par les râfidah (groupe chiite) »</b> [rapporté par Tâjou d-Dîn As-Soubki dans Tabaqâtou ch-Châfi’iyyah Al-Koubrâ]
+                        </p>
+                        <p className="mb-4">
+                            L’Imâm Ibnou Châhîn (m. 385 H.) a dit : <b>« Deux hommes vertueux ont été éprouvés par leurs compagnons pervers : Ja’far Ibnou Mouhammad (As-Sâdiq) et Ahmad Ibnou Hambal »</b> [rapporté par Ibnou ‘Açâkir dans Tabyînou kadhibi l-Mouftarî]
+                        </p>
+                        <p className="mb-4">
+                            – En revanche, il a été rapporté de la part de l’Imâm Ahmad qu’il niait le corps au sujet de Allâh [Rapporté par l’Imâm Abou l-Fadl At-Tamîmi], et qu’il considérait mécréant ceux qui ont pris pour croyance que Allâh serait un corps ou qu’Il serait dans une direction [Rapporté par Al-Qarâfi et Ibn Hajar Al-Haytami] et [Rapporté par Ahmad Aboû Mouhammad Al-Baghdâdi et Az-Zarkachi].
+                        </p>
+                        <p className="mb-4">
+                            – L’Imâm Ahmad Ibn Hanbal a dit : <b>« Devient mécréant celui qui fait ressembler Allâh à Sa créature »</b> [Rapporté par Ibn Hamdân Al-Hambali dans Nihâyatou l-Moubtadi-în]
+                        </p>
+                        <p className="mb-4">
+                            – L’Imâm Ahmad [Ibn Hambal] a été interrogé au sujet de l’istiwâ [de Allâh], il a dit : <b>« Istawâ tel qu’Il l’a porté à notre connaissance, et non pas comme cela pourrait passer par l’imagination des humains.»</b> [Rapporté par l’Imâm Ahmad Ar-Rifâ’i]
+                        </p>
+                        <ul className="list-disc pl-6 space-y-2 marker:text-emerald-500 mb-4">
+                            <li>L'Imâm Ibnou 'Abdi s-Salâm dans son livre « Hallou r-Roumoûz » ;</li>
+                            <li>Le Chaykh Taqiyyou d-Dîn Al-Hisni dans son livre « Daf'ou choubahi man chabbaha wa tamarrad » ;</li>
+                            <li>Le Chaykh Moujîrou d-Dîn Al-'Oulaymi Al-Hambali dans son tafsîr ;</li>
+                            <li>Le Chaykh Ahmad Zarroûq Al-Fâçi dans son Charh 'Aqîdati l-Imâm Al-Ghazâli ;</li>
+                            <li>Le Chaykh Chihâbou d-Dîn Ar-Ramli dans ses fatâwâ ;</li>
+                            <li>Le Chaykh 'Alwân Ibn 'Atiyyah Al-Houçayni Al-Hamawi dans son livre « Bayân Al-Ma'âni » ;</li>
+                            <li>Le Chaykh An-Nafrâwi Al-Azhari dans son livre « Al-Fawâkih Ad-Dawâni » ;</li>
+                            <li>Le Chaykh Mouhammad Ibnou Soulaymân Al-Halabi dans son livre « Noukhbatou l-La-âlî » ;</li>
+                            <li>Et d'autres qu'eux.</li>
+                        </ul>
+
+                        <p className="mb-4">
+                            – Ibnou Kathîr mentionne également la position de l’Imâm Ahmad concernant l’istiwâ de Allâh, qui est d’y croire sans assimilation, sans comment et sans prendre le sens apparent (comme la position assise ou l’établissement). [Dans son Tafsîr]
+                        </p>
+                        <p className="mb-4">
+                            – De même, l’Imâm Ibn Hajar Al-‘Asqalâni a mentionné la position de l’Imâm Ahmad face aux textes équivoques (moutachâbih), qui est d’y croire dans leur globalité, tout en exemptant Allâh de la kayfiyyah (caractéristiques des créatures) et de l’assimilation (tachbîh) [Dans son livre Fath Al-Bârî].
+                        </p>
+                        <p className="mb-4">
+                            – Sachez également que l'Imâm Ahmad a quelquefois pratiqué l'interprétation (ta-wîl)
+                            détaillée. En effet, il est confirmé qu'il a interprété le verset{' '}
+                            <span lang="ar" dir="rtl" className="font-arabic">﴿وجاء ربك﴾</span>{' '}
+                            « wa jâ-a Rabbouka » en disant : le sens est que viendra l'ordre de ton Seigneur ;
+                            ou les manifestations de Sa toute puissance ; ou sa récompense.
+                        </p>
+                        <p className="mb-4">
+                            – Cette interprétation de l’Imâm Ahmad Ibn Hanbal a été mentionnée dans de nombreux ouvrages de savants. Parmi eux :
+                        </p>
+                       <ul className="list-disc pl-6 space-y-2 marker:text-emerald-500 mb-4">
+                           <li>Le Hâfidh Al-Bayhaqi, avec une chaîne de transmission authentique comme le mentionne Ibnou Kathîr [Dans son livre Al-Bidâyah wa n-Nihâyah]</li>
+                           <li>L’Imâm Ibnou l-Jawzi Al-Hanbali [dans son livre Daf’ou Choubahi t-Tachbîh]</li>
+                           <li>Le Chaykh Ahmad Ibn Hamdân Al-Hanbali [dans son livre Nihâyatou l-Moubtadi-în]</li>
+                           <li>Le Chaykh Taqiyyou d-Dîn Al-Hisni [Dans son livre Daf’ou choubahi man chabbaha wa tamarrad]</li>
+                           <li>Le Chaykh As-Sa’idi Al-Hanbali [Dans son livre Al-Jawhar Al-Mouhsal fî Manâqibi l-Imâm Ahmad Ibnou Hanbal]</li>
+                           <li>Le Chaykh Moujîrou d-Dîn Al-‘Oulaymi Al-Hanbali [dans son tafsîr]</li>
+                           <li>Le Chaykh Al-Kawthari [dans son introduction du livre Al-Asmâ-ou wa s-Sifât]</li>
+                       </ul>
+
+                        <p className="mb-4">
+                            – Le Chaykh Ibn Hamdân Al-Hanbali a dit : « Et [l’Imâm] Ahmad a certes interprété certains versets et certains hadîths comme le verset de an-najwâ, ainsi que Sa parole{' '} <span lang="ar" dir="rtl" className="font-arabic">ُ﴿ أَن يَأْتِيَهُمُ اللّهُ ﴾</span>{' '} [an ya-tiyahoumou l-Lâh] et il a dit qu’il s’agit de Sa puissance (c’est-à-dire les manifestations de Sa toute puissance) et Son ordre. Et Sa parole{' '} <span lang="ar" dir="rtl" className="font-arabic">﴿ وَجَاء رَبُّكَ ﴾</span>{' '} [wa jâ-a rabbouk] et il a dit qu’il s’agit de Sa puissance. Et Ibnou l-Jawzi [Al-Hambali] a mentionné ces deux interprétations [de l’Imâm Ahmad] dans « Al-Minhâj » et il a, quant à lui, penché vers le fait de prendre les versets tels qu’ils sont parvenus sans en donner d’explications, et Ibn ‘Aqîl [Al-Hambali] a interprété de nombreux versets et khabar. Et [l’Imâm] Ahmad a interprété la parole du prophète ﷺ : {' '} <span lang="ar" dir="rtl" className="font-arabic whitespace-nowrap"> « الحجر الأسود يمين الله في الارض » </span>{' '} [al-hajarou l-aswad yamînou l-Lâhi fi l-ard] et ce qui est similaire » [Nihâyatou l-Moubtadi-în]. Cela nous indique que bien que la voie majoritaire des savants du Salaf était de ne pas procéder à l’interprétation, il est toutefois arrivé que certains d’entre eux, à l’image de l’Imâm Ahmad Ibn Hambal, la pratiquait dans certains cas. Et il en est de même concernant les savants du madhhab Hambalite.
+                        </p>
+                    </CollapsibleSection>
+
 
                     {/* La vertu et l'ascèse de l'Imam Ahmad */}
                     <CollapsibleSection
@@ -544,13 +652,13 @@ const Hanbalite: React.FC = () => {
                         <p className="mb-4">
                             Dieu nous dit dans le Livre honoré :
                         </p>
-                        <p className="mb-4 text-center font-amiri text-lg">
+                        <p lang="ar" dir="rtl" className="mb-4 text-center font-amiri text-xl leading-loose">
                             ﴿إنّا نحنُ نزّلنا الذِّكرَ وإِنّا لَهُ لَحافِظينَ﴾
                         </p>
-                        <p className="mb-4">
+                        <p className="mb-4 text-center">
                             [sourat Al-Hijr / 9] ('inna nahnou nazzalna dh-dhikra wa'inna lahou lahafidhin)
                         </p>
-                        <p className="mb-4">
+                        <p className="mb-4 text-center">
                             « C'est Nous Qui avons fait descendre le Livre révélé et c'est Nous Qui le gardons. »
                         </p>
                         <p>
@@ -608,6 +716,9 @@ const Hanbalite: React.FC = () => {
                         </div>
                     </div>
                 </m.section>
+
+                {/* Jurisprudence (fiqh) de l'école — contenu dynamique depuis Supabase */}
+                <EcoleFiqhSection ecole="Hanbalite" titre="Jurisprudence de l'école Hanbali" />
 
                 {/* Autres écoles */}
                 <m.section
