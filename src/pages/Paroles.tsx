@@ -40,14 +40,14 @@ const ParoleCard: React.FC<{ parole: Parole; onClick: () => void }> = ({ parole,
       )}
 
       <div className="bg-white dark:bg-gray-800/80 p-4 rounded-lg border border-amber-100 dark:border-emerald-800 flex-grow">
-        <p className="text-2xl text-gray-900 dark:text-white font-arabic leading-loose text-right line-clamp-3">
+        <p className="text-2xl text-gray-900 dark:text-white font-arabic leading-loose text-right line-clamp-3 whitespace-pre-wrap">
           {parole.texte_arabe}
         </p>
 
         {parole.texte_francais && (
             <div className="mt-4 pl-4 border-l-4 border-amber-300 dark:border-emerald-600 line-clamp-2">
               <p className="text-sm text-amber-700 dark:text-amber-200 mb-1">Signification :</p>
-              <p className="text-gray-700 dark:text-gray-300">{parole.texte_francais}</p>
+              <p className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap">{parole.texte_francais}</p>
             </div>
         )}
       </div>
@@ -111,21 +111,21 @@ const ParoleModal: React.FC<{ parole: Parole | null; onClose: () => void }> = ({
             </div>
 
             <div className="bg-amber-50 dark:bg-gray-700 p-6 rounded-lg">
-              <p className="text-3xl text-gray-900 dark:text-white font-arabic leading-loose text-right">
+              <p className="text-3xl text-gray-900 dark:text-white font-arabic leading-loose text-right whitespace-pre-wrap">
                 {parole.texte_arabe}
               </p>
 
               {parole['phonétique'] && (
                   <div className="mt-6 bg-white dark:bg-gray-600 p-4 rounded">
                     <p className="text-sm text-amber-700 dark:text-amber-300 mb-2">Phonétique :</p>
-                    <p className="text-gray-700 dark:text-gray-200">{parole['phonétique']}</p>
+                    <p className="text-gray-700 dark:text-gray-200 whitespace-pre-wrap">{parole['phonétique']}</p>
                   </div>
               )}
 
               {parole.texte_francais && (
                   <div className="mt-6 pl-4 border-l-4 border-emerald-500">
                     <p className="text-sm text-emerald-700 dark:text-emerald-400 mb-2">Traduction :</p>
-                    <p className="text-gray-700 dark:text-gray-300">{parole.texte_francais}</p>
+                    <p className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap">{parole.texte_francais}</p>
                   </div>
               )}
             </div>
