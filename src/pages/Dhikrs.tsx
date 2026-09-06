@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { m, AnimatePresence } from 'framer-motion';
 import { Heart, BookOpen, Loader, Search, Filter, X, Sparkles, Tags, Hash, Star } from 'lucide-react';
 import { dataService } from '../services/DataService';
+import { FilterSelect } from '../components/FilterSelect';
 import type { Dhikr } from '../types';
 import { usePageTitle } from '../hooks/usePageTitle';
 
@@ -235,22 +236,14 @@ export const Dhikrs: React.FC = () => {
                                 onChange={(e) => setSearchQuery(e.target.value)}
                             />
                         </div>
-                        <div className="relative md:w-80">
-                            <div className="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none">
-                                <Filter className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
-                            </div>
-                            <select
-                                aria-label="Filtrer par sujet"
-                                className="w-full pl-4 pr-10 py-3 rounded-xl border border-emerald-200 dark:border-emerald-800 bg-white dark:bg-gray-800 text-gray-900 dark:text-white appearance-none font-medium cursor-pointer"
-                                value={selectedTag || ''}
-                                onChange={(e) => { setSelectedTag(e.target.value || null); setSelectedCategory(null); }}
-                            >
-                                <option value="">🏷️ Tous les sujets</option>
-                                {allTags.map(sujet => (
-                                    <option key={sujet} value={sujet}>{sujet}</option>
-                                ))}
-                            </select>
-                        </div>
+                        <FilterSelect
+                            value={selectedTag || ''}
+                            onChange={(v) => { setSelectedTag(v || null); setSelectedCategory(null); }}
+                            options={allTags}
+                            allLabel="Tous les sujets"
+                            ariaLabel="Filtrer par sujet"
+                            className="md:w-80"
+                        />
                     </div>
 
                     {(selectedCategory || selectedTag || searchQuery) && (

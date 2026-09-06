@@ -1,7 +1,8 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { m, AnimatePresence } from 'framer-motion';
-import { Search, Filter, X, Loader2 } from 'lucide-react';
+import { Search, X, Loader2 } from 'lucide-react';
 import { dataService } from '../services/DataService';
+import { FilterSelect } from '../components/FilterSelect';
 import { VideoCard } from '../components/VideoCard';
 import type { Multimedia as MultimediaType, MultimediaCategory } from '../types';
 import { usePageTitle } from '../hooks/usePageTitle';
@@ -134,21 +135,13 @@ export const Multimedia: React.FC = () => {
               />
             </div>
 
-            <div className="relative md:w-64">
-              <Filter className="absolute right-3 top-1/2 -translate-y-1/2 h-5 w-5 text-emerald-600 dark:text-emerald-400 pointer-events-none" />
-              <select
-                className="w-full pl-4 pr-10 py-3 rounded-xl border border-emerald-200 dark:border-emerald-800 bg-white dark:bg-gray-800 text-gray-900 dark:text-white appearance-none font-medium"
-                value={selectedCategory || ''}
-                onChange={(e) => setCategory(e.target.value || null)}
-              >
-                <option value="">Toutes les catégories</option>
-                {categories.map(c => (
-                  <option key={c.categorie} value={c.categorie}>
-                    {c.categorie} ({c.count})
-                  </option>
-                ))}
-              </select>
-            </div>
+            <FilterSelect
+              value={selectedCategory || ''}
+              onChange={(v) => setCategory(v || null)}
+              options={categories.map((c) => c.categorie)}
+              allLabel="Toutes les catégories"
+              ariaLabel="Filtrer par catégorie"
+            />
           </div>
 
           {(selectedCategory || searchTerm) && (
@@ -206,7 +199,7 @@ export const Multimedia: React.FC = () => {
                         onClick={() => setCategory(c.categorie)}
                         className="px-4 py-2 rounded-full bg-emerald-100 dark:bg-emerald-900/40 text-emerald-800 dark:text-emerald-200 hover:bg-emerald-200 dark:hover:bg-emerald-900/60 transition-colors text-sm font-medium"
                       >
-                        {c.categorie} ({c.count})
+                        {c.categorie}
                       </button>
                     ))}
                   </div>

@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { m, AnimatePresence } from 'framer-motion';
-import { Search, Filter, X, Star, Loader, Tags, Hash, ChevronDown, Heart } from 'lucide-react';
+import { Search, Filter, X, Star, Loader, Tags, Hash, Heart } from 'lucide-react';
 import { dataService } from '../services/DataService';
+import { FilterSelect } from '../components/FilterSelect';
 import type { Douaa as DouaaType } from '../types';
 import { usePageTitle } from '../hooks/usePageTitle';
 
@@ -142,76 +143,6 @@ const DouaaModal: React.FC<{ douaa: Douaa; onClose: () => void; onTagClick?: (ta
     );
 };
 
-// ─── TagSelector ──────────────────────────────────────────────────────────────
-
-const TagSelector: React.FC<{
-    allTags: string[];
-    selectedTag: string | null;
-    tagCounts: Map<string, number>;
-    onTagSelect: (tag: string | null) => void;
-}> = ({ allTags, selectedTag, tagCounts, onTagSelect }) => {
-    const [isOpen, setIsOpen] = useState(false);
-    const [searchQuery, setSearchQuery] = useState('');
-    const dropdownRef = useRef<HTMLDivElement>(null);
-    const filteredTags = allTags.filter(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()));
-
-    useEffect(() => {
-        const handleClickOutside = (e: MouseEvent) => {
-            if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) setIsOpen(false);
-        };
-        document.addEventListener('mousedown', handleClickOutside);
-        return () => document.removeEventListener('mousedown', handleClickOutside);
-    }, []);
-
-    return (
-        <div className="relative" ref={dropdownRef}>
-            <button onClick={() => setIsOpen(!isOpen)}
-                    className="w-full flex items-center justify-between gap-2 px-4 py-3 rounded-xl border border-emerald-200 dark:border-emerald-800 bg-white dark:bg-gray-800 text-gray-900 dark:text-white hover:border-emerald-300 transition-colors">
-                <div className="flex items-center gap-2">
-                    <Filter className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
-                    <span className="font-medium">{selectedTag ? `Sujet : ${selectedTag}` : 'Filtrer par sujet'}</span>
-                </div>
-                <ChevronDown className={`h-5 w-5 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} />
-            </button>
-            <AnimatePresence>
-                {isOpen && (
-                    <m.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}
-                                className="absolute top-full left-0 right-0 mt-2 bg-white dark:bg-gray-800 rounded-xl shadow-xl border border-emerald-200 dark:border-emerald-800 z-50 overflow-hidden">
-                        <div className="p-3 border-b border-emerald-200 dark:border-emerald-800">
-                            <div className="relative">
-                                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
-                                <input type="text" placeholder="Rechercher un sujet..." value={searchQuery}
-                                       onChange={(e) => setSearchQuery(e.target.value)}
-                                       className="w-full pl-9 pr-3 py-2 rounded-lg border border-emerald-200 dark:border-emerald-700 bg-gray-50 dark:bg-gray-900 text-sm focus:ring-2 focus:ring-emerald-500 focus:border-transparent" />
-                            </div>
-                        </div>
-                        <div className="max-h-80 overflow-y-auto">
-                            <button onClick={() => { onTagSelect(null); setIsOpen(false); setSearchQuery(''); }}
-                                    className={`w-full text-left px-4 py-2 hover:bg-emerald-50 dark:hover:bg-emerald-900/50 transition-colors ${!selectedTag ? 'bg-emerald-100 dark:bg-emerald-900/30 font-medium' : ''}`}>
-                                <div className="flex items-center justify-between">
-                                    <span>🏷️ Tous les sujets</span>
-                                    <span className="text-xs text-gray-500">{allTags.length} sujets</span>
-                                </div>
-                            </button>
-                            {filteredTags.length > 0 ? filteredTags.map(tag => (
-                                <button key={tag} onClick={() => { onTagSelect(tag); setIsOpen(false); setSearchQuery(''); }}
-                                        className={`w-full text-left px-4 py-2 hover:bg-emerald-50 dark:hover:bg-emerald-900/50 transition-colors flex items-center justify-between ${selectedTag === tag ? 'bg-emerald-100 dark:bg-emerald-900/30 font-medium' : ''}`}>
-                                    <div className="flex items-center gap-2">
-                                        <Hash className="h-4 w-4 text-emerald-500" /><span>{tag}</span>
-                                    </div>
-                                    {tagCounts.get(tag) ? <span className="text-xs text-gray-500">({tagCounts.get(tag)})</span> : null}
-                                </button>
-                            )) : (
-                                <div className="px-4 py-8 text-center text-gray-500">Aucun sujet trouvé pour "{searchQuery}"</div>
-                            )}
-                        </div>
-                    </m.div>
-                )}
-            </AnimatePresence>
-        </div>
-    );
-};
-
 // ─── Main component ───────────────────────────────────────────────────────────
 
 export const Douaas: React.FC = () => {
@@ -344,9 +275,14 @@ export const Douaas: React.FC = () => {
                                    className="w-full pl-12 pr-6 py-3 rounded-xl border border-emerald-200 dark:border-emerald-800 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-transparent text-lg font-amiri"
                                    value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
                         </div>
-                        <div className="md:w-80">
-                            <TagSelector allTags={allTags} selectedTag={selectedTag} tagCounts={tagCounts} onTagSelect={setSelectedTag} />
-                        </div>
+                        <FilterSelect
+                            value={selectedTag || ''}
+                            onChange={(v) => setSelectedTag(v || null)}
+                            options={allTags}
+                            allLabel="Tous les sujets"
+                            ariaLabel="Filtrer par sujet"
+                            className="md:w-80"
+                        />
                     </div>
 
                     {(selectedTag || searchTerm) && (
