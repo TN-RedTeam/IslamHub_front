@@ -15,7 +15,6 @@ interface Coran extends CoranType {
   sourate: string | null;
   texte_arabe: string;
   texte_francais: string | null;
-  phonetique: string | null;
   explication: string | null;
   tag: string;
 }
@@ -175,10 +174,10 @@ const CoranModal: React.FC<{
               {coran.texte_arabe}
             </p>
 
-            {coran.phonetique && (
+            {coran['phonétique'] && (
               <div className="mt-6 bg-white dark:bg-gray-600 p-4 rounded">
                 <p className="text-sm text-amber-700 dark:text-amber-300 mb-2">Phonétique:</p>
-                <p className="text-gray-700 dark:text-gray-200 whitespace-pre-wrap [unicode-bidi:plaintext]">{coran.phonetique}</p>
+                <p className="text-gray-700 dark:text-gray-200 whitespace-pre-wrap [unicode-bidi:plaintext]">{coran['phonétique']}</p>
               </div>
             )}
 

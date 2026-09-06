@@ -6,7 +6,7 @@ import { FilterSelect } from '../components/FilterSelect';
 import type { Douaa as DouaaType } from '../types';
 import { usePageTitle } from '../hooks/usePageTitle';
 
-interface Douaa extends DouaaType {
+interface Douaa extends Omit<DouaaType, 'tag'> {
     id: number;
     sujet: string;
     texte_arabe: string;
