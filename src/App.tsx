@@ -1,4 +1,3 @@
-import React from 'react';
 import { HashRouter as Router, Routes, Route } from 'react-router-dom';
 import { LazyMotion, domAnimation } from 'framer-motion';
 import { Navigation } from './components/Navigation';
@@ -15,7 +14,7 @@ import { Femmes } from './pages/Femmes';
 import { ThemeProvider } from './context/ThemeContext';
 import { Madhaheb } from './pages/Madhaheb';
 import AlBukhari from './pages/hadith/Al-Bukhari/AlBukhari';
-import part1 from './pages/hadith/Al-Bukhari/part1';
+import Part1 from './pages/hadith/Al-Bukhari/part1';
 
 // Import des écoles
 import {
@@ -42,7 +41,7 @@ function App() {
                 <Route path="/coran" element={<Corans />} />
                 <Route path="/hadiths" element={<Hadiths />} />
                 <Route path="/hadith/albukhari" element={<AlBukhari />} />
-                <Route path="/hadith/albukhari/part1" element={<part1 />} />
+                <Route path="/hadith/albukhari/part1" element={<Part1 />} />
                 <Route path="/dhikrs" element={<Dhikrs />} />
                 <Route path="/douaas" element={<Douaas />} />
                 <Route path="/paroles" element={<Paroles />} />

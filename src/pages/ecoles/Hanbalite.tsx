@@ -3,7 +3,6 @@ import { m, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Users, BookOpen, Scale, Star, ChevronRight, GraduationCap, ChevronDown, ChevronUp, Heart, Globe, Shield, Sparkles, Calendar, BookMarked } from 'lucide-react';
 import { EcoleFiqhSection } from '../../components/EcoleFiqhSection';
-import { Markdown } from '../../components/Markdown';   // en haut du fichier
 
 interface SectionProps {
     title: string;
