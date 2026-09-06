@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { m, AnimatePresence } from 'framer-motion';
 import { Link, useSearchParams } from 'react-router-dom';
-import { Search, Filter, X, Star, ChevronRight, Loader, GraduationCap, GraduationCap as SavantIcon, Users } from 'lucide-react';
+import { Search, X, Star, ChevronRight, Loader, GraduationCap, GraduationCap as SavantIcon, Users } from 'lucide-react';
 import { dataService } from '../services/DataService';
+import { FilterSelect } from '../components/FilterSelect';
 import { Markdown } from '../components/Markdown';
 import { EcoleBadge } from '../components/EcoleBadge';
 import type { Parole } from '../types';
@@ -315,40 +316,23 @@ export const Paroles: React.FC = () => {
                 )}
               </div>
 
-              <div className="relative md:w-64">
-                <div className="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none">
-                  <Filter className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
-                </div>
-                <select
-                    aria-label="Filtrer par sujet"
-                    className="w-full pl-4 pr-10 py-3 rounded-xl border border-emerald-200 dark:border-emerald-800 bg-white dark:bg-gray-800 text-gray-900 dark:text-white appearance-none font-medium"
-                    value={selectedTag || ''}
-                    onChange={(e) => setSelectedTag(e.target.value || null)}
-                >
-                  <option value="">Tous les sujets</option>
-                  {allTags.map(tag => (
-                      <option key={tag} value={tag}>{tag}</option>
-                  ))}
-                </select>
-              </div>
+              <FilterSelect
+                  value={selectedTag || ''}
+                  onChange={(v) => setSelectedTag(v || null)}
+                  options={allTags}
+                  allLabel="Tous les sujets"
+                  ariaLabel="Filtrer par sujet"
+              />
 
               {savants.length > 0 && (
-                <div className="relative md:w-64">
-                  <div className="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none">
-                    <SavantIcon className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
-                  </div>
-                  <select
-                      aria-label="Filtrer par savant"
-                      className="w-full pl-4 pr-10 py-3 rounded-xl border border-emerald-200 dark:border-emerald-800 bg-white dark:bg-gray-800 text-gray-900 dark:text-white appearance-none font-medium"
-                      value={selectedSavant}
-                      onChange={(e) => setSelectedSavant(e.target.value)}
-                  >
-                    <option value="">Tous les savants</option>
-                    {savants.map((s) => (
-                        <option key={s} value={s}>{s}</option>
-                    ))}
-                  </select>
-                </div>
+                <FilterSelect
+                    value={selectedSavant}
+                    onChange={setSelectedSavant}
+                    options={savants}
+                    allLabel="Tous les savants"
+                    ariaLabel="Filtrer par savant"
+                    icon={SavantIcon}
+                />
               )}
             </div>
 
@@ -360,7 +344,7 @@ export const Paroles: React.FC = () => {
                 >
                   <span className="font-medium text-emerald-800 dark:text-emerald-200 flex flex-wrap items-center gap-2">
                     Filtres :
-                    {selectedTag && <span className="font-bold">#{selectedTag}</span>}
+                    {selectedTag && <span className="px-2 py-0.5 bg-emerald-100 dark:bg-emerald-800 rounded-full text-sm">{selectedTag}</span>}
                     {selectedSavant && <span className="px-2 py-0.5 bg-emerald-100 dark:bg-emerald-800 rounded-full text-sm">{selectedSavant}</span>}
                   </span>
                   <button
