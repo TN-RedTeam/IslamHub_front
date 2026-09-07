@@ -60,7 +60,9 @@ export const Savants: React.FC = () => {
                 className="bg-white dark:bg-gray-800 rounded-2xl border border-emerald-100 dark:border-emerald-900 shadow-sm p-6 sm:p-8"
               >
                 <div className="flex items-center justify-between gap-3 flex-wrap mb-4">
-                  <h2 className="text-2xl font-bold text-emerald-900 dark:text-emerald-300 font-amiri">{s.nom}</h2>
+                  <Link to={`/savants/${s.slug}`} className="group">
+                    <h2 className="text-2xl font-bold text-emerald-900 dark:text-emerald-300 font-amiri group-hover:text-emerald-700 dark:group-hover:text-emerald-200 transition-colors">{s.nom}</h2>
+                  </Link>
                   {s.ecole && <EcoleBadge ecole={s.ecole} />}
                 </div>
 

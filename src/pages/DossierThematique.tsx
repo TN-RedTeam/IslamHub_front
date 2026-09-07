@@ -5,6 +5,7 @@ import { Loader, Copy, Check, Share2, Star, BookOpen, ArrowLeft, Quote } from 'l
 import { dataService } from '../services/DataService';
 import { Markdown } from '../components/Markdown';
 import { usePageTitle } from '../hooks/usePageTitle';
+import { slugify } from '../utils/slug';
 import type { DossierData, DossierPreuve } from '../types';
 
 const FAV_KEY = 'islamhub:favoris:dossiers';
@@ -185,7 +186,7 @@ export const DossierThematique: React.FC = () => {
                     <p className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap [unicode-bidi:plaintext] mb-3">« {p.ref.texte_francais} »</p>
                   )}
                   {p.type === 'parole' && p.ref.savant && (
-                    <Link to={`/paroles?savant=${encodeURIComponent(p.ref.savant)}`} className="text-sm text-emerald-600 dark:text-emerald-400 hover:underline">
+                    <Link to={`/savants/${slugify(p.ref.savant)}`} className="text-sm text-emerald-600 dark:text-emerald-400 hover:underline">
                       {p.ref.savant}{p.ref.ecole ? ` — ${p.ref.ecole}` : ''}
                     </Link>
                   )}

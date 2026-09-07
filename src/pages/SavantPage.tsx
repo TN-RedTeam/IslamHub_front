@@ -1,0 +1,127 @@
+import React, { useEffect, useState } from 'react';
+import { useParams, Link } from 'react-router-dom';
+import { m } from 'framer-motion';
+import { Loader2, ArrowLeft, MessageSquareQuote, ShieldCheck } from 'lucide-react';
+import { dataService } from '../services/DataService';
+import { Markdown } from '../components/Markdown';
+import { EcoleBadge } from '../components/EcoleBadge';
+import { usePageTitle } from '../hooks/usePageTitle';
+import type { SavantDetail } from '../types';
+
+export const SavantPage: React.FC = () => {
+  const { slug = '' } = useParams();
+  const [data, setData] = useState<SavantDetail | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [notFound, setNotFound] = useState(false);
+
+  usePageTitle(data?.savant.nom || 'Savant');
+
+  useEffect(() => {
+    let alive = true;
+    setLoading(true); setNotFound(false);
+    dataService.getSavantBySlug(slug)
+      .then((d) => { if (!alive) return; if (!d) setNotFound(true); else setData(d); setLoading(false); })
+      .catch(() => { if (alive) { setNotFound(true); setLoading(false); } });
+    return () => { alive = false; };
+  }, [slug]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-b from-amber-50 to-emerald-50 dark:from-gray-900 dark:to-emerald-950 flex items-center justify-center">
+        <Loader2 className="h-10 w-10 text-emerald-600 dark:text-emerald-400 animate-spin" />
+      </div>
+    );
+  }
+
+  if (notFound || !data) {
+    return (
+      <div className="min-h-screen bg-gradient-to-b from-amber-50 to-emerald-50 dark:from-gray-900 dark:to-emerald-950 flex items-center justify-center">
+        <div className="text-center max-w-md mx-auto p-8 bg-white dark:bg-gray-800 rounded-2xl shadow-xl">
+          <div className="text-6xl mb-4">🧕</div>
+          <h1 className="text-xl font-bold text-gray-700 dark:text-gray-300 mb-2 font-amiri">Savant introuvable</h1>
+          <Link to="/savants" className="px-6 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg transition-colors inline-block mt-2">Tous les savants</Link>
+        </div>
+      </div>
+    );
+  }
+
+  const { savant, paroles, hadiths_juges } = data;
+
+  return (
+    <div className="min-h-screen bg-gradient-to-b from-amber-50 to-emerald-50 dark:from-gray-900 dark:to-emerald-950">
+      <m.header
+        initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }}
+        className="relative py-16 bg-emerald-800 dark:bg-emerald-950 overflow-hidden">
+        <div className="absolute inset-0 opacity-20 bg-arabesque" />
+        <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-amber-50 dark:from-gray-900" />
+        <div className="relative container mx-auto px-4 max-w-4xl">
+          <Link to="/savants" className="inline-flex items-center gap-1.5 text-emerald-200 hover:text-white text-sm mb-4">
+            <ArrowLeft className="h-4 w-4" /> Tous les savants
+          </Link>
+          <div className="flex items-center gap-3 flex-wrap">
+            <h1 className="text-4xl md:text-5xl font-bold text-white font-amiri">{savant.nom}</h1>
+            {savant.ecole && <EcoleBadge ecole={savant.ecole} />}
+          </div>
+        </div>
+      </m.header>
+
+      <main className="container mx-auto px-4 py-10 -mt-10 relative z-10 max-w-4xl space-y-8">
+        {savant.biographie && (
+          <section className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow border border-emerald-100 dark:border-emerald-900">
+            <Markdown>{savant.biographie}</Markdown>
+          </section>
+        )}
+
+        {paroles.length > 0 && (
+          <section>
+            <h2 className="text-lg font-bold text-emerald-800 dark:text-emerald-300 mb-4 flex items-center gap-2">
+              <MessageSquareQuote className="h-5 w-5" /> Ses paroles ({paroles.length})
+            </h2>
+            <div className="space-y-4">
+              {paroles.map((p) => (
+                <article key={p.id} className="bg-white dark:bg-gray-800 rounded-2xl p-5 shadow border border-amber-100 dark:border-emerald-900">
+                  {p.sujet && <h3 className="font-bold text-amber-800 dark:text-amber-200 font-amiri mb-2">{p.sujet}</h3>}
+                  {p.texte_arabe && (
+                    <p className="text-2xl leading-loose text-right font-arabic text-gray-900 dark:text-white whitespace-pre-wrap mb-3">{p.texte_arabe}</p>
+                  )}
+                  {p.texte_francais && (
+                    <p className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap [unicode-bidi:plaintext] mb-2">« {p.texte_francais} »</p>
+                  )}
+                  {p.explication && (
+                    <div className="mt-2 text-sm text-gray-600 dark:text-gray-400">
+                      <Markdown>{p.explication}</Markdown>
+                    </div>
+                  )}
+                </article>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {hadiths_juges.length > 0 && (
+          <section>
+            <h2 className="text-lg font-bold text-emerald-800 dark:text-emerald-300 mb-4 flex items-center gap-2">
+              <ShieldCheck className="h-5 w-5" /> Hadiths qu'il a authentifiés ({hadiths_juges.length})
+            </h2>
+            <ul className="space-y-2">
+              {hadiths_juges.map((h) => (
+                <li key={h.id} className="bg-white dark:bg-gray-800 rounded-xl px-4 py-3 shadow-sm border border-amber-100 dark:border-emerald-900 flex items-center justify-between gap-3">
+                  <span className="text-gray-800 dark:text-gray-200 font-amiri">{h.sujet}</span>
+                  {h.degre_authenticite && (
+                    <span className="text-xs px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-800 text-emerald-800 dark:text-emerald-200 shrink-0">{h.degre_authenticite}</span>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
+
+        {paroles.length === 0 && hadiths_juges.length === 0 && !savant.biographie && (
+          <p className="text-center text-gray-500 dark:text-gray-400 py-10">Fiche en cours de rédaction.</p>
+        )}
+      </main>
+    </div>
+  );
+};
+
+export default SavantPage;

@@ -48,10 +48,34 @@ export type Savant = Parole;
 export interface SavantInfo {
   id: number;
   nom: string;
+  slug: string;               // segment d'URL de la fiche savant
   ecole: string | null;       // nom de l'école (Hanafi, Malikite...)
   ecole_slug: string | null;  // segment d'URL de la page école
   biographie: string | null;  // Markdown
   nb_paroles: number;         // nombre de paroles rattachées
+}
+
+/** Fiche savant détaillée (page /savants/:slug) : bio + paroles + hadiths jugés. */
+export interface SavantDetail {
+  savant: {
+    id: number;
+    nom: string;
+    slug: string;
+    biographie: string | null;
+    ecole: string | null;
+    ecole_slug: string | null;
+  };
+  paroles: {
+    id: number;
+    sujet: string | null;
+    slug: string | null;
+    texte_arabe: string | null;
+    texte_francais: string | null;
+    'phonétique'?: string | null;
+    explication: string | null;
+    ecole: string | null;
+  }[];
+  hadiths_juges: { id: number; sujet: string | null; slug: string | null; degre_authenticite: string | null }[];
 }
 
 /** Vidéo YouTube (lien externe) */

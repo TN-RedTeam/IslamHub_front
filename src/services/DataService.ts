@@ -10,6 +10,7 @@ import type {
   FiqhChapitre,
   FemmesChapitre,
   SavantInfo,
+  SavantDetail,
   DossierData,
   PaginatedResponse,
   PaginationParams,
@@ -208,6 +209,11 @@ class DataService {
     const { data, error } = await supabase.rpc('savants_all');
     if (error) throw error;
     return (data ?? []) as SavantInfo[];
+  }
+  async getSavantBySlug(slug: string): Promise<SavantDetail | null> {
+    const { data, error } = await supabase.rpc('savant_by_slug', { savant_slug: slug });
+    if (error) throw error;
+    return (data ?? null) as SavantDetail | null;
   }
 
   // ================= Dossiers thématiques =================
