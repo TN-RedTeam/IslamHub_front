@@ -13,8 +13,7 @@ import { Multimedia } from './pages/Multimedia';
 import { Femmes } from './pages/Femmes';
 import { ThemeProvider } from './context/ThemeContext';
 import { Madhaheb } from './pages/Madhaheb';
-import AlBukhari from './pages/hadith/Al-Bukhari/AlBukhari';
-import Part1 from './pages/hadith/Al-Bukhari/part1';
+import { NotFound } from './pages/NotFound';
 
 // Import des écoles
 import {
@@ -40,8 +39,6 @@ function App() {
                 <Route path="/" element={<Home />} />
                 <Route path="/coran" element={<Corans />} />
                 <Route path="/hadiths" element={<Hadiths />} />
-                <Route path="/hadith/albukhari" element={<AlBukhari />} />
-                <Route path="/hadith/albukhari/part1" element={<Part1 />} />
                 <Route path="/dhikrs" element={<Dhikrs />} />
                 <Route path="/douaas" element={<Douaas />} />
                 <Route path="/paroles" element={<Paroles />} />
@@ -55,6 +52,9 @@ function App() {
                 <Route path="/ecoles/Malikite" element={<Malikite />} />
                 <Route path="/ecoles/Shafii" element={<Shafii />} />
                 <Route path="/ecoles/Hanbalite" element={<Hanbalite />} />
+
+                {/* 404 */}
+                <Route path="*" element={<NotFound />} />
               </Routes>
             </main>
           </div>
