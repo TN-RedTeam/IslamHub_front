@@ -57,6 +57,7 @@ async function rpcSearch<T>(
   filter: string | null,
   filterKey: 'tag_filter' | 'categorie_filter',
   params?: PaginationParams,
+  extra?: Record<string, string>,
 ) {
   const page = params?.page ?? 0;
   const pageSize = params?.pageSize ?? 20;
@@ -66,6 +67,12 @@ async function rpcSearch<T>(
     page_size: pageSize,
   };
   args[filterKey] = filter ? sanitizeInput(filter) : '';
+  // Filtres additionnels côté serveur (rubriques hadiths, savant paroles…).
+  if (extra) {
+    for (const [k, v] of Object.entries(extra)) {
+      args[k] = v ? sanitizeInput(v) : '';
+    }
+  }
   const { data, error } = await supabase.rpc(fn, args);
   if (error) throw error;
   return shapeResult<T>(data, page, pageSize);
@@ -82,11 +89,27 @@ class DataService {
   async getHadiths(params?: PaginationParams): Promise<PaginatedResponse<Hadith>> {
     return rpcSearch<Hadith>('search_hadiths', '', null, 'tag_filter', params ?? LOAD_ALL);
   }
-  async searchHadiths(searchTerm: string, tag?: string | null, params?: PaginationParams): Promise<PaginatedResponse<Hadith>> {
-    return rpcSearch<Hadith>('search_hadiths', searchTerm, tag ?? null, 'tag_filter', params ?? LOAD_ALL);
+  async searchHadiths(
+    searchTerm: string,
+    tag?: string | null,
+    params?: PaginationParams,
+    rubrics?: { statut?: string; rapporteur?: string; narrateur?: string },
+  ): Promise<PaginatedResponse<Hadith>> {
+    return rpcSearch<Hadith>('search_hadiths', searchTerm, tag ?? null, 'tag_filter', params ?? LOAD_ALL, {
+      statut_filter: rubrics?.statut ?? '',
+      rapporteur_filter: rubrics?.rapporteur ?? '',
+      narrateur_filter: rubrics?.narrateur ?? '',
+    });
   }
   async getHadithTags(): Promise<string[]> {
     return rpcTags('tags_hadiths');
+  }
+  /** Valeurs distinctes des rubriques (menus déroulants) sans charger les hadiths. */
+  async getHadithRubriques(): Promise<{ statuts: string[]; rapporteurs: string[]; narrateurs: string[] }> {
+    const { data, error } = await supabase.rpc('hadith_rubriques');
+    if (error) throw error;
+    const d = (data ?? {}) as { statuts?: string[]; rapporteurs?: string[]; narrateurs?: string[] };
+    return { statuts: d.statuts ?? [], rapporteurs: d.rapporteurs ?? [], narrateurs: d.narrateurs ?? [] };
   }
 
   // ================= Coran =================
@@ -126,8 +149,15 @@ class DataService {
   async getParoles(params?: PaginationParams): Promise<PaginatedResponse<Parole>> {
     return rpcSearch<Parole>('search_paroles', '', null, 'tag_filter', params ?? LOAD_ALL);
   }
-  async searchParoles(searchTerm: string, tag?: string | null, params?: PaginationParams): Promise<PaginatedResponse<Parole>> {
-    return rpcSearch<Parole>('search_paroles', searchTerm, tag ?? null, 'tag_filter', params ?? LOAD_ALL);
+  async searchParoles(
+    searchTerm: string,
+    tag?: string | null,
+    params?: PaginationParams,
+    savant?: string,
+  ): Promise<PaginatedResponse<Parole>> {
+    return rpcSearch<Parole>('search_paroles', searchTerm, tag ?? null, 'tag_filter', params ?? LOAD_ALL, {
+      savant_filter: savant ?? '',
+    });
   }
   async getParoleTags(): Promise<string[]> {
     return rpcTags('tags_paroles');

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { m, AnimatePresence } from 'framer-motion';
 import { Link, useSearchParams } from 'react-router-dom';
 import { Search, X, Star, ChevronRight, Loader, GraduationCap, GraduationCap as SavantIcon, Users } from 'lucide-react';
@@ -154,97 +154,95 @@ const ParoleModal: React.FC<{ parole: Parole | null; onClose: () => void }> = ({
   );
 };
 
+const ITEMS_PER_PAGE = 20;
+
 export const Paroles: React.FC = () => {
-  const [paroles, setParoles] = useState<Parole[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedTag, setSelectedTag] = useState<string | null>(null);
+  const [selectedTag, setSelectedTag] = useState<string | null>(null); // sujet
   const [selectedSavant, setSelectedSavant] = useState('');
-  const [allTags, setAllTags] = useState<string[]>([]);
-  const [filtered, setFiltered] = useState<Parole[]>([]);
+  const [showAll, setShowAll] = useState(false);
+
+  const [allTags, setAllTags] = useState<string[]>([]); // sujets
+  const [savants, setSavants] = useState<string[]>([]);
+  const [totalCount, setTotalCount] = useState(0); // total en base
+
+  const [paroles, setParoles] = useState<Parole[]>([]);
+  const [total, setTotal] = useState(0);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [hasMore, setHasMore] = useState(false);
+  const [hasSearched, setHasSearched] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [selected, setSelected] = useState<Parole | null>(null);
-  const [isSearching, setIsSearching] = useState(false);
-  const [showAll, setShowAll] = useState(false); // « Tout afficher »
 
   const [searchParams] = useSearchParams();
+  const loadMoreRef = useRef<HTMLDivElement>(null);
+  const debounceRef = useRef<ReturnType<typeof setTimeout>>();
 
+  const hasQuery = !!(searchTerm.trim() || selectedTag || selectedSavant);
+
+  // Listes (sujets + savants) + total, sans charger les paroles.
   useEffect(() => {
-    loadParoles();
     dataService.getParoleSujets().then(setAllTags).catch(() => {});
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    dataService.getParoleNames().then(setSavants).catch(() => {});
+    dataService.searchParoles('', null, { page: 0, pageSize: 1 })
+      .then((r) => setTotalCount(r.count ?? 0)).catch(() => {});
   }, []);
 
-  // Pré-filtre par savant si on arrive depuis la page /savants (?savant=Nom).
+  // Pré-filtre par savant si on arrive depuis /savants (?savant=Nom).
   useEffect(() => {
     const s = searchParams.get('savant');
     if (s) setSelectedSavant(s);
   }, [searchParams]);
 
-  const loadParoles = async () => {
-    setIsLoading(true);
-    setError(null);
+  const doSearch = useCallback(async (
+    q: string, tag: string | null, savant: string, page: number, append: boolean,
+  ) => {
+    if (page === 0) { setIsLoading(true); setError(null); } else setIsLoadingMore(true);
     try {
-      const res = await dataService.getParoles({ page: 0, pageSize: 200 });
-      setParoles(res.data);
-      setFiltered(res.data);
+      const res = await dataService.searchParoles(q, tag, { page, pageSize: ITEMS_PER_PAGE }, savant);
+      const items = (res.data ?? []) as Parole[];
+      const tot = res.count ?? 0;
+      setParoles((prev) => (append ? [...prev, ...items] : items));
+      setTotal(tot);
+      setHasMore((page + 1) * ITEMS_PER_PAGE < tot);
+      setCurrentPage(page);
+      setHasSearched(true);
     } catch (err) {
-      console.error('Error loading paroles:', err);
-      setError('Erreur lors du chargement des paroles. Veuillez réessayer.');
+      console.error('Search error:', err);
+      setError('Une erreur est survenue lors de la recherche. Veuillez réessayer.');
     } finally {
       setIsLoading(false);
+      setIsLoadingMore(false);
     }
-  };
+  }, []);
 
   useEffect(() => {
-    const run = async () => {
-      if (!searchTerm.trim() && !selectedTag) {
-        setFiltered(paroles);
-        return;
-      }
-      setIsSearching(true);
-      try {
-        const res = await dataService.searchParoles(searchTerm, selectedTag, { page: 0, pageSize: 200 });
-        setFiltered(res.data);
-      } catch (err) {
-        console.error('Search error:', err);
-      } finally {
-        setIsSearching(false);
-      }
-    };
-    const t = setTimeout(run, 300);
-    return () => clearTimeout(t);
-  }, [searchTerm, selectedTag, paroles]);
+    if (!hasQuery && !showAll) {
+      setParoles([]); setTotal(0); setHasMore(false); setCurrentPage(0); setHasSearched(false);
+      return;
+    }
+    clearTimeout(debounceRef.current);
+    debounceRef.current = setTimeout(() => doSearch(searchTerm, selectedTag, selectedSavant, 0, false), 300);
+    return () => clearTimeout(debounceRef.current);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchTerm, selectedTag, selectedSavant, showAll]);
+
+  useEffect(() => {
+    const el = loadMoreRef.current;
+    if (!el || !hasMore || isLoadingMore || isLoading || !hasSearched) return;
+    const obs = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) doSearch(searchTerm, selectedTag, selectedSavant, currentPage + 1, true);
+    }, { threshold: 0.1, rootMargin: '200px' });
+    obs.observe(el);
+    return () => obs.disconnect();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [hasMore, isLoadingMore, isLoading, hasSearched, currentPage, searchTerm, selectedTag, selectedSavant]);
 
   const handleResetFilters = () => {
-    setSearchTerm('');
-    setSelectedTag(null);
-    setSelectedSavant('');
+    setSearchTerm(''); setSelectedTag(null); setSelectedSavant(''); setShowAll(false);
   };
-  // Liste des savants (depuis les données chargées) pour le filtre par savant.
-  const savants = useMemo(
-    () => Array.from(new Set(paroles.map((p) => p.savant).filter((v): v is string => !!v && v.trim().length > 0)))
-      .sort((a, b) => a.localeCompare(b)),
-    [paroles],
-  );
-  // Résultat = recherche/thème (filtered) + filtre par savant (côté client).
-  const displayed = useMemo(
-    () => filtered.filter((p) => !selectedSavant || p.savant === selectedSavant),
-    [filtered, selectedSavant],
-  );
-  // Rien ne s'affiche tant qu'aucune recherche/thème/savant n'est actif (comme le Coran).
-  const hasQuery = !!(searchTerm.trim() || selectedTag || selectedSavant);
-
-  if (isLoading) {
-    return (
-        <div className="min-h-screen bg-gradient-to-b from-amber-50 to-emerald-50 dark:from-gray-900 dark:to-emerald-950 flex items-center justify-center">
-          <div className="text-center">
-            <Loader className="h-12 w-12 text-emerald-600 dark:text-emerald-400 animate-spin mx-auto mb-4" />
-            <p className="text-xl text-emerald-800 dark:text-emerald-200 font-amiri">Chargement des paroles...</p>
-          </div>
-        </div>
-    );
-  }
 
   if (error) {
     return (
@@ -253,7 +251,8 @@ export const Paroles: React.FC = () => {
             <div className="text-6xl mb-4">😔</div>
             <h3 className="text-xl font-bold text-red-600 dark:text-red-400 mb-2">Une erreur est survenue</h3>
             <p className="text-gray-600 dark:text-gray-400 mb-6">{error}</p>
-            <button onClick={loadParoles} className="px-6 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg transition-colors">Réessayer</button>
+            <button onClick={() => doSearch(searchTerm, selectedTag, selectedSavant, 0, false)}
+                className="px-6 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg transition-colors">Réessayer</button>
           </div>
         </div>
     );
@@ -262,28 +261,19 @@ export const Paroles: React.FC = () => {
   return (
       <div className="min-h-screen bg-gradient-to-b from-amber-50 to-emerald-50 dark:from-gray-900 dark:to-emerald-950">
         <m.header
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="relative py-20 bg-emerald-800 dark:bg-emerald-950 overflow-hidden"
-        >
+            initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }}
+            className="relative py-20 bg-emerald-800 dark:bg-emerald-950 overflow-hidden">
           <div className="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/arabesque.png')]" />
           <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-amber-50 dark:from-gray-900" />
           <div className="relative container mx-auto px-4 text-center">
-            <m.div
-                initial={{ scale: 0.9 }}
-                animate={{ scale: 1 }}
-                className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-white/10 backdrop-blur-sm mb-6"
-            >
+            <m.div initial={{ scale: 0.9 }} animate={{ scale: 1 }}
+                className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-white/10 backdrop-blur-sm mb-6">
               <GraduationCap className="h-10 w-10 text-white" />
             </m.div>
             <h1 className="text-5xl md:text-6xl font-bold text-white mb-6 font-amiri">Paroles de savants</h1>
-            <p className="text-xl text-emerald-200 max-w-3xl mx-auto">
-              Explorez les paroles des savants de Ahlu s-Sounnah
-            </p>
-            <Link
-              to="/savants"
-              className="inline-flex items-center gap-2 mt-6 px-5 py-2.5 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white font-medium transition-colors"
-            >
+            <p className="text-xl text-emerald-200 max-w-3xl mx-auto">Explorez les paroles des savants de Ahlu s-Sounnah</p>
+            <Link to="/savants"
+              className="inline-flex items-center gap-2 mt-6 px-5 py-2.5 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white font-medium transition-colors">
               <Users className="h-5 w-5" /> Découvrir les savants
             </Link>
           </div>
@@ -291,25 +281,18 @@ export const Paroles: React.FC = () => {
 
         <main className="container mx-auto px-4 py-12 -mt-12 relative z-10">
           <m.section
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.2 }}
-              className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-6 mb-12 border border-emerald-100 dark:border-emerald-900"
-          >
+              initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }}
+              className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-6 mb-12 border border-emerald-100 dark:border-emerald-900">
             <div className="flex flex-col md:flex-row gap-6">
               <div className="flex-1 relative">
                 <div className="absolute left-3 top-1/2 transform -translate-y-1/2">
                   <Search className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
                 </div>
                 <input
-                    type="text"
-                    aria-label="Rechercher une parole"
-                    placeholder="Rechercher une parole, un savant..."
+                    type="text" aria-label="Rechercher une parole" placeholder="Rechercher une parole, un savant..."
                     className="w-full pl-12 pr-6 py-3 rounded-xl border border-emerald-200 dark:border-emerald-800 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-transparent text-lg font-amiri"
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                />
-                {isSearching && (
+                    value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
+                {isLoading && (
                     <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
                       <Loader className="h-5 w-5 text-emerald-600 dark:text-emerald-400 animate-spin" />
                     </div>
@@ -317,41 +300,26 @@ export const Paroles: React.FC = () => {
               </div>
 
               <FilterSelect
-                  value={selectedTag || ''}
-                  onChange={(v) => setSelectedTag(v || null)}
-                  options={allTags}
-                  allLabel="Tous les sujets"
-                  ariaLabel="Filtrer par sujet"
-              />
+                  value={selectedTag || ''} onChange={(v) => setSelectedTag(v || null)}
+                  options={allTags} allLabel="Tous les sujets" ariaLabel="Filtrer par sujet" />
 
               {savants.length > 0 && (
                 <FilterSelect
-                    value={selectedSavant}
-                    onChange={setSelectedSavant}
-                    options={savants}
-                    allLabel="Tous les savants"
-                    ariaLabel="Filtrer par savant"
-                    icon={SavantIcon}
-                />
+                    value={selectedSavant} onChange={setSelectedSavant}
+                    options={savants} allLabel="Tous les savants" ariaLabel="Filtrer par savant" icon={SavantIcon} />
               )}
             </div>
 
             {(selectedTag || selectedSavant) && (
-                <m.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    className="mt-4 flex items-center justify-between bg-emerald-50 dark:bg-emerald-900/30 rounded-lg px-4 py-2"
-                >
+                <m.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+                    className="mt-4 flex items-center justify-between bg-emerald-50 dark:bg-emerald-900/30 rounded-lg px-4 py-2">
                   <span className="font-medium text-emerald-800 dark:text-emerald-200 flex flex-wrap items-center gap-2">
                     Filtres :
                     {selectedTag && <span className="px-2 py-0.5 bg-emerald-100 dark:bg-emerald-800 rounded-full text-sm">{selectedTag}</span>}
                     {selectedSavant && <span className="px-2 py-0.5 bg-emerald-100 dark:bg-emerald-800 rounded-full text-sm">{selectedSavant}</span>}
                   </span>
-                  <button
-                      onClick={handleResetFilters}
-                      aria-label="Retirer les filtres"
-                      className="text-emerald-600 dark:text-emerald-400 hover:text-emerald-800 dark:hover:text-emerald-200 p-1 shrink-0"
-                  >
+                  <button onClick={handleResetFilters} aria-label="Retirer les filtres"
+                      className="text-emerald-600 dark:text-emerald-400 hover:text-emerald-800 dark:hover:text-emerald-200 p-1 shrink-0">
                     <X className="h-5 w-5" />
                   </button>
                 </m.div>
@@ -366,79 +334,73 @@ export const Paroles: React.FC = () => {
                 <p className="text-gray-500 dark:text-gray-400 max-w-md mx-auto mb-6">
                   Saisissez un mot-clé (cherche aussi les tags), un savant, choisissez un sujet — ou affichez tout.
                 </p>
-                <button
-                  onClick={() => setShowAll(true)}
-                  className="inline-flex items-center gap-2 px-6 py-3 mb-6 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-medium shadow"
-                >
-                  Tout afficher ({paroles.length})
+                <button onClick={() => setShowAll(true)}
+                    className="inline-flex items-center gap-2 px-6 py-3 mb-6 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-medium shadow">
+                  Tout afficher{totalCount > 0 ? ` (${totalCount})` : ''}
                 </button>
                 {allTags.length > 0 && (
                   <div className="flex flex-wrap gap-2 justify-center max-w-lg mx-auto">
                     <span className="w-full text-sm text-gray-400 mb-1">Sujets :</span>
                     {allTags.slice(0, 8).map((t) => (
-                      <button
-                        key={t}
-                        onClick={() => setSelectedTag(t)}
-                        className="px-4 py-2 rounded-full text-sm font-medium bg-amber-100 dark:bg-emerald-800/60 text-amber-800 dark:text-emerald-200 hover:bg-amber-200 dark:hover:bg-emerald-700 transition-colors"
-                      >
+                      <button key={t} onClick={() => setSelectedTag(t)}
+                          className="px-4 py-2 rounded-full text-sm font-medium bg-amber-100 dark:bg-emerald-800/60 text-amber-800 dark:text-emerald-200 hover:bg-amber-200 dark:hover:bg-emerald-700 transition-colors">
                         {t}
                       </button>
                     ))}
                   </div>
                 )}
               </div>
+            ) : isLoading ? (
+              <div className="flex flex-col items-center py-16 gap-4">
+                <Loader className="h-12 w-12 text-emerald-600 dark:text-emerald-400 animate-spin" />
+                <p className="text-emerald-700 dark:text-emerald-300 font-amiri text-xl">Recherche en cours...</p>
+              </div>
+            ) : paroles.length === 0 ? (
+              <m.div key="no-results" initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+                  className="text-center py-16 bg-white dark:bg-gray-800 rounded-2xl shadow-xl">
+                <div className="max-w-md mx-auto">
+                  <div className="text-6xl mb-4">📖</div>
+                  <h3 className="text-xl font-bold text-gray-700 dark:text-gray-300 mb-2">Aucun résultat trouvé</h3>
+                  <p className="text-gray-500 dark:text-gray-400 mb-6">Essayez de modifier vos critères de recherche</p>
+                  <button onClick={handleResetFilters}
+                      className="px-6 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg transition-colors">Réinitialiser</button>
+                </div>
+              </m.div>
             ) : (
-            <AnimatePresence>
-              {displayed.length === 0 ? (
-                  <m.div
-                      key="no-results"
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      exit={{ opacity: 0 }}
-                      className="text-center py-16 bg-white dark:bg-gray-800 rounded-2xl shadow-xl"
-                  >
-                    <div className="max-w-md mx-auto">
-                      <div className="text-6xl mb-4">📖</div>
-                      <h3 className="text-xl font-bold text-gray-700 dark:text-gray-300 mb-2">Aucun résultat trouvé</h3>
-                      <p className="text-gray-500 dark:text-gray-400 mb-6">Essayez de modifier vos critères de recherche</p>
-                      <button onClick={handleResetFilters} className="px-6 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg transition-colors">Réinitialiser</button>
+              <>
+                <m.p initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+                    className="text-sm font-medium text-emerald-700 dark:text-emerald-400 mb-6">
+                  {paroles.length}{total > paroles.length ? ` / ${total}` : ''} parole{total > 1 ? 's' : ''} trouvée{total > 1 ? 's' : ''}
+                </m.p>
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                  <AnimatePresence mode="popLayout">
+                    {paroles.map((parole, index) => (
+                        <m.div key={parole.id}
+                            initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: Math.min(index % ITEMS_PER_PAGE, 10) * 0.05 }} layout>
+                          <ParoleCard parole={parole} onClick={() => setSelected(parole)} />
+                        </m.div>
+                    ))}
+                  </AnimatePresence>
+                </div>
+                {hasMore && (
+                    <div ref={loadMoreRef} className="flex justify-center py-8">
+                      {isLoadingMore ? (
+                          <div className="flex flex-col items-center gap-3">
+                            <Loader className="h-8 w-8 text-emerald-600 dark:text-emerald-400 animate-spin" />
+                            <p className="text-emerald-600 dark:text-emerald-400 text-sm">Chargement…</p>
+                          </div>
+                      ) : <div className="h-10" />}
                     </div>
-                  </m.div>
-              ) : (
-                  <>
-                    <m.p
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        className="text-sm font-medium text-emerald-700 dark:text-emerald-400 mb-6"
-                    >
-                      {displayed.length} parole{displayed.length > 1 ? 's' : ''} trouvée{displayed.length > 1 ? 's' : ''}
-                    </m.p>
-
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                      {displayed.map((parole, index) => (
-                          <m.div
-                              key={`${parole.id}-${index}`}
-                              initial={{ opacity: 0, y: 20 }}
-                              animate={{ opacity: 1, y: 0 }}
-                              transition={{ delay: Math.min(index, 10) * 0.05 }}
-                              layout
-                          >
-                            <ParoleCard parole={parole} onClick={() => setSelected(parole)} />
-                          </m.div>
-                      ))}
-                    </div>
-                  </>
-              )}
-            </AnimatePresence>
+                )}
+              </>
             )}
           </section>
         </main>
 
         <footer className="bg-emerald-900 dark:bg-emerald-950 text-white py-12">
           <div className="container mx-auto px-4 text-center">
-            <p className="text-emerald-300 mb-4 font-amiri text-xl">
-              "On n'obéit pas à une créature pour désobéir au Créateur"
-            </p>
+            <p className="text-emerald-300 mb-4 font-amiri text-xl">"On n'obéit pas à une créature pour désobéir au Créateur"</p>
             <p className="text-emerald-200">© {new Date().getFullYear()} Paroles de savants</p>
           </div>
         </footer>
