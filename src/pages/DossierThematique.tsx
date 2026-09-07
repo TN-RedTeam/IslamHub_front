@@ -4,7 +4,7 @@ import { m } from 'framer-motion';
 import { Loader, Copy, Check, Share2, Star, BookOpen, ArrowLeft, Quote } from 'lucide-react';
 import { dataService } from '../services/DataService';
 import { Markdown } from '../components/Markdown';
-import { usePageTitle } from '../hooks/usePageTitle';
+import { useSeo } from '../hooks/useSeo';
 import { slugify } from '../utils/slug';
 import type { DossierData, DossierPreuve } from '../types';
 
@@ -42,7 +42,10 @@ export const DossierThematique: React.FC = () => {
   const [copied, setCopied] = useState(false);
   const [isFav, setIsFav] = useState(false);
 
-  usePageTitle(data?.dossier.meta_title || data?.dossier.h1 || 'Dossier');
+  useSeo({
+    title: data?.dossier.meta_title || data?.dossier.h1,
+    description: data?.dossier.meta_description || undefined,
+  });
 
   useEffect(() => {
     let alive = true;

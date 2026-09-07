@@ -5,7 +5,7 @@ import { Loader2, ArrowLeft, MessageSquareQuote, ShieldCheck } from 'lucide-reac
 import { dataService } from '../services/DataService';
 import { Markdown } from '../components/Markdown';
 import { EcoleBadge } from '../components/EcoleBadge';
-import { usePageTitle } from '../hooks/usePageTitle';
+import { useSeo } from '../hooks/useSeo';
 import type { SavantDetail } from '../types';
 
 export const SavantPage: React.FC = () => {
@@ -14,7 +14,10 @@ export const SavantPage: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
 
-  usePageTitle(data?.savant.nom || 'Savant');
+  useSeo({
+    title: data?.savant.nom,
+    description: data?.savant.biographie || (data ? `Biographie et paroles de ${data.savant.nom}.` : undefined),
+  });
 
   useEffect(() => {
     let alive = true;

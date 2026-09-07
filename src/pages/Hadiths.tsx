@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { Link } from 'react-router-dom';
 import { m, AnimatePresence } from 'framer-motion';
 import { Search, X, Star, ChevronRight, Loader, SlidersHorizontal } from 'lucide-react';
 import { dataService } from '../services/DataService';
 import { FilterSelect } from '../components/FilterSelect';
+import { slugify } from '../utils/slug';
 import type { Hadith as HadithType } from '../types';
 
 interface Hadith extends HadithType {
@@ -163,6 +165,16 @@ const HadithModal: React.FC<{ hadith: Hadith; onClose: () => void }> = ({ hadith
                   {tag.trim()}
                 </span>
             ))}
+          </div>
+
+          <div className="pt-2">
+            <Link
+                to={`/hadiths/${hadith.id}/${slugify(hadith.sujet)}`}
+                onClick={onClose}
+                className="inline-flex items-center gap-1 text-sm font-medium text-emerald-600 dark:text-emerald-400 hover:underline"
+            >
+              Ouvrir la page dédiée →
+            </Link>
           </div>
         </div>
       </m.div>

@@ -4,6 +4,7 @@ import { Navigation } from './components/Navigation';
 import { PwaUpdater } from './components/PwaUpdater';
 import { Home } from './pages/Home';
 import { Hadiths } from './pages/Hadiths';
+import { HadithPage } from './pages/HadithPage';
 import { Dhikrs } from './pages/Dhikrs';
 import { Douaas } from './pages/Douaas';
 import { Paroles } from './pages/Paroles';
@@ -41,6 +42,7 @@ function App() {
                 <Route path="/" element={<Home />} />
                 <Route path="/coran" element={<Corans />} />
                 <Route path="/hadiths" element={<Hadiths />} />
+                <Route path="/hadiths/:id/:slug" element={<HadithPage />} />
                 <Route path="/dhikrs" element={<Dhikrs />} />
                 <Route path="/douaas" element={<Douaas />} />
                 <Route path="/paroles" element={<Paroles />} />

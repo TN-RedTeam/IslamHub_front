@@ -11,6 +11,7 @@ import type {
   FemmesChapitre,
   SavantInfo,
   SavantDetail,
+  HadithDetail,
   DossierData,
   PaginatedResponse,
   PaginationParams,
@@ -105,6 +106,11 @@ class DataService {
   }
   async getHadithTags(): Promise<string[]> {
     return rpcTags('tags_hadiths');
+  }
+  async getHadith(id: number): Promise<HadithDetail | null> {
+    const { data, error } = await supabase.rpc('get_hadith', { hadith_id: id });
+    if (error) throw error;
+    return (data ?? null) as HadithDetail | null;
   }
   /** Valeurs distinctes des rubriques (menus déroulants) sans charger les hadiths. */
   async getHadithRubriques(): Promise<{ statuts: string[]; rapporteurs: string[]; narrateurs: string[] }> {

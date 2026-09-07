@@ -55,6 +55,24 @@ export interface SavantInfo {
   nb_paroles: number;         // nombre de paroles rattachées
 }
 
+/** Fiche d'un hadith (page /hadiths/:id/:slug). */
+export interface HadithDetail {
+  id: number;
+  sujet: string;
+  slug: string | null;
+  texte_arabe: string;
+  texte_francais: string | null;
+  'phonétique'?: string | null;
+  explication: string | null;
+  degre_authenticite: string | null;
+  type_hadith: string | null;
+  juge_par: string | null;
+  rapporteur: string | null;
+  narrateur: string | null;
+  tag: string | null;
+  recueils: string | null;
+}
+
 /** Fiche savant détaillée (page /savants/:slug) : bio + paroles + hadiths jugés. */
 export interface SavantDetail {
   savant: {
