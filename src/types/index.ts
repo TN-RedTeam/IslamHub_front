@@ -173,3 +173,59 @@ export interface PaginationParams {
   page: number;
   pageSize: number;
 }
+
+// ==========================================
+// Dossiers thématiques (croyance / preuves / réponse)
+// ==========================================
+
+export interface DossierPreuveRef {
+  id: number;
+  sujet?: string | null;
+  slug?: string | null;
+  texte_arabe?: string | null;
+  texte_francais?: string | null;
+  'phonétique'?: string | null;
+  // hadith
+  degre_authenticite?: string | null;
+  type_hadith?: string | null;
+  juge_par?: string | null;
+  recueils?: string | null;
+  // parole
+  savant?: string | null;
+  ecole?: string | null;
+  explication?: string | null;
+  // verset
+  sourate?: string | null;
+}
+
+export interface DossierPreuve {
+  id: number;
+  type: 'hadith' | 'parole' | 'verset';
+  ordre: number;
+  ref: DossierPreuveRef | null;
+}
+
+export interface DossierImage {
+  id: number;
+  image_url: string;
+  legende?: string | null;
+  alt: string;
+  source_livre?: string | null;
+  ordre: number;
+}
+
+export interface DossierData {
+  dossier: {
+    id: number;
+    slug: string;
+    h1: string;
+    meta_title?: string | null;
+    meta_description?: string | null;
+    croyance_texte?: string | null;
+    objection_texte?: string | null;
+    reponse_texte?: string | null;
+  };
+  preuves: DossierPreuve[];
+  images: DossierImage[];
+  lies: { slug: string; h1: string }[];
+}

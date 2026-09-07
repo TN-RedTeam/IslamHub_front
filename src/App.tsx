@@ -13,6 +13,7 @@ import { Multimedia } from './pages/Multimedia';
 import { Femmes } from './pages/Femmes';
 import { ThemeProvider } from './context/ThemeContext';
 import { Madhaheb } from './pages/Madhaheb';
+import { DossierThematique } from './pages/DossierThematique';
 import { NotFound } from './pages/NotFound';
 
 // Import des écoles
@@ -45,6 +46,7 @@ function App() {
                 <Route path="/savants" element={<Savants />} />
                 <Route path="/multimedia" element={<Multimedia />} />
                 <Route path="/femmes" element={<Femmes />} />
+                <Route path="/dossiers/:slug" element={<DossierThematique />} />
 
                 {/* Écoles (Madhaheb) */}
                 <Route path="/ecoles" element={<Madhaheb />} />
