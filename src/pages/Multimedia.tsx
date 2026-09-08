@@ -135,7 +135,7 @@ export const Multimedia: React.FC = () => {
             <m.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              className="mt-4 flex items-center justify-between bg-emerald-50 dark:bg-emerald-900/30 rounded-lg px-4 py-2"
+              className="mt-4 flex items-center justify-between bg-green-soft rounded-lg px-4 py-2"
             >
               <span className="font-medium text-green-deep text-sm">
                 {hasSearched && !isLoading
@@ -144,7 +144,7 @@ export const Multimedia: React.FC = () => {
               </span>
               <button
                 onClick={resetFilters}
-                className="text-green hover:text-green-deep dark:hover:text-emerald-200 p-1"
+                className="text-green hover:text-green-deep p-1"
                 aria-label="Réinitialiser les filtres"
               >
                 <X className="h-5 w-5" />
@@ -184,7 +184,7 @@ export const Multimedia: React.FC = () => {
                       <button
                         key={c.categorie}
                         onClick={() => setCategory(c.categorie)}
-                        className="px-4 py-2 rounded-full bg-emerald-100 dark:bg-emerald-900/40 text-green-deep hover:bg-green-soft dark:hover:bg-emerald-900/60 transition-colors text-sm font-medium"
+                        className="px-4 py-2 rounded-full bg-green-soft text-green-deep hover:bg-green-soft dark:hover:bg-emerald-900/60 transition-colors text-sm font-medium"
                       >
                         {c.categorie}
                       </button>
@@ -286,10 +286,10 @@ export const Multimedia: React.FC = () => {
 
       <footer className="bg-emerald-900 dark:bg-emerald-950 text-white py-12">
         <div className="container mx-auto px-4 text-center">
-          <p className="text-emerald-300 mb-4 font-display text-xl">
+          <p className="text-green-deep mb-4 font-display text-xl">
             "Dieu existe de toute éternité et rien d'autre que Lui n'est de toute éternité"
           </p>
-          <p className="text-emerald-200">© {new Date().getFullYear()} Média Islamique</p>
+          <p className="text-green-deep">© {new Date().getFullYear()} Média Islamique</p>
         </div>
       </footer>
     </div>

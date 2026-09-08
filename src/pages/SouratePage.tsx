@@ -79,9 +79,9 @@ export const SouratePage: React.FC = () => {
           </div>
         ) : (
           versets.map((v) => (
-            <article key={v.numero} className="bg-white dark:bg-gray-800 rounded-card p-6 shadow border border-amber-100 dark:border-emerald-900">
+            <article key={v.numero} className="bg-white dark:bg-gray-800 rounded-card p-6 shadow border border-green-line dark:border-emerald-900">
               <div className="flex items-center gap-2 mb-3">
-                <span className="w-8 h-8 rounded-full bg-emerald-100 dark:bg-emerald-800 text-green-deep dark:text-muted flex items-center justify-center text-sm font-bold shrink-0">{v.numero}</span>
+                <span className="w-8 h-8 rounded-full bg-green-soft text-green-deep dark:text-muted flex items-center justify-center text-sm font-bold shrink-0">{v.numero}</span>
               </div>
               {v.texte_arabe && (
                 <p className="text-3xl leading-loose text-right font-arabic text-gray-900 dark:text-white whitespace-pre-wrap">{v.texte_arabe}</p>
@@ -97,7 +97,7 @@ export const SouratePage: React.FC = () => {
               {v.exegeses.length > 0 && (
                 <div className="mt-4 space-y-3">
                   {v.exegeses.map((e, i) => (
-                    <div key={i} className="bg-emerald-50 dark:bg-emerald-900/30 rounded-lg p-4">
+                    <div key={i} className="bg-green-soft rounded-lg p-4">
                       <p className="text-xs font-bold text-green mb-1">Exégèse{e.source ? ` — ${e.source}` : ''}</p>
                       <Markdown>{e.texte}</Markdown>
                     </div>

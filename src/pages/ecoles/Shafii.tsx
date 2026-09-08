@@ -25,7 +25,7 @@ const CollapsibleSection: React.FC<SectionProps> = ({ title, icon, children, def
         >
             <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="w-full px-6 py-4 flex items-center justify-between bg-green-soft hover:from-amber-100 hover:to-emerald-100 dark:hover:from-emerald-900/50 dark:hover:to-amber-900/50 transition-colors"
+                className="w-full px-6 py-4 flex items-center justify-between bg-green-soft hover:bg-green-line transition-colors"
             >
                 <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-full bg-green flex items-center justify-center text-white">
@@ -177,7 +177,7 @@ const Shafii: React.FC = () => {
                             <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-green mb-3">
                                 <stat.icon className="h-6 w-6 text-white" />
                             </div>
-                            <div className="text-2xl font-bold text-amber-800 dark:text-amber-200 font-display">
+                            <div className="text-2xl font-bold text-green-deep font-display">
                                 {stat.value}
                             </div>
                             <div className="text-sm text-gray-600 dark:text-gray-400 mt-1">
@@ -312,7 +312,7 @@ const Shafii: React.FC = () => {
                             textes et le raisonnement. Elle est aujourd'hui suivie par des millions de musulmans,
                             notamment en Égypte, en Asie du Sud-Est, au Yémen et en Afrique de l'Est.
                         </p>
-                        <div className="bg-emerald-50 dark:bg-emerald-900/30 rounded-lg p-4 mt-4">
+                        <div className="bg-green-soft rounded-lg p-4 mt-4">
                             <p className="text-green-deep font-medium">
                                 L'école Chafi^iyy représente environ 15% des musulmans dans le monde et reste
                                 particulièrement influente dans les domaines de la jurisprudence, du hadith et
@@ -332,15 +332,15 @@ const Shafii: React.FC = () => {
                         <ul className="space-y-3">
                             {qualities.map((quality, index) => (
                                 <li key={index} className="flex items-start gap-3">
-                                    <span className="w-6 h-6 rounded-full bg-amber-100 dark:bg-amber-900 flex items-center justify-center flex-shrink-0 mt-0.5">
-                                        <span className="text-amber-600 dark:text-amber-400 text-sm font-bold">{index + 1}</span>
+                                    <span className="w-6 h-6 rounded-full bg-green-soft flex items-center justify-center flex-shrink-0 mt-0.5">
+                                        <span className="text-gold text-sm font-bold">{index + 1}</span>
                                     </span>
                                     <span>{quality}</span>
                                 </li>
                             ))}
                         </ul>
-                        <div className="mt-6 p-4 bg-amber-50 dark:bg-amber-900/30 rounded-lg border-l-4 border-amber-500">
-                            <p className="italic text-amber-800 dark:text-amber-200">
+                        <div className="mt-6 p-4 bg-green-soft rounded-lg border-l-4 border-green-line">
+                            <p className="italic text-green-deep">
                                 L'Imam Ahmad a dit à son sujet : "Ach-Chafi^iyy était comme le soleil pour le monde
                                 et comme la santé pour les gens."
                             </p>
@@ -362,7 +362,7 @@ const Shafii: React.FC = () => {
                                     key={index}
                                     className="flex items-center gap-3 p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg"
                                 >
-                                    <span className="w-8 h-8 rounded-full bg-emerald-100 dark:bg-emerald-900 flex items-center justify-center text-green text-sm font-bold">
+                                    <span className="w-8 h-8 rounded-full bg-green-soft dark:bg-emerald-900 flex items-center justify-center text-green text-sm font-bold">
                                         {index + 1}
                                     </span>
                                     <span className="text-gray-700 dark:text-gray-300">{teacher}</span>
@@ -425,7 +425,7 @@ const Shafii: React.FC = () => {
                                 </div>
                             </div>
                             <div className="flex items-start gap-4">
-                                <div className="w-3 h-3 rounded-full bg-amber-500 mt-2"></div>
+                                <div className="w-3 h-3 rounded-full bg-gold mt-2"></div>
                                 <div>
                                     <h4 className="font-bold text-gray-800 dark:text-gray-200">Médine</h4>
                                     <p className="text-gray-600 dark:text-gray-400">
@@ -474,7 +474,7 @@ const Shafii: React.FC = () => {
                             Il a clairement exprimé sa croyance en l'unicité d'Allah et en Ses attributs parfaits.
                         </p>
                         <div className="space-y-4">
-                            <div className="p-4 bg-emerald-50 dark:bg-emerald-900/30 rounded-lg border-l-4 border-green">
+                            <div className="p-4 bg-green-soft rounded-lg border-l-4 border-green">
                                 <p className="italic text-green-deep">
                                     "J'ai cru en Allah et en ce qui est venu de la part d'Allah, selon ce qu'a voulu Allah.
                                     Et j'ai cru en le Messager d'Allah et en ce qui est venu de la part du Messager d'Allah,
@@ -485,8 +485,8 @@ const Shafii: React.FC = () => {
                                 Il a affirmé que Allah existe sans endroit et qu'Il n'est pas concerné par le temps.
                                 Il a mis en garde contre le fait d'attribuer à Allah des caractéristiques des créatures.
                             </p>
-                            <div className="p-4 bg-amber-50 dark:bg-amber-900/30 rounded-lg border-l-4 border-amber-500">
-                                <p className="italic text-amber-800 dark:text-amber-200">
+                            <div className="p-4 bg-green-soft rounded-lg border-l-4 border-green-line">
+                                <p className="italic text-green-deep">
                                     L'Imam Ach-Chafi^iyy a dit : "Celui qui cherche à approfondir sa connaissance de la
                                     science du tawhid (unicité) avant d'avoir affermi sa croyance, celui-là sera perturbé."
                                 </p>
@@ -537,8 +537,8 @@ const Shafii: React.FC = () => {
                                 whileHover={{ y: -5 }}
                                 className="bg-white/80 dark:bg-gray-800/80 rounded-xl p-6 shadow-lg border border-line"
                             >
-                                <div className="w-12 h-12 rounded-full bg-amber-100 dark:bg-emerald-800 flex items-center justify-center mb-4">
-                                    <source.icon className="h-6 w-6 text-amber-600" />
+                                <div className="w-12 h-12 rounded-full bg-green-soft flex items-center justify-center mb-4">
+                                    <source.icon className="h-6 w-6 text-gold" />
                                 </div>
                                 <h4 className="text-lg font-bold text-gray-800 dark:text-white mb-2">
                                     {source.title}
@@ -573,8 +573,8 @@ const Shafii: React.FC = () => {
                                 </p>
                             </div>
                             <div className="text-center">
-                                <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-amber-100 dark:bg-emerald-800">
-                                    <BookOpen className="h-10 w-10 text-amber-600" />
+                                <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-green-soft">
+                                    <BookOpen className="h-10 w-10 text-gold" />
                                 </div>
                             </div>
                         </div>
@@ -636,7 +636,7 @@ const Shafii: React.FC = () => {
                     className="mt-16 bg-green-soft rounded-card p-8 text-center shadow-lg"
                 >
                     <div className="max-w-2xl mx-auto">
-                        <div className="text-5xl mb-4 text-amber-600 dark:text-amber-400">"</div>
+                        <div className="text-5xl mb-4 text-gold">"</div>
                         <p className="text-xl text-gray-800 dark:text-gray-200 font-display leading-relaxed mb-4">
                             La science est ce qui profite, non ce qui est mémorisé.
                         </p>
@@ -649,10 +649,10 @@ const Shafii: React.FC = () => {
 
             <footer className="bg-emerald-900 dark:bg-emerald-950 text-white py-12 mt-16">
                 <div className="container mx-auto px-4 text-center">
-                    <p className="text-emerald-300 mb-4 font-display text-xl">
+                    <p className="text-green-deep mb-4 font-display text-xl">
                         "Ceux parmi Ses serviteurs qui craignent Dieu sont les savants."
                     </p>
-                    <p className="text-emerald-200 text-sm">
+                    <p className="text-green-deep text-sm">
                         Sourate Fatir, verset 28
                     </p>
                 </div>

@@ -29,15 +29,15 @@ const HadithCard: React.FC<{ hadith: Hadith; onClick: () => void }> = ({ hadith,
         className="relative bg-ivory rounded-card p-6 shadow-card border border-line space-y-4 overflow-hidden cursor-pointer h-full flex flex-col"
     >
       <div className="absolute top-0 right-0 w-24 h-24 opacity-20">
-        <svg viewBox="0 0 100 100" className="text-amber-500">
+        <svg viewBox="0 0 100 100" className="text-gold">
           <path fill="currentColor" d="M20,20 Q30,10 40,20 T60,20 T80,20 T100,20" className="transform rotate-45" />
         </svg>
       </div>
 
       {hadith.sujet && (
           <div className="flex items-center">
-            <Star className="h-5 w-5 text-amber-500 dark:text-amber-300 mr-2" />
-            <h3 className="text-xl font-bold text-amber-800 dark:text-amber-200 font-display">
+            <Star className="h-5 w-5 text-gold mr-2" />
+            <h3 className="text-xl font-bold text-green-deep font-display">
               {hadith.sujet}
             </h3>
           </div>
@@ -55,8 +55,8 @@ const HadithCard: React.FC<{ hadith: Hadith; onClick: () => void }> = ({ hadith,
         </p>
 
         {hadith.texte_francais && (
-            <div className="mt-4 pl-4 border-l-4 border-amber-300 dark:border-green line-clamp-2">
-              <p className="text-sm text-amber-700 dark:text-amber-200 mb-1">Signification :</p>
+            <div className="mt-4 pl-4 border-l-4 border-green-line dark:border-green line-clamp-2">
+              <p className="text-sm text-green-deep mb-1">Signification :</p>
               <p className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap [unicode-bidi:plaintext]">{hadith.texte_francais}</p>
             </div>
         )}
@@ -67,7 +67,7 @@ const HadithCard: React.FC<{ hadith: Hadith; onClick: () => void }> = ({ hadith,
             <m.span
                 key={tag.trim()}
                 whileHover={{ scale: 1.05 }}
-                className="text-xs bg-amber-100 dark:bg-emerald-800 text-amber-800 px-3 py-1 rounded-full flex items-center"
+                className="text-xs bg-green-soft text-green-deep px-3 py-1 rounded-full flex items-center"
             >
               <ChevronRight className="h-3 w-3 mr-1" />
               {tag.trim()}
@@ -109,7 +109,7 @@ const HadithModal: React.FC<{ hadith: Hadith; onClose: () => void }> = ({ hadith
         <div className="space-y-6">
           <div className="flex items-center justify-between">
             <div>
-              <h2 className="text-2xl font-bold text-amber-800 dark:text-amber-200 font-display">
+              <h2 className="text-2xl font-bold text-green-deep font-display">
                 {hadith.sujet}
               </h2>
               {hadith.rapporteur && (
@@ -125,20 +125,20 @@ const HadithModal: React.FC<{ hadith: Hadith; onClose: () => void }> = ({ hadith
             </div>
 
             {hadith.statut && (
-                <span className="bg-amber-100 dark:bg-amber-900 text-amber-800 dark:text-amber-200 px-3 py-1 rounded-full text-sm">
+                <span className="bg-green-soft text-green-deep px-3 py-1 rounded-full text-sm">
                   {hadith.statut}
                 </span>
             )}
           </div>
 
-          <div className="bg-amber-50 dark:bg-gray-700 p-6 rounded-lg">
+          <div className="bg-green-soft dark:bg-gray-700 p-6 rounded-lg">
             <p className="text-3xl text-gray-900 dark:text-white font-arabic leading-loose text-right whitespace-pre-wrap">
               {hadith.texte_arabe}
             </p>
 
             {hadith.phonétique && (
                 <div className="mt-6 bg-white dark:bg-gray-600 p-4 rounded">
-                  <p className="text-sm text-amber-700 dark:text-amber-300 mb-2">Phonétique:</p>
+                  <p className="text-sm text-green-deep mb-2">Phonétique:</p>
                   <p className="text-gray-700 dark:text-gray-200 whitespace-pre-wrap [unicode-bidi:plaintext]">{hadith.phonétique}</p>
                 </div>
             )}
@@ -152,7 +152,7 @@ const HadithModal: React.FC<{ hadith: Hadith; onClose: () => void }> = ({ hadith
           </div>
 
           {hadith.explication && (
-              <div className="mt-6 bg-emerald-50 dark:bg-emerald-900/30 p-6 rounded-lg">
+              <div className="mt-6 bg-green-soft p-6 rounded-lg">
                 <p className="text-lg font-bold text-green-deep mb-3">Explication:</p>
                 <p className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap [unicode-bidi:plaintext]">{hadith.explication}</p>
               </div>
@@ -162,7 +162,7 @@ const HadithModal: React.FC<{ hadith: Hadith; onClose: () => void }> = ({ hadith
             {(hadith.tag || '').split(',').filter(Boolean).map(tag => (
                 <span
                     key={tag.trim()}
-                    className="text-xs bg-amber-100 dark:bg-emerald-800 text-amber-800 px-3 py-1 rounded-full"
+                    className="text-xs bg-green-soft text-green-deep px-3 py-1 rounded-full"
                 >
                   {tag.trim()}
                 </span>
@@ -372,7 +372,7 @@ export const Hadiths: React.FC = () => {
               <span className="text-sm font-medium text-gray-500 dark:text-gray-400">Thèmes :</span>
               {AQIDA_THEMES.map((t) => (
                   <button key={t.q} onClick={() => setSearchTerm(t.q)}
-                      className="px-3 py-1.5 rounded-full text-sm font-medium bg-amber-100 dark:bg-emerald-800/60 text-amber-800 hover:bg-amber-200 dark:hover:bg-green-deep transition-colors">
+                      className="px-3 py-1.5 rounded-full text-sm font-medium bg-green-soft text-green-deep hover:bg-green-line dark:hover:bg-green-deep transition-colors">
                     {t.label}
                   </button>
               ))}
@@ -380,16 +380,16 @@ export const Hadiths: React.FC = () => {
 
             {(selectedTag || hasRubricFilter) && (
                 <m.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-                    className="mt-4 flex items-center justify-between bg-emerald-50 dark:bg-emerald-900/30 rounded-lg px-4 py-2">
+                    className="mt-4 flex items-center justify-between bg-green-soft rounded-lg px-4 py-2">
                   <span className="font-medium text-green-deep flex flex-wrap items-center gap-2">
                     Filtres :
-                    {selectedTag && <span className="px-2 py-0.5 bg-emerald-100 dark:bg-emerald-800 rounded-full text-sm">{selectedTag}</span>}
-                    {selectedStatut && <span className="px-2 py-0.5 bg-amber-100 dark:bg-amber-900/40 text-amber-800 dark:text-amber-200 rounded-full text-sm">{selectedStatut}</span>}
-                    {selectedRapporteur && <span className="px-2 py-0.5 bg-emerald-100 dark:bg-emerald-800 rounded-full text-sm">{selectedRapporteur}</span>}
-                    {selectedNarrateur && <span className="px-2 py-0.5 bg-emerald-100 dark:bg-emerald-800 rounded-full text-sm">{selectedNarrateur}</span>}
+                    {selectedTag && <span className="px-2 py-0.5 bg-green-soft rounded-full text-sm">{selectedTag}</span>}
+                    {selectedStatut && <span className="px-2 py-0.5 bg-green-soft text-green-deep rounded-full text-sm">{selectedStatut}</span>}
+                    {selectedRapporteur && <span className="px-2 py-0.5 bg-green-soft rounded-full text-sm">{selectedRapporteur}</span>}
+                    {selectedNarrateur && <span className="px-2 py-0.5 bg-green-soft rounded-full text-sm">{selectedNarrateur}</span>}
                   </span>
                   <button onClick={handleResetFilters} aria-label="Retirer les filtres"
-                      className="text-green hover:text-green-deep dark:hover:text-emerald-200 p-1 shrink-0">
+                      className="text-green hover:text-green-deep p-1 shrink-0">
                     <X className="h-5 w-5" />
                   </button>
                 </m.div>
@@ -413,7 +413,7 @@ export const Hadiths: React.FC = () => {
                     <span className="w-full text-sm text-gray-400 mb-1">Sujets :</span>
                     {allTags.slice(0, 10).map((t) => (
                       <button key={t} onClick={() => setSelectedTag(t)}
-                          className="px-4 py-2 rounded-full text-sm font-medium bg-amber-100 dark:bg-emerald-800/60 text-amber-800 hover:bg-amber-200 dark:hover:bg-green-deep transition-colors">
+                          className="px-4 py-2 rounded-full text-sm font-medium bg-green-soft text-green-deep hover:bg-green-line dark:hover:bg-green-deep transition-colors">
                         {t}
                       </button>
                     ))}
@@ -470,8 +470,8 @@ export const Hadiths: React.FC = () => {
 
         <footer className="bg-emerald-900 dark:bg-emerald-950 text-white py-12">
           <div className="container mx-auto px-4 text-center">
-            <p className="text-emerald-300 mb-4 font-display text-xl">"On n'obéit pas à une créature pour désobéir au Créateur"</p>
-            <p className="text-emerald-200">© {new Date().getFullYear()} Collection de Hadiths</p>
+            <p className="text-green-deep mb-4 font-display text-xl">"On n'obéit pas à une créature pour désobéir au Créateur"</p>
+            <p className="text-green-deep">© {new Date().getFullYear()} Collection de Hadiths</p>
           </div>
         </footer>
 

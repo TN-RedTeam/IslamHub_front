@@ -119,7 +119,7 @@ export const DocReader: React.FC<{
                       onClick={() => setClosed((c) => ({ ...c, [s.chapitre as string]: !c[s.chapitre as string] }))}
                       className="w-full flex items-center gap-2 px-4 py-2.5 text-left font-bold text-gray-800 dark:text-gray-100 hover:bg-green-soft dark:hover:bg-emerald-900/20"
                     >
-                      <span className="w-1.5 h-1.5 rounded-full bg-amber-500 flex-none" />
+                      <span className="w-1.5 h-1.5 rounded-full bg-gold flex-none" />
                       <span className="flex-1 truncate">{s.chapitre}</span>
                       <span className="text-xs text-gray-400 font-medium">{s.items.length}</span>
                       <ChevronRight className={`w-4 h-4 text-gray-400 transition-transform ${isClosed ? '' : 'rotate-90'}`} />
@@ -136,7 +136,7 @@ export const DocReader: React.FC<{
                             onClick={() => pick(it.key)}
                             className={`block w-full text-left text-sm leading-snug px-4 py-2 border-l-2 transition-colors ${
                               on
-                                ? 'bg-emerald-50 dark:bg-emerald-900/30 text-green-deep border-amber-500 font-semibold'
+                                ? 'bg-green-soft text-green-deep border-green-line font-semibold'
                                 : 'text-gray-600 dark:text-gray-400 border-transparent hover:bg-gray-50 dark:hover:bg-gray-900/40 hover:text-gray-900 dark:hover:text-gray-200'
                             } ${hasHeader ? 'pl-8' : ''}`}
                           >

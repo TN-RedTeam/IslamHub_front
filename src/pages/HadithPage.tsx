@@ -98,11 +98,11 @@ export const HadithPage: React.FC = () => {
           </button>
         </div>
 
-        <div className="bg-white dark:bg-gray-800 rounded-card p-6 shadow border border-amber-100 dark:border-emerald-900 space-y-5">
+        <div className="bg-white dark:bg-gray-800 rounded-card p-6 shadow border border-green-line dark:border-emerald-900 space-y-5">
           <p className="text-3xl leading-loose text-right font-arabic text-gray-900 dark:text-white whitespace-pre-wrap">{hadith.texte_arabe}</p>
           {hadith['phonétique'] && (
-            <div className="bg-amber-50 dark:bg-emerald-900/20 rounded-lg p-4">
-              <p className="text-sm text-amber-700 dark:text-amber-300 mb-1">Phonétique :</p>
+            <div className="bg-green-soft rounded-lg p-4">
+              <p className="text-sm text-green-deep mb-1">Phonétique :</p>
               <p className="text-gray-700 dark:text-gray-200 whitespace-pre-wrap [unicode-bidi:plaintext]">{hadith['phonétique']}</p>
             </div>
           )}
@@ -113,7 +113,7 @@ export const HadithPage: React.FC = () => {
             </div>
           )}
           {hadith.explication && (
-            <div className="bg-emerald-50 dark:bg-emerald-900/30 rounded-lg p-4">
+            <div className="bg-green-soft rounded-lg p-4">
               <p className="text-sm font-bold text-green-deep mb-1">Explication :</p>
               <p className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap [unicode-bidi:plaintext]">{hadith.explication}</p>
             </div>
@@ -121,7 +121,7 @@ export const HadithPage: React.FC = () => {
           {tags.length > 0 && (
             <div className="flex flex-wrap gap-2 pt-2">
               {tags.map((t) => (
-                <span key={t} className="text-xs bg-amber-100 dark:bg-emerald-800 text-amber-800 dark:text-muted px-3 py-1 rounded-full">{t}</span>
+                <span key={t} className="text-xs bg-green-soft text-green-deep dark:text-muted px-3 py-1 rounded-full">{t}</span>
               ))}
             </div>
           )}

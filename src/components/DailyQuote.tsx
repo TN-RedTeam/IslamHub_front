@@ -14,7 +14,7 @@ export const DailyQuote: React.FC<DailyQuoteProps> = ({ quote }) => {
       animate={{ opacity: 1, y: 0 }}
       className="bg-white dark:bg-gray-800 rounded-xl p-8 relative border border-line shadow-lg hover:border-green dark:hover:border-green transition-colors"
     >
-      <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-50 dark:bg-emerald-900/50 rounded-bl-[100px] -z-10"></div>
+      <div className="absolute top-0 right-0 w-32 h-32 bg-green-soft rounded-bl-[100px] -z-10"></div>
       <Quote className="w-10 h-10 text-green absolute top-6 left-6 opacity-20" />
       <div className="ml-12">
         <p className="text-xl text-gray-800 dark:text-gray-200 font-display mb-6 leading-relaxed">{quote.text}</p>

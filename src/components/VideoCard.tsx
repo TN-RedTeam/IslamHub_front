@@ -81,7 +81,7 @@ export const VideoCard: React.FC<VideoCardProps> = ({ video, index = 0 }) => {
             {video.titre}
           </h3>
           {video.categorie && (
-            <span className="shrink-0 px-2 py-1 rounded-full bg-emerald-100 dark:bg-emerald-900/50 text-green-deep text-xs font-medium">
+            <span className="shrink-0 px-2 py-1 rounded-full bg-green-soft text-green-deep text-xs font-medium">
               {video.categorie}
             </span>
           )}

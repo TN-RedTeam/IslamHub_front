@@ -32,16 +32,16 @@ const getTagsArray = (tag: string | null | undefined): string[] => {
 const CoranCardSkeleton: React.FC = () => (
   <div className="relative bg-ivory rounded-card p-6 shadow-card border border-line animate-pulse">
     <div className="flex items-center gap-2 mb-4">
-      <div className="w-5 h-5 bg-amber-300 dark:bg-amber-600 rounded-full" />
-      <div className="h-6 bg-amber-300 dark:bg-amber-600 rounded-lg w-2/3" />
+      <div className="w-5 h-5 bg-gold rounded-full" />
+      <div className="h-6 bg-gold rounded-lg w-2/3" />
     </div>
     <div className="bg-white dark:bg-gray-800/80 p-4 rounded-lg">
       <div className="h-8 bg-gray-300 dark:bg-gray-600 rounded w-full mb-2" />
       <div className="h-8 bg-gray-300 dark:bg-gray-600 rounded w-5/6" />
     </div>
     <div className="flex gap-2 mt-4">
-      <div className="h-6 bg-amber-300 dark:bg-amber-600 rounded-full w-16" />
-      <div className="h-6 bg-amber-300 dark:bg-amber-600 rounded-full w-20" />
+      <div className="h-6 bg-gold rounded-full w-16" />
+      <div className="h-6 bg-gold rounded-full w-20" />
     </div>
   </div>
 );
@@ -67,15 +67,15 @@ const CoranCard: React.FC<{
       className="relative bg-ivory rounded-card p-6 shadow-card border border-line space-y-4 overflow-hidden cursor-pointer h-full flex flex-col transition-all duration-300 hover:shadow-card"
     >
       <div className="absolute top-0 right-0 w-24 h-24 opacity-20">
-        <svg viewBox="0 0 100 100" className="text-amber-500">
+        <svg viewBox="0 0 100 100" className="text-gold">
           <path fill="currentColor" d="M20,20 Q30,10 40,20 T60,20 T80,20 T100,20" className="transform rotate-45" />
         </svg>
       </div>
 
       {coran.sujet && (
         <div className="flex items-center">
-          <Star className="h-5 w-5 text-amber-500 dark:text-amber-300 mr-2" />
-          <h3 className="text-xl font-bold text-amber-800 dark:text-amber-200 font-display line-clamp-1">
+          <Star className="h-5 w-5 text-gold mr-2" />
+          <h3 className="text-xl font-bold text-green-deep font-display line-clamp-1">
             {coran.sujet}
           </h3>
         </div>
@@ -92,8 +92,8 @@ const CoranCard: React.FC<{
           {coran.texte_arabe}
         </p>
         {coran.texte_francais && (
-          <div className="mt-4 pl-4 border-l-4 border-amber-300 dark:border-green line-clamp-2">
-            <p className="text-sm text-amber-700 dark:text-amber-200 mb-1">Signification :</p>
+          <div className="mt-4 pl-4 border-l-4 border-green-line dark:border-green line-clamp-2">
+            <p className="text-sm text-green-deep mb-1">Signification :</p>
             <p className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap [unicode-bidi:plaintext]">{coran.texte_francais}</p>
           </div>
         )}
@@ -106,7 +106,7 @@ const CoranCard: React.FC<{
               key={tag}
               whileHover={{ scale: 1.05 }}
               onClick={(e) => handleTagClick(e, tag)}
-              className="text-xs bg-amber-100 dark:bg-emerald-800 text-amber-800 px-3 py-1 rounded-full flex items-center cursor-pointer hover:bg-amber-200 dark:hover:bg-green-deep transition-colors"
+              className="text-xs bg-green-soft text-green-deep px-3 py-1 rounded-full flex items-center cursor-pointer hover:bg-green-line dark:hover:bg-green-deep transition-colors"
             >
               <Hash className="h-3 w-3 mr-1" />
               {tag}
@@ -162,7 +162,7 @@ const CoranModal: React.FC<{
 
         <div className="space-y-6">
           <div>
-            <h2 className="text-2xl font-bold text-amber-800 dark:text-amber-200 font-display">
+            <h2 className="text-2xl font-bold text-green-deep font-display">
               {coran.sujet}
             </h2>
             {coran.sourate && (
@@ -172,14 +172,14 @@ const CoranModal: React.FC<{
             )}
           </div>
 
-          <div className="bg-amber-50 dark:bg-gray-700 p-6 rounded-lg">
+          <div className="bg-green-soft dark:bg-gray-700 p-6 rounded-lg">
             <p className="text-3xl text-gray-900 dark:text-white font-arabic leading-loose text-right whitespace-pre-wrap">
               {coran.texte_arabe}
             </p>
 
             {coran['phonétique'] && (
               <div className="mt-6 bg-white dark:bg-gray-600 p-4 rounded">
-                <p className="text-sm text-amber-700 dark:text-amber-300 mb-2">Phonétique:</p>
+                <p className="text-sm text-green-deep mb-2">Phonétique:</p>
                 <p className="text-gray-700 dark:text-gray-200 whitespace-pre-wrap [unicode-bidi:plaintext]">{coran['phonétique']}</p>
               </div>
             )}
@@ -193,7 +193,7 @@ const CoranModal: React.FC<{
           </div>
 
           {coran.explication && (
-            <div className="bg-emerald-50 dark:bg-emerald-900/30 p-6 rounded-lg">
+            <div className="bg-green-soft p-6 rounded-lg">
               <p className="text-lg font-bold text-green-deep mb-3">Explication:</p>
               <p className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap [unicode-bidi:plaintext]">{coran.explication}</p>
             </div>
@@ -206,7 +206,7 @@ const CoranModal: React.FC<{
                   key={tag}
                   whileHover={{ scale: 1.05 }}
                   onClick={() => { onTagClick?.(tag); onClose(); }}
-                  className="text-xs bg-amber-100 dark:bg-emerald-800 text-amber-800 px-3 py-1 rounded-full cursor-pointer hover:bg-amber-200 dark:hover:bg-green-deep transition-colors"
+                  className="text-xs bg-green-soft text-green-deep px-3 py-1 rounded-full cursor-pointer hover:bg-green-line dark:hover:bg-green-deep transition-colors"
                 >
                   <Hash className="h-3 w-3 inline mr-1" />
                   {tag}
@@ -452,7 +452,7 @@ export const Corans: React.FC = () => {
                       className={`inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-sm font-medium transition-all duration-300 ${
                         selectedTag === tag
                           ? 'bg-green text-white shadow-md'
-                          : 'bg-amber-100 dark:bg-emerald-800 text-amber-800 hover:bg-amber-200 dark:hover:bg-green-deep'
+                          : 'bg-green-soft text-green-deep hover:bg-green-line dark:hover:bg-green-deep'
                       }`}
                     >
                       <Hash className="h-3 w-3" />
@@ -508,7 +508,7 @@ export const Corans: React.FC = () => {
                   </span>
                 )}
                 {searchTerm && (
-                  <span className="inline-flex items-center gap-1 px-2 py-1 bg-amber-600 text-white rounded-full text-sm">
+                  <span className="inline-flex items-center gap-1 px-2 py-1 bg-gold text-white rounded-full text-sm">
                     <Search className="h-3 w-3" />
                     "{searchTerm}"
                   </span>
@@ -517,7 +517,7 @@ export const Corans: React.FC = () => {
               <button
                 onClick={handleResetFilters}
                 aria-label="Retirer les filtres"
-                className="text-green hover:text-green-deep dark:hover:text-emerald-200 p-1 transition-colors"
+                className="text-green hover:text-green-deep p-1 transition-colors"
               >
                 <X className="h-5 w-5" />
               </button>
@@ -595,7 +595,7 @@ export const Corans: React.FC = () => {
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                         onClick={() => handleSujetClick(sujet)}
-                        className="px-4 py-2 bg-amber-100 dark:bg-emerald-800/60 text-amber-800 rounded-full text-sm font-medium hover:bg-amber-200 dark:hover:bg-green-deep transition-colors border border-amber-200 dark:border-emerald-700"
+                        className="px-4 py-2 bg-green-soft text-green-deep rounded-full text-sm font-medium hover:bg-green-line dark:hover:bg-green-deep transition-colors border border-green-line dark:border-emerald-700"
                       >
                         {sujet}
                       </m.button>
@@ -673,10 +673,10 @@ export const Corans: React.FC = () => {
       {/* Footer */}
       <footer className="bg-emerald-900 dark:bg-emerald-950 text-white py-12">
         <div className="container mx-auto px-4 text-center">
-          <p className="text-emerald-300 mb-4 font-display text-xl">
+          <p className="text-green-deep mb-4 font-display text-xl">
             "Ceci est le Livre au sujet duquel il n'y a aucun doute"
           </p>
-          <p className="text-emerald-200">© {new Date().getFullYear()} Le Noble Coran</p>
+          <p className="text-green-deep">© {new Date().getFullYear()} Le Noble Coran</p>
         </div>
       </footer>
 

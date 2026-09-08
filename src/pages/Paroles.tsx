@@ -18,15 +18,15 @@ const ParoleCard: React.FC<{ parole: Parole; onClick: () => void }> = ({ parole,
         className="relative bg-ivory rounded-card p-6 shadow-card border border-line space-y-4 overflow-hidden cursor-pointer h-full flex flex-col"
     >
       <div className="absolute top-0 right-0 w-24 h-24 opacity-20">
-        <svg viewBox="0 0 100 100" className="text-amber-500">
+        <svg viewBox="0 0 100 100" className="text-gold">
           <path fill="currentColor" d="M20,20 Q30,10 40,20 T60,20 T80,20 T100,20" className="transform rotate-45" />
         </svg>
       </div>
 
       {parole.sujet && (
           <div className="flex items-center">
-            <Star className="h-5 w-5 text-amber-500 dark:text-amber-300 mr-2" />
-            <h3 className="text-xl font-bold text-amber-800 dark:text-amber-200 font-display">
+            <Star className="h-5 w-5 text-gold mr-2" />
+            <h3 className="text-xl font-bold text-green-deep font-display">
               {parole.sujet}
             </h3>
           </div>
@@ -49,8 +49,8 @@ const ParoleCard: React.FC<{ parole: Parole; onClick: () => void }> = ({ parole,
         </p>
 
         {parole.texte_francais && (
-            <div className="mt-4 pl-4 border-l-4 border-amber-300 dark:border-green line-clamp-2">
-              <p className="text-sm text-amber-700 dark:text-amber-200 mb-1">Signification :</p>
+            <div className="mt-4 pl-4 border-l-4 border-green-line dark:border-green line-clamp-2">
+              <p className="text-sm text-green-deep mb-1">Signification :</p>
               <p className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap [unicode-bidi:plaintext]">{parole.texte_francais}</p>
             </div>
         )}
@@ -61,7 +61,7 @@ const ParoleCard: React.FC<{ parole: Parole; onClick: () => void }> = ({ parole,
             <m.span
                 key={tag.trim()}
                 whileHover={{ scale: 1.05 }}
-                className="text-xs bg-amber-100 dark:bg-emerald-800 text-amber-800 px-3 py-1 rounded-full flex items-center"
+                className="text-xs bg-green-soft text-green-deep px-3 py-1 rounded-full flex items-center"
             >
               <ChevronRight className="h-3 w-3 mr-1" />
               {tag.trim()}
@@ -103,7 +103,7 @@ const ParoleModal: React.FC<{ parole: Parole | null; onClose: () => void }> = ({
 
           <div className="space-y-6">
             <div>
-              <h2 className="text-2xl font-bold text-amber-800 dark:text-amber-200 font-display">
+              <h2 className="text-2xl font-bold text-green-deep font-display">
                 {parole.sujet}
               </h2>
               {parole.savant && (
@@ -114,14 +114,14 @@ const ParoleModal: React.FC<{ parole: Parole | null; onClose: () => void }> = ({
               {parole.ecole && <div className="mt-2"><EcoleBadge ecole={parole.ecole} /></div>}
             </div>
 
-            <div className="bg-amber-50 dark:bg-gray-700 p-6 rounded-lg">
+            <div className="bg-green-soft dark:bg-gray-700 p-6 rounded-lg">
               <p className="text-3xl text-gray-900 dark:text-white font-arabic leading-loose text-right whitespace-pre-wrap">
                 {parole.texte_arabe}
               </p>
 
               {parole['phonétique'] && (
                   <div className="mt-6 bg-white dark:bg-gray-600 p-4 rounded">
-                    <p className="text-sm text-amber-700 dark:text-amber-300 mb-2">Phonétique :</p>
+                    <p className="text-sm text-green-deep mb-2">Phonétique :</p>
                     <p className="text-gray-700 dark:text-gray-200 whitespace-pre-wrap [unicode-bidi:plaintext]">{parole['phonétique']}</p>
                   </div>
               )}
@@ -135,7 +135,7 @@ const ParoleModal: React.FC<{ parole: Parole | null; onClose: () => void }> = ({
             </div>
 
             {parole.explication && (
-                <div className="mt-6 bg-emerald-50 dark:bg-emerald-900/30 p-6 rounded-lg">
+                <div className="mt-6 bg-green-soft p-6 rounded-lg">
                   <p className="text-lg font-bold text-green-deep mb-3">Explication :</p>
                   <Markdown>{parole.explication}</Markdown>
                 </div>
@@ -145,7 +145,7 @@ const ParoleModal: React.FC<{ parole: Parole | null; onClose: () => void }> = ({
               {(parole.tag || '').split(',').filter(Boolean).map(tag => (
                   <span
                       key={tag.trim()}
-                      className="text-xs bg-amber-100 dark:bg-emerald-800 text-amber-800 px-3 py-1 rounded-full"
+                      className="text-xs bg-green-soft text-green-deep px-3 py-1 rounded-full"
                   >
                     {tag.trim()}
                   </span>
@@ -308,14 +308,14 @@ export const Paroles: React.FC = () => {
 
             {(selectedTag || selectedSavant) && (
                 <m.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-                    className="mt-4 flex items-center justify-between bg-emerald-50 dark:bg-emerald-900/30 rounded-lg px-4 py-2">
+                    className="mt-4 flex items-center justify-between bg-green-soft rounded-lg px-4 py-2">
                   <span className="font-medium text-green-deep flex flex-wrap items-center gap-2">
                     Filtres :
-                    {selectedTag && <span className="px-2 py-0.5 bg-emerald-100 dark:bg-emerald-800 rounded-full text-sm">{selectedTag}</span>}
-                    {selectedSavant && <span className="px-2 py-0.5 bg-emerald-100 dark:bg-emerald-800 rounded-full text-sm">{selectedSavant}</span>}
+                    {selectedTag && <span className="px-2 py-0.5 bg-green-soft rounded-full text-sm">{selectedTag}</span>}
+                    {selectedSavant && <span className="px-2 py-0.5 bg-green-soft rounded-full text-sm">{selectedSavant}</span>}
                   </span>
                   <button onClick={handleResetFilters} aria-label="Retirer les filtres"
-                      className="text-green hover:text-green-deep dark:hover:text-emerald-200 p-1 shrink-0">
+                      className="text-green hover:text-green-deep p-1 shrink-0">
                     <X className="h-5 w-5" />
                   </button>
                 </m.div>
@@ -339,7 +339,7 @@ export const Paroles: React.FC = () => {
                     <span className="w-full text-sm text-gray-400 mb-1">Sujets :</span>
                     {allTags.slice(0, 8).map((t) => (
                       <button key={t} onClick={() => setSelectedTag(t)}
-                          className="px-4 py-2 rounded-full text-sm font-medium bg-amber-100 dark:bg-emerald-800/60 text-amber-800 hover:bg-amber-200 dark:hover:bg-green-deep transition-colors">
+                          className="px-4 py-2 rounded-full text-sm font-medium bg-green-soft text-green-deep hover:bg-green-line dark:hover:bg-green-deep transition-colors">
                         {t}
                       </button>
                     ))}
@@ -396,8 +396,8 @@ export const Paroles: React.FC = () => {
 
         <footer className="bg-emerald-900 dark:bg-emerald-950 text-white py-12">
           <div className="container mx-auto px-4 text-center">
-            <p className="text-emerald-300 mb-4 font-display text-xl">"On n'obéit pas à une créature pour désobéir au Créateur"</p>
-            <p className="text-emerald-200">© {new Date().getFullYear()} Paroles de savants</p>
+            <p className="text-green-deep mb-4 font-display text-xl">"On n'obéit pas à une créature pour désobéir au Créateur"</p>
+            <p className="text-green-deep">© {new Date().getFullYear()} Paroles de savants</p>
           </div>
         </footer>
 

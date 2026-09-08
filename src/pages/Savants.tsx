@@ -71,7 +71,7 @@ export const Savants: React.FC = () => {
     <div className="min-h-screen bg-ground">
       <div className="max-w-6xl mx-auto px-4 py-10">
         <header className="mb-6">
-          <p className="text-xs font-semibold uppercase tracking-[0.16em] text-amber-600 dark:text-amber-400 mb-1">
+          <p className="text-xs font-semibold uppercase tracking-[0.16em] text-gold mb-1">
             Ahlou s-Sounnah wa l-Jamā‘ah · Références
           </p>
           <h1 className="text-4xl md:text-5xl font-bold text-green-deep font-display">Annuaire des savants</h1>
@@ -83,7 +83,7 @@ export const Savants: React.FC = () => {
         {/* Barre d'outils sticky */}
         <div
           role="search"
-          className="sticky top-0 z-10 flex flex-wrap items-center gap-3 rounded-xl border border-line bg-amber-50/80 dark:bg-gray-900/80 backdrop-blur px-3 py-3"
+          className="sticky top-0 z-10 flex flex-wrap items-center gap-3 rounded-xl border border-line bg-green-soft dark:bg-gray-900/80 backdrop-blur px-3 py-3"
         >
           <div className="relative flex-1 min-w-[240px]">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-green" />
@@ -165,7 +165,7 @@ export const Savants: React.FC = () => {
                   <div className="flex items-start gap-3.5">
                     <span
                       aria-hidden="true"
-                      className="shrink-0 w-[52px] h-[52px] rounded-full grid place-items-center font-display text-2xl font-bold text-white bg-green ring-2 ring-inset ring-amber-400/40"
+                      className="shrink-0 w-[52px] h-[52px] rounded-full grid place-items-center font-display text-2xl font-bold text-white bg-green ring-2 ring-inset ring-gold/40"
                     >
                       {mono}
                     </span>
@@ -182,8 +182,8 @@ export const Savants: React.FC = () => {
                       {dates && <span>{dates}</span>}
                       {dates && s.ecole && <span aria-hidden="true">·</span>}
                       {s.ecole && (
-                        <span className="inline-flex items-center gap-1.5 font-semibold text-amber-600 dark:text-amber-400">
-                          <span className="w-1.5 h-1.5 rounded-full bg-amber-500" /> {s.ecole}
+                        <span className="inline-flex items-center gap-1.5 font-semibold text-gold">
+                          <span className="w-1.5 h-1.5 rounded-full bg-gold" /> {s.ecole}
                         </span>
                       )}
                     </div>
@@ -196,7 +196,7 @@ export const Savants: React.FC = () => {
                   {(s.domaines?.length ?? 0) > 0 && (
                     <div className="flex flex-wrap gap-1.5">
                       {s.domaines.map((d) => (
-                        <span key={d} className="text-[11px] font-semibold tracking-wide text-green bg-emerald-50 dark:bg-emerald-900/40 px-2 py-0.5 rounded">{labelDom(d)}</span>
+                        <span key={d} className="text-[11px] font-semibold tracking-wide text-green bg-green-soft px-2 py-0.5 rounded">{labelDom(d)}</span>
                       ))}
                     </div>
                   )}

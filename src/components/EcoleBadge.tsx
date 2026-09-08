@@ -13,7 +13,7 @@ export const ECOLE_ROUTE: Record<string, string> = {
 /** Badge « École X » cliquable -> page de l'école (si connue). */
 export const EcoleBadge: React.FC<{ ecole: string; onClick?: (e: React.MouseEvent) => void }> = ({ ecole, onClick }) => {
   const slug = ECOLE_ROUTE[ecole];
-  const cls = 'inline-flex items-center gap-1 text-xs font-semibold px-2.5 py-1 rounded-full bg-emerald-100 dark:bg-emerald-800/60 text-green-deep';
+  const cls = 'inline-flex items-center gap-1 text-xs font-semibold px-2.5 py-1 rounded-full bg-green-soft text-green-deep';
   const inner = <><Landmark className="w-3.5 h-3.5" /> École {ecole}</>;
   return slug ? (
     <Link to={`/ecoles/${slug}`} onClick={onClick} className={`${cls} hover:bg-green-soft dark:hover:bg-green-deep transition-colors`}>

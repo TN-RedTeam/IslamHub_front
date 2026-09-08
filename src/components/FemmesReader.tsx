@@ -13,14 +13,14 @@ const Segment: React.FC<{ seg: FemmesSegment }> = ({ seg }) => (
       </p>
     )}
     {seg.matn && (
-      <div className="bg-emerald-50 dark:bg-emerald-900/20 border-l-4 border-green rounded-r-lg px-4 py-3">
+      <div className="bg-green-soft border-l-4 border-green rounded-r-lg px-4 py-3">
         <p className="font-semibold text-green-deep leading-relaxed">{seg.matn}</p>
       </div>
     )}
     {seg.commentaire && (
       <div className={seg.matn ? 'px-4 pt-1' : ''}>
         {seg.matn && (
-          <p className="text-xs font-semibold uppercase tracking-wide text-amber-600 dark:text-amber-400 mb-2">Commentaire</p>
+          <p className="text-xs font-semibold uppercase tracking-wide text-gold mb-2">Commentaire</p>
         )}
         <Markdown>{seg.commentaire}</Markdown>
       </div>

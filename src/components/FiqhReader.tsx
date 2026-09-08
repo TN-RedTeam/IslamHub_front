@@ -19,7 +19,7 @@ export const FiqhReader: React.FC<{ chapitres: FiqhChapitre[] }> = ({ chapitres 
       content: (
         <div className="space-y-3">
           {pt.type && (
-            <span className="inline-block text-xs px-2 py-0.5 rounded-full bg-amber-100 dark:bg-amber-900/40 text-amber-800 dark:text-amber-200">
+            <span className="inline-block text-xs px-2 py-0.5 rounded-full bg-green-soft text-green-deep">
               {pt.type}
             </span>
           )}

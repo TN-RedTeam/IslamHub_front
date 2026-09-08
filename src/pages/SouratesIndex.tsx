@@ -42,7 +42,7 @@ export const SouratesIndex: React.FC = () => {
                 to={`/coran/sourates/${s.slug}`}
                 className="group bg-white dark:bg-gray-800 rounded-card border border-line shadow-sm p-5 flex items-center gap-4 hover:shadow-md hover:border-green dark:hover:border-green transition-all"
               >
-                <span className="shrink-0 w-11 h-11 rounded-full bg-emerald-100 dark:bg-emerald-800 text-green-deep dark:text-muted flex items-center justify-center font-bold">
+                <span className="shrink-0 w-11 h-11 rounded-full bg-green-soft text-green-deep dark:text-muted flex items-center justify-center font-bold">
                   {s.numero}
                 </span>
                 <span className="flex-1 min-w-0">

@@ -25,7 +25,7 @@ const CollapsibleSection: React.FC<SectionProps> = ({ title, icon, children, def
         >
             <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="w-full px-6 py-4 flex items-center justify-between bg-green-soft hover:from-amber-100 hover:to-emerald-100 dark:hover:from-emerald-900/50 dark:hover:to-amber-900/50 transition-colors"
+                className="w-full px-6 py-4 flex items-center justify-between bg-green-soft hover:bg-green-line transition-colors"
             >
                 <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-full bg-green flex items-center justify-center text-white">
@@ -133,7 +133,7 @@ const Malikite: React.FC = () => {
                             <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-green mb-3">
                                 <stat.icon className="h-6 w-6 text-white" />
                             </div>
-                            <div className="text-2xl font-bold text-amber-800 dark:text-amber-200 font-display">
+                            <div className="text-2xl font-bold text-green-deep font-display">
                                 {stat.value}
                             </div>
                             <div className="text-sm text-gray-600 dark:text-gray-400 mt-1">
@@ -352,8 +352,8 @@ const Malikite: React.FC = () => {
                                 whileHover={{ y: -5 }}
                                 className="bg-white/80 dark:bg-gray-800/80 rounded-xl p-6 shadow-lg border border-line"
                             >
-                                <div className="w-12 h-12 rounded-full bg-amber-100 dark:bg-emerald-800 flex items-center justify-center mb-4">
-                                    <source.icon className="h-6 w-6 text-amber-600" />
+                                <div className="w-12 h-12 rounded-full bg-green-soft flex items-center justify-center mb-4">
+                                    <source.icon className="h-6 w-6 text-gold" />
                                 </div>
                                 <h4 className="text-lg font-bold text-gray-800 dark:text-white mb-2">
                                     {source.title}
@@ -414,7 +414,7 @@ const Malikite: React.FC = () => {
                     className="mt-16 bg-green-soft rounded-card p-8 text-center shadow-lg"
                 >
                     <div className="max-w-2xl mx-auto">
-                        <div className="text-5xl mb-4 text-amber-600 dark:text-amber-400">"</div>
+                        <div className="text-5xl mb-4 text-gold">"</div>
                         <p className="text-xl text-gray-800 dark:text-gray-200 font-display leading-relaxed mb-4">
                             La science se trouve dans les cœurs, pas dans les livres.
                         </p>
@@ -427,10 +427,10 @@ const Malikite: React.FC = () => {
 
             <footer className="bg-emerald-900 dark:bg-emerald-950 text-white py-12 mt-16">
                 <div className="container mx-auto px-4 text-center">
-                    <p className="text-emerald-300 mb-4 font-display text-xl">
+                    <p className="text-green-deep mb-4 font-display text-xl">
                         "Dieu élèvera en degrés ceux d'entre vous qui ont cru et ceux qui ont reçu la science."
                     </p>
-                    <p className="text-emerald-200 text-sm">
+                    <p className="text-green-deep text-sm">
                         Sourate Al-Mujadila, verset 11
                     </p>
                 </div>

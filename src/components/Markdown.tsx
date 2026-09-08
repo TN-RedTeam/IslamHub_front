@@ -75,7 +75,7 @@ const mdComponents: Components = {
       <table className="min-w-full text-sm border border-line" {...props} />
     </div>
   ),
-  th: (props) => <th className="border border-line px-3 py-2 bg-emerald-50 dark:bg-emerald-900/30 font-semibold text-left" {...props} />,
+  th: (props) => <th className="border border-line px-3 py-2 bg-green-soft font-semibold text-left" {...props} />,
   td: (props) => <td className="border border-line px-3 py-2" {...props} />,
 };
 

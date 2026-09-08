@@ -91,8 +91,8 @@ export const SavantPage: React.FC = () => {
             </h2>
             <div className="space-y-4">
               {paroles.map((p) => (
-                <article key={p.id} className="bg-white dark:bg-gray-800 rounded-card p-5 shadow border border-amber-100 dark:border-emerald-900">
-                  {p.sujet && <h3 className="font-bold text-amber-800 dark:text-amber-200 font-display mb-2">{p.sujet}</h3>}
+                <article key={p.id} className="bg-white dark:bg-gray-800 rounded-card p-5 shadow border border-green-line dark:border-emerald-900">
+                  {p.sujet && <h3 className="font-bold text-green-deep font-display mb-2">{p.sujet}</h3>}
                   {p.texte_arabe && (
                     <p className="text-2xl leading-loose text-right font-arabic text-gray-900 dark:text-white whitespace-pre-wrap mb-3">{p.texte_arabe}</p>
                   )}
@@ -117,10 +117,10 @@ export const SavantPage: React.FC = () => {
             </h2>
             <ul className="space-y-2">
               {hadiths_juges.map((h) => (
-                <li key={h.id} className="bg-white dark:bg-gray-800 rounded-xl px-4 py-3 shadow-sm border border-amber-100 dark:border-emerald-900 flex items-center justify-between gap-3">
+                <li key={h.id} className="bg-white dark:bg-gray-800 rounded-xl px-4 py-3 shadow-sm border border-green-line dark:border-emerald-900 flex items-center justify-between gap-3">
                   <span className="text-gray-800 dark:text-gray-200 font-display">{h.sujet}</span>
                   {h.degre_authenticite && (
-                    <span className="text-xs px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-800 text-green-deep dark:text-muted shrink-0">{h.degre_authenticite}</span>
+                    <span className="text-xs px-2 py-0.5 rounded-full bg-green-soft text-green-deep dark:text-muted shrink-0">{h.degre_authenticite}</span>
                   )}
                 </li>
               ))}

@@ -157,14 +157,14 @@ export const DossierThematique: React.FC = () => {
           <button onClick={share} className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white dark:bg-gray-800 border border-line text-green hover:bg-green-soft dark:hover:bg-emerald-900/40 transition-colors">
             <Share2 className="h-4 w-4" /> Partager
           </button>
-          <button onClick={toggleFav} aria-pressed={isFav} className={`inline-flex items-center gap-2 px-4 py-2 rounded-xl border transition-colors ${isFav ? 'bg-amber-500 border-amber-500 text-white' : 'bg-white dark:bg-gray-800 border-line text-green hover:bg-green-soft dark:hover:bg-emerald-900/40'}`}>
+          <button onClick={toggleFav} aria-pressed={isFav} className={`inline-flex items-center gap-2 px-4 py-2 rounded-xl border transition-colors ${isFav ? 'bg-gold border-green-line text-white' : 'bg-white dark:bg-gray-800 border-line text-green hover:bg-green-soft dark:hover:bg-emerald-900/40'}`}>
             <Star className={`h-4 w-4 ${isFav ? 'fill-current' : ''}`} /> {isFav ? 'Favori' : 'Ajouter aux favoris'}
           </button>
         </div>
 
         {/* ① La croyance */}
         {dossier.croyance_texte && (
-          <section className="bg-emerald-50 dark:bg-emerald-900/30 border border-line rounded-card p-6">
+          <section className="bg-green-soft border border-line rounded-card p-6">
             <h2 className="text-lg font-bold text-green-deep mb-3 flex items-center gap-2">
               <BookOpen className="h-5 w-5" /> La croyance
             </h2>
@@ -178,7 +178,7 @@ export const DossierThematique: React.FC = () => {
             <h2 className="text-lg font-bold text-green-deep mb-4">Les preuves</h2>
             <div className="space-y-4">
               {preuves.map((p) => p.ref && (
-                <article key={`${p.type}-${p.id}`} className="bg-white dark:bg-gray-800 rounded-card p-5 shadow border border-amber-100 dark:border-emerald-900">
+                <article key={`${p.type}-${p.id}`} className="bg-white dark:bg-gray-800 rounded-card p-5 shadow border border-green-line dark:border-emerald-900">
                   <div className="flex items-center justify-between mb-3">
                     <span className="text-xs font-semibold uppercase tracking-wide text-green">{TYPE_LABEL[p.type]}</span>
                     {p.ref.sujet && <span className="text-sm text-gray-500 dark:text-gray-400 font-display">{p.ref.sujet}</span>}
@@ -206,8 +206,8 @@ export const DossierThematique: React.FC = () => {
 
         {/* ③ L'argument avancé (objection citée, non endossée) */}
         {dossier.objection_texte && (
-          <section className="bg-amber-50 dark:bg-amber-900/20 border-l-4 border-amber-400 rounded-r-2xl p-6">
-            <h2 className="text-lg font-bold text-amber-800 dark:text-amber-300 mb-3 flex items-center gap-2">
+          <section className="bg-green-soft border-l-4 border-green-line rounded-r-2xl p-6">
+            <h2 className="text-lg font-bold text-green-deep mb-3 flex items-center gap-2">
               <Quote className="h-5 w-5" /> L'argument avancé
             </h2>
             <p className="text-gray-700 dark:text-gray-300 italic whitespace-pre-wrap [unicode-bidi:plaintext]">{dossier.objection_texte}</p>
@@ -226,7 +226,7 @@ export const DossierThematique: React.FC = () => {
         {images.length > 0 && (
           <section className="grid sm:grid-cols-2 gap-4">
             {images.map((img) => (
-              <figure key={img.id} className="bg-white dark:bg-gray-800 rounded-card overflow-hidden shadow border border-amber-100 dark:border-emerald-900">
+              <figure key={img.id} className="bg-white dark:bg-gray-800 rounded-card overflow-hidden shadow border border-green-line dark:border-emerald-900">
                 <img src={img.image_url} alt={img.alt} loading="lazy" className="w-full" />
                 {(img.legende || img.source_livre) && (
                   <figcaption className="p-3 text-sm text-gray-500 dark:text-gray-400">
@@ -255,7 +255,7 @@ export const DossierThematique: React.FC = () => {
 
       <footer className="bg-emerald-900 dark:bg-emerald-950 text-white py-10 mt-8">
         <div className="container mx-auto px-4 text-center">
-          <p className="text-emerald-300 font-display">« Rien n'est tel que Lui »</p>
+          <p className="text-green-deep font-display">« Rien n'est tel que Lui »</p>
         </div>
       </footer>
     </div>
