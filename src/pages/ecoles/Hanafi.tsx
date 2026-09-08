@@ -3,6 +3,7 @@ import { m, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Scale, BookOpen, Users, Star, ChevronRight, Lightbulb, Globe, ChevronDown, ChevronUp, Shield, Sparkles, Calendar, BookMarked, Brain, HeartCrack } from 'lucide-react';
 import { EcoleFiqhSection } from '../../components/EcoleFiqhSection';
+import { PageHeader } from '../../components/PageHeader';
 
 interface SectionProps {
     title: string;
@@ -127,54 +128,16 @@ const Hanafi: React.FC = () => {
 
     return (
         <div className="min-h-screen bg-ground">
-            <m.header
-                initial={{ opacity: 0, y: -20 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="relative py-24 bg-gradient-to-r from-emerald-900 via-emerald-800 to-amber-900 dark:from-emerald-950 dark:via-emerald-900 dark:to-amber-950 overflow-hidden"
-            >
-                <div className="absolute inset-0 opacity-10 bg-arabesque" />
-                <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-amber-50 dark:to-gray-900" />
+            <div className="border-t-[3px] border-ecole-hanafi">
+                <PageHeader
+                    eyebrow="École juridique"
+                    title="École Hanafite"
+                    subtitle="L'école de la raison et de l'opinion — Fondée par l'Imam Abou Hanifa an-Nou'man"
+                    crumbs={[{ label: 'Accueil', to: '/' }, { label: 'Madhāhib', to: '/madhaheb' }, { label: 'École Hanafite' }]}
+                />
+            </div>
 
-                <div className="relative container mx-auto px-4 text-center">
-                    <m.div
-                        initial={{ scale: 0.9, rotate: -10 }}
-                        animate={{ scale: 1, rotate: 0 }}
-                        transition={{ type: "spring", stiffness: 200 }}
-                        className="inline-flex items-center justify-center w-24 h-24 rounded-full bg-white/10 backdrop-blur-sm mb-8 shadow-card"
-                    >
-                        <Scale className="h-12 w-12 text-white" />
-                    </m.div>
-
-                    <m.h1
-                        initial={{ y: 20, opacity: 0 }}
-                        animate={{ y: 0, opacity: 1 }}
-                        transition={{ delay: 0.1 }}
-                        className="text-5xl md:text-7xl font-bold text-white mb-6 font-display"
-                    >
-                        École Hanafite
-                    </m.h1>
-
-                    <m.p
-                        initial={{ y: 20, opacity: 0 }}
-                        animate={{ y: 0, opacity: 1 }}
-                        transition={{ delay: 0.2 }}
-                        className="text-xl text-emerald-200 max-w-3xl mx-auto mb-4"
-                    >
-                        L'école de la raison et de l'opinion
-                    </m.p>
-
-                    <m.p
-                        initial={{ y: 20, opacity: 0 }}
-                        animate={{ y: 0, opacity: 1 }}
-                        transition={{ delay: 0.3 }}
-                        className="text-emerald-300 max-w-2xl mx-auto font-display"
-                    >
-                        Fondée par l'Imam Abou Hanifa an-Nou'man
-                    </m.p>
-                </div>
-            </m.header>
-
-            <main className="container mx-auto px-4 py-12 -mt-12 relative z-10">
+            <main className="container mx-auto px-4 py-12 relative z-10">
                 {/* Section des statistiques */}
                 <m.section
                     initial={{ opacity: 0, y: 30 }}
