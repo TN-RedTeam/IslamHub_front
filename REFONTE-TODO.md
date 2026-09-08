@@ -31,7 +31,7 @@ Reportée volontairement : la config dépend de l'URL finale du site.
       al-Fātiḥa, al-Ikhlāṣ, Āyat al-Kursī, et les versets équivoques (20:5 ; 42:11).
 
 ## Divers
-- [ ] Passe « coquilles de sujets » (ex. hadith 98 « Prohète Adam »).
+- [x] Passe « coquilles de sujets » — faite (voir `supabase/refonte/coquilles_sujets.sql`).
 - [ ] Dossier istiwa : compléter les preuves (versets 20:5 / 42:11) et lier
       l'extrait Al-Baghdadiyy une fois inséré.
 - [ ] Un jour : Phase 2b (supprimer les anciennes colonnes rapporteur/narrateur/
