@@ -262,7 +262,7 @@ export const Multimedia: React.FC = () => {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
               >
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div className="grid gap-5" style={{ gridTemplateColumns: 'repeat(auto-fill,minmax(280px,1fr))' }}>
                   {videos.map((video, i) => (
                     <VideoCard key={video.id} video={video} index={i} />
                   ))}
