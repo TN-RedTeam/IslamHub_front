@@ -22,9 +22,14 @@ Reportée volontairement : la config dépend de l'URL finale du site.
 - [ ] Enrichir le schéma `savants` (nom_arabe, naissance, deces, image_url).
 
 ## Phase 7 — images de pages de livres
-- [ ] Bucket Storage `references` (lecture publique), upload optimisé (WebP ~1200px),
-      `dossier_images.image_url`. Les images `public/img/Al-Baghdadiyy*.jpg`
-      (dans `_legacy`) peuvent y aller.
+- [x] Bucket Storage `references` (public) créé + script d'optimisation
+      (`scripts/optimize-images.mjs`, WebP ~1200px) + template de liaison
+      (`supabase/refonte/phase7_lier_images.sql`). Le front affiche déjà
+      `dossier_images` (alt + lazy).
+- [ ] **À faire (toi)** : `npm i -D sharp` → lancer le script sur `public/img` →
+      uploader les `.webp` dans le bucket `references` → exécuter
+      `phase7_lier_images.sql` (les 2 pages Al-Baghdadiyy apparaîtront dans le
+      dossier istiwā').
 
 ## Phase 8 — Coran → exégèse
 - [x] Structure `sourates`/`versets`/`exegeses` + RPC + pages `/coran/sourates`
