@@ -1,395 +1,155 @@
 import React, { useState, useEffect } from 'react';
-import { m } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { BookOpen, ChevronRight, Sun, Moon, Book, Heart, Wind, GraduationCap, Video, Loader2 } from 'lucide-react';
-import { DailyQuote } from '../components/DailyQuote';
+import { Book, BookOpen, Heart, GraduationCap, Video, Moon, Sun, Loader2 } from 'lucide-react';
 import { dataService } from '../services/DataService';
 import { usePageTitle } from '../hooks/usePageTitle';
-import type { Hadith, Douaa, Coran } from '../types';
+import { BISMILLAH } from '../constants/bismillah';
+import type { Hadith, Invocation, Coran } from '../types';
 
-const mockQuote = {
-  text: "Celui pour qui Allah veut le bien, lui facilite l'apprentissage de la religion",
-  author: "Hadith du Prophète ﷺ",
-  source: "Sahih Al-Bukhari"
-};
+interface SiteStats { hadiths: number; paroles: number; douaas: number; dhikrs: number; videos: number; coran: number; }
 
-interface SiteStats {
-  hadiths: number;
-  paroles: number;
-  douaas: number;
-  dhikrs: number;
-  videos: number;
-  coran: number;
-}
-
-// La douaa du jour est fixée par jour de l'année (elle ne change pas dans la
-// journée). Son libellé passe à "de la nuit" UNIQUEMENT si elle porte un tag
-// contenant "nuit" ; sinon c'est "Douaa du jour".
-const isNightDouaa = (douaa: Douaa | null): boolean =>
-  (douaa?.tag ?? '').toLowerCase().includes('nuit');
-
+const isNightDouaa = (d: Invocation | null): boolean => (d?.tag ?? '').toLowerCase().includes('nuit');
 const getDayOfYear = (): number => {
-  const today = new Date();
-  return Math.floor((today.getTime() - new Date(today.getFullYear(), 0, 0).getTime()) / (1000 * 60 * 60 * 24));
+  const t = new Date();
+  return Math.floor((t.getTime() - new Date(t.getFullYear(), 0, 0).getTime()) / 86400000);
 };
+
+/** Ornement doré : deux filets encadrant un khatam à 8 branches. */
+const Ornament: React.FC = () => (
+  <div className="flex items-center justify-center gap-4 mb-6 text-gold" aria-hidden="true">
+    <span className="h-px w-20 sm:w-28 bg-gradient-to-r from-transparent to-gold" />
+    <svg width="32" height="32" viewBox="0 0 40 40" fill="none" stroke="currentColor" strokeWidth="1.4">
+      <rect x="9" y="9" width="22" height="22" transform="rotate(45 20 20)" />
+      <rect x="9" y="9" width="22" height="22" />
+      <circle cx="20" cy="20" r="4" fill="currentColor" stroke="none" />
+    </svg>
+    <span className="h-px w-20 sm:w-28 bg-gradient-to-l from-transparent to-gold" />
+  </div>
+);
 
 export const Home: React.FC = () => {
   usePageTitle();
-
-  const [stats, setStats] = useState<SiteStats>({
-    hadiths: 0,
-    paroles: 0,
-    douaas: 0,
-    dhikrs: 0,
-    videos: 0,
-    coran: 0
-  });
-
+  const [stats, setStats] = useState<SiteStats>({ hadiths: 0, paroles: 0, douaas: 0, dhikrs: 0, videos: 0, coran: 0 });
   const [dailyHadith, setDailyHadith] = useState<Hadith | null>(null);
-  const [dailyDouaa, setDailyDouaa] = useState<Douaa | null>(null);
+  const [dailyDouaa, setDailyDouaa] = useState<Invocation | null>(null);
   const [dailyVerse, setDailyVerse] = useState<Coran | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const fetchData = async () => {
+    (async () => {
       setIsLoading(true);
       try {
-        const dayOfYear = getDayOfYear();
-        const [siteStats, hadith, douaa, verse] = await Promise.all([
-          dataService.getStats(),
-          dataService.getDailyHadith(dayOfYear),
-          dataService.getDailyDouaa(dayOfYear),
-          dataService.getDailyCoran(dayOfYear),
+        const day = getDayOfYear();
+        const [s, h, d, v] = await Promise.all([
+          dataService.getStats(), dataService.getDailyHadith(day),
+          dataService.getDailyInvocation(day, 1), dataService.getDailyCoran(day),
         ]);
-
-        setStats(siteStats);
-        setDailyHadith(hadith);
-        setDailyDouaa(douaa);
-        setDailyVerse(verse);
-      } catch (error) {
-        console.error('Error fetching home data:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchData();
+        setStats(s); setDailyHadith(h); setDailyDouaa(d); setDailyVerse(v);
+      } catch (e) { console.error('Error fetching home data:', e); }
+      finally { setIsLoading(false); }
+    })();
   }, []);
 
-  const siteStatsConfig = [
-    { label: 'Hadiths', value: stats.hadiths, icon: Book, color: 'from-emerald-500 to-teal-500', path: '/hadiths' },
-    { label: 'Paroles', value: stats.paroles, icon: GraduationCap, color: 'from-blue-500 to-indigo-500', path: '/paroles' },
-    { label: 'Douaas', value: stats.douaas, icon: Heart, color: 'from-rose-500 to-pink-500', path: '/douaas' },
-    { label: 'Dhikrs', value: stats.dhikrs, icon: Wind, color: 'from-cyan-500 to-blue-500', path: '/dhikrs' },
-    { label: 'Vidéos', value: stats.videos, icon: Video, color: 'from-purple-500 to-violet-500', path: '/multimedia' },
-    { label: 'Versets', value: stats.coran, icon: BookOpen, color: 'from-amber-500 to-orange-500', path: '/coran' },
+  const ressources = [
+    { label: 'Hadiths', value: stats.hadiths, icon: Book, path: '/hadiths' },
+    { label: 'Paroles', value: stats.paroles, icon: GraduationCap, path: '/paroles' },
+    { label: 'Invocations & Évocations', value: stats.douaas + stats.dhikrs, icon: Heart, path: '/invocations' },
+    { label: 'Vidéos', value: stats.videos, icon: Video, path: '/multimedia' },
+    { label: 'Versets', value: stats.coran, icon: BookOpen, path: '/coran' },
   ];
 
+  const cardBase = 'flex flex-col gap-3 rounded-card border border-line bg-ivory p-6 shadow-card hover:shadow-card-hover transition-shadow motion-reduce:transition-none';
+
   return (
-    <div className="min-h-screen bg-gradient-to-b from-amber-50 to-emerald-50 dark:from-gray-900 dark:to-emerald-950">
-      {/* En-tête avec motif islamique */}
-      <m.header
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="relative py-20 bg-emerald-800 dark:bg-emerald-950 overflow-hidden"
-      >
-        <div className="absolute inset-0 opacity-20 bg-arabesque" />
-        <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-amber-50 dark:from-gray-900" />
-
-        <div className="relative container mx-auto px-4 text-center">
-          <m.h1
-            initial={{ scale: 0.9 }}
-            animate={{ scale: 1 }}
-            className="text-5xl md:text-6xl font-bold text-white mb-6 font-amiri"
-            lang="ar"
-            dir="rtl"
-          >
-            بِسْمِ ٱللَّٰهِ ٱلرَّحْمٰنِ ٱلرَّحِيمِ
-          </m.h1>
-          <p className="text-xl text-emerald-200 max-w-3xl mx-auto">
-            Bienvenue sur IslamHub - Votre source de savoir islamique
+    <div className="min-h-screen bg-ground">
+      <main className="max-w-5xl mx-auto px-5 pb-16">
+        {/* Hero — Bismillah */}
+        <section className="relative overflow-hidden bg-ivory border border-line rounded-panel mt-6 px-7 py-11 text-center">
+          <Ornament />
+          <p className="bismillah font-arabic-display text-green-deep" lang="ar" dir="rtl" style={{ fontSize: 'clamp(38px,8vw,72px)' }}>{BISMILLAH}</p>
+          <p className="font-display italic text-green mt-5" style={{ fontSize: 'clamp(17px,2.4vw,22px)' }}>
+            Bienvenue sur <span className="not-italic font-semibold">IslamHub</span>
           </p>
-        </div>
-      </m.header>
+          <p className="text-muted mt-2">La croyance authentique et ses preuves — Coran, hadiths et paroles des savants.</p>
+        </section>
 
-      <main className="container mx-auto px-4 py-12 -mt-12 relative z-10">
-        {/* Citation du jour (pleine largeur) */}
-        <m.section
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.2 }}
-          className="mb-16"
-        >
-          <div className="max-w-3xl mx-auto">
-            <m.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 }}
-            >
-              <div className="relative bg-gradient-to-br from-amber-50 to-emerald-50 dark:from-emerald-900 dark:to-amber-900 rounded-2xl p-6 shadow-xl border border-amber-200 dark:border-emerald-800">
-                <div className="absolute top-0 right-0 w-24 h-24 opacity-20">
-                  <svg viewBox="0 0 100 100" className="text-amber-500 dark:text-emerald-400">
-                    <path
-                      fill="currentColor"
-                      d="M20,20 Q30,10 40,20 T60,20 T80,20 T100,20"
-                      className="transform rotate-45"
-                    />
-                  </svg>
-                </div>
-                <DailyQuote quote={mockQuote} />
+        {/* Citation en vedette */}
+        <blockquote className="bg-ivory border border-line border-l-[3px] border-l-gold rounded-r-card px-7 py-6 my-6 max-w-3xl mx-auto">
+          <p className="font-display text-green-deep font-medium leading-snug" style={{ fontSize: 'clamp(19px,2.6vw,25px)' }}>
+            «&nbsp;Celui pour qui Allah veut le bien, Il lui facilite l'apprentissage de la religion.&nbsp;»
+          </p>
+          <p className="mt-4 text-sm text-muted tracking-wide">— <span className="text-green font-semibold">Prophète Muḥammad ﷺ</span> · Rapporté par Al-Bukhārī</p>
+        </blockquote>
+
+        {/* Cartes du jour */}
+        <h2 className="font-display font-semibold text-green-deep text-center mt-10" style={{ fontSize: 'clamp(22px,3.2vw,30px)' }}>Votre source quotidienne</h2>
+        <div className="w-16 h-0.5 bg-gold rounded mx-auto mt-3.5 mb-7" />
+
+        {isLoading ? (
+          <div className="flex justify-center py-16"><Loader2 className="w-8 h-8 text-green animate-spin" /></div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+            {/* Hadith */}
+            <Link to="/hadiths" className={`${cardBase} group`}>
+              <div className="flex items-center gap-3">
+                <span className="w-10 h-10 rounded-card bg-green-soft text-green grid place-items-center shrink-0"><Book className="w-5 h-5" /></span>
+                <span><span className="block font-display font-semibold text-green-deep leading-tight">Hadith du jour</span>
+                  {dailyHadith?.narrateur && <span className="block text-xs text-muted">Rapporté par {dailyHadith.narrateur}</span>}</span>
               </div>
-            </m.div>
+              {dailyHadith?.texte_arabe && <p className="font-arabic text-xl text-ink leading-loose line-clamp-3" lang="ar" dir="rtl">{dailyHadith.texte_arabe}</p>}
+              {dailyHadith?.texte_francais && <p className="text-[15px] text-ink/90 italic line-clamp-3">«&nbsp;{dailyHadith.texte_francais}&nbsp;»</p>}
+              <div className="mt-auto pt-3 border-t border-line flex items-center justify-between">
+                <span className="text-xs uppercase tracking-wide text-muted">{dailyHadith?.rapporteur || dailyHadith?.sujet}</span>
+                <span className="text-green group-hover:translate-x-0.5 transition-transform motion-reduce:transition-none">→</span>
+              </div>
+            </Link>
+
+            {/* Douaa */}
+            <Link to="/invocations" className={`${cardBase} group`}>
+              <div className="flex items-center gap-3">
+                <span className="w-10 h-10 rounded-card bg-green-soft text-green grid place-items-center shrink-0">{isNightDouaa(dailyDouaa) ? <Moon className="w-5 h-5" /> : <Sun className="w-5 h-5" />}</span>
+                <span><span className="block font-display font-semibold text-green-deep leading-tight">{isNightDouaa(dailyDouaa) ? 'Invocation de la nuit' : 'Invocation du jour'}</span>
+                  {dailyDouaa?.sujet && <span className="block text-xs text-muted line-clamp-1">{dailyDouaa.sujet}</span>}</span>
+              </div>
+              {dailyDouaa?.texte_arabe && <p className="font-arabic text-xl text-ink leading-loose line-clamp-3" lang="ar" dir="rtl">{dailyDouaa.texte_arabe}</p>}
+              {dailyDouaa?.texte_francais && <p className="text-[15px] text-ink/90 italic line-clamp-2">{dailyDouaa.texte_francais}</p>}
+              <div className="mt-auto pt-3 border-t border-line flex items-center justify-end">
+                <span className="text-green group-hover:translate-x-0.5 transition-transform motion-reduce:transition-none">→</span>
+              </div>
+            </Link>
+
+            {/* Verset */}
+            <Link to="/coran" className={`${cardBase} group`}>
+              <div className="flex items-center gap-3">
+                <span className="w-10 h-10 rounded-card bg-green-soft text-green grid place-items-center shrink-0"><BookOpen className="w-5 h-5" /></span>
+                <span><span className="block font-display font-semibold text-green-deep leading-tight">Verset à méditer</span>
+                  {dailyVerse?.sourate && <span className="block text-xs text-muted">{dailyVerse.sourate}</span>}</span>
+              </div>
+              {dailyVerse?.texte_arabe && <p className="font-arabic text-xl text-ink leading-loose line-clamp-3" lang="ar" dir="rtl">{dailyVerse.texte_arabe}</p>}
+              {dailyVerse?.texte_francais && <p className="text-[15px] text-ink/90 italic line-clamp-3">«&nbsp;{dailyVerse.texte_francais}&nbsp;»</p>}
+              <div className="mt-auto pt-3 border-t border-line flex items-center justify-end">
+                <span className="text-green group-hover:translate-x-0.5 transition-transform motion-reduce:transition-none">→</span>
+              </div>
+            </Link>
           </div>
-        </m.section>
+        )}
 
-        {/* Section contenu quotidien */}
-        <m.section
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.3 }}
-          className="mb-16"
-        >
-          <h2 className="text-2xl font-bold text-emerald-900 dark:text-emerald-300 mb-8 font-amiri text-center">
-            Votre source quotidienne de savoir
-          </h2>
-
-          {isLoading ? (
-            <div className="flex justify-center items-center py-20">
-              <Loader2 className="w-8 h-8 text-emerald-600 animate-spin" />
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {/* Hadith du jour — carte cliquable vers /hadiths */}
-              <m.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3 }}
-                whileHover={{ y: -5 }}
-                className="relative bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-amber-200 dark:border-emerald-800 overflow-hidden group"
-              >
-                <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-emerald-500 to-teal-500" />
-                <Link to="/hadiths" className="block p-6">
-                  <div className="flex items-center gap-3 mb-4">
-                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center text-white shadow-lg">
-                      <Book className="w-6 h-6" />
-                    </div>
-                    <div>
-                      <h3 className="text-lg font-bold text-emerald-800 dark:text-emerald-300 font-amiri">
-                        Hadith du jour
-                      </h3>
-                      {dailyHadith?.narrateur && (
-                        <p className="text-xs text-gray-500 dark:text-gray-400">
-                          Rapporté par {dailyHadith.narrateur}
-                        </p>
-                      )}
-                    </div>
-                  </div>
-
-                  {dailyHadith ? (
-                    <>
-                      {dailyHadith.texte_arabe && (
-                        <p className="text-lg text-right font-amiri text-gray-800 dark:text-gray-200 mb-3 leading-loose line-clamp-3" lang="ar" dir="rtl">
-                          {dailyHadith.texte_arabe.substring(0, 200)}...
-                        </p>
-                      )}
-                      {dailyHadith.texte_francais && (
-                        <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-4 italic line-clamp-3">
-                          "{dailyHadith.texte_francais}"
-                        </p>
-                      )}
-                      <div className="flex items-center justify-between">
-                        <span className="text-xs text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/30 px-3 py-1 rounded-full">
-                          {dailyHadith.rapporteur || dailyHadith.sujet}
-                        </span>
-                        <span className="text-emerald-600 dark:text-emerald-400 group-hover:translate-x-1 transition-transform">
-                          <ChevronRight className="w-5 h-5" />
-                        </span>
-                      </div>
-                    </>
-                  ) : (
-                    <p className="text-gray-500 dark:text-gray-400 text-center py-4">
-                      Aucun hadith disponible
-                    </p>
-                  )}
-                </Link>
-              </m.div>
-
-              {/* Douaa du jour — carte cliquable vers /douaas.
-                  Libellé "de la nuit" si la douaa porte un tag contenant "nuit". */}
-              <m.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.38 }}
-                whileHover={{ y: -5 }}
-                className="relative bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-amber-200 dark:border-emerald-800 overflow-hidden group"
-              >
-                <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-rose-500 to-pink-500" />
-                <Link to="/douaas" className="block p-6">
-                  <div className="flex items-center gap-3 mb-4">
-                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-rose-500 to-pink-500 flex items-center justify-center text-white shadow-lg">
-                      {isNightDouaa(dailyDouaa) ? <Moon className="w-6 h-6" /> : <Sun className="w-6 h-6" />}
-                    </div>
-                    <div>
-                      <h3 className="text-lg font-bold text-rose-800 dark:text-rose-300 font-amiri">
-                        {isNightDouaa(dailyDouaa) ? 'Douaa de la nuit' : 'Douaa du jour'}
-                      </h3>
-                      {dailyDouaa?.sujet && (
-                        <p className="text-xs text-gray-500 dark:text-gray-400">
-                          {dailyDouaa.sujet}
-                        </p>
-                      )}
-                    </div>
-                  </div>
-
-                  {dailyDouaa ? (
-                    <>
-                      <p className="text-xl text-right font-amiri text-gray-800 dark:text-gray-200 mb-3 leading-loose" lang="ar" dir="rtl">
-                        {dailyDouaa.texte_arabe}
-                      </p>
-
-                      {dailyDouaa.phonétique && (
-                        <p className="text-sm text-gray-600 dark:text-gray-400 italic mb-2">
-                          {dailyDouaa.phonétique}
-                        </p>
-                      )}
-
-                      {dailyDouaa.texte_francais && (
-                        <p className="text-sm text-gray-700 dark:text-gray-300 mb-4 line-clamp-2">
-                          {dailyDouaa.texte_francais}
-                        </p>
-                      )}
-
-                      <div className="flex justify-end">
-                        <span className="text-rose-600 dark:text-rose-400 group-hover:translate-x-1 transition-transform">
-                          <ChevronRight className="w-5 h-5" />
-                        </span>
-                      </div>
-                    </>
-                  ) : (
-                    <p className="text-gray-500 dark:text-gray-400 text-center py-4">
-                      Aucune douaa disponible
-                    </p>
-                  )}
-                </Link>
-              </m.div>
-
-              {/* Verset à méditer — carte cliquable vers /coran */}
-              <m.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.45 }}
-                whileHover={{ y: -5 }}
-                className="relative bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-amber-200 dark:border-emerald-800 overflow-hidden group"
-              >
-                <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-amber-500 to-orange-500" />
-                <Link to="/coran" className="block p-6">
-                  <div className="flex items-center gap-3 mb-4">
-                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center text-white shadow-lg">
-                      <BookOpen className="w-6 h-6" />
-                    </div>
-                    <div>
-                      <h3 className="text-lg font-bold text-amber-800 dark:text-amber-300 font-amiri">
-                        Verset à méditer
-                      </h3>
-                      {dailyVerse?.sourate && (
-                        <p className="text-xs text-gray-500 dark:text-gray-400">
-                          {dailyVerse.sourate}
-                        </p>
-                      )}
-                    </div>
-                  </div>
-
-                  {dailyVerse ? (
-                    <>
-                      <p className="text-xl text-right font-amiri text-gray-800 dark:text-gray-200 mb-4 leading-loose" lang="ar" dir="rtl">
-                        {dailyVerse.texte_arabe}
-                      </p>
-
-                      {dailyVerse.texte_francais && (
-                        <p className="text-gray-700 dark:text-gray-300 italic mb-4 line-clamp-3">
-                          "{dailyVerse.texte_francais}"
-                        </p>
-                      )}
-
-                      <div className="flex justify-end">
-                        <span className="text-amber-600 dark:text-amber-400 group-hover:translate-x-1 transition-transform">
-                          <ChevronRight className="w-5 h-5" />
-                        </span>
-                      </div>
-                    </>
-                  ) : (
-                    <p className="text-gray-500 dark:text-gray-400 text-center py-4">
-                      Aucun verset disponible
-                    </p>
-                  )}
-                </Link>
-              </m.div>
-            </div>
-          )}
-        </m.section>
-
-        {/* Section statistiques */}
-        <m.section
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true, amount: 0.1 }}
-          className="mb-16"
-        >
-          <h2 className="text-2xl font-bold text-emerald-900 dark:text-emerald-300 mb-8 font-amiri text-center">
-            Explorer nos ressources
-          </h2>
-
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
-            {siteStatsConfig.map((stat, index) => (
-              <m.div
-                key={stat.label}
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true, amount: 0.2 }}
-                transition={{ delay: index * 0.05 }}
-                whileHover={{ y: -8, scale: 1.02 }}
-                className="group"
-              >
-                <Link to={stat.path}>
-                  <div className="relative bg-white dark:bg-gray-800 rounded-2xl p-5 shadow-lg border border-gray-100 dark:border-gray-700 overflow-hidden transition-all duration-300 hover:shadow-xl hover:border-emerald-200 dark:hover:border-emerald-700">
-                    <div className={`absolute inset-0 bg-gradient-to-br ${stat.color} opacity-0 group-hover:opacity-5 transition-opacity duration-300`} />
-
-                    <div className={`w-14 h-14 mx-auto rounded-2xl bg-gradient-to-br ${stat.color} flex items-center justify-center mb-4 shadow-lg group-hover:scale-110 transition-transform duration-300`}>
-                      <stat.icon className="w-7 h-7 text-white" />
-                    </div>
-
-                    <div className="text-2xl font-bold text-gray-800 dark:text-white text-center mb-1 font-amiri">
-                      {isLoading ? (
-                        <Loader2 className="w-5 h-5 animate-spin mx-auto" />
-                      ) : (
-                        stat.value > 0 ? stat.value : '-'
-                      )}
-                    </div>
-
-                    <div className="text-sm text-gray-500 dark:text-gray-400 text-center">
-                      {stat.label}
-                    </div>
-
-                    <div className="absolute bottom-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                      <ChevronRight className="w-4 h-4 text-emerald-500 dark:text-emerald-400" />
-                    </div>
-                  </div>
-                </Link>
-              </m.div>
-            ))}
-          </div>
-        </m.section>
+        {/* Explorer les ressources */}
+        <h2 className="font-display font-semibold text-green-deep text-center mt-14" style={{ fontSize: 'clamp(20px,3vw,26px)' }}>Explorer nos ressources</h2>
+        <div className="w-16 h-0.5 bg-gold rounded mx-auto mt-3.5 mb-7" />
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+          {ressources.map((r) => (
+            <Link key={r.label} to={r.path} className="flex flex-col items-center gap-2 rounded-card border border-line bg-ivory p-4 shadow-card hover:shadow-card-hover hover:border-green transition-all motion-reduce:transition-none">
+              <span className="w-11 h-11 rounded-card bg-green-soft text-green grid place-items-center"><r.icon className="w-5 h-5" /></span>
+              <span className="font-display text-xl font-semibold text-green-deep">{isLoading ? '—' : (r.value > 0 ? r.value : '—')}</span>
+              <span className="text-xs text-muted">{r.label}</span>
+            </Link>
+          ))}
+        </div>
       </main>
 
-      {/* Pied de page décoratif */}
-      <footer className="bg-emerald-900 dark:bg-emerald-950 text-white py-12">
-        <div className="container mx-auto px-4 text-center">
-          <p className="text-emerald-300 mb-4 font-amiri text-xl">
-            "Que l'un de vous apprenne un chapitre de la religion ou l'enseigne aura plus de récompenses que de prier mille rak`ah des prières surérogatoires"
-          </p>
-          <p className="text-emerald-200">© {new Date().getFullYear()} IslamHub - Tous droits réservés</p>
-        </div>
-      </footer>
     </div>
   );
 };
+
+export default Home;

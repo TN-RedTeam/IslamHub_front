@@ -8,19 +8,19 @@ import type { FemmesChapitre, FemmesSegment } from '../types';
 const Segment: React.FC<{ seg: FemmesSegment }> = ({ seg }) => (
   <div className="space-y-2">
     {seg.texte_arabe && (
-      <p lang="ar" dir="rtl" className="font-amiri text-2xl leading-loose text-emerald-900 dark:text-emerald-200 text-center">
+      <p lang="ar" dir="rtl" className="font-display text-2xl leading-loose text-green-deep text-center">
         {seg.texte_arabe}
       </p>
     )}
     {seg.matn && (
-      <div className="bg-emerald-50 dark:bg-emerald-900/20 border-l-4 border-emerald-500 rounded-r-lg px-4 py-3">
-        <p className="font-semibold text-emerald-900 dark:text-emerald-100 leading-relaxed">{seg.matn}</p>
+      <div className="bg-green-soft border-l-4 border-green rounded-r-lg px-4 py-3">
+        <p className="font-semibold text-green-deep leading-relaxed">{seg.matn}</p>
       </div>
     )}
     {seg.commentaire && (
       <div className={seg.matn ? 'px-4 pt-1' : ''}>
         {seg.matn && (
-          <p className="text-xs font-semibold uppercase tracking-wide text-amber-600 dark:text-amber-400 mb-2">Commentaire</p>
+          <p className="text-xs font-semibold uppercase tracking-wide text-gold mb-2">Commentaire</p>
         )}
         <Markdown>{seg.commentaire}</Markdown>
       </div>

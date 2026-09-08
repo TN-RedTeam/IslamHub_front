@@ -1,0 +1,82 @@
+<title>Trois fonts FR élégantes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=EB+Garamond:ital,wght@0,500;0,600;1,500&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Newsreader:opsz,wght@6..72,400;6..72,500&display=swap">
+<style>
+  :root{--ground:#f2ebdd;--surface:#fff;--ink:#1b2620;--muted:#6a746a;--line:#e5dccb;
+    --green:#1c5a43;--green-deep:#0f3d2e;--green-soft:#e6f0e9;--gold:#b0872f}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--ground);color:var(--ink);font-family:Newsreader,Georgia,serif;line-height:1.6}
+  .wrap{max-width:1000px;margin:0 auto;padding:32px 22px 60px}
+  .head{text-align:center;margin-bottom:26px}
+  .kick{font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);font-weight:600;margin:0 0 8px}
+  .head h1{font-family:"Cormorant Garamond",serif;font-weight:600;font-size:clamp(24px,3.6vw,34px);color:var(--green-deep);margin:0}
+  .head p{color:var(--muted);font-size:14.5px;margin:8px auto 0;max-width:56ch}
+  .stack{display:grid;gap:18px;margin-top:28px}
+  .opt{background:var(--surface);border:1px solid var(--line);border-radius:16px;overflow:hidden}
+  .opt-h{display:flex;justify-content:space-between;align-items:baseline;padding:12px 22px;border-bottom:1px solid var(--line);background:#fbf8f0}
+  .opt-h .nm{font-family:Newsreader;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);font-weight:600}
+  .opt-h .role{font-size:12.5px;color:var(--muted)}
+  .body{padding:26px 24px}
+  .eye{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:600;margin:0 0 6px}
+  .big{margin:0;color:var(--green-deep);line-height:1.1}
+  .sec{margin:22px 0 0;color:var(--green-deep);line-height:1.15}
+  .card-t{margin:16px 0 4px;color:var(--green-deep)}
+  .lead{font-family:Newsreader,serif;color:var(--ink);opacity:.85;margin:0;font-size:15px;max-width:60ch}
+
+  .c1 .big{font-family:"Cormorant Garamond",serif;font-weight:700;font-size:clamp(34px,5vw,48px)}
+  .c1 .sec{font-family:"Cormorant Garamond",serif;font-weight:600;font-size:26px}
+  .c1 .card-t{font-family:"Cormorant Garamond",serif;font-weight:600;font-size:20px}
+
+  .c2 .big{font-family:"Playfair Display",serif;font-weight:700;font-size:clamp(32px,4.6vw,44px)}
+  .c2 .sec{font-family:"Playfair Display",serif;font-weight:600;font-size:24px}
+  .c2 .card-t{font-family:"Playfair Display",serif;font-weight:600;font-size:19px}
+
+  .c3 .big{font-family:"EB Garamond",serif;font-weight:600;font-size:clamp(34px,5vw,46px)}
+  .c3 .sec{font-family:"EB Garamond",serif;font-weight:600;font-size:25px}
+  .c3 .card-t{font-family:"EB Garamond",serif;font-weight:600;font-size:20px}
+</style>
+
+<div class="wrap">
+  <div class="head">
+    <p class="kick">IslamHub · Font des titres (FR)</p>
+    <h1>Trois fonts élégantes</h1>
+    <p>Même contenu, même tailles. Le corps de texte reste en Newsreader dans les trois — seule la
+      police des titres change.</p>
+  </div>
+
+  <div class="stack">
+    <section class="opt c1">
+      <div class="opt-h"><span class="nm">Option 1 · Cormorant Garamond</span><span class="role">délicate · haute finesse</span></div>
+      <div class="body">
+        <p class="eye">Au quotidien</p>
+        <h2 class="big">Invocations &amp; Évocations</h2>
+        <h3 class="sec">Recherchez parmi les versets</h3>
+        <h4 class="card-t">Allah existe sans endroit</h4>
+        <p class="lead">Raffinée et aérienne, très « manuscrit précieux ». Superbe en grand ; un peu fine en petit.</p>
+      </div>
+    </section>
+
+    <section class="opt c2">
+      <div class="opt-h"><span class="nm">Option 2 · Playfair Display</span><span class="role">contrastée · éditoriale</span></div>
+      <div class="body">
+        <p class="eye">Au quotidien</p>
+        <h2 class="big">Invocations &amp; Évocations</h2>
+        <h3 class="sec">Recherchez parmi les versets</h3>
+        <h4 class="card-t">Allah existe sans endroit</h4>
+        <p class="lead">Plus présente et dramatique, gros contraste plein/délié. Chic, « haute couture », un rien plus moderne.</p>
+      </div>
+    </section>
+
+    <section class="opt c3">
+      <div class="opt-h"><span class="nm">Option 3 · EB Garamond</span><span class="role">classique · chaleureuse</span></div>
+      <div class="body">
+        <p class="eye">Au quotidien</p>
+        <h2 class="big">Invocations &amp; Évocations</h2>
+        <h3 class="sec">Recherchez parmi les versets</h3>
+        <h4 class="card-t">Allah existe sans endroit</h4>
+        <p class="lead">Garaldique intemporelle, chaleureuse et très lisible — l'esprit « beau livre imprimé ». La plus sobre des trois.</p>
+      </div>
+    </section>
+  </div>
+</div>

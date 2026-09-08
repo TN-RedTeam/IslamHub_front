@@ -8,6 +8,10 @@ interface VideoCardProps {
   index?: number;
 }
 
+// Titre en arabe ? (pour choisir la police et le sens d'écriture)
+const AR_RE = /[؀-ۿ]/;
+const isArabic = (s: string | null | undefined) => !!s && AR_RE.test(s);
+
 /**
  * Carte vidéo YouTube en "click-to-play" :
  * - Avant clic : thumbnail YouTube native (~10 KB) + bouton play (zero JS YouTube chargé)
@@ -32,7 +36,7 @@ export const VideoCard: React.FC<VideoCardProps> = ({ video, index = 0 }) => {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.05 }}
-      className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl overflow-hidden border border-emerald-100 dark:border-emerald-900"
+      className="flex flex-col h-full bg-surface rounded-card shadow-card overflow-hidden border border-line transition-all duration-200 hover:-translate-y-0.5 hover:shadow-card-hover motion-reduce:transition-none motion-reduce:hover:translate-y-0"
     >
       <div className="aspect-video bg-gray-100 dark:bg-gray-700 relative">
         {playing ? (
@@ -49,7 +53,7 @@ export const VideoCard: React.FC<VideoCardProps> = ({ video, index = 0 }) => {
             type="button"
             onClick={() => setPlaying(true)}
             aria-label={`Lire la vidéo : ${video.titre}`}
-            className="group absolute inset-0 w-full h-full focus:outline-none focus:ring-4 focus:ring-emerald-500"
+            className="group absolute inset-0 w-full h-full focus:outline-none focus:ring-4 focus:ring-green"
           >
             <img
               src={`https://i.ytimg.com/vi/${video.youtube_id}/hqdefault.jpg`}
@@ -62,7 +66,7 @@ export const VideoCard: React.FC<VideoCardProps> = ({ video, index = 0 }) => {
               }}
             />
             <span className="absolute inset-0 bg-black/30 group-hover:bg-black/50 transition-colors flex items-center justify-center">
-              <span className="w-16 h-16 rounded-full bg-emerald-600 group-hover:bg-emerald-500 flex items-center justify-center shadow-2xl transition-transform group-hover:scale-110">
+              <span className="w-16 h-16 rounded-full bg-green group-hover:bg-green-deep flex items-center justify-center shadow-card transition-all group-hover:scale-110 motion-reduce:transition-none">
                 <Play className="w-7 h-7 text-white fill-white ml-1" />
               </span>
             </span>
@@ -75,26 +79,29 @@ export const VideoCard: React.FC<VideoCardProps> = ({ video, index = 0 }) => {
         )}
       </div>
 
-      <div className="p-5">
+      <div className="flex flex-col flex-1 p-5">
         <div className="flex justify-between items-start gap-3 mb-2">
-          <h3 className="text-lg font-bold text-gray-900 dark:text-white line-clamp-2">
+          <h3
+            className={`text-lg font-semibold text-ink line-clamp-2 ${isArabic(video.titre) ? 'font-arabic text-right' : 'font-display'}`}
+            {...(isArabic(video.titre) ? { lang: 'ar', dir: 'rtl' as const } : {})}
+          >
             {video.titre}
           </h3>
           {video.categorie && (
-            <span className="shrink-0 px-2 py-1 rounded-full bg-emerald-100 dark:bg-emerald-900/50 text-emerald-800 dark:text-emerald-200 text-xs font-medium">
+            <span className="shrink-0 px-2 py-1 rounded-full bg-green-soft text-green-deep text-xs font-medium">
               {video.categorie}
             </span>
           )}
         </div>
 
         {video.savant && (
-          <p className="text-sm text-emerald-700 dark:text-emerald-400 font-medium mb-2">
+          <p className="text-sm text-green font-medium mb-2">
             {video.savant}
           </p>
         )}
 
         {video.description && (
-          <p className="text-sm text-gray-600 dark:text-gray-300 line-clamp-3">
+          <p className="text-sm text-muted line-clamp-3">
             {video.description}
           </p>
         )}

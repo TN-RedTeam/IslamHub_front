@@ -19,18 +19,18 @@ export const FiqhReader: React.FC<{ chapitres: FiqhChapitre[] }> = ({ chapitres 
       content: (
         <div className="space-y-3">
           {pt.type && (
-            <span className="inline-block text-xs px-2 py-0.5 rounded-full bg-amber-100 dark:bg-amber-900/40 text-amber-800 dark:text-amber-200">
+            <span className="inline-block text-xs px-2 py-0.5 rounded-full bg-green-soft text-green-deep">
               {pt.type}
             </span>
           )}
           {pt.texte_arabe && (
-            <p lang="ar" dir="rtl" className="text-2xl font-amiri leading-loose text-gray-900 dark:text-white">
+            <p lang="ar" dir="rtl" className="text-2xl font-display leading-loose text-gray-900 dark:text-white">
               {pt.texte_arabe}
             </p>
           )}
           {pt.texte && <Markdown>{pt.texte}</Markdown>}
           {pt.source && (
-            <p className="text-xs italic text-gray-500 dark:text-gray-400 pt-2 border-t border-gray-100 dark:border-gray-700">
+            <p className="text-xs italic text-gray-500 dark:text-gray-400 pt-2 border-t border-line">
               Source : {pt.source}
             </p>
           )}

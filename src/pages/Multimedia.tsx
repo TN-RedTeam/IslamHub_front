@@ -4,8 +4,10 @@ import { Search, X, Loader2 } from 'lucide-react';
 import { dataService } from '../services/DataService';
 import { FilterSelect } from '../components/FilterSelect';
 import { VideoCard } from '../components/VideoCard';
+import { PageHeader } from '../components/PageHeader';
 import type { Multimedia as MultimediaType, MultimediaCategory } from '../types';
 import { usePageTitle } from '../hooks/usePageTitle';
+import { Icon, IconBadge } from '../components/Icon';
 
 const PAGE_SIZE = 12;
 
@@ -91,45 +93,30 @@ export const Multimedia: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-amber-50 to-emerald-50 dark:from-gray-900 dark:to-emerald-950">
+    <div className="min-h-screen bg-ground">
       {/* En-tête */}
-      <m.header
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="relative py-20 bg-emerald-800 dark:bg-emerald-950 overflow-hidden"
-      >
-        <div className="absolute inset-0 opacity-20 bg-arabesque" />
-        <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-amber-50 dark:from-gray-900" />
+      <PageHeader
+        eyebrow="Multimédia"
+        title="Média Islamique"
+        subtitle="Apprenez à travers notre collection de vidéos"
+        crumbs={[{ label: 'Accueil', to: '/' }, { label: 'Multimédia' }]}
+      />
 
-        <div className="relative container mx-auto px-4 text-center">
-          <m.h1
-            initial={{ scale: 0.9 }}
-            animate={{ scale: 1 }}
-            className="text-5xl md:text-6xl font-bold text-white mb-6 font-amiri"
-          >
-            Média Islamique
-          </m.h1>
-          <p className="text-xl text-emerald-200 max-w-3xl mx-auto">
-            Apprenez à travers notre collection de vidéos
-          </p>
-        </div>
-      </m.header>
-
-      <main className="container mx-auto px-4 py-12 -mt-12 relative z-10">
+      <main className="container mx-auto px-4 py-12 relative z-10">
         {/* Barre de recherche + filtre catégorie */}
         <m.section
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.4 }}
-          className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-6 mb-12 sticky top-4 z-20 border border-emerald-100 dark:border-emerald-900"
+          className="bg-white dark:bg-gray-800 rounded-card shadow-card p-6 mb-12 sticky top-4 z-20 border border-line"
         >
           <div className="flex flex-col md:flex-row gap-6">
             <div className="flex-1 relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-emerald-600 dark:text-emerald-400" />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-green" />
               <input
                 type="text"
                 placeholder="Rechercher une vidéo, un savant, un sujet..."
-                className="w-full pl-12 pr-6 py-3 rounded-xl border border-emerald-200 dark:border-emerald-800 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-transparent text-lg"
+                className="w-full pl-12 pr-6 py-3 rounded-xl border border-line bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-green focus:border-transparent text-lg"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
@@ -148,16 +135,16 @@ export const Multimedia: React.FC = () => {
             <m.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              className="mt-4 flex items-center justify-between bg-emerald-50 dark:bg-emerald-900/30 rounded-lg px-4 py-2"
+              className="mt-4 flex items-center justify-between bg-green-soft rounded-lg px-4 py-2"
             >
-              <span className="font-medium text-emerald-800 dark:text-emerald-200 text-sm">
+              <span className="font-medium text-green-deep text-sm">
                 {hasSearched && !isLoading
                   ? `${totalCount} vidéo${totalCount > 1 ? 's' : ''} trouvée${totalCount > 1 ? 's' : ''}`
                   : 'Recherche en cours…'}
               </span>
               <button
                 onClick={resetFilters}
-                className="text-emerald-600 dark:text-emerald-400 hover:text-emerald-800 dark:hover:text-emerald-200 p-1"
+                className="text-green hover:text-green-deep p-1"
                 aria-label="Réinitialiser les filtres"
               >
                 <X className="h-5 w-5" />
@@ -176,16 +163,16 @@ export const Multimedia: React.FC = () => {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                className="text-center py-16 bg-white dark:bg-gray-800 rounded-2xl shadow-xl"
+                className="text-center py-16 bg-white dark:bg-gray-800 rounded-card shadow-card"
               >
                 <m.div
-                  animate={{ scale: [1, 1.1, 1] }}
+                  animate={{ scale: [1, 1.05, 1] }}
                   transition={{ repeat: Infinity, duration: 2 }}
-                  className="text-7xl mb-6"
+                  className="mx-auto mb-6 w-20 h-20 rounded-full bg-green-soft text-green grid place-items-center motion-reduce:animate-none"
                 >
-                  🎥
+                  <Icon name="camera" className="w-10 h-10" />
                 </m.div>
-                <h3 className="text-2xl font-bold text-gray-700 dark:text-gray-300 mb-3 font-amiri">
+                <h3 className="text-2xl font-bold text-gray-700 dark:text-gray-300 mb-3 font-display">
                   Lance une recherche pour découvrir des vidéos
                 </h3>
                 <p className="text-gray-500 dark:text-gray-400 mb-8 max-w-md mx-auto">
@@ -197,7 +184,7 @@ export const Multimedia: React.FC = () => {
                       <button
                         key={c.categorie}
                         onClick={() => setCategory(c.categorie)}
-                        className="px-4 py-2 rounded-full bg-emerald-100 dark:bg-emerald-900/40 text-emerald-800 dark:text-emerald-200 hover:bg-emerald-200 dark:hover:bg-emerald-900/60 transition-colors text-sm font-medium"
+                        className="px-4 py-2 rounded-full bg-green-soft text-green-deep hover:bg-green-soft transition-colors text-sm font-medium"
                       >
                         {c.categorie}
                       </button>
@@ -217,7 +204,7 @@ export const Multimedia: React.FC = () => {
                 className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
               >
                 {Array.from({ length: 6 }).map((_, i) => (
-                  <div key={i} className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl overflow-hidden animate-pulse">
+                  <div key={i} className="bg-white dark:bg-gray-800 rounded-card shadow-card overflow-hidden animate-pulse">
                     <div className="aspect-video bg-gray-200 dark:bg-gray-700" />
                     <div className="p-5 space-y-3">
                       <div className="h-5 bg-gray-200 dark:bg-gray-700 rounded w-3/4" />
@@ -235,9 +222,9 @@ export const Multimedia: React.FC = () => {
                 key="error"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                className="text-center py-12 bg-red-50 dark:bg-red-900/20 rounded-2xl shadow-xl"
+                className="text-center py-12 bg-red-50 dark:bg-red-900/20 rounded-card shadow-card"
               >
-                <div className="text-5xl mb-4">⚠️</div>
+                <IconBadge name="alert" />
                 <p className="text-red-700 dark:text-red-300 font-medium">{error}</p>
               </m.div>
             )}
@@ -249,9 +236,9 @@ export const Multimedia: React.FC = () => {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                className="text-center py-16 bg-white dark:bg-gray-800 rounded-2xl shadow-xl"
+                className="text-center py-16 bg-white dark:bg-gray-800 rounded-card shadow-card"
               >
-                <div className="text-6xl mb-4">🔍</div>
+                <IconBadge name="search" />
                 <h3 className="text-xl font-bold text-gray-700 dark:text-gray-300 mb-2">
                   Aucun résultat trouvé
                 </h3>
@@ -260,7 +247,7 @@ export const Multimedia: React.FC = () => {
                 </p>
                 <button
                   onClick={resetFilters}
-                  className="px-6 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg transition-colors"
+                  className="px-6 py-2 bg-green hover:bg-green-deep text-white rounded-lg transition-colors"
                 >
                   Réinitialiser
                 </button>
@@ -275,7 +262,7 @@ export const Multimedia: React.FC = () => {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
               >
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div className="grid gap-5" style={{ gridTemplateColumns: 'repeat(auto-fill,minmax(280px,1fr))' }}>
                   {videos.map((video, i) => (
                     <VideoCard key={video.id} video={video} index={i} />
                   ))}
@@ -285,7 +272,7 @@ export const Multimedia: React.FC = () => {
                 {hasMore && (
                   <div ref={loadMoreRef} className="flex justify-center mt-12">
                     {isLoadingMore ? (
-                      <Loader2 className="w-8 h-8 text-emerald-600 animate-spin" />
+                      <Loader2 className="w-8 h-8 text-green animate-spin" />
                     ) : (
                       <div className="h-8" />
                     )}
@@ -297,14 +284,6 @@ export const Multimedia: React.FC = () => {
         </section>
       </main>
 
-      <footer className="bg-emerald-900 dark:bg-emerald-950 text-white py-12">
-        <div className="container mx-auto px-4 text-center">
-          <p className="text-emerald-300 mb-4 font-amiri text-xl">
-            "Dieu existe de toute éternité et rien d'autre que Lui n'est de toute éternité"
-          </p>
-          <p className="text-emerald-200">© {new Date().getFullYear()} Média Islamique</p>
-        </div>
-      </footer>
     </div>
   );
 };

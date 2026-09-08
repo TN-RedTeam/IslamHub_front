@@ -32,11 +32,11 @@ export const FilterSelect: React.FC<FilterSelectProps> = ({
 }) => (
   <div className={`relative ${className ?? 'md:w-64'}`}>
     <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
-      <Icon className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
+      <Icon className="h-5 w-5 text-green" />
     </div>
     <select
       aria-label={ariaLabel ?? allLabel}
-      className="w-full pl-4 pr-10 py-3 rounded-xl border border-emerald-200 dark:border-emerald-800 bg-white dark:bg-gray-800 text-gray-900 dark:text-white appearance-none font-medium cursor-pointer"
+      className="w-full pl-4 pr-10 py-3 rounded-xl border border-line bg-white dark:bg-gray-800 text-gray-900 dark:text-white appearance-none font-medium cursor-pointer"
       value={value}
       onChange={(e) => onChange(e.target.value)}
     >

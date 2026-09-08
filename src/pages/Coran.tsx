@@ -1,13 +1,16 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { Link } from 'react-router-dom';
 import { m, AnimatePresence } from 'framer-motion';
 import {
   Search, Filter, X, Star, Loader,
-  Tags, Hash, Eye, List as ListIcon, Grid3x3
+  Tags, Hash, Eye, List as ListIcon, Grid3x3, BookOpen
 } from 'lucide-react';
 import { dataService } from '../services/DataService';
 import { FilterSelect } from '../components/FilterSelect';
+import { PageHeader } from '../components/PageHeader';
 import type { Coran as CoranType } from '../types';
 import { usePageTitle } from '../hooks/usePageTitle';
+import { Icon, IconBadge } from '../components/Icon';
 
 interface Coran extends CoranType {
   id: number;
@@ -27,18 +30,18 @@ const getTagsArray = (tag: string | null | undefined): string[] => {
 // ─── Skeleton ────────────────────────────────────────────────────────────────
 
 const CoranCardSkeleton: React.FC = () => (
-  <div className="relative bg-gradient-to-br from-amber-50 to-emerald-50 dark:from-emerald-900 dark:to-amber-900 rounded-2xl p-6 shadow-xl border border-amber-200 dark:border-emerald-800 animate-pulse">
+  <div className="relative bg-ivory rounded-card p-6 shadow-card border border-line animate-pulse">
     <div className="flex items-center gap-2 mb-4">
-      <div className="w-5 h-5 bg-amber-300 dark:bg-amber-600 rounded-full" />
-      <div className="h-6 bg-amber-300 dark:bg-amber-600 rounded-lg w-2/3" />
+      <div className="w-5 h-5 bg-gold rounded-full" />
+      <div className="h-6 bg-gold rounded-lg w-2/3" />
     </div>
     <div className="bg-white dark:bg-gray-800/80 p-4 rounded-lg">
       <div className="h-8 bg-gray-300 dark:bg-gray-600 rounded w-full mb-2" />
       <div className="h-8 bg-gray-300 dark:bg-gray-600 rounded w-5/6" />
     </div>
     <div className="flex gap-2 mt-4">
-      <div className="h-6 bg-amber-300 dark:bg-amber-600 rounded-full w-16" />
-      <div className="h-6 bg-amber-300 dark:bg-amber-600 rounded-full w-20" />
+      <div className="h-6 bg-gold rounded-full w-16" />
+      <div className="h-6 bg-gold rounded-full w-20" />
     </div>
   </div>
 );
@@ -61,36 +64,36 @@ const CoranCard: React.FC<{
     <m.div
       whileHover={{ scale: 1.01 }}
       onClick={onClick}
-      className="relative bg-gradient-to-br from-amber-50 to-emerald-50 dark:from-emerald-900 dark:to-amber-900 rounded-2xl p-6 shadow-xl border border-amber-200 dark:border-emerald-800 space-y-4 overflow-hidden cursor-pointer h-full flex flex-col transition-all duration-300 hover:shadow-2xl"
+      className="relative bg-ivory rounded-card p-6 shadow-card border border-line space-y-4 overflow-hidden cursor-pointer h-full flex flex-col transition-all duration-300 hover:shadow-card"
     >
       <div className="absolute top-0 right-0 w-24 h-24 opacity-20">
-        <svg viewBox="0 0 100 100" className="text-amber-500 dark:text-emerald-400">
+        <svg viewBox="0 0 100 100" className="text-gold">
           <path fill="currentColor" d="M20,20 Q30,10 40,20 T60,20 T80,20 T100,20" className="transform rotate-45" />
         </svg>
       </div>
 
       {coran.sujet && (
         <div className="flex items-center">
-          <Star className="h-5 w-5 text-amber-500 dark:text-amber-300 mr-2" />
-          <h3 className="text-xl font-bold text-amber-800 dark:text-amber-200 font-amiri line-clamp-1">
+          <Star className="h-5 w-5 text-gold mr-2" />
+          <h3 className="text-xl font-bold text-green-deep font-display line-clamp-1">
             {coran.sujet}
           </h3>
         </div>
       )}
 
       {coran.sourate && (
-        <div className="text-sm text-emerald-700 dark:text-emerald-300 italic">
+        <div className="text-sm text-green italic">
           Sourate: {coran.sourate}
         </div>
       )}
 
-      <div className="bg-white dark:bg-gray-800/80 p-4 rounded-lg border border-amber-100 dark:border-emerald-800 flex-grow">
+      <div className="bg-white dark:bg-gray-800/80 p-4 rounded-lg border border-line flex-grow">
         <p className="text-2xl text-gray-900 dark:text-white font-arabic leading-loose text-right line-clamp-3 whitespace-pre-wrap">
           {coran.texte_arabe}
         </p>
         {coran.texte_francais && (
-          <div className="mt-4 pl-4 border-l-4 border-amber-300 dark:border-emerald-600 line-clamp-2">
-            <p className="text-sm text-amber-700 dark:text-amber-200 mb-1">Signification :</p>
+          <div className="mt-4 pl-4 border-l-4 border-green-line dark:border-green line-clamp-2">
+            <p className="text-sm text-green-deep mb-1">Signification :</p>
             <p className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap [unicode-bidi:plaintext]">{coran.texte_francais}</p>
           </div>
         )}
@@ -103,7 +106,7 @@ const CoranCard: React.FC<{
               key={tag}
               whileHover={{ scale: 1.05 }}
               onClick={(e) => handleTagClick(e, tag)}
-              className="text-xs bg-amber-100 dark:bg-emerald-800 text-amber-800 dark:text-emerald-200 px-3 py-1 rounded-full flex items-center cursor-pointer hover:bg-amber-200 dark:hover:bg-emerald-700 transition-colors"
+              className="text-xs bg-green-soft text-green-deep px-3 py-1 rounded-full flex items-center cursor-pointer hover:bg-green-line dark:hover:bg-green-deep transition-colors"
             >
               <Hash className="h-3 w-3 mr-1" />
               {tag}
@@ -118,7 +121,7 @@ const CoranCard: React.FC<{
       )}
 
       <div className="mt-auto pt-4 text-center">
-        <button className="text-emerald-600 dark:text-emerald-400 text-sm font-medium hover:underline">
+        <button className="text-green text-sm font-medium hover:underline">
           Lire la suite...
         </button>
       </div>
@@ -148,7 +151,7 @@ const CoranModal: React.FC<{
         initial={{ scale: 0.9, y: 50 }}
         animate={{ scale: 1, y: 0 }}
         onClick={(e) => e.stopPropagation()}
-        className="bg-white dark:bg-gray-800 rounded-2xl p-8 max-w-4xl w-full max-h-[90vh] overflow-y-auto relative"
+        className="bg-white dark:bg-gray-800 rounded-card p-8 max-w-4xl w-full max-h-[90vh] overflow-y-auto relative"
       >
         <button
           onClick={onClose}
@@ -159,39 +162,39 @@ const CoranModal: React.FC<{
 
         <div className="space-y-6">
           <div>
-            <h2 className="text-2xl font-bold text-amber-800 dark:text-amber-200 font-amiri">
+            <h2 className="text-2xl font-bold text-green-deep font-display">
               {coran.sujet}
             </h2>
             {coran.sourate && (
-              <p className="text-emerald-700 dark:text-emerald-400 mt-1">
+              <p className="text-green mt-1">
                 Sourate: {coran.sourate}
               </p>
             )}
           </div>
 
-          <div className="bg-amber-50 dark:bg-gray-700 p-6 rounded-lg">
+          <div className="bg-green-soft dark:bg-gray-700 p-6 rounded-lg">
             <p className="text-3xl text-gray-900 dark:text-white font-arabic leading-loose text-right whitespace-pre-wrap">
               {coran.texte_arabe}
             </p>
 
             {coran['phonétique'] && (
               <div className="mt-6 bg-white dark:bg-gray-600 p-4 rounded">
-                <p className="text-sm text-amber-700 dark:text-amber-300 mb-2">Phonétique:</p>
+                <p className="text-sm text-green-deep mb-2">Phonétique:</p>
                 <p className="text-gray-700 dark:text-gray-200 whitespace-pre-wrap [unicode-bidi:plaintext]">{coran['phonétique']}</p>
               </div>
             )}
 
             {coran.texte_francais && (
-              <div className="mt-6 pl-4 border-l-4 border-emerald-500">
-                <p className="text-sm text-emerald-700 dark:text-emerald-400 mb-2">Traduction:</p>
+              <div className="mt-6 pl-4 border-l-4 border-green">
+                <p className="text-sm text-green mb-2">Traduction:</p>
                 <p className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap [unicode-bidi:plaintext]">{coran.texte_francais}</p>
               </div>
             )}
           </div>
 
           {coran.explication && (
-            <div className="bg-emerald-50 dark:bg-emerald-900/30 p-6 rounded-lg">
-              <p className="text-lg font-bold text-emerald-800 dark:text-emerald-300 mb-3">Explication:</p>
+            <div className="bg-green-soft p-6 rounded-lg">
+              <p className="text-lg font-bold text-green-deep mb-3">Explication:</p>
               <p className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap [unicode-bidi:plaintext]">{coran.explication}</p>
             </div>
           )}
@@ -203,7 +206,7 @@ const CoranModal: React.FC<{
                   key={tag}
                   whileHover={{ scale: 1.05 }}
                   onClick={() => { onTagClick?.(tag); onClose(); }}
-                  className="text-xs bg-amber-100 dark:bg-emerald-800 text-amber-800 dark:text-emerald-200 px-3 py-1 rounded-full cursor-pointer hover:bg-amber-200 dark:hover:bg-emerald-700 transition-colors"
+                  className="text-xs bg-green-soft text-green-deep px-3 py-1 rounded-full cursor-pointer hover:bg-green-line dark:hover:bg-green-deep transition-colors"
                 >
                   <Hash className="h-3 w-3 inline mr-1" />
                   {tag}
@@ -354,44 +357,38 @@ export const Corans: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-amber-50 to-emerald-50 dark:from-gray-900 dark:to-emerald-950">
+    <div className="min-h-screen bg-ground">
 
       {/* Reading progress */}
       <div
-        className="fixed top-0 left-0 z-50 h-1 bg-gradient-to-r from-emerald-500 to-amber-500 transition-all duration-100"
+        className="fixed top-0 left-0 z-50 h-1 bg-green transition-all duration-100"
         style={{ width: `${readingProgress}%` }}
       />
 
       {/* Header */}
-      <m.header
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="relative py-20 bg-emerald-800 dark:bg-emerald-950 overflow-hidden"
+      <PageHeader
+        eyebrow="Coran"
+        title="Le Noble Coran"
+        subtitle="Explorez les versets du Livre Sacré"
+        crumbs={[{ label: 'Accueil', to: '/' }, { label: 'Coran' }]}
       >
-        <div className="absolute inset-0 opacity-20 bg-arabesque" />
-        <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-amber-50 dark:from-gray-900" />
-
-        <div className="relative container mx-auto px-4 text-center">
-          <m.h1
-            initial={{ scale: 0.9 }}
-            animate={{ scale: 1 }}
-            className="text-5xl md:text-6xl font-bold text-white mb-6 font-amiri"
-          >
-            Le Noble Coran
-          </m.h1>
-          <p className="text-xl text-emerald-200 max-w-3xl mx-auto">
-            Explorez les versets du Livre Sacré
-          </p>
+        <div className="flex items-center gap-3 flex-wrap">
           {hasSearched && (
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full mt-6">
-              <Eye className="h-4 w-4 text-emerald-300" />
-              <span className="text-emerald-200">{totalCount} verset{totalCount > 1 ? 's' : ''} trouvé{totalCount > 1 ? 's' : ''}</span>
-            </div>
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-green-soft px-3 py-1 text-sm text-green-deep tabular-nums">
+              <Eye className="h-4 w-4" />
+              {totalCount} verset{totalCount > 1 ? 's' : ''}
+            </span>
           )}
+          <Link
+            to="/coran/sourates"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-line text-green-deep hover:bg-green-soft font-medium transition-colors"
+          >
+            <BookOpen className="h-5 w-5" /> Exégèse des sourates
+          </Link>
         </div>
-      </m.header>
+      </PageHeader>
 
-      <main className="container mx-auto px-4 py-12 -mt-12 relative z-10">
+      <main className="container mx-auto px-4 py-12 relative z-10">
 
         {/* Toolbar (shown only after first search) */}
         {hasSearched && (
@@ -401,7 +398,7 @@ export const Corans: React.FC = () => {
             className="mb-8 flex justify-between items-center flex-wrap gap-4"
           >
             <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl px-4 py-2">
-              <p className="text-emerald-700 dark:text-emerald-300">
+              <p className="text-green">
                 <span className="font-bold">{corans.length}</span>
                 {totalCount > corans.length && (
                   <> / <span className="font-bold">{totalCount}</span></>
@@ -412,16 +409,16 @@ export const Corans: React.FC = () => {
               </p>
             </div>
 
-            <div className="flex gap-2 bg-white dark:bg-gray-800 rounded-xl p-1 border border-emerald-200 dark:border-emerald-800">
+            <div className="flex gap-2 bg-white dark:bg-gray-800 rounded-xl p-1 border border-line">
               <button
                 onClick={() => handleViewChange('grid')}
-                className={`p-2 rounded-lg transition-all duration-300 ${view === 'grid' ? 'bg-emerald-600 text-white shadow-md' : 'text-emerald-600 dark:text-emerald-400 hover:bg-emerald-100 dark:hover:bg-emerald-900/50'}`}
+                className={`p-2 rounded-lg transition-all duration-300 ${view === 'grid' ? 'bg-green text-white shadow-md' : 'text-green hover:bg-green-soft'}`}
               >
                 <Grid3x3 className="w-5 h-5" />
               </button>
               <button
                 onClick={() => handleViewChange('list')}
-                className={`p-2 rounded-lg transition-all duration-300 ${view === 'list' ? 'bg-emerald-600 text-white shadow-md' : 'text-emerald-600 dark:text-emerald-400 hover:bg-emerald-100 dark:hover:bg-emerald-900/50'}`}
+                className={`p-2 rounded-lg transition-all duration-300 ${view === 'list' ? 'bg-green text-white shadow-md' : 'text-green hover:bg-green-soft'}`}
               >
                 <ListIcon className="w-5 h-5" />
               </button>
@@ -436,10 +433,10 @@ export const Corans: React.FC = () => {
             animate={{ opacity: 1, y: 0 }}
             className="mb-8"
           >
-            <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-amber-200 dark:border-emerald-800">
+            <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-card p-6 shadow-lg border border-line">
               <div className="flex items-center gap-2 mb-4">
-                <Tags className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
-                <h3 className="text-lg font-semibold text-emerald-900 dark:text-emerald-300">
+                <Tags className="h-5 w-5 text-green" />
+                <h3 className="text-lg font-semibold text-green-deep">
                   Mots-clés dans les résultats ({tagCounts.size})
                 </h3>
               </div>
@@ -454,8 +451,8 @@ export const Corans: React.FC = () => {
                       onClick={() => handleTagClick(tag)}
                       className={`inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-sm font-medium transition-all duration-300 ${
                         selectedTag === tag
-                          ? 'bg-emerald-600 text-white shadow-md'
-                          : 'bg-amber-100 dark:bg-emerald-800 text-amber-800 dark:text-emerald-200 hover:bg-amber-200 dark:hover:bg-emerald-700'
+                          ? 'bg-green text-white shadow-md'
+                          : 'bg-green-soft text-green-deep hover:bg-green-line dark:hover:bg-green-deep'
                       }`}
                     >
                       <Hash className="h-3 w-3" />
@@ -472,16 +469,16 @@ export const Corans: React.FC = () => {
         <m.section
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-6 mb-8 border border-emerald-100 dark:border-emerald-900"
+          className="bg-white dark:bg-gray-800 rounded-card shadow-card p-6 mb-8 border border-line"
         >
           <div className="flex flex-col md:flex-row gap-6">
             <div className="flex-1 relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-emerald-600 dark:text-emerald-400" />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-green" />
               <input
                 type="text"
                 aria-label="Rechercher un verset"
                 placeholder="Rechercher par texte arabe, français, sourate, mot-clé..."
-                className="w-full pl-12 pr-6 py-3 rounded-xl border border-emerald-200 dark:border-emerald-800 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-transparent text-lg font-amiri"
+                className="w-full pl-12 pr-6 py-3 rounded-xl border border-line bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-green focus:border-transparent text-lg font-display"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
@@ -500,18 +497,18 @@ export const Corans: React.FC = () => {
             <m.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              className="mt-4 flex items-center justify-between bg-gradient-to-r from-emerald-50 to-amber-50 dark:from-emerald-900/30 dark:to-amber-900/30 rounded-lg px-4 py-2"
+              className="mt-4 flex items-center justify-between bg-green-soft rounded-lg px-4 py-2"
             >
               <div className="flex items-center gap-2 flex-wrap">
-                <span className="font-medium text-emerald-800 dark:text-emerald-200">Filtre actif :</span>
+                <span className="font-medium text-green-deep">Filtre actif :</span>
                 {selectedTag && (
-                  <span className="inline-flex items-center gap-1 px-2 py-1 bg-emerald-600 text-white rounded-full text-sm">
+                  <span className="inline-flex items-center gap-1 px-2 py-1 bg-green text-white rounded-full text-sm">
                     <Filter className="h-3 w-3" />
                     {selectedTag}
                   </span>
                 )}
                 {searchTerm && (
-                  <span className="inline-flex items-center gap-1 px-2 py-1 bg-amber-600 text-white rounded-full text-sm">
+                  <span className="inline-flex items-center gap-1 px-2 py-1 bg-gold text-white rounded-full text-sm">
                     <Search className="h-3 w-3" />
                     "{searchTerm}"
                   </span>
@@ -520,7 +517,7 @@ export const Corans: React.FC = () => {
               <button
                 onClick={handleResetFilters}
                 aria-label="Retirer les filtres"
-                className="text-emerald-600 dark:text-emerald-400 hover:text-emerald-800 dark:hover:text-emerald-200 p-1 transition-colors"
+                className="text-green hover:text-green-deep p-1 transition-colors"
               >
                 <X className="h-5 w-5" />
               </button>
@@ -539,17 +536,17 @@ export const Corans: React.FC = () => {
             <m.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              className="text-center py-16 bg-white dark:bg-gray-800 rounded-2xl shadow-xl"
+              className="text-center py-16 bg-white dark:bg-gray-800 rounded-card shadow-card"
             >
               <div className="max-w-md mx-auto">
-                <div className="text-6xl mb-4">😔</div>
+                <IconBadge name="sad" />
                 <h3 className="text-xl font-bold text-red-600 dark:text-red-400 mb-2">
                   Une erreur est survenue
                 </h3>
                 <p className="text-gray-600 dark:text-gray-400 mb-6">{error}</p>
                 <button
                   onClick={() => doSearch(searchTerm, selectedTag, 0, false)}
-                  className="px-6 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg transition-colors"
+                  className="px-6 py-2 bg-green hover:bg-green-deep text-white rounded-lg transition-colors"
                 >
                   Réessayer
                 </button>
@@ -561,17 +558,17 @@ export const Corans: React.FC = () => {
               key="empty-state"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="text-center py-24"
+              className="text-center py-14"
             >
               <div className="max-w-lg mx-auto">
                 <m.div
                   animate={{ y: [0, -10, 0] }}
                   transition={{ repeat: Infinity, duration: 4, ease: 'easeInOut' }}
-                  className="text-9xl mb-8 select-none"
+                  className="mx-auto mb-8 w-20 h-20 rounded-full bg-green-soft text-green grid place-items-center motion-reduce:animate-none"
                 >
-                  📖
+                  <Icon name="book" className="w-10 h-10" />
                 </m.div>
-                <h3 className="text-3xl font-bold text-emerald-800 dark:text-emerald-200 mb-4 font-amiri">
+                <h3 className="text-3xl font-bold text-green-deep mb-4 font-display">
                   Recherchez parmi les versets
                 </h3>
                 <p className="text-gray-600 dark:text-gray-400 mb-6 leading-relaxed text-lg">
@@ -585,7 +582,7 @@ export const Corans: React.FC = () => {
                       setCorans(res.data ?? []); setTotalCount(res.count ?? 0); setHasMore(false); setCurrentPage(0); setHasSearched(true);
                     } finally { setIsLoading(false); }
                   }}
-                  className="inline-flex items-center gap-2 px-6 py-3 mb-8 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-medium shadow"
+                  className="inline-flex items-center gap-2 px-6 py-3 mb-8 rounded-xl bg-green hover:bg-green-deep text-white font-medium shadow"
                 >
                   Tout afficher
                 </button>
@@ -598,7 +595,7 @@ export const Corans: React.FC = () => {
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                         onClick={() => handleSujetClick(sujet)}
-                        className="px-4 py-2 bg-amber-100 dark:bg-emerald-800/60 text-amber-800 dark:text-emerald-200 rounded-full text-sm font-medium hover:bg-amber-200 dark:hover:bg-emerald-700 transition-colors border border-amber-200 dark:border-emerald-700"
+                        className="px-4 py-2 bg-green-soft text-green-deep rounded-full text-sm font-medium hover:bg-green-line dark:hover:bg-green-deep transition-colors border border-green-line"
                       >
                         {sujet}
                       </m.button>
@@ -613,10 +610,10 @@ export const Corans: React.FC = () => {
               key="no-results"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              className="text-center py-16 bg-white dark:bg-gray-800 rounded-2xl shadow-xl"
+              className="text-center py-16 bg-white dark:bg-gray-800 rounded-card shadow-card"
             >
               <div className="max-w-md mx-auto">
-                <div className="text-6xl mb-4">🔍</div>
+                <IconBadge name="search" />
                 <h3 className="text-xl font-bold text-gray-700 dark:text-gray-300 mb-2">
                   Aucun résultat trouvé
                 </h3>
@@ -625,7 +622,7 @@ export const Corans: React.FC = () => {
                 </p>
                 <button
                   onClick={handleResetFilters}
-                  className="px-6 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg transition-colors"
+                  className="px-6 py-2 bg-green hover:bg-green-deep text-white rounded-lg transition-colors"
                 >
                   Réinitialiser
                 </button>
@@ -658,8 +655,8 @@ export const Corans: React.FC = () => {
                 <div ref={loadMoreRef} className="flex justify-center py-8">
                   {isLoadingMore ? (
                     <div className="flex flex-col items-center gap-3">
-                      <Loader className="h-8 w-8 text-emerald-600 dark:text-emerald-400 animate-spin" />
-                      <p className="text-emerald-600 dark:text-emerald-400 text-sm">
+                      <Loader className="h-8 w-8 text-green animate-spin" />
+                      <p className="text-green text-sm">
                         Chargement de plus de versets...
                       </p>
                     </div>
@@ -673,15 +670,6 @@ export const Corans: React.FC = () => {
         </section>
       </main>
 
-      {/* Footer */}
-      <footer className="bg-emerald-900 dark:bg-emerald-950 text-white py-12">
-        <div className="container mx-auto px-4 text-center">
-          <p className="text-emerald-300 mb-4 font-amiri text-xl">
-            "Ceci est le Livre au sujet duquel il n'y a aucun doute"
-          </p>
-          <p className="text-emerald-200">© {new Date().getFullYear()} Le Noble Coran</p>
-        </div>
-      </footer>
 
       {/* Modal */}
       <AnimatePresence>

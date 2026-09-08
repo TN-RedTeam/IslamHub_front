@@ -33,7 +33,7 @@ class ErrorBoundary extends Component<Props, State> {
             </p>
             <button
               onClick={() => this.setState({ hasError: false })}
-              className="px-6 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors"
+              className="px-6 py-2 bg-green text-white rounded-lg hover:bg-green-deep transition-colors"
             >
               Réessayer
             </button>

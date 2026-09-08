@@ -1,0 +1,236 @@
+<title>Home & Madhāhib — Après</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Newsreader:opsz,ital,wght@6..72,0,400;6..72,0,500;6..72,1,400&display=swap">
+<style>
+  :root{
+    --page:#f4efe4;
+    --ivory:#fffdf8;
+    --ink:#1b241e;
+    --muted:#6a766c;
+    --line:#e7e1d1;
+    --green:#1f5540;
+    --green-deep:#123a2c;
+    --green-soft:#eaf1ec;
+    --gold:#a97d33;
+    --gold-soft:#f0e6cf;
+    /* accents sobres par école */
+    --hanafi:#b0782e;
+    --maliki:#1f6f66;
+    --shafii:#3c5390;
+    --hanbali:#875073;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--page);color:var(--ink);
+    font-family:Newsreader,Georgia,serif;line-height:1.65;-webkit-font-smoothing:antialiased}
+  .shell{max-width:1080px;margin:0 auto;padding:0 20px}
+  .sectlabel{max-width:1080px;margin:40px auto 0;padding:0 20px}
+  .sectlabel span{font-family:Newsreader;font-size:12px;letter-spacing:.24em;text-transform:uppercase;
+    color:var(--gold);font-weight:500;background:var(--page);padding-right:14px}
+  .sectlabel .rule{border-top:1px solid var(--line);margin-top:-9px}
+
+  /* ---------------- HERO BISMILLAH ---------------- */
+  .hero{background:var(--ivory);border:1px solid var(--line);border-radius:20px;
+    margin:22px auto;padding:56px 28px 48px;text-align:center;position:relative;overflow:hidden}
+  .hero::before{content:"";position:absolute;inset:0;opacity:.5;pointer-events:none;
+    background:
+      radial-gradient(circle at 50% 0,rgba(31,85,64,.05),transparent 60%),
+      repeating-conic-gradient(from 0deg at 1px 1px,transparent 0 89deg,rgba(169,125,51,.05) 90deg 91deg) 0 0/46px 46px;
+    -webkit-mask-image:linear-gradient(#000,transparent 78%);mask-image:linear-gradient(#000,transparent 78%)}
+  .ornament{display:flex;align-items:center;justify-content:center;gap:16px;margin-bottom:26px;position:relative}
+  .ornament .bar{height:1px;width:min(120px,22vw);background:linear-gradient(90deg,transparent,var(--gold))}
+  .ornament .bar.r{background:linear-gradient(90deg,var(--gold),transparent)}
+  .ornament svg{color:var(--gold);flex:none}
+  .bismillah{font-family:Amiri,serif;font-weight:400;color:var(--green-deep);
+    font-size:clamp(38px,8vw,74px);line-height:1.7;margin:0;letter-spacing:.01em;position:relative;
+    direction:rtl}
+  .welcome{font-family:Fraunces,serif;font-weight:400;font-size:clamp(17px,2.4vw,22px);
+    color:var(--green);margin:22px 0 0;position:relative;font-style:italic}
+  .welcome b{font-style:normal;font-weight:600}
+  .hero-sub{color:var(--muted);font-size:15px;margin:8px 0 0;position:relative}
+
+  /* featured quote */
+  .featured{background:var(--ivory);border:1px solid var(--line);border-left:3px solid var(--gold);
+    border-radius:0 14px 14px 0;padding:26px 30px;margin:22px auto;max-width:820px}
+  .featured .q{font-family:Fraunces,serif;font-size:clamp(19px,2.6vw,25px);color:var(--green-deep);
+    font-weight:500;margin:0;line-height:1.4}
+  .featured .attr{margin:16px 0 0;font-size:13px;color:var(--muted);
+    font-family:Newsreader;letter-spacing:.04em}
+  .featured .attr b{color:var(--green);font-weight:600;font-size:14px;letter-spacing:0}
+
+  /* ---------------- DAILY CARDS ---------------- */
+  .h2{font-family:Fraunces,serif;font-weight:600;font-size:clamp(22px,3.2vw,30px);
+    color:var(--green-deep);text-align:center;margin:36px 0 4px}
+  .divider{width:64px;height:2px;background:var(--gold);margin:14px auto 26px;border-radius:2px}
+  .daily{display:grid;grid-template-columns:1fr;gap:18px;margin-bottom:8px}
+  @media(min-width:760px){.daily{grid-template-columns:repeat(3,1fr)}}
+  .dcard{background:var(--ivory);border:1px solid var(--line);border-radius:14px;padding:22px;
+    display:flex;flex-direction:column;gap:12px;box-shadow:0 1px 2px rgba(27,36,30,.03),0 10px 24px -18px rgba(27,36,30,.2)}
+  .dhead{display:flex;align-items:center;gap:12px}
+  .dicon{flex:none;width:40px;height:40px;border-radius:10px;background:var(--green-soft);
+    color:var(--green);display:grid;place-items:center}
+  .dtitle{font-family:Fraunces,serif;font-weight:600;font-size:16px;color:var(--green-deep);margin:0;line-height:1.1}
+  .dsub{font-size:12px;color:var(--muted);margin:2px 0 0}
+  .dar{font-family:Amiri,serif;font-size:20px;text-align:right;color:var(--ink);line-height:1.9;margin:0;direction:rtl}
+  .dfr{font-size:14.5px;color:var(--ink);opacity:.9;margin:0;font-style:italic}
+  .dfoot{margin-top:auto;padding-top:12px;border-top:1px solid var(--line);
+    display:flex;justify-content:space-between;align-items:center}
+  .src{font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+  .arrow{color:var(--green)}
+
+  /* ---------------- MADHAHIB ---------------- */
+  .intro{max-width:64ch;margin:0 auto 8px;text-align:center;color:var(--muted);font-size:15.5px}
+  .schools{display:grid;grid-template-columns:1fr;gap:18px;margin:26px 0 8px}
+  @media(min-width:720px){.schools{grid-template-columns:1fr 1fr}}
+  .school{background:var(--ivory);border:1px solid var(--line);border-radius:14px;overflow:hidden;
+    box-shadow:0 1px 2px rgba(27,36,30,.03),0 10px 24px -18px rgba(27,36,30,.2);
+    display:flex;flex-direction:column;transition:box-shadow .2s,transform .2s}
+  .school:hover{transform:translateY(-2px);box-shadow:0 2px 6px rgba(27,36,30,.05),0 18px 36px -20px rgba(27,36,30,.32)}
+  .school .top{border-top:3px solid var(--ac);padding:20px 22px 0;display:flex;gap:14px;align-items:center}
+  .medallion{flex:none;width:46px;height:46px;border-radius:50%;display:grid;place-items:center;
+    font-family:Amiri,serif;font-size:22px;color:var(--ac);
+    background:color-mix(in srgb,var(--ac) 12%,var(--ivory));
+    box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--ac) 30%,transparent)}
+  .school .name{font-family:Fraunces,serif;font-weight:600;font-size:20px;color:var(--green-deep);margin:0;line-height:1.1}
+  .school .name-ar{font-family:Amiri,serif;font-size:15px;color:var(--muted);direction:rtl}
+  .school .body{padding:16px 22px 22px;display:flex;flex-direction:column;gap:12px;flex:1}
+  .field .lbl{font-family:Newsreader;font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--ac);font-weight:600;margin:0 0 2px}
+  .field p{margin:0;font-size:14.5px;color:var(--ink)}
+  .school .more{margin-top:auto;padding-top:14px;border-top:1px solid var(--line);
+    font-family:Newsreader;font-weight:600;font-size:13.5px;color:var(--green);
+    display:flex;align-items:center;justify-content:space-between;text-decoration:none}
+  .school .more .chip{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;
+    background:color-mix(in srgb,var(--ac) 12%,var(--ivory));color:var(--ac)}
+
+  .note{margin:30px auto 60px;max-width:860px;background:var(--ivory);border:1px solid var(--line);
+    border-radius:12px;padding:18px 22px;font-size:13.5px;color:var(--muted)}
+  .note b{color:var(--ink)}
+  a:focus-visible{outline:2px solid var(--green);outline-offset:2px}
+  @media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="shell">
+
+  <!-- ===================== HERO ===================== -->
+  <section class="hero">
+    <div class="ornament" aria-hidden="true">
+      <span class="bar"></span>
+      <svg width="34" height="34" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.4">
+        <rect x="9" y="9" width="22" height="22" transform="rotate(45 20 20)"/>
+        <rect x="9" y="9" width="22" height="22"/>
+        <circle cx="20" cy="20" r="4" fill="currentColor" stroke="none"/>
+      </svg>
+      <span class="bar r"></span>
+    </div>
+    <p class="bismillah">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</p>
+    <p class="welcome">Bienvenue sur <b>IslamHub</b></p>
+    <p class="hero-sub">La croyance authentique et ses preuves — Coran, hadiths et paroles des savants.</p>
+  </section>
+
+  <!-- featured hadith -->
+  <div class="featured">
+    <p class="q">« Celui pour qui Allah veut le bien, Il lui facilite l'apprentissage de la religion. »</p>
+    <p class="attr">— <b>Prophète Muḥammad ﷺ</b> · Rapporté par Al-Bukhārī</p>
+  </div>
+
+  <!-- ===================== DAILY ===================== -->
+  <h2 class="h2">Votre source quotidienne</h2>
+  <div class="divider"></div>
+
+  <div class="daily">
+    <article class="dcard">
+      <div class="dhead">
+        <div class="dicon" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 5h10a2 2 0 0 1 2 2v12H6a2 2 0 0 1-2-2z"/><path d="M16 7h4v10a2 2 0 0 1-2 2h-2"/></svg></div>
+        <div><h3 class="dtitle">Hadith du jour</h3><p class="dsub">Rapporté par ʿĀʾisha</p></div>
+      </div>
+      <p class="dar">خَيْرُكُم خَيْرُكُم لِأَهْلِهِ وَأَنَا خَيْرُكُم لِأَهْلِي</p>
+      <p class="dfr">« Les meilleurs d'entre vous sont les meilleurs envers leurs épouses ; et je suis le meilleur d'entre vous envers les miennes. »</p>
+      <div class="dfoot"><span class="src">At-Tirmidhī · Ibn Māja</span><span class="arrow">→</span></div>
+    </article>
+
+    <article class="dcard">
+      <div class="dhead">
+        <div class="dicon" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v2M12 19v2M3 12h2M19 12h2M6 6l1.5 1.5M16.5 16.5 18 18M18 6l-1.5 1.5M7.5 16.5 6 18"/><circle cx="12" cy="12" r="4"/></svg></div>
+        <div><h3 class="dtitle">Douʿā' du jour</h3><p class="dsub">Invocation avant de dormir</p></div>
+      </div>
+      <p class="dar">اللَّهُمَّ رَبَّ السَّمَاوَاتِ وَرَبَّ الأَرْضِ رَبَّنَا وَرَبَّ كُلِّ شَيْءٍ</p>
+      <p class="dfr">« Ô Allah, Seigneur des cieux, de la terre et de toute chose… »</p>
+      <div class="dfoot"><span class="src">Abū Dāwūd</span><span class="arrow">→</span></div>
+    </article>
+
+    <article class="dcard">
+      <div class="dhead">
+        <div class="dicon" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 4C9 4 5 5 4 6v13c1-1 5-2 8-2s7 1 8 2V6c-1-1-5-2-8-2z"/><path d="M12 6v11"/></svg></div>
+        <div><h3 class="dtitle">Verset à méditer</h3><p class="dsub">Ar-Raḥmān · 27</p></div>
+      </div>
+      <p class="dar">وَيَبْقَىٰ وَجْهُ رَبِّكَ ذُو الْجَلَالِ وَالْإِكْرَامِ</p>
+      <p class="dfr">« L'Être de ton Seigneur, plein de majesté et de noblesse, demeure. »</p>
+      <div class="dfoot"><span class="src">Sourate 55</span><span class="arrow">→</span></div>
+    </article>
+  </div>
+</div>
+
+<!-- ===================== MADHAHIB ===================== -->
+<div class="sectlabel"><span>Une autre page</span><div class="rule"></div></div>
+<div class="shell">
+  <h2 class="h2">Les Quatre Écoles Juridiques</h2>
+  <div class="divider"></div>
+  <p class="intro">Les madhāhib représentent les méthodologies d'interprétation des sources.
+    Chacune offre une compréhension riche et nuancée de la Charia, dans l'unité fondamentale de l'Islam.</p>
+
+  <div class="schools">
+    <article class="school" style="--ac:var(--hanafi)">
+      <div class="top">
+        <div class="medallion">ح</div>
+        <div><h3 class="name">Ḥanafī</h3><div class="name-ar">الحنفية</div></div>
+      </div>
+      <div class="body">
+        <div class="field"><p class="lbl">Fondateur</p><p>Imam Abū Ḥanīfa</p></div>
+        <div class="field"><p class="lbl">Présentation</p><p>L'école de la raison et de l'opinion, répandue en Turquie, dans les Balkans, en Asie centrale et dans le sous-continent indien.</p></div>
+        <a class="more" href="#">Découvrir l'école Ḥanafī <span class="chip">→</span></a>
+      </div>
+    </article>
+
+    <article class="school" style="--ac:var(--maliki)">
+      <div class="top">
+        <div class="medallion">م</div>
+        <div><h3 class="name">Mālikī</h3><div class="name-ar">المالكية</div></div>
+      </div>
+      <div class="body">
+        <div class="field"><p class="lbl">Fondateur</p><p>Imam Mālik ibn Anas</p></div>
+        <div class="field"><p class="lbl">Présentation</p><p>L'école de la pratique médinoise, prédominante en Afrique du Nord et en Afrique de l'Ouest.</p></div>
+        <a class="more" href="#">Découvrir l'école Mālikī <span class="chip">→</span></a>
+      </div>
+    </article>
+
+    <article class="school" style="--ac:var(--shafii)">
+      <div class="top">
+        <div class="medallion">ش</div>
+        <div><h3 class="name">Shāfiʿī</h3><div class="name-ar">الشافعية</div></div>
+      </div>
+      <div class="body">
+        <div class="field"><p class="lbl">Fondateur</p><p>Imam Ash-Shāfiʿī</p></div>
+        <div class="field"><p class="lbl">Présentation</p><p>L'école de l'équilibre des sources, répandue en Égypte, en Afrique de l'Est et en Asie du Sud-Est.</p></div>
+        <a class="more" href="#">Découvrir l'école Shāfiʿī <span class="chip">→</span></a>
+      </div>
+    </article>
+
+    <article class="school" style="--ac:var(--hanbali)">
+      <div class="top">
+        <div class="medallion">ح</div>
+        <div><h3 class="name">Ḥanbalī</h3><div class="name-ar">الحنبلية</div></div>
+      </div>
+      <div class="body">
+        <div class="field"><p class="lbl">Fondateur</p><p>Imam Aḥmad ibn Ḥanbal</p></div>
+        <div class="field"><p class="lbl">Présentation</p><p>L'école attachée au hadith, prédominante dans la péninsule Arabique.</p></div>
+        <a class="more" href="#">Découvrir l'école Ḥanbalī <span class="chip">→</span></a>
+      </div>
+    </article>
+  </div>
+
+  <p class="note"><b>Le point clé sur les couleurs :</b> chaque école garde une couleur d'identité
+    (ocre, vert, bleu, prune) — mais <b>désaturée</b> et réduite à un <b>filet en haut</b> + le médaillon.
+    Les cartes partagent la même structure et le même fond ivoire : la page reste <b>un seul système</b>,
+    au lieu de quatre gros dégradés qui se disputent l'attention.</p>
+</div>

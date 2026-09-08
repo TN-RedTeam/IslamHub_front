@@ -4,12 +4,20 @@ import type {
   Coran,
   Dhikr,
   Douaa,
+  Invocation,
+  InvocationType,
   Parole,
   Multimedia,
   MultimediaCategory,
   FiqhChapitre,
   FemmesChapitre,
   SavantInfo,
+  SavantMini,
+  SavantDetail,
+  HadithDetail,
+  SourateInfo,
+  SourateDetail,
+  DossierData,
   PaginatedResponse,
   PaginationParams,
 } from '../types';
@@ -57,6 +65,7 @@ async function rpcSearch<T>(
   filter: string | null,
   filterKey: 'tag_filter' | 'categorie_filter',
   params?: PaginationParams,
+  extra?: Record<string, string>,
 ) {
   const page = params?.page ?? 0;
   const pageSize = params?.pageSize ?? 20;
@@ -66,13 +75,19 @@ async function rpcSearch<T>(
     page_size: pageSize,
   };
   args[filterKey] = filter ? sanitizeInput(filter) : '';
+  // Filtres additionnels côté serveur (rubriques hadiths, savant paroles…).
+  if (extra) {
+    for (const [k, v] of Object.entries(extra)) {
+      args[k] = v ? sanitizeInput(v) : '';
+    }
+  }
   const { data, error } = await supabase.rpc(fn, args);
   if (error) throw error;
   return shapeResult<T>(data, page, pageSize);
 }
 
-async function rpcTags(fn: string): Promise<string[]> {
-  const { data, error } = await supabase.rpc(fn);
+async function rpcTags(fn: string, args?: Record<string, unknown>): Promise<string[]> {
+  const { data, error } = await supabase.rpc(fn, args);
   if (error) throw error;
   return (data ?? []) as string[];
 }
@@ -82,11 +97,32 @@ class DataService {
   async getHadiths(params?: PaginationParams): Promise<PaginatedResponse<Hadith>> {
     return rpcSearch<Hadith>('search_hadiths', '', null, 'tag_filter', params ?? LOAD_ALL);
   }
-  async searchHadiths(searchTerm: string, tag?: string | null, params?: PaginationParams): Promise<PaginatedResponse<Hadith>> {
-    return rpcSearch<Hadith>('search_hadiths', searchTerm, tag ?? null, 'tag_filter', params ?? LOAD_ALL);
+  async searchHadiths(
+    searchTerm: string,
+    tag?: string | null,
+    params?: PaginationParams,
+    rubrics?: { statut?: string; rapporteur?: string; narrateur?: string },
+  ): Promise<PaginatedResponse<Hadith>> {
+    return rpcSearch<Hadith>('search_hadiths', searchTerm, tag ?? null, 'tag_filter', params ?? LOAD_ALL, {
+      statut_filter: rubrics?.statut ?? '',
+      rapporteur_filter: rubrics?.rapporteur ?? '',
+      narrateur_filter: rubrics?.narrateur ?? '',
+    });
   }
   async getHadithTags(): Promise<string[]> {
     return rpcTags('tags_hadiths');
+  }
+  async getHadith(id: number): Promise<HadithDetail | null> {
+    const { data, error } = await supabase.rpc('get_hadith', { hadith_id: id });
+    if (error) throw error;
+    return (data ?? null) as HadithDetail | null;
+  }
+  /** Valeurs distinctes des rubriques (menus déroulants) sans charger les hadiths. */
+  async getHadithRubriques(): Promise<{ statuts: string[]; rapporteurs: string[]; narrateurs: string[] }> {
+    const { data, error } = await supabase.rpc('hadith_rubriques');
+    if (error) throw error;
+    const d = (data ?? {}) as { statuts?: string[]; rapporteurs?: string[]; narrateurs?: string[] };
+    return { statuts: d.statuts ?? [], rapporteurs: d.rapporteurs ?? [], narrateurs: d.narrateurs ?? [] };
   }
 
   // ================= Coran =================
@@ -122,12 +158,43 @@ class DataService {
     return rpcTags('tags_douaas');
   }
 
+  // ============ Invocations & Évocations (fusion douaas + dhikrs) ============
+  // type : 1 = invocation, 2 = évocation, null/undefined = les deux.
+  async searchInvocations(
+    searchTerm: string,
+    tag?: string | null,
+    type?: InvocationType | null,
+    params?: PaginationParams,
+  ): Promise<PaginatedResponse<Invocation>> {
+    return rpcSearch<Invocation>('search_invocations', searchTerm, tag ?? null, 'tag_filter', params ?? LOAD_ALL, {
+      type_filter: type ? String(type) : '',
+    });
+  }
+  async getInvocationTags(type?: InvocationType | null): Promise<string[]> {
+    return rpcTags('tags_invocations', { type_filter: type ? String(type) : '' });
+  }
+  async getInvocationSujets(type?: InvocationType | null): Promise<string[]> {
+    return rpcTags('sujets_invocations', { type_filter: type ? String(type) : '' });
+  }
+  async getDailyInvocation(day: number, type: InvocationType = 1): Promise<Invocation | null> {
+    const { data, error } = await supabase.rpc('daily_invocation', { day, type_filter: String(type) });
+    if (error) throw error;
+    return (data ?? null) as Invocation | null;
+  }
+
   // ================= Paroles =================
   async getParoles(params?: PaginationParams): Promise<PaginatedResponse<Parole>> {
     return rpcSearch<Parole>('search_paroles', '', null, 'tag_filter', params ?? LOAD_ALL);
   }
-  async searchParoles(searchTerm: string, tag?: string | null, params?: PaginationParams): Promise<PaginatedResponse<Parole>> {
-    return rpcSearch<Parole>('search_paroles', searchTerm, tag ?? null, 'tag_filter', params ?? LOAD_ALL);
+  async searchParoles(
+    searchTerm: string,
+    tag?: string | null,
+    params?: PaginationParams,
+    savant?: string,
+  ): Promise<PaginatedResponse<Parole>> {
+    return rpcSearch<Parole>('search_paroles', searchTerm, tag ?? null, 'tag_filter', params ?? LOAD_ALL, {
+      savant_filter: savant ?? '',
+    });
   }
   async getParoleTags(): Promise<string[]> {
     return rpcTags('tags_paroles');
@@ -177,6 +244,35 @@ class DataService {
     const { data, error } = await supabase.rpc('savants_all');
     if (error) throw error;
     return (data ?? []) as SavantInfo[];
+  }
+  async getSavantsMini(): Promise<SavantMini[]> {
+    const { data, error } = await supabase.rpc('savants_mini');
+    if (error) throw error;
+    return (data ?? []) as SavantMini[];
+  }
+  async getSavantBySlug(slug: string): Promise<SavantDetail | null> {
+    const { data, error } = await supabase.rpc('savant_by_slug', { savant_slug: slug });
+    if (error) throw error;
+    return (data ?? null) as SavantDetail | null;
+  }
+
+  // ================= Coran — exégèse (sourates) =================
+  async getSourates(): Promise<SourateInfo[]> {
+    const { data, error } = await supabase.rpc('sourates_all');
+    if (error) throw error;
+    return (data ?? []) as SourateInfo[];
+  }
+  async getSourate(slug: string): Promise<SourateDetail | null> {
+    const { data, error } = await supabase.rpc('get_sourate', { sourate_slug: slug });
+    if (error) throw error;
+    return (data ?? null) as SourateDetail | null;
+  }
+
+  // ================= Dossiers thématiques =================
+  async getDossier(slug: string): Promise<DossierData | null> {
+    const { data, error } = await supabase.rpc('get_dossier', { dossier_slug: slug });
+    if (error) throw error;
+    return (data ?? null) as DossierData | null;
   }
 
   // ================= Accueil (Home) =================
