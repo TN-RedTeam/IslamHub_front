@@ -50,6 +50,10 @@ Reportée volontairement : la config dépend de l'URL finale du site.
 
 ## Divers
 - [x] Passe « coquilles de sujets » — faite (voir `supabase/refonte/coquilles_sujets.sql`).
+- [x] Bio mal rangée corrigée : celle d'Ahmad Ibn Hanbal déplacée depuis la fiche
+      Ibn Hajar Al-Haytami (voir `supabase/refonte/fix_bio_ahmad_ibn_hanbal.sql`).
+- [ ] **À faire (toi)** : écrire la vraie biographie d'**Ibn Hajar Al-Haytami**
+      (fiche vidée). `update public.savants set biographie='…' where id=46;`
 - [ ] Dossier istiwa : compléter les preuves (versets 20:5 / 42:11) et lier
       l'extrait Al-Baghdadiyy une fois inséré.
 - [ ] Un jour : Phase 2b (supprimer les anciennes colonnes rapporteur/narrateur/
