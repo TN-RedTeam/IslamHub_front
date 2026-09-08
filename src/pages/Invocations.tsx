@@ -236,23 +236,26 @@ export const Invocations: React.FC = () => {
             </PageHeader>
 
             <main className="container mx-auto px-4 py-10 relative z-10">
-                {/* Onglets Invocations / Évocations */}
-                <div role="tablist" aria-label="Type" className="flex justify-center gap-2 mb-8">
-                    {TYPES.map(t => (
-                        <button
-                            key={t.id}
-                            role="tab"
-                            aria-selected={activeType === t.id}
-                            onClick={() => handleTypeChange(t.id)}
-                            className={`px-5 py-2.5 rounded-full text-sm font-medium border transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green ${
-                                activeType === t.id
-                                    ? 'bg-green text-white border-green shadow-card'
-                                    : 'bg-ivory text-ink border-line hover:bg-green-soft hover:text-green-deep'
-                            }`}
-                        >
-                            <Icon name={t.icon} className="w-4 h-4 inline-block mr-1.5 -mt-0.5" />{t.label}
-                        </button>
-                    ))}
+                {/* Contrôle segmenté Invocations / Évocations (charte 11.7, option A) */}
+                <div className="flex justify-center mb-8">
+                    <div role="tablist" aria-label="Type" className="inline-flex gap-1 rounded-full bg-surface border border-line p-1 shadow-[inset_0_1px_2px_rgba(27,38,32,.05)]">
+                        {TYPES.map(t => {
+                            const on = activeType === t.id;
+                            return (
+                                <button
+                                    key={t.id}
+                                    role="tab"
+                                    aria-selected={on}
+                                    onClick={() => handleTypeChange(t.id)}
+                                    className={`flex items-center gap-2 px-5 py-2 rounded-full text-[15px] font-medium transition-colors focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-green focus-visible:outline-offset-2 ${
+                                        on ? 'bg-green text-white' : 'text-muted hover:text-green-deep'
+                                    }`}
+                                >
+                                    <Icon name={t.icon} className="w-[17px] h-[17px]" />{t.label}
+                                </button>
+                            );
+                        })}
+                    </div>
                 </div>
 
                 {/* Tag cloud — après recherche */}
