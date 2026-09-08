@@ -18,6 +18,15 @@ const navItems = [
   { to: '/multimedia', label: 'Multimédia' },
 ];
 
+// Noms français (translittérés) des 12 mois du calendrier hégirien, dans l'ordre.
+// Sert à afficher la date higri en français ; la version arabe est produite à
+// l'exécution par moment-hijri (aucun texte arabe n'est saisi ici).
+const HIJRI_MONTHS_FR = [
+  'Mouharram', 'Safar', 'Rabîʿ al-awwal', 'Rabîʿ ath-thânî',
+  'Joumâdâ al-oûlâ', 'Joumâdâ ath-thâniya', 'Rajab', 'Chaʿbân',
+  'Ramadân', 'Chawwâl', 'Dhou al-qiʿda', 'Dhou al-hijja',
+];
+
 const Crescent: React.FC<{ className?: string }> = ({ className }) => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className={className} aria-hidden="true">
     <path d="M16.5 3.5a8 8 0 1 0 4 12 6.2 6.2 0 0 1-4-12z" />
@@ -27,17 +36,20 @@ const Crescent: React.FC<{ className?: string }> = ({ className }) => (
 export const Navigation: React.FC = () => {
   const { theme, toggleTheme } = useTheme();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [hijri, setHijri] = useState('');
-  const [greg, setGreg] = useState('');
+  const [hijriFr, setHijriFr] = useState('');
+  const [hijriAr, setHijriAr] = useState('');
   const location = useLocation();
 
   useEffect(() => {
     const update = () => {
-      setHijri(moment().format('iD iMMMM iYYYY'));
-      setGreg(new Date().toLocaleDateString('fr-FR', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' }));
+      const d = moment();
+      // Date hégirienne en français : chiffres latins + mois translittéré.
+      setHijriFr(`${d.iDate()} ${HIJRI_MONTHS_FR[d.iMonth()]} ${d.iYear()}`);
+      // Date hégirienne en arabe : générée par moment-hijri (chiffres et mois arabes).
+      setHijriAr(d.format('iD iMMMM iYYYY'));
     };
     update();
-    const interval = setInterval(update, 86400000);
+    const interval = setInterval(update, 3600000); // rafraîchit chaque heure (passage de jour)
     return () => clearInterval(interval);
   }, []);
 
@@ -79,12 +91,15 @@ export const Navigation: React.FC = () => {
 
           {/* Actions (droite) */}
           <div className="flex items-center gap-2.5 shrink-0 ml-auto min-[900px]:ml-0">
-            {/* Chip date : hijri + grégorien */}
-            <div className="hidden lg:flex items-center gap-2 px-3 py-1.5 rounded-full bg-green-soft border border-line">
+            {/* Chip date hégirienne : français + arabe (pas de date grégorienne) */}
+            <div
+              className="hidden lg:flex items-center gap-2 px-3 py-1.5 rounded-full bg-green-soft border border-line"
+              aria-label={`Date hégirienne : ${hijriFr}`}
+            >
               <Crescent className="w-4 h-4 text-gold shrink-0" />
-              <span className="leading-tight">
-                <span className="block font-sans text-[13px] font-semibold text-green-deep whitespace-nowrap">{hijri}</span>
-                <span className="block text-[10px] uppercase tracking-wide text-muted">{greg}</span>
+              <span className="leading-tight text-right">
+                <span className="block font-sans text-[13px] font-semibold text-green-deep whitespace-nowrap">{hijriFr}</span>
+                <span dir="rtl" className="block font-arabic text-[12px] leading-snug text-muted whitespace-nowrap [unicode-bidi:plaintext]">{hijriAr}</span>
               </span>
             </div>
 
