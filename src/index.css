@@ -9,6 +9,21 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ── Charte visuelle (Phase 10) — tokens de couleur, mêmes classes en clair/sombre ── */
+:root {
+    --ground: #f4efe4; --ivory: #fffdf8; --ink: #1b241e; --muted: #6a766c; --line: #e7e1d1;
+    --green: #1f5540; --green-deep: #123a2c; --green-soft: #eaf1ec;
+    --gold: #a97d33; --gold-soft: #f4ead2;
+}
+.dark {
+    --ground: #0e1512; --ivory: #16201b; --ink: #eaf1ec; --muted: #9db0a5; --line: #2a3830;
+    --green: #4bbf98; --green-deep: #a7e5cd; --green-soft: #17241d;
+    --gold: #d8b466; --gold-soft: #2a2417;
+}
+@layer base {
+    body { background-color: var(--ground); color: var(--ink); }
+}
+
 html {
     scroll-behavior: smooth;
 }
