@@ -6,15 +6,16 @@ import { FilterSelect } from '../components/FilterSelect';
 import { PageHeader } from '../components/PageHeader';
 import type { Invocation as InvocationType, InvocationType as TypeId } from '../types';
 import { usePageTitle } from '../hooks/usePageTitle';
+import { Icon, IconBadge, type IconName } from '../components/Icon';
 
 interface Item extends Omit<InvocationType, 'tag'> {
     tag: string | null;
 }
 
 // Métadonnées d'affichage par type.
-const TYPES: { id: TypeId; label: string; emoji: string; noun: string; nounPlural: string }[] = [
-    { id: 1, label: 'Invocations', emoji: '🤲', noun: 'invocation', nounPlural: 'invocations' },
-    { id: 2, label: 'Évocations',  emoji: '📿', noun: 'évocation',  nounPlural: 'évocations' },
+const TYPES: { id: TypeId; label: string; icon: IconName; noun: string; nounPlural: string }[] = [
+    { id: 1, label: 'Invocations', icon: 'hands', noun: 'invocation', nounPlural: 'invocations' },
+    { id: 2, label: 'Évocations',  icon: 'beads', noun: 'évocation',  nounPlural: 'évocations' },
 ];
 
 const getTagsArray = (tag: string | null, sujet?: string): string[] => {
@@ -249,7 +250,7 @@ export const Invocations: React.FC = () => {
                                     : 'bg-ivory text-ink border-line hover:bg-green-soft hover:text-green-deep'
                             }`}
                         >
-                            <span aria-hidden="true" className="mr-1.5">{t.emoji}</span>{t.label}
+                            <Icon name={t.icon} className="w-4 h-4 inline-block mr-1.5 -mt-0.5" />{t.label}
                         </button>
                     ))}
                 </div>
@@ -333,7 +334,7 @@ export const Invocations: React.FC = () => {
                         </div>
                     ) : error ? (
                         <div className="text-center py-16 bg-ivory rounded-card shadow-card border border-line">
-                            <div className="text-6xl mb-4">😔</div>
+                            <IconBadge name="sad" />
                             <p className="text-red-600 dark:text-red-400 mb-4">{error}</p>
                             <button onClick={() => doSearch(searchTerm, selectedTag, activeType)} className="px-6 py-2 bg-green hover:bg-green-deep text-white rounded-lg">Réessayer</button>
                         </div>
@@ -341,7 +342,9 @@ export const Invocations: React.FC = () => {
                         <m.div key="empty-state" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center py-24">
                             <div className="max-w-lg mx-auto">
                                 <m.div animate={{ y: [0, -10, 0] }} transition={{ repeat: Infinity, duration: 4, ease: 'easeInOut' }}
-                                            className="text-8xl mb-8 select-none">{meta.emoji}</m.div>
+                                            className="mx-auto mb-8 w-20 h-20 rounded-full bg-green-soft text-green grid place-items-center motion-reduce:animate-none">
+                                    <Icon name={meta.icon} className="w-10 h-10" />
+                                </m.div>
                                 <h3 className="text-3xl font-semibold text-green-deep mb-4 font-display">
                                     Recherchez parmi les {meta.nounPlural}
                                 </h3>
@@ -372,7 +375,7 @@ export const Invocations: React.FC = () => {
                         <m.div key="no-results" initial={{ opacity: 0 }} animate={{ opacity: 1 }}
                                     className="text-center py-16 bg-ivory rounded-card shadow-card border border-line">
                             <div className="max-w-md mx-auto">
-                                <div className="text-6xl mb-4">📖</div>
+                                <IconBadge name="book" />
                                 <h3 className="text-xl font-semibold text-green-deep mb-2">Aucun résultat trouvé</h3>
                                 <p className="text-muted mb-6">Essayez de modifier vos critères de recherche</p>
                                 <button onClick={handleResetFilters} className="px-6 py-2 bg-green hover:bg-green-deep text-white rounded-lg transition-colors">Réinitialiser</button>

@@ -7,6 +7,7 @@ import { Markdown } from '../components/Markdown';
 import { EcoleBadge } from '../components/EcoleBadge';
 import { useSeo } from '../hooks/useSeo';
 import type { SavantDetail } from '../types';
+import { IconBadge } from '../components/Icon';
 
 export const SavantPage: React.FC = () => {
   const { slug = '' } = useParams();
@@ -40,7 +41,7 @@ export const SavantPage: React.FC = () => {
     return (
       <div className="min-h-screen bg-ground flex items-center justify-center">
         <div className="text-center max-w-md mx-auto p-8 bg-white dark:bg-gray-800 rounded-card shadow-card">
-          <div className="text-6xl mb-4">🧕</div>
+          <IconBadge name="user" />
           <h1 className="text-xl font-bold text-gray-700 dark:text-gray-300 mb-2 font-display">Savant introuvable</h1>
           <Link to="/savants" className="px-6 py-2 bg-green hover:bg-green-deep text-white rounded-lg transition-colors inline-block mt-2">Tous les savants</Link>
         </div>

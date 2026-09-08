@@ -7,6 +7,7 @@ import { Markdown } from '../components/Markdown';
 import { useSeo } from '../hooks/useSeo';
 import { SavantHover } from '../components/SavantHover';
 import type { DossierData, DossierPreuve } from '../types';
+import { IconBadge } from '../components/Icon';
 
 const FAV_KEY = 'islamhub:favoris:dossiers';
 
@@ -121,7 +122,7 @@ export const DossierThematique: React.FC = () => {
     return (
       <div className="min-h-screen bg-ground flex items-center justify-center">
         <div className="text-center max-w-md mx-auto p-8 bg-white dark:bg-gray-800 rounded-card shadow-card">
-          <div className="text-6xl mb-4">📁</div>
+          <IconBadge name="folder" />
           <h1 className="text-xl font-bold text-gray-700 dark:text-gray-300 mb-2 font-display">Dossier introuvable</h1>
           <p className="text-gray-500 dark:text-gray-400 mb-6">{error || "Ce dossier n'existe pas ou n'est pas encore publié."}</p>
           <Link to="/" className="px-6 py-2 bg-green hover:bg-green-deep text-white rounded-lg transition-colors">Accueil</Link>

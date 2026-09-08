@@ -7,6 +7,7 @@ import { VideoCard } from '../components/VideoCard';
 import { PageHeader } from '../components/PageHeader';
 import type { Multimedia as MultimediaType, MultimediaCategory } from '../types';
 import { usePageTitle } from '../hooks/usePageTitle';
+import { Icon, IconBadge } from '../components/Icon';
 
 const PAGE_SIZE = 12;
 
@@ -165,11 +166,11 @@ export const Multimedia: React.FC = () => {
                 className="text-center py-16 bg-white dark:bg-gray-800 rounded-card shadow-card"
               >
                 <m.div
-                  animate={{ scale: [1, 1.1, 1] }}
+                  animate={{ scale: [1, 1.05, 1] }}
                   transition={{ repeat: Infinity, duration: 2 }}
-                  className="text-7xl mb-6"
+                  className="mx-auto mb-6 w-20 h-20 rounded-full bg-green-soft text-green grid place-items-center motion-reduce:animate-none"
                 >
-                  🎥
+                  <Icon name="camera" className="w-10 h-10" />
                 </m.div>
                 <h3 className="text-2xl font-bold text-gray-700 dark:text-gray-300 mb-3 font-display">
                   Lance une recherche pour découvrir des vidéos
@@ -223,7 +224,7 @@ export const Multimedia: React.FC = () => {
                 animate={{ opacity: 1 }}
                 className="text-center py-12 bg-red-50 dark:bg-red-900/20 rounded-card shadow-card"
               >
-                <div className="text-5xl mb-4">⚠️</div>
+                <IconBadge name="alert" />
                 <p className="text-red-700 dark:text-red-300 font-medium">{error}</p>
               </m.div>
             )}
@@ -237,7 +238,7 @@ export const Multimedia: React.FC = () => {
                 exit={{ opacity: 0 }}
                 className="text-center py-16 bg-white dark:bg-gray-800 rounded-card shadow-card"
               >
-                <div className="text-6xl mb-4">🔍</div>
+                <IconBadge name="search" />
                 <h3 className="text-xl font-bold text-gray-700 dark:text-gray-300 mb-2">
                   Aucun résultat trouvé
                 </h3>

@@ -7,6 +7,7 @@ import { FilterSelect } from '../components/FilterSelect';
 import { PageHeader } from '../components/PageHeader';
 import { slugify } from '../utils/slug';
 import type { Hadith as HadithType } from '../types';
+import { IconBadge } from '../components/Icon';
 
 interface Hadith extends HadithType {
   id: number;
@@ -293,7 +294,7 @@ export const Hadiths: React.FC = () => {
     return (
         <div className="min-h-screen bg-ground flex items-center justify-center">
           <div className="text-center max-w-md mx-auto p-8 bg-white dark:bg-gray-800 rounded-card shadow-card">
-            <div className="text-6xl mb-4">😔</div>
+            <IconBadge name="sad" />
             <h3 className="text-xl font-bold text-red-600 dark:text-red-400 mb-2">Une erreur est survenue</h3>
             <p className="text-gray-600 dark:text-gray-400 mb-6">{error}</p>
             <button
@@ -398,7 +399,7 @@ export const Hadiths: React.FC = () => {
           <section className="pb-16">
             {!hasQuery && !showAll ? (
               <div className="text-center py-20 bg-white/70 dark:bg-gray-800/70 rounded-card border border-line">
-                <div className="text-6xl mb-4">🔍</div>
+                <IconBadge name="search" />
                 <h3 className="text-xl font-bold text-gray-700 dark:text-gray-300 mb-2 font-display">Recherchez un hadith</h3>
                 <p className="text-gray-500 dark:text-gray-400 max-w-md mx-auto mb-6">
                   Saisissez un mot-clé (cherche aussi dans les tags et l'arabe) ou choisissez un filtre (sujet, authenticité, rapporteur, narrateur) — ou affichez tout.
@@ -428,7 +429,7 @@ export const Hadiths: React.FC = () => {
               <m.div key="no-results" initial={{ opacity: 0 }} animate={{ opacity: 1 }}
                   className="text-center py-16 bg-white dark:bg-gray-800 rounded-card shadow-card">
                 <div className="max-w-md mx-auto">
-                  <div className="text-6xl mb-4">📖</div>
+                  <IconBadge name="book" />
                   <h3 className="text-xl font-bold text-gray-700 dark:text-gray-300 mb-2">Aucun résultat trouvé</h3>
                   <p className="text-gray-500 dark:text-gray-400 mb-6">Essayez de modifier vos critères de recherche</p>
                   <button onClick={handleResetFilters}

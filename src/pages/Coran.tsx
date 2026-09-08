@@ -10,6 +10,7 @@ import { FilterSelect } from '../components/FilterSelect';
 import { PageHeader } from '../components/PageHeader';
 import type { Coran as CoranType } from '../types';
 import { usePageTitle } from '../hooks/usePageTitle';
+import { Icon, IconBadge } from '../components/Icon';
 
 interface Coran extends CoranType {
   id: number;
@@ -538,7 +539,7 @@ export const Corans: React.FC = () => {
               className="text-center py-16 bg-white dark:bg-gray-800 rounded-card shadow-card"
             >
               <div className="max-w-md mx-auto">
-                <div className="text-6xl mb-4">😔</div>
+                <IconBadge name="sad" />
                 <h3 className="text-xl font-bold text-red-600 dark:text-red-400 mb-2">
                   Une erreur est survenue
                 </h3>
@@ -563,9 +564,9 @@ export const Corans: React.FC = () => {
                 <m.div
                   animate={{ y: [0, -10, 0] }}
                   transition={{ repeat: Infinity, duration: 4, ease: 'easeInOut' }}
-                  className="text-9xl mb-8 select-none"
+                  className="mx-auto mb-8 w-20 h-20 rounded-full bg-green-soft text-green grid place-items-center motion-reduce:animate-none"
                 >
-                  📖
+                  <Icon name="book" className="w-10 h-10" />
                 </m.div>
                 <h3 className="text-3xl font-bold text-green-deep mb-4 font-display">
                   Recherchez parmi les versets
@@ -612,7 +613,7 @@ export const Corans: React.FC = () => {
               className="text-center py-16 bg-white dark:bg-gray-800 rounded-card shadow-card"
             >
               <div className="max-w-md mx-auto">
-                <div className="text-6xl mb-4">🔍</div>
+                <IconBadge name="search" />
                 <h3 className="text-xl font-bold text-gray-700 dark:text-gray-300 mb-2">
                   Aucun résultat trouvé
                 </h3>
