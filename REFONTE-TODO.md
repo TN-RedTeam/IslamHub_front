@@ -18,7 +18,7 @@ Reportée volontairement : la config dépend de l'URL finale du site.
 - [ ] Migration des extraits de savants de `src/_legacy/` : **21 des 22 fichiers
       étaient vides**, seul `Al-Baghdadiyy.tsx` avait du contenu →
       `supabase/refonte/migrer_extrait_albaghdadiyy.sql` (à exécuter dans Supabase).
-- [ ] Mini-bio d'un savant au survol de son nom (popover).
+- [x] Mini-bio d'un savant au survol de son nom (popover) — fait (`SavantHover`).
 - [ ] Enrichir le schéma `savants` (nom_arabe, naissance, deces, image_url).
 
 ## Phase 7 — images de pages de livres

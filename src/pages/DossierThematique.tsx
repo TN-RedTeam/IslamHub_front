@@ -5,7 +5,7 @@ import { Loader, Copy, Check, Share2, Star, BookOpen, ArrowLeft, Quote } from 'l
 import { dataService } from '../services/DataService';
 import { Markdown } from '../components/Markdown';
 import { useSeo } from '../hooks/useSeo';
-import { slugify } from '../utils/slug';
+import { SavantHover } from '../components/SavantHover';
 import type { DossierData, DossierPreuve } from '../types';
 
 const FAV_KEY = 'islamhub:favoris:dossiers';
@@ -189,9 +189,10 @@ export const DossierThematique: React.FC = () => {
                     <p className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap [unicode-bidi:plaintext] mb-3">« {p.ref.texte_francais} »</p>
                   )}
                   {p.type === 'parole' && p.ref.savant && (
-                    <Link to={`/savants/${slugify(p.ref.savant)}`} className="text-sm text-emerald-600 dark:text-emerald-400 hover:underline">
-                      {p.ref.savant}{p.ref.ecole ? ` — ${p.ref.ecole}` : ''}
-                    </Link>
+                    <p className="text-sm">
+                      <SavantHover nom={p.ref.savant} className="text-emerald-600 dark:text-emerald-400 hover:underline" />
+                      {p.ref.ecole ? ` — ${p.ref.ecole}` : ''}
+                    </p>
                   )}
                   {refLine(p) && p.type !== 'parole' && (
                     <p className="text-sm text-gray-500 dark:text-gray-400 italic">{refLine(p)}</p>

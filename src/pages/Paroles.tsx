@@ -6,6 +6,7 @@ import { dataService } from '../services/DataService';
 import { FilterSelect } from '../components/FilterSelect';
 import { Markdown } from '../components/Markdown';
 import { EcoleBadge } from '../components/EcoleBadge';
+import { SavantHover } from '../components/SavantHover';
 import type { Parole } from '../types';
 
 const ParoleCard: React.FC<{ parole: Parole; onClick: () => void }> = ({ parole, onClick }) => (
@@ -33,7 +34,7 @@ const ParoleCard: React.FC<{ parole: Parole; onClick: () => void }> = ({ parole,
           <div className="flex items-center justify-between gap-2 flex-wrap">
             {parole.savant && (
                 <span className="text-sm text-emerald-700 dark:text-emerald-300 italic">
-                  Savant : {parole.savant}
+                  Savant : <SavantHover nom={parole.savant} />
                 </span>
             )}
             {parole.ecole && <EcoleBadge ecole={parole.ecole} onClick={(e) => e.stopPropagation()} />}
@@ -105,7 +106,7 @@ const ParoleModal: React.FC<{ parole: Parole | null; onClose: () => void }> = ({
               </h2>
               {parole.savant && (
                   <p className="text-emerald-700 dark:text-emerald-400 mt-1">
-                    Savant : {parole.savant}
+                    Savant : <SavantHover nom={parole.savant} />
                   </p>
               )}
               {parole.ecole && <div className="mt-2"><EcoleBadge ecole={parole.ecole} /></div>}
