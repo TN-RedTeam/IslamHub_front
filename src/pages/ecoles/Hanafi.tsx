@@ -3,6 +3,7 @@ import { m, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Scale, BookOpen, Users, Star, ChevronRight, Lightbulb, Globe, ChevronDown, ChevronUp, Shield, Sparkles, Calendar, BookMarked, Brain, HeartCrack } from 'lucide-react';
 import { EcoleFiqhSection } from '../../components/EcoleFiqhSection';
+import { RelatedSchools } from '../../components/RelatedSchools';
 import { PageHeader } from '../../components/PageHeader';
 
 interface SectionProps {
@@ -66,32 +67,6 @@ const Hanafi: React.FC = () => {
         { label: 'Pays influencés', value: '40+', icon: Globe },
     ];
 
-    const relatedMadhaheb = [
-        {
-            id: 1,
-            name: 'Maliki',
-            nameArabic: 'المالكية',
-            path: '/ecoles/Malikite',
-            description: "L'école de la pratique médinoise",
-            color: 'from-emerald-500 to-teal-600'
-        },
-        {
-            id: 2,
-            name: "Shafi'i",
-            nameArabic: 'الشافعية',
-            path: '/ecoles/Shafii',
-            description: "L'école équilibrée entre texte et raison",
-            color: 'from-blue-500 to-indigo-600'
-        },
-        {
-            id: 3,
-            name: 'Hanbali',
-            nameArabic: 'الحنابلة',
-            path: '/ecoles/Hanbalite',
-            description: "L'école du texte et de la tradition",
-            color: 'from-purple-500 to-pink-600'
-        },
-    ];
 
     const principles = [
         {
@@ -711,50 +686,7 @@ const Hanafi: React.FC = () => {
                 <EcoleFiqhSection ecole="Hanafi" titre="Jurisprudence de l'école Hanafite" />
 
                 {/* Autres écoles */}
-                <m.section
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.9 }}
-                    className="mt-16"
-                >
-                    <h3 className="text-2xl font-bold text-emerald-900 dark:text-emerald-300 mb-6 font-display text-center">
-                        Découvrir les Autres Écoles
-                    </h3>
-                    <div className="grid md:grid-cols-3 gap-6">
-                        {relatedMadhaheb.map((madhab, index) => (
-                            <m.div
-                                key={madhab.id}
-                                initial={{ opacity: 0, scale: 0.95 }}
-                                animate={{ opacity: 1, scale: 1 }}
-                                transition={{ delay: 1.0 + index * 0.1 }}
-                                whileHover={{ scale: 1.02 }}
-                                className="group"
-                            >
-                                <Link to={madhab.path} className="block h-full">
-                                    <div className="relative h-full bg-ivory rounded-xl shadow-lg overflow-hidden border border-line transition-all duration-300 hover:shadow-card">
-                                        <div className={`bg-gradient-to-r ${madhab.color} p-4 text-white`}>
-                                            <h4 className="text-xl font-bold font-display">{madhab.name}</h4>
-                                            <p className="text-sm opacity-90">{madhab.nameArabic}</p>
-                                        </div>
-                                        <div className="p-4">
-                                            <p className="text-sm text-gray-600 dark:text-gray-400">
-                                                {madhab.description}
-                                            </p>
-                                            <div className="flex items-center justify-end mt-4">
-                                                <m.div
-                                                    whileHover={{ x: 5 }}
-                                                    className="flex items-center gap-1 text-emerald-600 dark:text-emerald-400 text-sm"
-                                                >
-                                                    Voir <ChevronRight className="h-4 w-4" />
-                                                </m.div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </Link>
-                            </m.div>
-                        ))}
-                    </div>
-                </m.section>
+                <RelatedSchools current="hanafi" />
 
                 {/* Section de citation */}
                 <m.section
