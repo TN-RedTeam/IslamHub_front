@@ -68,13 +68,13 @@ export const Savants: React.FC = () => {
   }, [savants, q, ecole, sort, domaines]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-amber-50 to-emerald-50 dark:from-gray-900 dark:to-emerald-950">
+    <div className="min-h-screen bg-ground">
       <div className="max-w-6xl mx-auto px-4 py-10">
         <header className="mb-6">
           <p className="text-xs font-semibold uppercase tracking-[0.16em] text-amber-600 dark:text-amber-400 mb-1">
             Ahlou s-Sounnah wa l-Jamā‘ah · Références
           </p>
-          <h1 className="text-4xl md:text-5xl font-bold text-emerald-800 dark:text-emerald-200 font-amiri">Annuaire des savants</h1>
+          <h1 className="text-4xl md:text-5xl font-bold text-emerald-800 dark:text-emerald-200 font-display">Annuaire des savants</h1>
           <p className="text-gray-600 dark:text-gray-400 mt-2 max-w-2xl">
             Les savants cités à travers les hadiths, les paroles et les dossiers. Chaque fiche donne le crédit et le contexte de celui dont on rapporte la parole.
           </p>
@@ -83,7 +83,7 @@ export const Savants: React.FC = () => {
         {/* Barre d'outils sticky */}
         <div
           role="search"
-          className="sticky top-0 z-10 flex flex-wrap items-center gap-3 rounded-xl border border-emerald-100 dark:border-emerald-900 bg-amber-50/80 dark:bg-gray-900/80 backdrop-blur px-3 py-3"
+          className="sticky top-0 z-10 flex flex-wrap items-center gap-3 rounded-xl border border-line bg-amber-50/80 dark:bg-gray-900/80 backdrop-blur px-3 py-3"
         >
           <div className="relative flex-1 min-w-[240px]">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-emerald-600 dark:text-emerald-400" />
@@ -93,14 +93,14 @@ export const Savants: React.FC = () => {
               onChange={(e) => setQ(e.target.value)}
               placeholder="Rechercher un savant…"
               aria-label="Rechercher un savant"
-              className="w-full pl-9 pr-3 py-2.5 rounded-lg border border-emerald-200 dark:border-emerald-800 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500"
+              className="w-full pl-9 pr-3 py-2.5 rounded-lg border border-line bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500"
             />
           </div>
           <select
             aria-label="Filtrer par école"
             value={ecole}
             onChange={(e) => setEcole(e.target.value)}
-            className="py-2.5 px-3 rounded-lg border border-emerald-200 dark:border-emerald-800 bg-white dark:bg-gray-800 text-gray-900 dark:text-white cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500"
+            className="py-2.5 px-3 rounded-lg border border-line bg-white dark:bg-gray-800 text-gray-900 dark:text-white cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500"
           >
             <option value="">Toutes les écoles</option>
             {ecoles.map((e) => <option key={e} value={e}>{e}</option>)}
@@ -109,7 +109,7 @@ export const Savants: React.FC = () => {
             aria-label="Trier"
             value={sort}
             onChange={(e) => setSort(e.target.value as 'az' | 'epoque')}
-            className="py-2.5 px-3 rounded-lg border border-emerald-200 dark:border-emerald-800 bg-white dark:bg-gray-800 text-gray-900 dark:text-white cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500"
+            className="py-2.5 px-3 rounded-lg border border-line bg-white dark:bg-gray-800 text-gray-900 dark:text-white cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500"
           >
             <option value="az">A → Z</option>
             <option value="epoque">Par époque</option>
@@ -130,7 +130,7 @@ export const Savants: React.FC = () => {
                   className={`px-3 py-1.5 rounded-full text-sm font-medium border transition-colors motion-reduce:transition-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 ${
                     on
                       ? 'bg-emerald-600 text-white border-emerald-600'
-                      : 'bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 border-emerald-200 dark:border-emerald-800 hover:border-emerald-400'
+                      : 'bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 border-line hover:border-emerald-400'
                   }`}
                 >
                   {labelDom(d)}
@@ -160,19 +160,19 @@ export const Savants: React.FC = () => {
                 <Link
                   key={s.id}
                   to={`/savants/${s.slug}`}
-                  className="group flex flex-col gap-3 rounded-2xl border border-emerald-100 dark:border-emerald-900 bg-white dark:bg-gray-800 p-5 shadow-sm hover:shadow-lg hover:border-emerald-400 dark:hover:border-emerald-600 hover:-translate-y-0.5 transition-all motion-reduce:transition-none motion-reduce:hover:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500"
+                  className="group flex flex-col gap-3 rounded-card border border-line bg-white dark:bg-gray-800 p-5 shadow-sm hover:shadow-lg hover:border-emerald-400 dark:hover:border-emerald-600 hover:-translate-y-0.5 transition-all motion-reduce:transition-none motion-reduce:hover:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500"
                 >
                   <div className="flex items-start gap-3.5">
                     <span
                       aria-hidden="true"
-                      className="shrink-0 w-[52px] h-[52px] rounded-full grid place-items-center font-amiri text-2xl font-bold text-white bg-gradient-to-br from-emerald-600 to-emerald-800 ring-2 ring-inset ring-amber-400/40"
+                      className="shrink-0 w-[52px] h-[52px] rounded-full grid place-items-center font-display text-2xl font-bold text-white bg-green ring-2 ring-inset ring-amber-400/40"
                     >
                       {mono}
                     </span>
                     <span className="min-w-0">
-                      <span className="block font-amiri text-xl font-bold leading-tight text-emerald-800 dark:text-emerald-200 group-hover:text-emerald-700 dark:group-hover:text-emerald-100">{s.nom}</span>
+                      <span className="block font-display text-xl font-bold leading-tight text-emerald-800 dark:text-emerald-200 group-hover:text-emerald-700 dark:group-hover:text-emerald-100">{s.nom}</span>
                       {s.nom_arabe && (
-                        <span dir="rtl" className="block font-amiri text-base text-gray-500 dark:text-gray-400 [unicode-bidi:plaintext]">{s.nom_arabe}</span>
+                        <span dir="rtl" className="block font-display text-base text-gray-500 dark:text-gray-400 [unicode-bidi:plaintext]">{s.nom_arabe}</span>
                       )}
                     </span>
                   </div>

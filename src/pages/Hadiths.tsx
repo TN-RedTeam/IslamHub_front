@@ -24,7 +24,7 @@ const HadithCard: React.FC<{ hadith: Hadith; onClick: () => void }> = ({ hadith,
     <m.div
         whileHover={{ scale: 1.01 }}
         onClick={onClick}
-        className="relative bg-gradient-to-br from-amber-50 to-emerald-50 dark:from-emerald-900 dark:to-amber-900 rounded-2xl p-6 shadow-xl border border-amber-200 dark:border-emerald-800 space-y-4 overflow-hidden cursor-pointer h-full flex flex-col"
+        className="relative bg-ivory rounded-card p-6 shadow-card border border-line space-y-4 overflow-hidden cursor-pointer h-full flex flex-col"
     >
       <div className="absolute top-0 right-0 w-24 h-24 opacity-20">
         <svg viewBox="0 0 100 100" className="text-amber-500 dark:text-emerald-400">
@@ -35,7 +35,7 @@ const HadithCard: React.FC<{ hadith: Hadith; onClick: () => void }> = ({ hadith,
       {hadith.sujet && (
           <div className="flex items-center">
             <Star className="h-5 w-5 text-amber-500 dark:text-amber-300 mr-2" />
-            <h3 className="text-xl font-bold text-amber-800 dark:text-amber-200 font-amiri">
+            <h3 className="text-xl font-bold text-amber-800 dark:text-amber-200 font-display">
               {hadith.sujet}
             </h3>
           </div>
@@ -47,7 +47,7 @@ const HadithCard: React.FC<{ hadith: Hadith; onClick: () => void }> = ({ hadith,
           </div>
       )}
 
-      <div className="bg-white dark:bg-gray-800/80 p-4 rounded-lg border border-amber-100 dark:border-emerald-800 flex-grow">
+      <div className="bg-white dark:bg-gray-800/80 p-4 rounded-lg border border-line flex-grow">
         <p className="text-2xl text-gray-900 dark:text-white font-arabic leading-loose text-right line-clamp-3 whitespace-pre-wrap">
           {hadith.texte_arabe}
         </p>
@@ -94,7 +94,7 @@ const HadithModal: React.FC<{ hadith: Hadith; onClose: () => void }> = ({ hadith
           animate={{ scale: 1, y: 0 }}
           exit={{ scale: 0.9, y: 50 }}
           onClick={(e) => e.stopPropagation()}
-          className="bg-white dark:bg-gray-800 rounded-2xl p-8 max-w-4xl w-full max-h-[90vh] overflow-y-auto relative"
+          className="bg-white dark:bg-gray-800 rounded-card p-8 max-w-4xl w-full max-h-[90vh] overflow-y-auto relative"
       >
         <button
             onClick={onClose}
@@ -107,7 +107,7 @@ const HadithModal: React.FC<{ hadith: Hadith; onClose: () => void }> = ({ hadith
         <div className="space-y-6">
           <div className="flex items-center justify-between">
             <div>
-              <h2 className="text-2xl font-bold text-amber-800 dark:text-amber-200 font-amiri">
+              <h2 className="text-2xl font-bold text-amber-800 dark:text-amber-200 font-display">
                 {hadith.sujet}
               </h2>
               {hadith.rapporteur && (
@@ -290,8 +290,8 @@ export const Hadiths: React.FC = () => {
 
   if (error) {
     return (
-        <div className="min-h-screen bg-gradient-to-b from-amber-50 to-emerald-50 dark:from-gray-900 dark:to-emerald-950 flex items-center justify-center">
-          <div className="text-center max-w-md mx-auto p-8 bg-white dark:bg-gray-800 rounded-2xl shadow-xl">
+        <div className="min-h-screen bg-ground flex items-center justify-center">
+          <div className="text-center max-w-md mx-auto p-8 bg-white dark:bg-gray-800 rounded-card shadow-card">
             <div className="text-6xl mb-4">😔</div>
             <h3 className="text-xl font-bold text-red-600 dark:text-red-400 mb-2">Une erreur est survenue</h3>
             <p className="text-gray-600 dark:text-gray-400 mb-6">{error}</p>
@@ -306,7 +306,7 @@ export const Hadiths: React.FC = () => {
   }
 
   return (
-      <div className="min-h-screen bg-gradient-to-b from-amber-50 to-emerald-50 dark:from-gray-900 dark:to-emerald-950">
+      <div className="min-h-screen bg-ground">
         <m.header
             initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }}
             className="relative py-20 bg-emerald-800 dark:bg-emerald-950 overflow-hidden">
@@ -314,7 +314,7 @@ export const Hadiths: React.FC = () => {
           <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-amber-50 dark:from-gray-900" />
           <div className="relative container mx-auto px-4 text-center">
             <m.h1 initial={{ scale: 0.9 }} animate={{ scale: 1 }}
-                className="text-5xl md:text-6xl font-bold text-white mb-6 font-amiri">
+                className="text-5xl md:text-6xl font-bold text-white mb-6 font-display">
               Hadiths du Prophète ﷺ
             </m.h1>
             <p className="text-xl text-emerald-200 max-w-3xl mx-auto">Explorez les Hadiths à travers cette page</p>
@@ -324,7 +324,7 @@ export const Hadiths: React.FC = () => {
         <main className="container mx-auto px-4 py-12 -mt-12 relative z-10">
           <m.section
               initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }}
-              className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-6 mb-12 border border-emerald-100 dark:border-emerald-900">
+              className="bg-white dark:bg-gray-800 rounded-card shadow-card p-6 mb-12 border border-line">
             <div className="flex flex-col md:flex-row gap-6">
               <div className="flex-1 relative">
                 <div className="absolute left-3 top-1/2 transform -translate-y-1/2">
@@ -332,7 +332,7 @@ export const Hadiths: React.FC = () => {
                 </div>
                 <input
                     type="text" aria-label="Rechercher un hadith" placeholder="Rechercher un hadith..."
-                    className="w-full pl-12 pr-6 py-3 rounded-xl border border-emerald-200 dark:border-emerald-800 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-transparent text-lg font-amiri"
+                    className="w-full pl-12 pr-6 py-3 rounded-xl border border-line bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-transparent text-lg font-display"
                     value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
                 {isLoading && (
                     <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
@@ -403,9 +403,9 @@ export const Hadiths: React.FC = () => {
 
           <section className="pb-16">
             {!hasQuery && !showAll ? (
-              <div className="text-center py-20 bg-white/70 dark:bg-gray-800/70 rounded-2xl border border-emerald-100 dark:border-emerald-900">
+              <div className="text-center py-20 bg-white/70 dark:bg-gray-800/70 rounded-card border border-line">
                 <div className="text-6xl mb-4">🔍</div>
-                <h3 className="text-xl font-bold text-gray-700 dark:text-gray-300 mb-2 font-amiri">Recherchez un hadith</h3>
+                <h3 className="text-xl font-bold text-gray-700 dark:text-gray-300 mb-2 font-display">Recherchez un hadith</h3>
                 <p className="text-gray-500 dark:text-gray-400 max-w-md mx-auto mb-6">
                   Saisissez un mot-clé (cherche aussi dans les tags et l'arabe) ou choisissez un filtre (sujet, authenticité, rapporteur, narrateur) — ou affichez tout.
                 </p>
@@ -428,11 +428,11 @@ export const Hadiths: React.FC = () => {
             ) : isLoading ? (
               <div className="flex flex-col items-center py-16 gap-4">
                 <Loader className="h-12 w-12 text-emerald-600 dark:text-emerald-400 animate-spin" />
-                <p className="text-emerald-700 dark:text-emerald-300 font-amiri text-xl">Recherche en cours...</p>
+                <p className="text-emerald-700 dark:text-emerald-300 font-display text-xl">Recherche en cours...</p>
               </div>
             ) : hadiths.length === 0 ? (
               <m.div key="no-results" initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-                  className="text-center py-16 bg-white dark:bg-gray-800 rounded-2xl shadow-xl">
+                  className="text-center py-16 bg-white dark:bg-gray-800 rounded-card shadow-card">
                 <div className="max-w-md mx-auto">
                   <div className="text-6xl mb-4">📖</div>
                   <h3 className="text-xl font-bold text-gray-700 dark:text-gray-300 mb-2">Aucun résultat trouvé</h3>
@@ -475,7 +475,7 @@ export const Hadiths: React.FC = () => {
 
         <footer className="bg-emerald-900 dark:bg-emerald-950 text-white py-12">
           <div className="container mx-auto px-4 text-center">
-            <p className="text-emerald-300 mb-4 font-amiri text-xl">"On n'obéit pas à une créature pour désobéir au Créateur"</p>
+            <p className="text-emerald-300 mb-4 font-display text-xl">"On n'obéit pas à une créature pour désobéir au Créateur"</p>
             <p className="text-emerald-200">© {new Date().getFullYear()} Collection de Hadiths</p>
           </div>
         </footer>

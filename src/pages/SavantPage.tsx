@@ -30,7 +30,7 @@ export const SavantPage: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-amber-50 to-emerald-50 dark:from-gray-900 dark:to-emerald-950 flex items-center justify-center">
+      <div className="min-h-screen bg-ground flex items-center justify-center">
         <Loader2 className="h-10 w-10 text-emerald-600 dark:text-emerald-400 animate-spin" />
       </div>
     );
@@ -38,10 +38,10 @@ export const SavantPage: React.FC = () => {
 
   if (notFound || !data) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-amber-50 to-emerald-50 dark:from-gray-900 dark:to-emerald-950 flex items-center justify-center">
-        <div className="text-center max-w-md mx-auto p-8 bg-white dark:bg-gray-800 rounded-2xl shadow-xl">
+      <div className="min-h-screen bg-ground flex items-center justify-center">
+        <div className="text-center max-w-md mx-auto p-8 bg-white dark:bg-gray-800 rounded-card shadow-card">
           <div className="text-6xl mb-4">🧕</div>
-          <h1 className="text-xl font-bold text-gray-700 dark:text-gray-300 mb-2 font-amiri">Savant introuvable</h1>
+          <h1 className="text-xl font-bold text-gray-700 dark:text-gray-300 mb-2 font-display">Savant introuvable</h1>
           <Link to="/savants" className="px-6 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg transition-colors inline-block mt-2">Tous les savants</Link>
         </div>
       </div>
@@ -51,7 +51,7 @@ export const SavantPage: React.FC = () => {
   const { savant, paroles, hadiths_juges } = data;
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-amber-50 to-emerald-50 dark:from-gray-900 dark:to-emerald-950">
+    <div className="min-h-screen bg-ground">
       <m.header
         initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }}
         className="relative py-16 bg-emerald-800 dark:bg-emerald-950 overflow-hidden">
@@ -61,9 +61,9 @@ export const SavantPage: React.FC = () => {
           <Link to="/savants" className="inline-flex items-center gap-1.5 text-emerald-200 hover:text-white text-sm mb-4">
             <ArrowLeft className="h-4 w-4" /> Tous les savants
           </Link>
-          <h1 className="text-4xl md:text-5xl font-bold text-white font-amiri">{savant.nom}</h1>
+          <h1 className="text-4xl md:text-5xl font-bold text-white font-display">{savant.nom}</h1>
           {savant.nom_arabe && (
-            <p dir="rtl" className="font-amiri text-2xl text-emerald-100 mt-1 [unicode-bidi:plaintext]">{savant.nom_arabe}</p>
+            <p dir="rtl" className="font-display text-2xl text-emerald-100 mt-1 [unicode-bidi:plaintext]">{savant.nom_arabe}</p>
           )}
           <div className="flex items-center gap-3 flex-wrap mt-2">
             {[savant.naissance, savant.deces].filter(Boolean).length > 0 && (
@@ -78,7 +78,7 @@ export const SavantPage: React.FC = () => {
 
       <main className="container mx-auto px-4 py-10 -mt-10 relative z-10 max-w-4xl space-y-8">
         {savant.biographie && (
-          <section className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow border border-emerald-100 dark:border-emerald-900">
+          <section className="bg-white dark:bg-gray-800 rounded-card p-6 shadow border border-line">
             <Markdown>{savant.biographie}</Markdown>
           </section>
         )}
@@ -90,8 +90,8 @@ export const SavantPage: React.FC = () => {
             </h2>
             <div className="space-y-4">
               {paroles.map((p) => (
-                <article key={p.id} className="bg-white dark:bg-gray-800 rounded-2xl p-5 shadow border border-amber-100 dark:border-emerald-900">
-                  {p.sujet && <h3 className="font-bold text-amber-800 dark:text-amber-200 font-amiri mb-2">{p.sujet}</h3>}
+                <article key={p.id} className="bg-white dark:bg-gray-800 rounded-card p-5 shadow border border-amber-100 dark:border-emerald-900">
+                  {p.sujet && <h3 className="font-bold text-amber-800 dark:text-amber-200 font-display mb-2">{p.sujet}</h3>}
                   {p.texte_arabe && (
                     <p className="text-2xl leading-loose text-right font-arabic text-gray-900 dark:text-white whitespace-pre-wrap mb-3">{p.texte_arabe}</p>
                   )}
@@ -117,7 +117,7 @@ export const SavantPage: React.FC = () => {
             <ul className="space-y-2">
               {hadiths_juges.map((h) => (
                 <li key={h.id} className="bg-white dark:bg-gray-800 rounded-xl px-4 py-3 shadow-sm border border-amber-100 dark:border-emerald-900 flex items-center justify-between gap-3">
-                  <span className="text-gray-800 dark:text-gray-200 font-amiri">{h.sujet}</span>
+                  <span className="text-gray-800 dark:text-gray-200 font-display">{h.sujet}</span>
                   {h.degre_authenticite && (
                     <span className="text-xs px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-800 text-emerald-800 dark:text-emerald-200 shrink-0">{h.degre_authenticite}</span>
                   )}

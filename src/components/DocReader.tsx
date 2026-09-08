@@ -71,9 +71,9 @@ export const DocReader: React.FC<{
   return (
     <div className="grid gap-6 lg:grid-cols-[280px_minmax(0,1fr)] items-start max-w-6xl mx-auto">
       {/* ---------- Sommaire ---------- */}
-      <aside className="lg:sticky lg:top-24 bg-white dark:bg-gray-800 rounded-2xl border border-emerald-100 dark:border-emerald-900 shadow-sm overflow-hidden">
+      <aside className="lg:sticky lg:top-24 bg-white dark:bg-gray-800 rounded-card border border-line shadow-sm overflow-hidden">
         <div className="flex items-center justify-between px-4 pt-4 pb-2">
-          <span className="font-bold text-emerald-900 dark:text-emerald-300 font-amiri text-lg">Sommaire</span>
+          <span className="font-bold text-emerald-900 dark:text-emerald-300 font-display text-lg">Sommaire</span>
           <span className="text-xs text-gray-400 font-medium">{total} sujets</span>
         </div>
 
@@ -86,7 +86,7 @@ export const DocReader: React.FC<{
               onChange={(e) => setQuery(e.target.value)}
               placeholder={searchPlaceholder}
               aria-label="Rechercher dans le sommaire"
-              className="w-full pl-9 pr-3 py-2 rounded-lg text-sm bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+              className="w-full pl-9 pr-3 py-2 rounded-lg text-sm bg-gray-50 dark:bg-gray-900 border border-line text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
             />
           </div>
         </div>
@@ -95,7 +95,7 @@ export const DocReader: React.FC<{
         <button
           type="button"
           onClick={() => setTocOpen((v) => !v)}
-          className="lg:hidden w-full flex items-center justify-between px-4 py-2.5 text-sm font-semibold text-emerald-800 dark:text-emerald-300 border-t border-gray-100 dark:border-gray-700"
+          className="lg:hidden w-full flex items-center justify-between px-4 py-2.5 text-sm font-semibold text-emerald-800 dark:text-emerald-300 border-t border-line"
           aria-expanded={tocOpen}
         >
           <span className="flex items-center gap-2">
@@ -112,7 +112,7 @@ export const DocReader: React.FC<{
               const hasHeader = !!s.chapitre;
               const isClosed = hasHeader ? (q ? false : closed[s.chapitre as string]) : false;
               return (
-                <div key={s.chapitre ?? `sec-${si}`} className="border-t border-gray-100 dark:border-gray-700">
+                <div key={s.chapitre ?? `sec-${si}`} className="border-t border-line">
                   {hasHeader && (
                     <button
                       type="button"
@@ -156,7 +156,7 @@ export const DocReader: React.FC<{
       {/* ---------- Volet de lecture ---------- */}
       <article
         ref={readRef}
-        className="scroll-mt-24 bg-white dark:bg-gray-800 rounded-2xl border border-emerald-100 dark:border-emerald-900 shadow-sm px-5 sm:px-8 lg:px-10 py-8"
+        className="scroll-mt-24 bg-white dark:bg-gray-800 rounded-card border border-line shadow-sm px-5 sm:px-8 lg:px-10 py-8"
       >
         {current ? (
           <div className="mx-auto max-w-[72ch]">
@@ -172,7 +172,7 @@ export const DocReader: React.FC<{
               )}
               <span className="text-emerald-600 dark:text-emerald-400">{current.title}</span>
             </div>
-            <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white font-amiri leading-tight mb-6">
+            <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white font-display leading-tight mb-6">
               {current.title}
             </h2>
             <div>{current.content}</div>

@@ -63,7 +63,7 @@ export const InstallPWA: React.FC<{ className?: string }> = ({ className }) => {
       }
     >
       <Download className="w-4 h-4 shrink-0" />
-      <span className="font-amiri">Installer l'app</span>
+      <span className="font-display">Installer l'app</span>
     </button>
   );
 };

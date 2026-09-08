@@ -19,17 +19,17 @@ const CollapsibleSection: React.FC<SectionProps> = ({ title, icon, children, def
         <m.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden border border-amber-200 dark:border-emerald-800"
+            className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden border border-line"
         >
             <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="w-full px-6 py-4 flex items-center justify-between bg-gradient-to-r from-amber-50 to-emerald-50 dark:from-emerald-900/30 dark:to-amber-900/30 hover:from-amber-100 hover:to-emerald-100 dark:hover:from-emerald-900/50 dark:hover:to-amber-900/50 transition-colors"
+                className="w-full px-6 py-4 flex items-center justify-between bg-green-soft hover:from-amber-100 hover:to-emerald-100 dark:hover:from-emerald-900/50 dark:hover:to-amber-900/50 transition-colors"
             >
                 <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-amber-400 to-emerald-500 flex items-center justify-center text-white">
+                    <div className="w-10 h-10 rounded-full bg-green flex items-center justify-center text-white">
                         {icon}
                     </div>
-                    <h3 className="text-xl font-bold text-emerald-800 dark:text-emerald-200 font-amiri">
+                    <h3 className="text-xl font-bold text-emerald-800 dark:text-emerald-200 font-display">
                         {title}
                     </h3>
                 </div>
@@ -171,7 +171,7 @@ const Shafii: React.FC = () => {
     ];
 
     return (
-        <div className="min-h-screen bg-gradient-to-b from-amber-50 to-emerald-50 dark:from-gray-900 dark:to-emerald-950">
+        <div className="min-h-screen bg-ground">
             <m.header
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -185,7 +185,7 @@ const Shafii: React.FC = () => {
                         initial={{ scale: 0.9, rotate: -10 }}
                         animate={{ scale: 1, rotate: 0 }}
                         transition={{ type: "spring", stiffness: 200 }}
-                        className="inline-flex items-center justify-center w-24 h-24 rounded-full bg-white/10 backdrop-blur-sm mb-8 shadow-2xl"
+                        className="inline-flex items-center justify-center w-24 h-24 rounded-full bg-white/10 backdrop-blur-sm mb-8 shadow-card"
                     >
                         <GraduationCap className="h-12 w-12 text-white" />
                     </m.div>
@@ -194,7 +194,7 @@ const Shafii: React.FC = () => {
                         initial={{ y: 20, opacity: 0 }}
                         animate={{ y: 0, opacity: 1 }}
                         transition={{ delay: 0.1 }}
-                        className="text-5xl md:text-7xl font-bold text-white mb-6 font-amiri"
+                        className="text-5xl md:text-7xl font-bold text-white mb-6 font-display"
                     >
                         École Shafi'ite
                     </m.h1>
@@ -212,7 +212,7 @@ const Shafii: React.FC = () => {
                         initial={{ y: 20, opacity: 0 }}
                         animate={{ y: 0, opacity: 1 }}
                         transition={{ delay: 0.3 }}
-                        className="text-emerald-300 max-w-2xl mx-auto font-amiri"
+                        className="text-emerald-300 max-w-2xl mx-auto font-display"
                     >
                         Fondée par l'Imam Mouhammad fils de Idris Ach-Chafi^iyy (150 H - 204 H / 767-820 EC)
                     </m.p>
@@ -234,12 +234,12 @@ const Shafii: React.FC = () => {
                             animate={{ opacity: 1, scale: 1 }}
                             transition={{ delay: 0.3 + index * 0.1 }}
                             whileHover={{ y: -5 }}
-                            className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-2xl p-6 text-center shadow-xl border border-amber-200 dark:border-emerald-800"
+                            className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-card p-6 text-center shadow-card border border-line"
                         >
-                            <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-gradient-to-br from-amber-400 to-emerald-500 mb-3">
+                            <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-green mb-3">
                                 <stat.icon className="h-6 w-6 text-white" />
                             </div>
-                            <div className="text-2xl font-bold text-amber-800 dark:text-amber-200 font-amiri">
+                            <div className="text-2xl font-bold text-amber-800 dark:text-amber-200 font-display">
                                 {stat.value}
                             </div>
                             <div className="text-sm text-gray-600 dark:text-gray-400 mt-1">
@@ -256,7 +256,7 @@ const Shafii: React.FC = () => {
                     transition={{ delay: 0.4 }}
                     className="mb-16"
                 >
-                    <h2 className="text-3xl font-bold text-emerald-900 dark:text-emerald-300 mb-6 font-amiri text-center">
+                    <h2 className="text-3xl font-bold text-emerald-900 dark:text-emerald-300 mb-6 font-display text-center">
                         L'Imam Ach-Chafi^iyy
                     </h2>
                     <div className="max-w-4xl mx-auto">
@@ -271,7 +271,7 @@ const Shafii: React.FC = () => {
                             les principes de la jurisprudence islamique (Usul al-Fiqh). Son œuvre majeure,
                             "Ar-Riçalah", est le premier ouvrage consacré à la méthodologie juridique islamique.
                         </p>
-                        <div className="h-1 w-24 mx-auto bg-gradient-to-r from-amber-400 to-emerald-500 rounded-full mt-6"></div>
+                        <div className="h-1 w-24 mx-auto bg-green rounded-full mt-6"></div>
                     </div>
                 </m.section>
 
@@ -282,7 +282,7 @@ const Shafii: React.FC = () => {
                     transition={{ delay: 0.5 }}
                     className="mb-16 space-y-6"
                 >
-                    <h2 className="text-3xl font-bold text-emerald-900 dark:text-emerald-300 mb-8 font-amiri text-center">
+                    <h2 className="text-3xl font-bold text-emerald-900 dark:text-emerald-300 mb-8 font-display text-center">
                         Biographie détaillée
                     </h2>
 
@@ -586,7 +586,7 @@ const Shafii: React.FC = () => {
                     transition={{ delay: 0.6 }}
                     className="mb-16"
                 >
-                    <h3 className="text-2xl font-bold text-emerald-900 dark:text-emerald-300 mb-8 font-amiri text-center">
+                    <h3 className="text-2xl font-bold text-emerald-900 dark:text-emerald-300 mb-8 font-display text-center">
                         Hiérarchie des Sources selon l'École Shafi'ite
                     </h3>
                     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -597,7 +597,7 @@ const Shafii: React.FC = () => {
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ delay: 0.7 + index * 0.1 }}
                                 whileHover={{ y: -5 }}
-                                className="bg-white/80 dark:bg-gray-800/80 rounded-xl p-6 shadow-lg border border-amber-200 dark:border-emerald-800"
+                                className="bg-white/80 dark:bg-gray-800/80 rounded-xl p-6 shadow-lg border border-line"
                             >
                                 <div className="w-12 h-12 rounded-full bg-amber-100 dark:bg-emerald-800 flex items-center justify-center mb-4">
                                     <source.icon className="h-6 w-6 text-amber-600 dark:text-emerald-400" />
@@ -620,10 +620,10 @@ const Shafii: React.FC = () => {
                     transition={{ delay: 0.8 }}
                     className="mb-16"
                 >
-                    <div className="bg-gradient-to-r from-emerald-50 to-amber-50 dark:from-gray-800 dark:to-emerald-900/30 rounded-2xl p-6 shadow-lg border border-amber-200 dark:border-emerald-800">
+                    <div className="bg-green-soft rounded-card p-6 shadow-lg border border-line">
                         <div className="flex flex-col md:flex-row items-center gap-6">
                             <div className="flex-1 text-center md:text-left">
-                                <h3 className="text-2xl font-bold text-emerald-900 dark:text-emerald-300 mb-3 font-amiri">
+                                <h3 className="text-2xl font-bold text-emerald-900 dark:text-emerald-300 mb-3 font-display">
                                     Ar-Riçalah et l'Usul al-Fiqh
                                 </h3>
                                 <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
@@ -650,12 +650,12 @@ const Shafii: React.FC = () => {
                     transition={{ delay: 0.85 }}
                     className="mb-16"
                 >
-                    <h3 className="text-2xl font-bold text-emerald-900 dark:text-emerald-300 mb-8 font-amiri text-center">
+                    <h3 className="text-2xl font-bold text-emerald-900 dark:text-emerald-300 mb-8 font-display text-center">
                         Particularités de l'École Shafi'ite
                     </h3>
                     <div className="grid md:grid-cols-3 gap-6">
-                        <div className="bg-gradient-to-br from-amber-50 to-emerald-50 dark:from-gray-800 dark:to-emerald-900/50 rounded-xl p-6 shadow-lg border border-amber-200 dark:border-emerald-800">
-                            <h4 className="text-xl font-bold text-emerald-800 dark:text-emerald-300 mb-3 font-amiri">
+                        <div className="bg-ivory rounded-xl p-6 shadow-lg border border-line">
+                            <h4 className="text-xl font-bold text-emerald-800 dark:text-emerald-300 mb-3 font-display">
                                 Équilibre Méthodologique
                             </h4>
                             <p className="text-gray-700 dark:text-gray-300">
@@ -663,8 +663,8 @@ const Shafii: React.FC = () => {
                                 de l'école hanbalite et l'utilisation extensive du raisonnement de l'école hanafite.
                             </p>
                         </div>
-                        <div className="bg-gradient-to-br from-amber-50 to-emerald-50 dark:from-gray-800 dark:to-emerald-900/50 rounded-xl p-6 shadow-lg border border-amber-200 dark:border-emerald-800">
-                            <h4 className="text-xl font-bold text-emerald-800 dark:text-emerald-300 mb-3 font-amiri">
+                        <div className="bg-ivory rounded-xl p-6 shadow-lg border border-line">
+                            <h4 className="text-xl font-bold text-emerald-800 dark:text-emerald-300 mb-3 font-display">
                                 Rejet de l'Istihsan
                             </h4>
                             <p className="text-gray-700 dark:text-gray-300">
@@ -672,8 +672,8 @@ const Shafii: React.FC = () => {
                                 juridique) comme source de loi, privilégiant le qiyas strict.
                             </p>
                         </div>
-                        <div className="bg-gradient-to-br from-amber-50 to-emerald-50 dark:from-gray-800 dark:to-emerald-900/50 rounded-xl p-6 shadow-lg border border-amber-200 dark:border-emerald-800">
-                            <h4 className="text-xl font-bold text-emerald-800 dark:text-emerald-300 mb-3 font-amiri">
+                        <div className="bg-ivory rounded-xl p-6 shadow-lg border border-line">
+                            <h4 className="text-xl font-bold text-emerald-800 dark:text-emerald-300 mb-3 font-display">
                                 Rayonnement Mondial
                             </h4>
                             <p className="text-gray-700 dark:text-gray-300">
@@ -694,7 +694,7 @@ const Shafii: React.FC = () => {
                     transition={{ delay: 0.9 }}
                     className="mt-16"
                 >
-                    <h3 className="text-2xl font-bold text-emerald-900 dark:text-emerald-300 mb-6 font-amiri text-center">
+                    <h3 className="text-2xl font-bold text-emerald-900 dark:text-emerald-300 mb-6 font-display text-center">
                         Découvrir les Autres Écoles
                     </h3>
                     <div className="grid md:grid-cols-3 gap-6">
@@ -708,9 +708,9 @@ const Shafii: React.FC = () => {
                                 className="group"
                             >
                                 <Link to={madhab.path} className="block h-full">
-                                    <div className="relative h-full bg-gradient-to-br from-white to-amber-50 dark:from-gray-800 dark:to-emerald-900/50 rounded-xl shadow-lg overflow-hidden border border-amber-200 dark:border-emerald-800 transition-all duration-300 hover:shadow-xl">
+                                    <div className="relative h-full bg-ivory rounded-xl shadow-lg overflow-hidden border border-line transition-all duration-300 hover:shadow-card">
                                         <div className={`bg-gradient-to-r ${madhab.color} p-4 text-white`}>
-                                            <h4 className="text-xl font-bold font-amiri">{madhab.name}</h4>
+                                            <h4 className="text-xl font-bold font-display">{madhab.name}</h4>
                                             <p className="text-sm opacity-90">{madhab.nameArabic}</p>
                                         </div>
                                         <div className="p-4">
@@ -738,11 +738,11 @@ const Shafii: React.FC = () => {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: 1.1 }}
-                    className="mt-16 bg-gradient-to-r from-amber-100 to-emerald-100 dark:from-emerald-900/30 dark:to-amber-900/30 rounded-2xl p-8 text-center shadow-lg"
+                    className="mt-16 bg-green-soft rounded-card p-8 text-center shadow-lg"
                 >
                     <div className="max-w-2xl mx-auto">
                         <div className="text-5xl mb-4 text-amber-600 dark:text-amber-400">"</div>
-                        <p className="text-xl text-gray-800 dark:text-gray-200 font-amiri leading-relaxed mb-4">
+                        <p className="text-xl text-gray-800 dark:text-gray-200 font-display leading-relaxed mb-4">
                             La science est ce qui profite, non ce qui est mémorisé.
                         </p>
                         <p className="text-sm text-emerald-700 dark:text-emerald-400">
@@ -754,7 +754,7 @@ const Shafii: React.FC = () => {
 
             <footer className="bg-emerald-900 dark:bg-emerald-950 text-white py-12 mt-16">
                 <div className="container mx-auto px-4 text-center">
-                    <p className="text-emerald-300 mb-4 font-amiri text-xl">
+                    <p className="text-emerald-300 mb-4 font-display text-xl">
                         "Ceux parmi Ses serviteurs qui craignent Dieu sont les savants."
                     </p>
                     <p className="text-emerald-200 text-sm">

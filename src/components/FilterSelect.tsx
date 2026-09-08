@@ -36,7 +36,7 @@ export const FilterSelect: React.FC<FilterSelectProps> = ({
     </div>
     <select
       aria-label={ariaLabel ?? allLabel}
-      className="w-full pl-4 pr-10 py-3 rounded-xl border border-emerald-200 dark:border-emerald-800 bg-white dark:bg-gray-800 text-gray-900 dark:text-white appearance-none font-medium cursor-pointer"
+      className="w-full pl-4 pr-10 py-3 rounded-xl border border-line bg-white dark:bg-gray-800 text-gray-900 dark:text-white appearance-none font-medium cursor-pointer"
       value={value}
       onChange={(e) => onChange(e.target.value)}
     >

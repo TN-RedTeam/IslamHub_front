@@ -8,16 +8,16 @@ export const NotFound: React.FC = () => {
   usePageTitle('Page introuvable');
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-amber-50 to-emerald-50 dark:from-gray-900 dark:to-emerald-950 flex items-center justify-center px-4">
+    <div className="min-h-screen bg-ground flex items-center justify-center px-4">
       <m.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         className="text-center max-w-lg"
       >
-        <p className="text-7xl mb-8 font-amiri bg-gradient-to-r from-emerald-600 to-amber-500 dark:from-emerald-400 dark:to-amber-400 bg-clip-text text-transparent font-bold">
+        <p className="text-7xl mb-8 font-display bg-green bg-clip-text text-transparent font-bold">
           404
         </p>
-        <h1 className="text-2xl font-bold text-emerald-900 dark:text-emerald-300 mb-3 font-amiri">
+        <h1 className="text-2xl font-bold text-emerald-900 dark:text-emerald-300 mb-3 font-display">
           Cette page n'existe pas
         </h1>
         <p className="text-gray-600 dark:text-gray-400 mb-8">

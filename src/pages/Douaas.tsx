@@ -39,7 +39,7 @@ const DouaaCard: React.FC<{ douaa: Douaa; onClick: () => void; onTagClick?: (tag
         <m.div
             whileHover={{ scale: 1.01 }}
             onClick={onClick}
-            className="relative bg-gradient-to-br from-amber-50 to-emerald-50 dark:from-emerald-900 dark:to-amber-900 rounded-2xl p-6 shadow-xl border border-amber-200 dark:border-emerald-800 space-y-4 overflow-hidden cursor-pointer h-full flex flex-col transition-all duration-300 hover:shadow-2xl"
+            className="relative bg-ivory rounded-card p-6 shadow-card border border-line space-y-4 overflow-hidden cursor-pointer h-full flex flex-col transition-all duration-300 hover:shadow-card"
         >
             <div className="absolute top-0 right-0 w-24 h-24 opacity-20">
                 <svg viewBox="0 0 100 100" className="text-amber-500 dark:text-emerald-400">
@@ -49,10 +49,10 @@ const DouaaCard: React.FC<{ douaa: Douaa; onClick: () => void; onTagClick?: (tag
             {douaa.sujet && (
                 <div className="flex items-center">
                     <Star className="h-5 w-5 text-amber-500 dark:text-amber-300 mr-2" />
-                    <h3 className="text-xl font-bold text-amber-800 dark:text-amber-200 font-amiri">{douaa.sujet}</h3>
+                    <h3 className="text-xl font-bold text-amber-800 dark:text-amber-200 font-display">{douaa.sujet}</h3>
                 </div>
             )}
-            <div className="bg-white dark:bg-gray-800/80 p-4 rounded-lg border border-amber-100 dark:border-emerald-800 flex-grow">
+            <div className="bg-white dark:bg-gray-800/80 p-4 rounded-lg border border-line flex-grow">
                 <p className="text-2xl text-gray-900 dark:text-white font-arabic leading-loose text-right line-clamp-3 whitespace-pre-wrap">{douaa.texte_arabe}</p>
                 {douaa.texte_francais && (
                     <div className="mt-4 pl-4 border-l-4 border-amber-300 dark:border-emerald-600 line-clamp-2">
@@ -89,12 +89,12 @@ const DouaaModal: React.FC<{ douaa: Douaa; onClose: () => void; onTagClick?: (ta
                     className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4" onClick={onClose}>
             <m.div initial={{ scale: 0.9, y: 50 }} animate={{ scale: 1, y: 0 }} exit={{ scale: 0.9, y: 50 }}
                         onClick={(e) => e.stopPropagation()}
-                        className="bg-white dark:bg-gray-800 rounded-2xl p-8 max-w-4xl w-full max-h-[90vh] overflow-y-auto relative">
+                        className="bg-white dark:bg-gray-800 rounded-card p-8 max-w-4xl w-full max-h-[90vh] overflow-y-auto relative">
                 <button onClick={onClose} aria-label="Fermer" className="absolute top-4 right-4 p-2 text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
                     <X className="h-6 w-6" />
                 </button>
                 <div className="space-y-6">
-                    <h2 className="text-2xl font-bold text-amber-800 dark:text-amber-200 font-amiri">{douaa.sujet}</h2>
+                    <h2 className="text-2xl font-bold text-amber-800 dark:text-amber-200 font-display">{douaa.sujet}</h2>
                     <div className="bg-amber-50 dark:bg-gray-700 p-6 rounded-lg">
                         <p className="text-3xl text-gray-900 dark:text-white font-arabic leading-loose text-right whitespace-pre-wrap">{douaa.texte_arabe}</p>
                         {douaa.phonétique && (
@@ -209,7 +209,7 @@ export const Douaas: React.FC = () => {
     const handleResetFilters = () => { setSearchTerm(''); setSelectedTag(null); };
 
     return (
-        <div className="min-h-screen bg-gradient-to-b from-amber-50 to-emerald-50 dark:from-gray-900 dark:to-emerald-950">
+        <div className="min-h-screen bg-ground">
             <m.header initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }}
                            className="relative py-20 bg-emerald-800 dark:bg-emerald-950 overflow-hidden">
                 <div className="absolute inset-0 opacity-20 bg-arabesque" />
@@ -220,7 +220,7 @@ export const Douaas: React.FC = () => {
                         <Heart className="h-10 w-10 text-white" />
                     </m.div>
                     <m.h1 initial={{ scale: 0.9 }} animate={{ scale: 1 }}
-                               className="text-5xl md:text-6xl font-bold text-white mb-6 font-amiri">
+                               className="text-5xl md:text-6xl font-bold text-white mb-6 font-display">
                         Les Invocations
                     </m.h1>
                     <p className="text-xl text-emerald-200 max-w-3xl mx-auto">
@@ -239,7 +239,7 @@ export const Douaas: React.FC = () => {
                 {/* Tag cloud — après recherche */}
                 {hasSearched && tagCounts.size > 0 && (
                     <m.section initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
-                        <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-amber-200 dark:border-emerald-800">
+                        <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-card p-6 shadow-lg border border-line">
                             <div className="flex items-center gap-2 mb-4">
                                 <Tags className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
                                 <h3 className="text-lg font-semibold text-emerald-900 dark:text-emerald-300">
@@ -264,7 +264,7 @@ export const Douaas: React.FC = () => {
 
                 {/* Barre de recherche */}
                 <m.section initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-                                className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-6 mb-12 border border-emerald-100 dark:border-emerald-900">
+                                className="bg-white dark:bg-gray-800 rounded-card shadow-card p-6 mb-12 border border-line">
                     <div className="flex flex-col md:flex-row gap-6">
                         <div className="flex-1 relative">
                             <div className="absolute left-3 top-1/2 transform -translate-y-1/2">
@@ -272,7 +272,7 @@ export const Douaas: React.FC = () => {
                             </div>
                             <input type="text" aria-label="Rechercher une invocation"
                                    placeholder="Rechercher par texte arabe, français, phonétique, mot-clé..."
-                                   className="w-full pl-12 pr-6 py-3 rounded-xl border border-emerald-200 dark:border-emerald-800 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-transparent text-lg font-amiri"
+                                   className="w-full pl-12 pr-6 py-3 rounded-xl border border-line bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-transparent text-lg font-display"
                                    value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
                         </div>
                         <FilterSelect
@@ -287,7 +287,7 @@ export const Douaas: React.FC = () => {
 
                     {(selectedTag || searchTerm) && (
                         <m.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-                                    className="mt-4 flex items-center justify-between bg-gradient-to-r from-emerald-50 to-amber-50 dark:from-emerald-900/30 dark:to-amber-900/30 rounded-lg px-4 py-2">
+                                    className="mt-4 flex items-center justify-between bg-green-soft rounded-lg px-4 py-2">
                             <div className="flex items-center gap-2 flex-wrap">
                                 <span className="font-medium text-emerald-800 dark:text-emerald-200">Filtre actif :</span>
                                 {selectedTag && (
@@ -313,10 +313,10 @@ export const Douaas: React.FC = () => {
                     {isLoading ? (
                         <div className="flex flex-col items-center py-16 gap-4">
                             <Loader className="h-12 w-12 text-emerald-600 dark:text-emerald-400 animate-spin" />
-                            <p className="text-emerald-700 dark:text-emerald-300 font-amiri text-xl">Recherche en cours...</p>
+                            <p className="text-emerald-700 dark:text-emerald-300 font-display text-xl">Recherche en cours...</p>
                         </div>
                     ) : error ? (
-                        <div className="text-center py-16 bg-white dark:bg-gray-800 rounded-2xl shadow-xl">
+                        <div className="text-center py-16 bg-white dark:bg-gray-800 rounded-card shadow-card">
                             <div className="text-6xl mb-4">😔</div>
                             <p className="text-red-600 dark:text-red-400 mb-4">{error}</p>
                             <button onClick={() => doSearch(searchTerm, selectedTag)} className="px-6 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg">Réessayer</button>
@@ -326,7 +326,7 @@ export const Douaas: React.FC = () => {
                             <div className="max-w-lg mx-auto">
                                 <m.div animate={{ y: [0, -10, 0] }} transition={{ repeat: Infinity, duration: 4, ease: 'easeInOut' }}
                                             className="text-9xl mb-8 select-none">🤲</m.div>
-                                <h3 className="text-3xl font-bold text-emerald-800 dark:text-emerald-200 mb-4 font-amiri">
+                                <h3 className="text-3xl font-bold text-emerald-800 dark:text-emerald-200 mb-4 font-display">
                                     Recherchez parmi les invocations
                                 </h3>
                                 <p className="text-gray-600 dark:text-gray-400 mb-6 leading-relaxed text-lg">
@@ -360,7 +360,7 @@ export const Douaas: React.FC = () => {
                         </m.div>
                     ) : douaas.length === 0 ? (
                         <m.div key="no-results" initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-                                    className="text-center py-16 bg-white dark:bg-gray-800 rounded-2xl shadow-xl">
+                                    className="text-center py-16 bg-white dark:bg-gray-800 rounded-card shadow-card">
                             <div className="max-w-md mx-auto">
                                 <div className="text-6xl mb-4">📖</div>
                                 <h3 className="text-xl font-bold text-gray-700 dark:text-gray-300 mb-2">Aucun résultat trouvé</h3>
@@ -393,7 +393,7 @@ export const Douaas: React.FC = () => {
 
             <footer className="bg-emerald-900 dark:bg-emerald-950 text-white py-12">
                 <div className="container mx-auto px-4 text-center">
-                    <p className="text-emerald-300 mb-4 font-amiri text-xl">"On n'obéit pas à une créature pour désobéir au Créateur"</p>
+                    <p className="text-emerald-300 mb-4 font-display text-xl">"On n'obéit pas à une créature pour désobéir au Créateur"</p>
                     <p className="text-emerald-200">© 2023 Collection d'invocations</p>
                 </div>
             </footer>

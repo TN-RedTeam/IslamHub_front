@@ -111,7 +111,7 @@ export const DossierThematique: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-amber-50 to-emerald-50 dark:from-gray-900 dark:to-emerald-950 flex items-center justify-center">
+      <div className="min-h-screen bg-ground flex items-center justify-center">
         <Loader className="h-12 w-12 text-emerald-600 dark:text-emerald-400 animate-spin" />
       </div>
     );
@@ -119,10 +119,10 @@ export const DossierThematique: React.FC = () => {
 
   if (error || !data) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-amber-50 to-emerald-50 dark:from-gray-900 dark:to-emerald-950 flex items-center justify-center">
-        <div className="text-center max-w-md mx-auto p-8 bg-white dark:bg-gray-800 rounded-2xl shadow-xl">
+      <div className="min-h-screen bg-ground flex items-center justify-center">
+        <div className="text-center max-w-md mx-auto p-8 bg-white dark:bg-gray-800 rounded-card shadow-card">
           <div className="text-6xl mb-4">📁</div>
-          <h1 className="text-xl font-bold text-gray-700 dark:text-gray-300 mb-2 font-amiri">Dossier introuvable</h1>
+          <h1 className="text-xl font-bold text-gray-700 dark:text-gray-300 mb-2 font-display">Dossier introuvable</h1>
           <p className="text-gray-500 dark:text-gray-400 mb-6">{error || "Ce dossier n'existe pas ou n'est pas encore publié."}</p>
           <Link to="/" className="px-6 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg transition-colors">Accueil</Link>
         </div>
@@ -133,7 +133,7 @@ export const DossierThematique: React.FC = () => {
   const { dossier, preuves, images, lies } = data;
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-amber-50 to-emerald-50 dark:from-gray-900 dark:to-emerald-950">
+    <div className="min-h-screen bg-ground">
       <m.header
         initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }}
         className="relative py-16 bg-emerald-800 dark:bg-emerald-950 overflow-hidden">
@@ -143,27 +143,27 @@ export const DossierThematique: React.FC = () => {
           <Link to="/" className="inline-flex items-center gap-1.5 text-emerald-200 hover:text-white text-sm mb-4">
             <ArrowLeft className="h-4 w-4" /> Accueil
           </Link>
-          <h1 className="text-4xl md:text-5xl font-bold text-white font-amiri">{dossier.h1}</h1>
+          <h1 className="text-4xl md:text-5xl font-bold text-white font-display">{dossier.h1}</h1>
         </div>
       </m.header>
 
       <main className="container mx-auto px-4 py-10 -mt-10 relative z-10 max-w-4xl space-y-8">
         {/* Actions */}
         <div className="flex flex-wrap gap-3">
-          <button onClick={copyDebate} className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white dark:bg-gray-800 border border-emerald-200 dark:border-emerald-800 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-50 dark:hover:bg-emerald-900/40 transition-colors">
+          <button onClick={copyDebate} className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white dark:bg-gray-800 border border-line text-emerald-700 dark:text-emerald-300 hover:bg-emerald-50 dark:hover:bg-emerald-900/40 transition-colors">
             {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />} Copier (format débat)
           </button>
-          <button onClick={share} className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white dark:bg-gray-800 border border-emerald-200 dark:border-emerald-800 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-50 dark:hover:bg-emerald-900/40 transition-colors">
+          <button onClick={share} className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white dark:bg-gray-800 border border-line text-emerald-700 dark:text-emerald-300 hover:bg-emerald-50 dark:hover:bg-emerald-900/40 transition-colors">
             <Share2 className="h-4 w-4" /> Partager
           </button>
-          <button onClick={toggleFav} aria-pressed={isFav} className={`inline-flex items-center gap-2 px-4 py-2 rounded-xl border transition-colors ${isFav ? 'bg-amber-500 border-amber-500 text-white' : 'bg-white dark:bg-gray-800 border-emerald-200 dark:border-emerald-800 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-50 dark:hover:bg-emerald-900/40'}`}>
+          <button onClick={toggleFav} aria-pressed={isFav} className={`inline-flex items-center gap-2 px-4 py-2 rounded-xl border transition-colors ${isFav ? 'bg-amber-500 border-amber-500 text-white' : 'bg-white dark:bg-gray-800 border-line text-emerald-700 dark:text-emerald-300 hover:bg-emerald-50 dark:hover:bg-emerald-900/40'}`}>
             <Star className={`h-4 w-4 ${isFav ? 'fill-current' : ''}`} /> {isFav ? 'Favori' : 'Ajouter aux favoris'}
           </button>
         </div>
 
         {/* ① La croyance */}
         {dossier.croyance_texte && (
-          <section className="bg-emerald-50 dark:bg-emerald-900/30 border border-emerald-200 dark:border-emerald-800 rounded-2xl p-6">
+          <section className="bg-emerald-50 dark:bg-emerald-900/30 border border-line rounded-card p-6">
             <h2 className="text-lg font-bold text-emerald-800 dark:text-emerald-300 mb-3 flex items-center gap-2">
               <BookOpen className="h-5 w-5" /> La croyance
             </h2>
@@ -177,10 +177,10 @@ export const DossierThematique: React.FC = () => {
             <h2 className="text-lg font-bold text-emerald-800 dark:text-emerald-300 mb-4">Les preuves</h2>
             <div className="space-y-4">
               {preuves.map((p) => p.ref && (
-                <article key={`${p.type}-${p.id}`} className="bg-white dark:bg-gray-800 rounded-2xl p-5 shadow border border-amber-100 dark:border-emerald-900">
+                <article key={`${p.type}-${p.id}`} className="bg-white dark:bg-gray-800 rounded-card p-5 shadow border border-amber-100 dark:border-emerald-900">
                   <div className="flex items-center justify-between mb-3">
                     <span className="text-xs font-semibold uppercase tracking-wide text-emerald-600 dark:text-emerald-400">{TYPE_LABEL[p.type]}</span>
-                    {p.ref.sujet && <span className="text-sm text-gray-500 dark:text-gray-400 font-amiri">{p.ref.sujet}</span>}
+                    {p.ref.sujet && <span className="text-sm text-gray-500 dark:text-gray-400 font-display">{p.ref.sujet}</span>}
                   </div>
                   {p.ref.texte_arabe && (
                     <p className="text-2xl leading-loose text-right font-arabic text-gray-900 dark:text-white whitespace-pre-wrap mb-3">{p.ref.texte_arabe}</p>
@@ -215,7 +215,7 @@ export const DossierThematique: React.FC = () => {
 
         {/* ④ La réponse */}
         {dossier.reponse_texte && (
-          <section className="bg-white dark:bg-gray-800 border border-emerald-200 dark:border-emerald-800 rounded-2xl p-6">
+          <section className="bg-white dark:bg-gray-800 border border-line rounded-card p-6">
             <h2 className="text-lg font-bold text-emerald-800 dark:text-emerald-300 mb-3">La réponse</h2>
             <Markdown>{dossier.reponse_texte}</Markdown>
           </section>
@@ -225,7 +225,7 @@ export const DossierThematique: React.FC = () => {
         {images.length > 0 && (
           <section className="grid sm:grid-cols-2 gap-4">
             {images.map((img) => (
-              <figure key={img.id} className="bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow border border-amber-100 dark:border-emerald-900">
+              <figure key={img.id} className="bg-white dark:bg-gray-800 rounded-card overflow-hidden shadow border border-amber-100 dark:border-emerald-900">
                 <img src={img.image_url} alt={img.alt} loading="lazy" className="w-full" />
                 {(img.legende || img.source_livre) && (
                   <figcaption className="p-3 text-sm text-gray-500 dark:text-gray-400">
@@ -254,7 +254,7 @@ export const DossierThematique: React.FC = () => {
 
       <footer className="bg-emerald-900 dark:bg-emerald-950 text-white py-10 mt-8">
         <div className="container mx-auto px-4 text-center">
-          <p className="text-emerald-300 font-amiri">« Rien n'est tel que Lui »</p>
+          <p className="text-emerald-300 font-display">« Rien n'est tel que Lui »</p>
         </div>
       </footer>
     </div>

@@ -17,7 +17,7 @@ export const Femmes: React.FC = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-amber-50 to-emerald-50 dark:from-gray-900 dark:to-emerald-950">
+    <div className="min-h-screen bg-ground">
       <m.header
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -33,7 +33,7 @@ export const Femmes: React.FC = () => {
           >
             <Sparkles className="h-10 w-10 text-white" />
           </m.div>
-          <h1 className="text-5xl md:text-6xl font-bold text-white mb-6 font-amiri">
+          <h1 className="text-5xl md:text-6xl font-bold text-white mb-6 font-display">
             Les femmes en Islam
           </h1>
           <p className="text-xl text-emerald-200 max-w-3xl mx-auto">

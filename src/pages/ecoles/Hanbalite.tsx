@@ -18,17 +18,17 @@ const CollapsibleSection: React.FC<SectionProps> = ({ title, icon, children, def
         <m.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden border border-amber-200 dark:border-emerald-800"
+            className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden border border-line"
         >
             <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="w-full px-6 py-4 flex items-center justify-between bg-gradient-to-r from-amber-50 to-emerald-50 dark:from-emerald-900/30 dark:to-amber-900/30 hover:from-amber-100 hover:to-emerald-100 dark:hover:from-emerald-900/50 dark:hover:to-amber-900/50 transition-colors"
+                className="w-full px-6 py-4 flex items-center justify-between bg-green-soft hover:from-amber-100 hover:to-emerald-100 dark:hover:from-emerald-900/50 dark:hover:to-amber-900/50 transition-colors"
             >
                 <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-amber-400 to-emerald-500 flex items-center justify-center text-white">
+                    <div className="w-10 h-10 rounded-full bg-green flex items-center justify-center text-white">
                         {icon}
                     </div>
-                    <h3 className="text-xl font-bold text-emerald-800 dark:text-emerald-200 font-amiri">
+                    <h3 className="text-xl font-bold text-emerald-800 dark:text-emerald-200 font-display">
                         {title}
                     </h3>
                 </div>
@@ -93,7 +93,7 @@ const Hanbalite: React.FC = () => {
     ];
 
     return (
-        <div className="min-h-screen bg-gradient-to-b from-amber-50 to-emerald-50 dark:from-gray-900 dark:to-emerald-950">
+        <div className="min-h-screen bg-ground">
             <m.header
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -107,7 +107,7 @@ const Hanbalite: React.FC = () => {
                         initial={{ scale: 0.9, rotate: -10 }}
                         animate={{ scale: 1, rotate: 0 }}
                         transition={{ type: "spring", stiffness: 200 }}
-                        className="inline-flex items-center justify-center w-24 h-24 rounded-full bg-white/10 backdrop-blur-sm mb-8 shadow-2xl"
+                        className="inline-flex items-center justify-center w-24 h-24 rounded-full bg-white/10 backdrop-blur-sm mb-8 shadow-card"
                     >
                         <Users className="h-12 w-12 text-white" />
                     </m.div>
@@ -116,7 +116,7 @@ const Hanbalite: React.FC = () => {
                         initial={{ y: 20, opacity: 0 }}
                         animate={{ y: 0, opacity: 1 }}
                         transition={{ delay: 0.1 }}
-                        className="text-5xl md:text-7xl font-bold text-white mb-6 font-amiri"
+                        className="text-5xl md:text-7xl font-bold text-white mb-6 font-display"
                     >
                         École Hanbalite
                     </m.h1>
@@ -134,7 +134,7 @@ const Hanbalite: React.FC = () => {
                         initial={{ y: 20, opacity: 0 }}
                         animate={{ y: 0, opacity: 1 }}
                         transition={{ delay: 0.3 }}
-                        className="text-emerald-300 max-w-2xl mx-auto font-amiri"
+                        className="text-emerald-300 max-w-2xl mx-auto font-display"
                     >
                         Fondée par l'Imam Ahmad ibn Hanbal (780-855 EC)
                     </m.p>
@@ -156,12 +156,12 @@ const Hanbalite: React.FC = () => {
                             animate={{ opacity: 1, scale: 1 }}
                             transition={{ delay: 0.3 + index * 0.1 }}
                             whileHover={{ y: -5 }}
-                            className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-2xl p-6 text-center shadow-xl border border-amber-200 dark:border-emerald-800"
+                            className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-card p-6 text-center shadow-card border border-line"
                         >
-                            <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-gradient-to-br from-amber-400 to-emerald-500 mb-3">
+                            <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-green mb-3">
                                 <stat.icon className="h-6 w-6 text-white" />
                             </div>
-                            <div className="text-2xl font-bold text-amber-800 dark:text-amber-200 font-amiri">
+                            <div className="text-2xl font-bold text-amber-800 dark:text-amber-200 font-display">
                                 {stat.value}
                             </div>
                             <div className="text-sm text-gray-600 dark:text-gray-400 mt-1">
@@ -178,7 +178,7 @@ const Hanbalite: React.FC = () => {
                     transition={{ delay: 0.4 }}
                     className="mb-16"
                 >
-                    <h2 className="text-3xl font-bold text-emerald-900 dark:text-emerald-300 mb-6 font-amiri text-center">
+                    <h2 className="text-3xl font-bold text-emerald-900 dark:text-emerald-300 mb-6 font-display text-center">
                         L'Imam Ahmad Ibnou Hanbal
                     </h2>
                     <div className="max-w-4xl mx-auto">
@@ -188,7 +188,7 @@ const Hanbalite: React.FC = () => {
                         <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
                             Grandir orphelin ne l'a pas empêché de devenir le défenseur de la croyance musulmane, il y a plus de 13 siècles de cela. Et ses enseignements constituent aujourd'hui encore une forteresse qui protège la croyance de toute tentative de corruption. Quoi que tu imagines en ton esprit Dieu en est différent. C'est là sa croyance et son enseignement. Ahmad ibn Hanbal !
                         </p>
-                        <div className="h-1 w-24 mx-auto bg-gradient-to-r from-amber-400 to-emerald-500 rounded-full mt-6"></div>
+                        <div className="h-1 w-24 mx-auto bg-green rounded-full mt-6"></div>
                     </div>
                 </m.section>
 
@@ -199,7 +199,7 @@ const Hanbalite: React.FC = () => {
                     transition={{ delay: 0.5 }}
                     className="mb-16 space-y-6"
                 >
-                    <h2 className="text-3xl font-bold text-emerald-900 dark:text-emerald-300 mb-8 font-amiri text-center">
+                    <h2 className="text-3xl font-bold text-emerald-900 dark:text-emerald-300 mb-8 font-display text-center">
                         Biographie détaillée
                     </h2>
 
@@ -365,7 +365,7 @@ const Hanbalite: React.FC = () => {
                         <p className="mb-4">
                             Dans son livre: I^tiqadou l-'Imami l-Moubajjali Ahmad Ibnou Hanbal –La Croyance de l'Imam Ahmad Ibnou Hanbal–, Abou l-Fadl At-Tamimiyy Al-hanbaliyy rapporte que l'Imam Ahmad a dit : (mahma tasawwarta bibalik fal-Lahou bikhilafi dhalika) ce qui signifie : « Quoi que tu imagines en ton esprit Dieu en est différent. ». Cette parole est en fait tirée du hadith du Prophète ﷺ  :
                         </p>
-                        <p lang="ar" dir="rtl" className="mb-4 text-center font-amiri text-xl leading-loose">
+                        <p lang="ar" dir="rtl" className="mb-4 text-center font-display text-xl leading-loose">
                             ((لا فِكْرَةَ في الرَّبِّ))
                         </p>
                         <p className="mb-4 text-center">
@@ -377,7 +377,7 @@ const Hanbalite: React.FC = () => {
                         <p className="mb-4">
                             Elle est aussi tirée de la ayah du Qour'an :
                         </p>
-                        <p lang="ar" dir="rtl" className="mb-4 text-center font-amiri text-xl leading-loose">
+                        <p lang="ar" dir="rtl" className="mb-4 text-center font-display text-xl leading-loose">
                             ﴿وأنّ إلى ربِّكَ المُنتَهى﴾
                         </p>
                         <p className="mb-4 text-center">
@@ -402,7 +402,7 @@ const Hanbalite: React.FC = () => {
                         <p className="mb-4">
                             Az–Zarkachiyy a rapporté dans son livre Tachnifou l-Maçami^ de l'auteur du livre Al-Khisal qu'il a dit : l'Imam Ahmad Ibnou Hanbal a dit :
                         </p>
-                        <p lang="ar" dir="rtl" className="mb-4 text-center font-amiri text-xl leading-loose">
+                        <p lang="ar" dir="rtl" className="mb-4 text-center font-display text-xl leading-loose">
                             (مَنْ قَالَ إِنَّ اللهَ جِسْمٌ لاَ كَالأَجْسَامِ كَفَرَ)
                         </p>
                         <p className="mb-4 text-center">
@@ -422,7 +422,7 @@ const Hanbalite: React.FC = () => {
                         <p className="mb-4">
                             Il a interprété lui-même le verset 22 de Sourate Al-Fajr :
                         </p>
-                        <p lang="ar" dir="rtl" className="mb-4 text-center font-amiri text-xl leading-loose">
+                        <p lang="ar" dir="rtl" className="mb-4 text-center font-display text-xl leading-loose">
                             ﴿وَجَاءَ رَبُّكَ والْمَلَكُ صَفًّا صَفًّا﴾
                         </p>
                         <p className="mb-4 text-center">
@@ -474,7 +474,7 @@ const Hanbalite: React.FC = () => {
                         <p className="mb-4">
                             Dans son livre « Al-Fatâwâ Al-Hadîthiyyah » (page 415 de cette édition), le Chaykh Ibnou Hajar Al-Haytami a dit :
                         </p>
-                        <p lang="ar" dir="rtl" className="mb-4 text-center font-amiri text-xl leading-loose">
+                        <p lang="ar" dir="rtl" className="mb-4 text-center font-display text-xl leading-loose">
                             « عقيدة إمام السنة أحمد بن حنبل رضي الله عنه وأرضاه وجعل جنان المعارف متقلَّبه ومأواه وأفاض علينا وعليه من سوابغ إمتنانه وبوأه الفردوس الأعلى من جنانه، موافقة لعقيدة أهل السنة والجماعة من المبالغة التامة في تنزيه الله تعالى عما يقول الظالمون والجاحدون علوًا كبيرًا من الجهة والجسمية وغيرهما من سائر سمات النقص، بل وعن كل وَصْف ليس فيه كمال مطلق، وما اشتهر بين جهلة المنسوبين إلى هذا الإمام الأعظم المجتهد من أنه قائل بشيء من الجهة أو نحوها فكذب وبُهتان وافتراء عليه، فلعن الله من نسب ذلك إليه، أو رماه بشيء من هذه المثالب التي برَّأه الله منها، وقد بيّـن الحافظ الحجة القدوة الإمام أبو الفرج بن الجوزي من أئمة مذهبه المبرئّيـن من هذه الوصمة القبيحة الشنيعة، أنَّ كل ما نسب إليه من ذلك كذب عليه وافتراء وبهتان وأن نصوصه صريحة في بطلان ذلك، وتنزيه الله تعالى عنه فاعلم ذلك فإنه مهم »
                         </p>
                         <p className="mb-4 font-bold">
@@ -651,7 +651,7 @@ const Hanbalite: React.FC = () => {
                         <p className="mb-4">
                             Dieu nous dit dans le Livre honoré :
                         </p>
-                        <p lang="ar" dir="rtl" className="mb-4 text-center font-amiri text-xl leading-loose">
+                        <p lang="ar" dir="rtl" className="mb-4 text-center font-display text-xl leading-loose">
                             ﴿إنّا نحنُ نزّلنا الذِّكرَ وإِنّا لَهُ لَحافِظينَ﴾
                         </p>
                         <p className="mb-4 text-center">
@@ -673,11 +673,11 @@ const Hanbalite: React.FC = () => {
                     transition={{ delay: 0.6 }}
                     className="mb-16"
                 >
-                    <h3 className="text-2xl font-bold text-emerald-900 dark:text-emerald-300 mb-8 font-amiri text-center">
+                    <h3 className="text-2xl font-bold text-emerald-900 dark:text-emerald-300 mb-8 font-display text-center">
                         Caractéristiques de l'École Hanbalite
                     </h3>
                     <div className="grid md:grid-cols-3 gap-6">
-                        <div className="bg-white/80 dark:bg-gray-800/80 rounded-xl p-6 shadow-lg border border-amber-200 dark:border-emerald-800">
+                        <div className="bg-white/80 dark:bg-gray-800/80 rounded-xl p-6 shadow-lg border border-line">
                             <div className="w-12 h-12 rounded-full bg-amber-100 dark:bg-emerald-800 flex items-center justify-center mb-4">
                                 <BookOpen className="h-6 w-6 text-amber-600 dark:text-emerald-400" />
                             </div>
@@ -689,7 +689,7 @@ const Hanbalite: React.FC = () => {
                                 limitée du raisonnement analogique.
                             </p>
                         </div>
-                        <div className="bg-white/80 dark:bg-gray-800/80 rounded-xl p-6 shadow-lg border border-amber-200 dark:border-emerald-800">
+                        <div className="bg-white/80 dark:bg-gray-800/80 rounded-xl p-6 shadow-lg border border-line">
                             <div className="w-12 h-12 rounded-full bg-amber-100 dark:bg-emerald-800 flex items-center justify-center mb-4">
                                 <Scale className="h-6 w-6 text-amber-600 dark:text-emerald-400" />
                             </div>
@@ -701,7 +701,7 @@ const Hanbalite: React.FC = () => {
                                 préservation des pratiques établies.
                             </p>
                         </div>
-                        <div className="bg-white/80 dark:bg-gray-800/80 rounded-xl p-6 shadow-lg border border-amber-200 dark:border-emerald-800">
+                        <div className="bg-white/80 dark:bg-gray-800/80 rounded-xl p-6 shadow-lg border border-line">
                             <div className="w-12 h-12 rounded-full bg-amber-100 dark:bg-emerald-800 flex items-center justify-center mb-4">
                                 <Users className="h-6 w-6 text-amber-600 dark:text-emerald-400" />
                             </div>
@@ -726,7 +726,7 @@ const Hanbalite: React.FC = () => {
                     transition={{ delay: 0.7 }}
                     className="mt-16"
                 >
-                    <h3 className="text-2xl font-bold text-emerald-900 dark:text-emerald-300 mb-6 font-amiri text-center">
+                    <h3 className="text-2xl font-bold text-emerald-900 dark:text-emerald-300 mb-6 font-display text-center">
                         Découvrir les Autres Écoles
                     </h3>
                     <div className="grid md:grid-cols-3 gap-6">
@@ -740,9 +740,9 @@ const Hanbalite: React.FC = () => {
                                 className="group"
                             >
                                 <Link to={madhab.path} className="block h-full">
-                                    <div className="relative h-full bg-gradient-to-br from-white to-amber-50 dark:from-gray-800 dark:to-emerald-900/50 rounded-xl shadow-lg overflow-hidden border border-amber-200 dark:border-emerald-800 transition-all duration-300 hover:shadow-xl">
+                                    <div className="relative h-full bg-ivory rounded-xl shadow-lg overflow-hidden border border-line transition-all duration-300 hover:shadow-card">
                                         <div className={`bg-gradient-to-r ${madhab.color} p-4 text-white`}>
-                                            <h4 className="text-xl font-bold font-amiri">{madhab.name}</h4>
+                                            <h4 className="text-xl font-bold font-display">{madhab.name}</h4>
                                             <p className="text-sm opacity-90">{madhab.nameArabic}</p>
                                         </div>
                                         <div className="p-4">
@@ -770,11 +770,11 @@ const Hanbalite: React.FC = () => {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: 0.9 }}
-                    className="mt-16 bg-gradient-to-r from-amber-100 to-emerald-100 dark:from-emerald-900/30 dark:to-amber-900/30 rounded-2xl p-8 text-center shadow-lg"
+                    className="mt-16 bg-green-soft rounded-card p-8 text-center shadow-lg"
                 >
                     <div className="max-w-2xl mx-auto">
                         <div className="text-5xl mb-4 text-amber-600 dark:text-amber-400">"</div>
-                        <p className="text-xl text-gray-800 dark:text-gray-200 font-amiri leading-relaxed mb-4">
+                        <p className="text-xl text-gray-800 dark:text-gray-200 font-display leading-relaxed mb-4">
                             Quoi que tu imagines en ton esprit, Dieu en est différent.
                         </p>
                         <p className="text-sm text-emerald-700 dark:text-emerald-400">
@@ -786,7 +786,7 @@ const Hanbalite: React.FC = () => {
 
             <footer className="bg-emerald-900 dark:bg-emerald-950 text-white py-12 mt-16">
                 <div className="container mx-auto px-4 text-center">
-                    <p className="text-emerald-300 mb-4 font-amiri text-xl">
+                    <p className="text-emerald-300 mb-4 font-display text-xl">
                         "Ceux qui savent et ceux qui ne savent pas sont-ils égaux ?"
                     </p>
                     <p className="text-emerald-200 text-sm">

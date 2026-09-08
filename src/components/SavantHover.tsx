@@ -68,9 +68,9 @@ export const SavantHover: React.FC<{ nom: string; className?: string }> = ({ nom
         <span
           role="tooltip"
           style={{ position: 'fixed', top: pos.top, left: pos.left }}
-          className="z-[60] block w-72 max-w-[calc(100vw-1rem)] rounded-xl border border-emerald-200 dark:border-emerald-800 bg-white dark:bg-gray-800 shadow-xl p-3 text-left"
+          className="z-[60] block w-72 max-w-[calc(100vw-1rem)] rounded-xl border border-line bg-white dark:bg-gray-800 shadow-card p-3 text-left"
         >
-          <span className="block font-bold text-emerald-900 dark:text-emerald-200 font-amiri">{info.nom}</span>
+          <span className="block font-bold text-emerald-900 dark:text-emerald-200 font-display">{info.nom}</span>
           {info.ecole && <span className="block text-xs text-emerald-600 dark:text-emerald-400 mb-1">{info.ecole}</span>}
           {info.resume && (
             <span className="block text-xs text-gray-600 dark:text-gray-400 leading-relaxed">{info.resume}</span>

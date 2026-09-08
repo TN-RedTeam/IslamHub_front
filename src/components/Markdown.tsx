@@ -35,14 +35,14 @@ function isArabic(node: React.ReactNode): boolean {
  *       s'affiche automatiquement en bas du bloc.
  */
 const mdComponents: Components = {
-  h1: ({ children }) => <h3 lang={isArabic(children) ? 'ar' : undefined} className="text-xl font-bold text-emerald-800 dark:text-emerald-300 mt-4 mb-2 font-amiri">{children}</h3>,
+  h1: ({ children }) => <h3 lang={isArabic(children) ? 'ar' : undefined} className="text-xl font-bold text-emerald-800 dark:text-emerald-300 mt-4 mb-2 font-display">{children}</h3>,
   h2: ({ children, id }) =>
     // remark-gfm génère un <h2 id="footnote-label"> pour le titre des notes :
     // on le garde masqué (sr-only) au lieu d'afficher "Footnotes".
     id === 'footnote-label'
       ? <h2 className="sr-only">{children}</h2>
-      : <h4 lang={isArabic(children) ? 'ar' : undefined} className="text-lg font-bold text-emerald-800 dark:text-emerald-300 mt-4 mb-2 font-amiri">{children}</h4>,
-  h3: ({ children }) => <h4 lang={isArabic(children) ? 'ar' : undefined} className="text-lg font-bold text-emerald-800 dark:text-emerald-300 mt-4 mb-2 font-amiri">{children}</h4>,
+      : <h4 lang={isArabic(children) ? 'ar' : undefined} className="text-lg font-bold text-emerald-800 dark:text-emerald-300 mt-4 mb-2 font-display">{children}</h4>,
+  h3: ({ children }) => <h4 lang={isArabic(children) ? 'ar' : undefined} className="text-lg font-bold text-emerald-800 dark:text-emerald-300 mt-4 mb-2 font-display">{children}</h4>,
   p: ({ children }) => isArabic(children)
     ? <p lang="ar" dir="rtl" className="text-xl leading-loose my-3 text-gray-900 dark:text-white">{children}</p>
     : <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-3">{children}</p>,
@@ -66,17 +66,17 @@ const mdComponents: Components = {
     }
     return <a className="text-emerald-600 dark:text-emerald-400 underline" target="_blank" rel="noopener noreferrer" {...props} />;
   },
-  hr: (props) => <hr className="my-4 border-gray-200 dark:border-gray-700" {...props} />,
+  hr: (props) => <hr className="my-4 border-line" {...props} />,
   sup: (props) => <sup className="text-xs text-emerald-600 dark:text-emerald-400 font-semibold" {...props} />,
   // La section des notes de bas de page (className="footnotes") est stylée
   // globalement dans index.css : plus petite, grisée, avec trait de séparation.
   table: (props) => (
     <div className="overflow-x-auto my-3">
-      <table className="min-w-full text-sm border border-gray-200 dark:border-gray-700" {...props} />
+      <table className="min-w-full text-sm border border-line" {...props} />
     </div>
   ),
-  th: (props) => <th className="border border-gray-200 dark:border-gray-700 px-3 py-2 bg-emerald-50 dark:bg-emerald-900/30 font-semibold text-left" {...props} />,
-  td: (props) => <td className="border border-gray-200 dark:border-gray-700 px-3 py-2" {...props} />,
+  th: (props) => <th className="border border-line px-3 py-2 bg-emerald-50 dark:bg-emerald-900/30 font-semibold text-left" {...props} />,
+  td: (props) => <td className="border border-line px-3 py-2" {...props} />,
 };
 
 /** Composant Markdown réutilisable, style unifié pour tout le site. */

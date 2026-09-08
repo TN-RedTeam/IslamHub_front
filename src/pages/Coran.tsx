@@ -28,7 +28,7 @@ const getTagsArray = (tag: string | null | undefined): string[] => {
 // ─── Skeleton ────────────────────────────────────────────────────────────────
 
 const CoranCardSkeleton: React.FC = () => (
-  <div className="relative bg-gradient-to-br from-amber-50 to-emerald-50 dark:from-emerald-900 dark:to-amber-900 rounded-2xl p-6 shadow-xl border border-amber-200 dark:border-emerald-800 animate-pulse">
+  <div className="relative bg-ivory rounded-card p-6 shadow-card border border-line animate-pulse">
     <div className="flex items-center gap-2 mb-4">
       <div className="w-5 h-5 bg-amber-300 dark:bg-amber-600 rounded-full" />
       <div className="h-6 bg-amber-300 dark:bg-amber-600 rounded-lg w-2/3" />
@@ -62,7 +62,7 @@ const CoranCard: React.FC<{
     <m.div
       whileHover={{ scale: 1.01 }}
       onClick={onClick}
-      className="relative bg-gradient-to-br from-amber-50 to-emerald-50 dark:from-emerald-900 dark:to-amber-900 rounded-2xl p-6 shadow-xl border border-amber-200 dark:border-emerald-800 space-y-4 overflow-hidden cursor-pointer h-full flex flex-col transition-all duration-300 hover:shadow-2xl"
+      className="relative bg-ivory rounded-card p-6 shadow-card border border-line space-y-4 overflow-hidden cursor-pointer h-full flex flex-col transition-all duration-300 hover:shadow-card"
     >
       <div className="absolute top-0 right-0 w-24 h-24 opacity-20">
         <svg viewBox="0 0 100 100" className="text-amber-500 dark:text-emerald-400">
@@ -73,7 +73,7 @@ const CoranCard: React.FC<{
       {coran.sujet && (
         <div className="flex items-center">
           <Star className="h-5 w-5 text-amber-500 dark:text-amber-300 mr-2" />
-          <h3 className="text-xl font-bold text-amber-800 dark:text-amber-200 font-amiri line-clamp-1">
+          <h3 className="text-xl font-bold text-amber-800 dark:text-amber-200 font-display line-clamp-1">
             {coran.sujet}
           </h3>
         </div>
@@ -85,7 +85,7 @@ const CoranCard: React.FC<{
         </div>
       )}
 
-      <div className="bg-white dark:bg-gray-800/80 p-4 rounded-lg border border-amber-100 dark:border-emerald-800 flex-grow">
+      <div className="bg-white dark:bg-gray-800/80 p-4 rounded-lg border border-line flex-grow">
         <p className="text-2xl text-gray-900 dark:text-white font-arabic leading-loose text-right line-clamp-3 whitespace-pre-wrap">
           {coran.texte_arabe}
         </p>
@@ -149,7 +149,7 @@ const CoranModal: React.FC<{
         initial={{ scale: 0.9, y: 50 }}
         animate={{ scale: 1, y: 0 }}
         onClick={(e) => e.stopPropagation()}
-        className="bg-white dark:bg-gray-800 rounded-2xl p-8 max-w-4xl w-full max-h-[90vh] overflow-y-auto relative"
+        className="bg-white dark:bg-gray-800 rounded-card p-8 max-w-4xl w-full max-h-[90vh] overflow-y-auto relative"
       >
         <button
           onClick={onClose}
@@ -160,7 +160,7 @@ const CoranModal: React.FC<{
 
         <div className="space-y-6">
           <div>
-            <h2 className="text-2xl font-bold text-amber-800 dark:text-amber-200 font-amiri">
+            <h2 className="text-2xl font-bold text-amber-800 dark:text-amber-200 font-display">
               {coran.sujet}
             </h2>
             {coran.sourate && (
@@ -355,11 +355,11 @@ export const Corans: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-amber-50 to-emerald-50 dark:from-gray-900 dark:to-emerald-950">
+    <div className="min-h-screen bg-ground">
 
       {/* Reading progress */}
       <div
-        className="fixed top-0 left-0 z-50 h-1 bg-gradient-to-r from-emerald-500 to-amber-500 transition-all duration-100"
+        className="fixed top-0 left-0 z-50 h-1 bg-green transition-all duration-100"
         style={{ width: `${readingProgress}%` }}
       />
 
@@ -376,7 +376,7 @@ export const Corans: React.FC = () => {
           <m.h1
             initial={{ scale: 0.9 }}
             animate={{ scale: 1 }}
-            className="text-5xl md:text-6xl font-bold text-white mb-6 font-amiri"
+            className="text-5xl md:text-6xl font-bold text-white mb-6 font-display"
           >
             Le Noble Coran
           </m.h1>
@@ -419,7 +419,7 @@ export const Corans: React.FC = () => {
               </p>
             </div>
 
-            <div className="flex gap-2 bg-white dark:bg-gray-800 rounded-xl p-1 border border-emerald-200 dark:border-emerald-800">
+            <div className="flex gap-2 bg-white dark:bg-gray-800 rounded-xl p-1 border border-line">
               <button
                 onClick={() => handleViewChange('grid')}
                 className={`p-2 rounded-lg transition-all duration-300 ${view === 'grid' ? 'bg-emerald-600 text-white shadow-md' : 'text-emerald-600 dark:text-emerald-400 hover:bg-emerald-100 dark:hover:bg-emerald-900/50'}`}
@@ -443,7 +443,7 @@ export const Corans: React.FC = () => {
             animate={{ opacity: 1, y: 0 }}
             className="mb-8"
           >
-            <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-amber-200 dark:border-emerald-800">
+            <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-card p-6 shadow-lg border border-line">
               <div className="flex items-center gap-2 mb-4">
                 <Tags className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
                 <h3 className="text-lg font-semibold text-emerald-900 dark:text-emerald-300">
@@ -479,7 +479,7 @@ export const Corans: React.FC = () => {
         <m.section
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-6 mb-8 border border-emerald-100 dark:border-emerald-900"
+          className="bg-white dark:bg-gray-800 rounded-card shadow-card p-6 mb-8 border border-line"
         >
           <div className="flex flex-col md:flex-row gap-6">
             <div className="flex-1 relative">
@@ -488,7 +488,7 @@ export const Corans: React.FC = () => {
                 type="text"
                 aria-label="Rechercher un verset"
                 placeholder="Rechercher par texte arabe, français, sourate, mot-clé..."
-                className="w-full pl-12 pr-6 py-3 rounded-xl border border-emerald-200 dark:border-emerald-800 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-transparent text-lg font-amiri"
+                className="w-full pl-12 pr-6 py-3 rounded-xl border border-line bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-transparent text-lg font-display"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
@@ -507,7 +507,7 @@ export const Corans: React.FC = () => {
             <m.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              className="mt-4 flex items-center justify-between bg-gradient-to-r from-emerald-50 to-amber-50 dark:from-emerald-900/30 dark:to-amber-900/30 rounded-lg px-4 py-2"
+              className="mt-4 flex items-center justify-between bg-green-soft rounded-lg px-4 py-2"
             >
               <div className="flex items-center gap-2 flex-wrap">
                 <span className="font-medium text-emerald-800 dark:text-emerald-200">Filtre actif :</span>
@@ -546,7 +546,7 @@ export const Corans: React.FC = () => {
             <m.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              className="text-center py-16 bg-white dark:bg-gray-800 rounded-2xl shadow-xl"
+              className="text-center py-16 bg-white dark:bg-gray-800 rounded-card shadow-card"
             >
               <div className="max-w-md mx-auto">
                 <div className="text-6xl mb-4">😔</div>
@@ -578,7 +578,7 @@ export const Corans: React.FC = () => {
                 >
                   📖
                 </m.div>
-                <h3 className="text-3xl font-bold text-emerald-800 dark:text-emerald-200 mb-4 font-amiri">
+                <h3 className="text-3xl font-bold text-emerald-800 dark:text-emerald-200 mb-4 font-display">
                   Recherchez parmi les versets
                 </h3>
                 <p className="text-gray-600 dark:text-gray-400 mb-6 leading-relaxed text-lg">
@@ -620,7 +620,7 @@ export const Corans: React.FC = () => {
               key="no-results"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              className="text-center py-16 bg-white dark:bg-gray-800 rounded-2xl shadow-xl"
+              className="text-center py-16 bg-white dark:bg-gray-800 rounded-card shadow-card"
             >
               <div className="max-w-md mx-auto">
                 <div className="text-6xl mb-4">🔍</div>
@@ -683,7 +683,7 @@ export const Corans: React.FC = () => {
       {/* Footer */}
       <footer className="bg-emerald-900 dark:bg-emerald-950 text-white py-12">
         <div className="container mx-auto px-4 text-center">
-          <p className="text-emerald-300 mb-4 font-amiri text-xl">
+          <p className="text-emerald-300 mb-4 font-display text-xl">
             "Ceci est le Livre au sujet duquel il n'y a aucun doute"
           </p>
           <p className="text-emerald-200">© {new Date().getFullYear()} Le Noble Coran</p>

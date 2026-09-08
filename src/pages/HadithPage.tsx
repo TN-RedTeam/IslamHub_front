@@ -51,7 +51,7 @@ export const HadithPage: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-amber-50 to-emerald-50 dark:from-gray-900 dark:to-emerald-950 flex items-center justify-center">
+      <div className="min-h-screen bg-ground flex items-center justify-center">
         <Loader2 className="h-10 w-10 text-emerald-600 dark:text-emerald-400 animate-spin" />
       </div>
     );
@@ -59,10 +59,10 @@ export const HadithPage: React.FC = () => {
 
   if (notFound || !hadith) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-amber-50 to-emerald-50 dark:from-gray-900 dark:to-emerald-950 flex items-center justify-center">
-        <div className="text-center max-w-md mx-auto p-8 bg-white dark:bg-gray-800 rounded-2xl shadow-xl">
+      <div className="min-h-screen bg-ground flex items-center justify-center">
+        <div className="text-center max-w-md mx-auto p-8 bg-white dark:bg-gray-800 rounded-card shadow-card">
           <div className="text-6xl mb-4">📖</div>
-          <h1 className="text-xl font-bold text-gray-700 dark:text-gray-300 mb-2 font-amiri">Hadith introuvable</h1>
+          <h1 className="text-xl font-bold text-gray-700 dark:text-gray-300 mb-2 font-display">Hadith introuvable</h1>
           <Link to="/hadiths" className="px-6 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg transition-colors inline-block mt-2">Tous les hadiths</Link>
         </div>
       </div>
@@ -72,7 +72,7 @@ export const HadithPage: React.FC = () => {
   const tags = (hadith.tag || '').split(',').map((t) => t.trim()).filter(Boolean);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-amber-50 to-emerald-50 dark:from-gray-900 dark:to-emerald-950">
+    <div className="min-h-screen bg-ground">
       <m.header
         initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }}
         className="relative py-16 bg-emerald-800 dark:bg-emerald-950 overflow-hidden">
@@ -82,22 +82,22 @@ export const HadithPage: React.FC = () => {
           <Link to="/hadiths" className="inline-flex items-center gap-1.5 text-emerald-200 hover:text-white text-sm mb-4">
             <ArrowLeft className="h-4 w-4" /> Tous les hadiths
           </Link>
-          <h1 className="text-3xl md:text-4xl font-bold text-white font-amiri">{hadith.sujet}</h1>
+          <h1 className="text-3xl md:text-4xl font-bold text-white font-display">{hadith.sujet}</h1>
           {reference && <p className="text-emerald-200 mt-2 text-sm">{reference}</p>}
         </div>
       </m.header>
 
       <main className="container mx-auto px-4 py-10 -mt-10 relative z-10 max-w-3xl space-y-6">
         <div className="flex flex-wrap gap-3">
-          <button onClick={copyDebate} className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white dark:bg-gray-800 border border-emerald-200 dark:border-emerald-800 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-50 dark:hover:bg-emerald-900/40 transition-colors">
+          <button onClick={copyDebate} className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white dark:bg-gray-800 border border-line text-emerald-700 dark:text-emerald-300 hover:bg-emerald-50 dark:hover:bg-emerald-900/40 transition-colors">
             {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />} Copier (format débat)
           </button>
-          <button onClick={share} className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white dark:bg-gray-800 border border-emerald-200 dark:border-emerald-800 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-50 dark:hover:bg-emerald-900/40 transition-colors">
+          <button onClick={share} className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white dark:bg-gray-800 border border-line text-emerald-700 dark:text-emerald-300 hover:bg-emerald-50 dark:hover:bg-emerald-900/40 transition-colors">
             <Share2 className="h-4 w-4" /> Partager
           </button>
         </div>
 
-        <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow border border-amber-100 dark:border-emerald-900 space-y-5">
+        <div className="bg-white dark:bg-gray-800 rounded-card p-6 shadow border border-amber-100 dark:border-emerald-900 space-y-5">
           <p className="text-3xl leading-loose text-right font-arabic text-gray-900 dark:text-white whitespace-pre-wrap">{hadith.texte_arabe}</p>
           {hadith['phonétique'] && (
             <div className="bg-amber-50 dark:bg-emerald-900/20 rounded-lg p-4">

@@ -32,7 +32,7 @@ export const VideoCard: React.FC<VideoCardProps> = ({ video, index = 0 }) => {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.05 }}
-      className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl overflow-hidden border border-emerald-100 dark:border-emerald-900"
+      className="bg-white dark:bg-gray-800 rounded-card shadow-card overflow-hidden border border-line"
     >
       <div className="aspect-video bg-gray-100 dark:bg-gray-700 relative">
         {playing ? (
@@ -62,7 +62,7 @@ export const VideoCard: React.FC<VideoCardProps> = ({ video, index = 0 }) => {
               }}
             />
             <span className="absolute inset-0 bg-black/30 group-hover:bg-black/50 transition-colors flex items-center justify-center">
-              <span className="w-16 h-16 rounded-full bg-emerald-600 group-hover:bg-emerald-500 flex items-center justify-center shadow-2xl transition-transform group-hover:scale-110">
+              <span className="w-16 h-16 rounded-full bg-emerald-600 group-hover:bg-emerald-500 flex items-center justify-center shadow-card transition-transform group-hover:scale-110">
                 <Play className="w-7 h-7 text-white fill-white ml-1" />
               </span>
             </span>

@@ -18,17 +18,17 @@ const CollapsibleSection: React.FC<SectionProps> = ({ title, icon, children, def
         <m.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden border border-amber-200 dark:border-emerald-800"
+            className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden border border-line"
         >
             <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="w-full px-6 py-4 flex items-center justify-between bg-gradient-to-r from-amber-50 to-emerald-50 dark:from-emerald-900/30 dark:to-amber-900/30 hover:from-amber-100 hover:to-emerald-100 dark:hover:from-emerald-900/50 dark:hover:to-amber-900/50 transition-colors"
+                className="w-full px-6 py-4 flex items-center justify-between bg-green-soft hover:from-amber-100 hover:to-emerald-100 dark:hover:from-emerald-900/50 dark:hover:to-amber-900/50 transition-colors"
             >
                 <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-amber-400 to-emerald-500 flex items-center justify-center text-white">
+                    <div className="w-10 h-10 rounded-full bg-green flex items-center justify-center text-white">
                         {icon}
                     </div>
-                    <h3 className="text-xl font-bold text-emerald-800 dark:text-emerald-200 font-amiri">
+                    <h3 className="text-xl font-bold text-emerald-800 dark:text-emerald-200 font-display">
                         {title}
                     </h3>
                 </div>
@@ -126,7 +126,7 @@ const Hanafi: React.FC = () => {
     ];
 
     return (
-        <div className="min-h-screen bg-gradient-to-b from-amber-50 to-emerald-50 dark:from-gray-900 dark:to-emerald-950">
+        <div className="min-h-screen bg-ground">
             <m.header
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -140,7 +140,7 @@ const Hanafi: React.FC = () => {
                         initial={{ scale: 0.9, rotate: -10 }}
                         animate={{ scale: 1, rotate: 0 }}
                         transition={{ type: "spring", stiffness: 200 }}
-                        className="inline-flex items-center justify-center w-24 h-24 rounded-full bg-white/10 backdrop-blur-sm mb-8 shadow-2xl"
+                        className="inline-flex items-center justify-center w-24 h-24 rounded-full bg-white/10 backdrop-blur-sm mb-8 shadow-card"
                     >
                         <Scale className="h-12 w-12 text-white" />
                     </m.div>
@@ -149,7 +149,7 @@ const Hanafi: React.FC = () => {
                         initial={{ y: 20, opacity: 0 }}
                         animate={{ y: 0, opacity: 1 }}
                         transition={{ delay: 0.1 }}
-                        className="text-5xl md:text-7xl font-bold text-white mb-6 font-amiri"
+                        className="text-5xl md:text-7xl font-bold text-white mb-6 font-display"
                     >
                         École Hanafite
                     </m.h1>
@@ -167,7 +167,7 @@ const Hanafi: React.FC = () => {
                         initial={{ y: 20, opacity: 0 }}
                         animate={{ y: 0, opacity: 1 }}
                         transition={{ delay: 0.3 }}
-                        className="text-emerald-300 max-w-2xl mx-auto font-amiri"
+                        className="text-emerald-300 max-w-2xl mx-auto font-display"
                     >
                         Fondée par l'Imam Abou Hanifa an-Nou'man
                     </m.p>
@@ -189,12 +189,12 @@ const Hanafi: React.FC = () => {
                             animate={{ opacity: 1, scale: 1 }}
                             transition={{ delay: 0.3 + index * 0.1 }}
                             whileHover={{ y: -5 }}
-                            className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-2xl p-6 text-center shadow-xl border border-amber-200 dark:border-emerald-800"
+                            className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-card p-6 text-center shadow-card border border-line"
                         >
-                            <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-gradient-to-br from-amber-400 to-emerald-500 mb-3">
+                            <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-green mb-3">
                                 <stat.icon className="h-6 w-6 text-white" />
                             </div>
-                            <div className="text-2xl font-bold text-amber-800 dark:text-amber-200 font-amiri">
+                            <div className="text-2xl font-bold text-amber-800 dark:text-amber-200 font-display">
                                 {stat.value}
                             </div>
                             <div className="text-sm text-gray-600 dark:text-gray-400 mt-1">
@@ -282,7 +282,7 @@ const Hanafi: React.FC = () => {
                         <p className="mb-4">
                             L'Imam Abou Hanifah a expliqué la croyance en Allah et a confirmé dans son livre Al-Fiqhou l-'Akbar que Allah ta^ala existe sans endroit et sans direction, et que Allah ne ressemble pas à Ses créatures. Il a dit, que Allah l'agrée :
                         </p>
-                        <p lang="ar" dir="rtl" className="mb-4 text-center font-amiri text-xl leading-loose">
+                        <p lang="ar" dir="rtl" className="mb-4 text-center font-display text-xl leading-loose">
                             (كانَ اللهُ ولا مكان، كانَ قبلَ أن يَخْلُقَ الخلق كانَ ولم يكن أينٌ ولا خَلقٌ ولا شىء وهو خالقُ كل شىء)
                         </p>
                         <p className="mb-4 italic">
@@ -295,7 +295,7 @@ const Hanafi: React.FC = () => {
                         <p className="mb-4">
                             Et il a dit :
                         </p>
-                        <p lang="ar" dir="rtl" className="mb-4 text-center font-amiri text-xl leading-loose">
+                        <p lang="ar" dir="rtl" className="mb-4 text-center font-display text-xl leading-loose">
                             (والله تعالى يُرَى في الآخرة ويراه المؤمنون وهم في الجنة بأعين رؤوسهم بلا تشبيه ولا كمِّيَّة ولا يكون بينه وبين خلقه مسافة)
                         </p>
                         <p className="mb-4 italic">
@@ -308,7 +308,7 @@ const Hanafi: React.FC = () => {
                         <p className="mb-4">
                             Il a dit aussi :
                         </p>
-                        <p lang="ar" dir="rtl" className="mb-4 text-center font-amiri text-xl leading-loose">
+                        <p lang="ar" dir="rtl" className="mb-4 text-center font-display text-xl leading-loose">
                             (لا يوصف الله بصفات المخلوقين وغضبُه ورضاه صفتان من صفاته بلا كيف، وهو قول أهل السنة والجماعة وهو يغضب ويرضى ولا يقال غضبُه عقوبته ورضاه ثوابه ونصفه كما وصف نفسه أحدٌ صمدٌ لم يلد ولم يولد ولم يكن له كفواً أحد)
                         </p>
                         <p className="mb-4 italic">
@@ -321,7 +321,7 @@ const Hanafi: React.FC = () => {
                         <p className="mb-4">
                             Et il a dit :
                         </p>
-                        <p lang="ar" dir="rtl" className="mb-4 text-center font-amiri text-xl leading-loose">
+                        <p lang="ar" dir="rtl" className="mb-4 text-center font-display text-xl leading-loose">
                             (ويده صفة بلا كيف)
                         </p>
                         <p className="mb-4 italic">
@@ -334,7 +334,7 @@ const Hanafi: React.FC = () => {
                         <p className="mb-4">
                             Et il a dit :
                         </p>
-                        <p lang="ar" dir="rtl" className="mb-4 text-center font-amiri text-xl leading-loose">
+                        <p lang="ar" dir="rtl" className="mb-4 text-center font-display text-xl leading-loose">
                             (وليس اللهُ بِعَرَضٍ ولا جَوْهَرٍ ولا مُتَحَيِّزٍ)
                         </p>
                         <p className="mb-4 italic">
@@ -346,7 +346,7 @@ const Hanafi: React.FC = () => {
                         <p className="mb-6">
                             Parmi les paroles précieuses que l’imam Abou Hanifah a dites au sujet de l’exemption de Allah ta^ala de toutes caractéristiques des corps, il y a sa parole dans son livre Al-Fiqhou l-‘Akbar :
                         </p>
-                        <p lang="ar" dir="rtl" className="mb-4 text-center font-amiri text-xl leading-loose">
+                        <p lang="ar" dir="rtl" className="mb-4 text-center font-display text-xl leading-loose">
                             (والله واحد لا من طريق العدد ولكن من طريق أنه لا شريك له، لم يلد ولم يولد ولم يكن له كفوًا أحد، لا جسم ولا عَرَض ولا حَدَّ له ولا ضد ولا ند ولا مثل، لا يشبه شيئًا من خلقه، ولا يشبهه شىء من خلقه، وهو شىء لا كالأشياء)
                         </p>
                         <p className="mb-4">
@@ -358,7 +358,7 @@ const Hanafi: React.FC = () => {
                         <p className="mb-6">
                             Il a dit également :
                         </p>
-                        <p lang="ar" dir="rtl" className="mb-4 text-center font-amiri text-xl leading-loose">
+                        <p lang="ar" dir="rtl" className="mb-4 text-center font-display text-xl leading-loose">
                             (أنىَّ يشبه الخالق مخلوقه)
                         </p>
                         <p className="mb-6">
@@ -373,7 +373,7 @@ const Hanafi: React.FC = () => {
                         <p className="mb-6">
                             Abou Hanifah était de ceux qui exemptaient Allah de la voix, des lettres et de la langue. Il a en effet précisé que la parole de Allah qui est Son attribut propre à Son Être de toute éternité, exempt de début et de fin, n’est pas composée de lettres et n’est pas une voix. Il a dit dans son livre Al-Fiqhou l-‘Absat ce qui suit :
                         </p>
-                        <p lang="ar" dir="rtl" className="mb-4 text-center font-amiri text-xl leading-loose">
+                        <p lang="ar" dir="rtl" className="mb-4 text-center font-display text-xl leading-loose">
                             (واللهُ يتكلّم بكلام لا يشبهُ كلامَنا نحن نتكلّم بالآلات من المخارج والحروف والله متكلّم بلا آلةٍ ولا حرفٍ، فصفاته غير مخلوقة ولا مُحْدثة، والتغير والاختلاف في الأحوال يحدث في المخلوقين، ومن قال إنها مُحدثة أو مخلوقة أو توقف أو شك فهو كافر)
                         </p>
                         <p className="mb-6">
@@ -388,7 +388,7 @@ const Hanafi: React.FC = () => {
                         <p className="mb-6">
                             L’imam de l’école hanafite, qui est l’un des savants du Salaf les plus réputés a dit :
                         </p>
-                        <p lang="ar" dir="rtl" className="mb-4 text-center font-amiri text-xl leading-loose">
+                        <p lang="ar" dir="rtl" className="mb-4 text-center font-display text-xl leading-loose">
                             (واللهُ تعلى يُرى في الآخرة ويراه المؤمنون وهم في الجنّة يأعين رؤوسهم بلا تشبيه ولا كميّة ولا يكون بينه وبين خلقه مسافة)
                         </p>
                         <p className="mb-6">
@@ -400,7 +400,7 @@ const Hanafi: React.FC = () => {
                         <p className="mb-6">
                             Il a dit également dans son livre Al-Wasiyyah page 4 :
                         </p>
-                        <p lang="ar" dir="rtl" className="mb-4 text-center font-amiri text-xl leading-loose">
+                        <p lang="ar" dir="rtl" className="mb-4 text-center font-display text-xl leading-loose">
                             (ولقاء الله تعالى لأهل الجنّة بلا كيف ولا تشبيه ولا جهةٍ حقّ)
                         </p>
                         <p className="mb-6">
@@ -434,7 +434,7 @@ const Hanafi: React.FC = () => {
                         <p className="mb-4">
                             1. <b><u>des versets explicites</u></b> : ce sont les versets qui n’admettent qu’un seul sens du point de vue de la langue, ou encore ceux dont le sens qui est visé a été clairement connu. C’est le cas de la parole de Allah :
                         </p>
-                        <p lang="ar" dir="rtl" className="mb-4 text-center font-amiri text-xl leading-loose">
+                        <p lang="ar" dir="rtl" className="mb-4 text-center font-display text-xl leading-loose">
                             ﴿لَيْسَ كَمِثْلِهِ شَىْء﴾
                         </p>
                         <p className="mb-4 italic text-center">
@@ -446,7 +446,7 @@ const Hanafi: React.FC = () => {
                         <p className="mb-4">
                             1. <b><u>et des versets non explicites</u></b> : ce qui est non explicite, c’est ce qui admet plusieurs sens selon la langue, et qui nécessite donc une exégèse pour lui donner le sens qui est en conformité avec les ‘ayah explicites. C’est le cas de la parole de Allah :
                         </p>
-                        <p lang="ar" dir="rtl" className="mb-4 text-center font-amiri text-xl leading-loose">
+                        <p lang="ar" dir="rtl" className="mb-4 text-center font-display text-xl leading-loose">
                             ﴿الرَّحْمَنُ عَلَى الْعَرْشِ اسْتَوَى﴾
                         </p>
                         <p className="mb-4 italic text-center">
@@ -464,7 +464,7 @@ const Hanafi: React.FC = () => {
                         <p className="mb-4">
                             Parmi les précieuses paroles que l’imam Abou Hanifah a dites au sujet de l’exemption de Allah de toute caractéristique des corps, il y a sa parole dans son livre Al-Fiqhou l-‘Akbar :
                         </p>
-                        <p lang="ar" dir="rtl" className="mb-4 text-center font-amiri text-xl leading-loose">
+                        <p lang="ar" dir="rtl" className="mb-4 text-center font-display text-xl leading-loose">
                             يدُهُ صفتُهُ بلا كيف
                         </p>
                         <p className="mb-4 italic text-center">
@@ -479,7 +479,7 @@ const Hanafi: React.FC = () => {
                         <p className="mb-4">
                             L'Imam Abou Hanifah a dit :
                         </p>
-                        <p lang="ar" dir="rtl" className="mb-4 text-center font-amiri text-xl leading-loose">
+                        <p lang="ar" dir="rtl" className="mb-4 text-center font-display text-xl leading-loose">
                             له يد ووجه ونفس كما ذكر الله تعالى في القرءان فما ذكره الله تعالى في القرءان من ذكر الوجه واليد والنفس فهو له صفات بلا كيف ولا يقال إن يده قدرته أو نعمته لأن فيه إبطال الصفة وهو قول أهل القدر والاعتزال ولكن يده صفة بلا كيف
                         </p>
                         <p className="mb-4 italic">
@@ -498,7 +498,7 @@ const Hanafi: React.FC = () => {
                         <p className="mb-4">
                             L’imam Abou Hanifah a dit dans le livre Al-Wasiyyah :
                         </p>
-                        <p lang="ar" dir="rtl" className="mb-4 text-center font-amiri text-xl leading-loose">
+                        <p lang="ar" dir="rtl" className="mb-4 text-center font-display text-xl leading-loose">
                             (نقِرُّ بأنّ اللهَ على العرش استوى من غير أن يكونَ لهُ حاجةٌ إليه واستقرارٌ عليه وهو الحافظُ لِلعرشِ وغيرِ العرشِ من غير احتياجٍ ، فلو كان محتاجًا لما قدَرَ على إِيجادِ العالم وتدبيره كالمخلوق ولو كان محتاجًا إلى الجلوس والقرار فقَبلَ خلقِ العرش أينَ كان اللهُ تعالى عن ذلك علوّا كبيرًا)
 
                         </p>
@@ -639,7 +639,7 @@ const Hanafi: React.FC = () => {
                         <p className="mb-4">
                             Le Chaykh Moulla ^Aliyy Al-Qari Al-Hanafiyy mort en 1014 de l’Hégire a dit dans le Commentaire de Al-Fiqhou l-‘Akbar après qu’il a terminé le commentaire des Raça’il de l’Imam Abou Hanifah p 196, 197 : « Quant à Son ^oulouww, ta^ala, par rapport à Ses créatures qui est tiré de ce qui est de l’ordre de la parole de Allah ta^ala :
                         </p>
-                        <p lang="ar" dir="rtl" className="mb-4 text-center font-amiri text-xl leading-loose">
+                        <p lang="ar" dir="rtl" className="mb-4 text-center font-display text-xl leading-loose">
                             ﴿وَهُوَ القَاهِرُ فَوْقَ عِبَادِهِ﴾
                         </p>
                         <p className="mb-4 italic text-center">
@@ -684,7 +684,7 @@ const Hanafi: React.FC = () => {
                     transition={{ delay: 0.6 }}
                     className="mb-16"
                 >
-                    <h3 className="text-2xl font-bold text-emerald-900 dark:text-emerald-300 mb-8 font-amiri text-center">
+                    <h3 className="text-2xl font-bold text-emerald-900 dark:text-emerald-300 mb-8 font-display text-center">
                         Sources et Méthodologie de l'École Hanafite
                     </h3>
                     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -695,7 +695,7 @@ const Hanafi: React.FC = () => {
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ delay: 0.7 + index * 0.1 }}
                                 whileHover={{ y: -5 }}
-                                className="bg-white/80 dark:bg-gray-800/80 rounded-xl p-6 shadow-lg border border-amber-200 dark:border-emerald-800"
+                                className="bg-white/80 dark:bg-gray-800/80 rounded-xl p-6 shadow-lg border border-line"
                             >
                                 <div className="w-12 h-12 rounded-full bg-amber-100 dark:bg-emerald-800 flex items-center justify-center mb-4">
                                     <principle.icon className="h-6 w-6 text-amber-600 dark:text-emerald-400" />
@@ -718,12 +718,12 @@ const Hanafi: React.FC = () => {
                     transition={{ delay: 0.8 }}
                     className="mb-16"
                 >
-                    <h3 className="text-2xl font-bold text-emerald-900 dark:text-emerald-300 mb-8 font-amiri text-center">
+                    <h3 className="text-2xl font-bold text-emerald-900 dark:text-emerald-300 mb-8 font-display text-center">
                         Particularités de l'École Hanafite
                     </h3>
                     <div className="grid md:grid-cols-2 gap-6">
-                        <div className="bg-gradient-to-br from-amber-50 to-emerald-50 dark:from-gray-800 dark:to-emerald-900/50 rounded-xl p-6 shadow-lg border border-amber-200 dark:border-emerald-800">
-                            <h4 className="text-xl font-bold text-emerald-800 dark:text-emerald-300 mb-3 font-amiri">
+                        <div className="bg-ivory rounded-xl p-6 shadow-lg border border-line">
+                            <h4 className="text-xl font-bold text-emerald-800 dark:text-emerald-300 mb-3 font-display">
                                 Flexibilité et Adaptabilité
                             </h4>
                             <p className="text-gray-700 dark:text-gray-300">
@@ -732,8 +732,8 @@ const Hanafi: React.FC = () => {
                                 et à l'intérêt public.
                             </p>
                         </div>
-                        <div className="bg-gradient-to-br from-amber-50 to-emerald-50 dark:from-gray-800 dark:to-emerald-900/50 rounded-xl p-6 shadow-lg border border-amber-200 dark:border-emerald-800">
-                            <h4 className="text-xl font-bold text-emerald-800 dark:text-emerald-300 mb-3 font-amiri">
+                        <div className="bg-ivory rounded-xl p-6 shadow-lg border border-line">
+                            <h4 className="text-xl font-bold text-emerald-800 dark:text-emerald-300 mb-3 font-display">
                                 Rayonnement Géographique
                             </h4>
                             <p className="text-gray-700 dark:text-gray-300">
@@ -754,7 +754,7 @@ const Hanafi: React.FC = () => {
                     transition={{ delay: 0.9 }}
                     className="mt-16"
                 >
-                    <h3 className="text-2xl font-bold text-emerald-900 dark:text-emerald-300 mb-6 font-amiri text-center">
+                    <h3 className="text-2xl font-bold text-emerald-900 dark:text-emerald-300 mb-6 font-display text-center">
                         Découvrir les Autres Écoles
                     </h3>
                     <div className="grid md:grid-cols-3 gap-6">
@@ -768,9 +768,9 @@ const Hanafi: React.FC = () => {
                                 className="group"
                             >
                                 <Link to={madhab.path} className="block h-full">
-                                    <div className="relative h-full bg-gradient-to-br from-white to-amber-50 dark:from-gray-800 dark:to-emerald-900/50 rounded-xl shadow-lg overflow-hidden border border-amber-200 dark:border-emerald-800 transition-all duration-300 hover:shadow-xl">
+                                    <div className="relative h-full bg-ivory rounded-xl shadow-lg overflow-hidden border border-line transition-all duration-300 hover:shadow-card">
                                         <div className={`bg-gradient-to-r ${madhab.color} p-4 text-white`}>
-                                            <h4 className="text-xl font-bold font-amiri">{madhab.name}</h4>
+                                            <h4 className="text-xl font-bold font-display">{madhab.name}</h4>
                                             <p className="text-sm opacity-90">{madhab.nameArabic}</p>
                                         </div>
                                         <div className="p-4">
@@ -798,11 +798,11 @@ const Hanafi: React.FC = () => {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: 1.1 }}
-                    className="mt-16 bg-gradient-to-r from-amber-100 to-emerald-100 dark:from-emerald-900/30 dark:to-amber-900/30 rounded-2xl p-8 text-center shadow-lg"
+                    className="mt-16 bg-green-soft rounded-card p-8 text-center shadow-lg"
                 >
                     <div className="max-w-2xl mx-auto">
                         <div className="text-5xl mb-4 text-amber-600 dark:text-amber-400">"</div>
-                        <p className="text-xl text-gray-800 dark:text-gray-200 font-amiri leading-relaxed mb-4">
+                        <p className="text-xl text-gray-800 dark:text-gray-200 font-display leading-relaxed mb-4">
                             La science est plus précieuse que l'argent, car la science te protège tandis que tu dois protéger l'argent.
                         </p>
                         <p className="text-sm text-emerald-700 dark:text-emerald-400">
@@ -814,7 +814,7 @@ const Hanafi: React.FC = () => {
 
             <footer className="bg-emerald-900 dark:bg-emerald-950 text-white py-12 mt-16">
                 <div className="container mx-auto px-4 text-center">
-                    <p className="text-emerald-300 mb-4 font-amiri text-xl">
+                    <p className="text-emerald-300 mb-4 font-display text-xl">
                         "Et dis: Seigneur, augmente mes connaissances."
                     </p>
                     <p className="text-emerald-200 text-sm">

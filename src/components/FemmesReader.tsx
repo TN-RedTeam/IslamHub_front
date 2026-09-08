@@ -8,7 +8,7 @@ import type { FemmesChapitre, FemmesSegment } from '../types';
 const Segment: React.FC<{ seg: FemmesSegment }> = ({ seg }) => (
   <div className="space-y-2">
     {seg.texte_arabe && (
-      <p lang="ar" dir="rtl" className="font-amiri text-2xl leading-loose text-emerald-900 dark:text-emerald-200 text-center">
+      <p lang="ar" dir="rtl" className="font-display text-2xl leading-loose text-emerald-900 dark:text-emerald-200 text-center">
         {seg.texte_arabe}
       </p>
     )}

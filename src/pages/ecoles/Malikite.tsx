@@ -19,17 +19,17 @@ const CollapsibleSection: React.FC<SectionProps> = ({ title, icon, children, def
         <m.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden border border-amber-200 dark:border-emerald-800"
+            className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden border border-line"
         >
             <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="w-full px-6 py-4 flex items-center justify-between bg-gradient-to-r from-amber-50 to-emerald-50 dark:from-emerald-900/30 dark:to-amber-900/30 hover:from-amber-100 hover:to-emerald-100 dark:hover:from-emerald-900/50 dark:hover:to-amber-900/50 transition-colors"
+                className="w-full px-6 py-4 flex items-center justify-between bg-green-soft hover:from-amber-100 hover:to-emerald-100 dark:hover:from-emerald-900/50 dark:hover:to-amber-900/50 transition-colors"
             >
                 <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-amber-400 to-emerald-500 flex items-center justify-center text-white">
+                    <div className="w-10 h-10 rounded-full bg-green flex items-center justify-center text-white">
                         {icon}
                     </div>
-                    <h3 className="text-xl font-bold text-emerald-800 dark:text-emerald-200 font-amiri">
+                    <h3 className="text-xl font-bold text-emerald-800 dark:text-emerald-200 font-display">
                         {title}
                     </h3>
                 </div>
@@ -127,7 +127,7 @@ const Malikite: React.FC = () => {
     ];
 
     return (
-        <div className="min-h-screen bg-gradient-to-b from-amber-50 to-emerald-50 dark:from-gray-900 dark:to-emerald-950">
+        <div className="min-h-screen bg-ground">
             <m.header
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -141,7 +141,7 @@ const Malikite: React.FC = () => {
                         initial={{ scale: 0.9, rotate: -10 }}
                         animate={{ scale: 1, rotate: 0 }}
                         transition={{ type: "spring", stiffness: 200 }}
-                        className="inline-flex items-center justify-center w-24 h-24 rounded-full bg-white/10 backdrop-blur-sm mb-8 shadow-2xl"
+                        className="inline-flex items-center justify-center w-24 h-24 rounded-full bg-white/10 backdrop-blur-sm mb-8 shadow-card"
                     >
                         <BookOpen className="h-12 w-12 text-white" />
                     </m.div>
@@ -150,7 +150,7 @@ const Malikite: React.FC = () => {
                         initial={{ y: 20, opacity: 0 }}
                         animate={{ y: 0, opacity: 1 }}
                         transition={{ delay: 0.1 }}
-                        className="text-5xl md:text-7xl font-bold text-white mb-6 font-amiri"
+                        className="text-5xl md:text-7xl font-bold text-white mb-6 font-display"
                     >
                         École Malikite
                     </m.h1>
@@ -168,7 +168,7 @@ const Malikite: React.FC = () => {
                         initial={{ y: 20, opacity: 0 }}
                         animate={{ y: 0, opacity: 1 }}
                         transition={{ delay: 0.3 }}
-                        className="text-emerald-300 max-w-2xl mx-auto font-amiri"
+                        className="text-emerald-300 max-w-2xl mx-auto font-display"
                     >
                         Fondée par l'Imam Malik ibn Anas (711-795 EC)
                     </m.p>
@@ -190,12 +190,12 @@ const Malikite: React.FC = () => {
                             animate={{ opacity: 1, scale: 1 }}
                             transition={{ delay: 0.3 + index * 0.1 }}
                             whileHover={{ y: -5 }}
-                            className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-2xl p-6 text-center shadow-xl border border-amber-200 dark:border-emerald-800"
+                            className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-card p-6 text-center shadow-card border border-line"
                         >
-                            <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-gradient-to-br from-amber-400 to-emerald-500 mb-3">
+                            <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-green mb-3">
                                 <stat.icon className="h-6 w-6 text-white" />
                             </div>
-                            <div className="text-2xl font-bold text-amber-800 dark:text-amber-200 font-amiri">
+                            <div className="text-2xl font-bold text-amber-800 dark:text-amber-200 font-display">
                                 {stat.value}
                             </div>
                             <div className="text-sm text-gray-600 dark:text-gray-400 mt-1">
@@ -290,7 +290,7 @@ const Malikite: React.FC = () => {
                         <p className="mb-4">
                             Le livre Al-Mouwatta' (Le Livre rendu facile) de l'Imam Malik est un des ouvrages de référence dans la jurisprudence et le hadith. L'Imam Ach-Chafi^iyy a dit à propos de ce livre :
                         </p>
-                        <p lang="ar" dir="rtl" className="mb-4 text-center font-amiri text-xl leading-loose">
+                        <p lang="ar" dir="rtl" className="mb-4 text-center font-display text-xl leading-loose">
                             (مَا عَلَى وَجْهِ الأرضِ كِتَابٌ بَعْدَ كِتَابِ اللهِ أَكْثَرَ صَوَابًا مِنَ المُوَطَّإِ)
                         </p>
                         <p className="mb-4 italic text-center">
@@ -311,7 +311,7 @@ const Malikite: React.FC = () => {
                         <p className="mb-4">
                             L'Imam Ach-Chafi^iyy a dit au sujet de l'Imam Malik :
                         </p>
-                        <p lang="ar" dir="rtl" className="mb-4 text-center font-amiri text-xl leading-loose">
+                        <p lang="ar" dir="rtl" className="mb-4 text-center font-display text-xl leading-loose">
                             (إِذَا جَاءَ الأَثَرُ فَمَالِكٌ النَّجْمُ)
                         </p>
                         <p className="mb-4 italic">
@@ -324,7 +324,7 @@ const Malikite: React.FC = () => {
                         <p className="mb-4">
                             L'Imam Ach-Chafi^iyy a dit également :
                         </p>
-                        <p lang="ar" dir="rtl" className="mb-4 text-center font-amiri text-xl leading-loose">
+                        <p lang="ar" dir="rtl" className="mb-4 text-center font-display text-xl leading-loose">
                             (مَالِكٌ مُعَلِّمِي)
                         </p>
                         <p className="mb-4 italic">
@@ -355,7 +355,7 @@ const Malikite: React.FC = () => {
                         <p className="mb-4">
                             L'Imam Malik, que Allah l'agrée, a confirmé dans sa croyance que Allah ta^ala existe sans endroit et sans direction. Il a enseigné que Allah n'est pas un corps et qu'Il ne ressemble à aucune de Ses créatures. Il est rapporté de sa part :
                         </p>
-                        <p lang="ar" dir="rtl" className="mb-4 text-center font-amiri text-xl leading-loose">
+                        <p lang="ar" dir="rtl" className="mb-4 text-center font-display text-xl leading-loose">
                             (اللهُ فِي السَّمَاءِ وعِلْمُهُ فِي كُلِّ مَكَانٍ)
                         </p>
                         <p className="mb-4 italic">
@@ -367,7 +367,7 @@ const Malikite: React.FC = () => {
                         <p className="mb-4">
                             Cette parole signifie que Allah a un haut degré et non pas qu'Il serait dans le ciel en tant qu'endroit. Car l'Imam Malik fait partie de ceux qui ont dit :
                         </p>
-                        <p lang="ar" dir="rtl" className="mb-4 text-center font-amiri text-xl leading-loose">
+                        <p lang="ar" dir="rtl" className="mb-4 text-center font-display text-xl leading-loose">
                             (الاسْتِوَاءُ مَعْلُومٌ وَالكَيْفُ غَيْرُ مَعْقُولٍ)
                         </p>
                         <p className="mb-4 italic">
@@ -401,7 +401,7 @@ const Malikite: React.FC = () => {
                     transition={{ delay: 0.6 }}
                     className="mb-16"
                 >
-                    <h3 className="text-2xl font-bold text-emerald-900 dark:text-emerald-300 mb-8 font-amiri text-center">
+                    <h3 className="text-2xl font-bold text-emerald-900 dark:text-emerald-300 mb-8 font-display text-center">
                         Sources et Méthodologie de l'École Malikite
                     </h3>
                     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -412,7 +412,7 @@ const Malikite: React.FC = () => {
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ delay: 0.7 + index * 0.1 }}
                                 whileHover={{ y: -5 }}
-                                className="bg-white/80 dark:bg-gray-800/80 rounded-xl p-6 shadow-lg border border-amber-200 dark:border-emerald-800"
+                                className="bg-white/80 dark:bg-gray-800/80 rounded-xl p-6 shadow-lg border border-line"
                             >
                                 <div className="w-12 h-12 rounded-full bg-amber-100 dark:bg-emerald-800 flex items-center justify-center mb-4">
                                     <source.icon className="h-6 w-6 text-amber-600 dark:text-emerald-400" />
@@ -435,12 +435,12 @@ const Malikite: React.FC = () => {
                     transition={{ delay: 0.8 }}
                     className="mb-16"
                 >
-                    <h3 className="text-2xl font-bold text-emerald-900 dark:text-emerald-300 mb-8 font-amiri text-center">
+                    <h3 className="text-2xl font-bold text-emerald-900 dark:text-emerald-300 mb-8 font-display text-center">
                         Particularités de l'École Malikite
                     </h3>
                     <div className="grid md:grid-cols-2 gap-6">
-                        <div className="bg-gradient-to-br from-amber-50 to-emerald-50 dark:from-gray-800 dark:to-emerald-900/50 rounded-xl p-6 shadow-lg border border-amber-200 dark:border-emerald-800">
-                            <h4 className="text-xl font-bold text-emerald-800 dark:text-emerald-300 mb-3 font-amiri">
+                        <div className="bg-ivory rounded-xl p-6 shadow-lg border border-line">
+                            <h4 className="text-xl font-bold text-emerald-800 dark:text-emerald-300 mb-3 font-display">
                                 L'Amal de Médine
                             </h4>
                             <p className="text-gray-700 dark:text-gray-300">
@@ -449,8 +449,8 @@ const Malikite: React.FC = () => {
                                 la Sunna vivante transmise des compagnons.
                             </p>
                         </div>
-                        <div className="bg-gradient-to-br from-amber-50 to-emerald-50 dark:from-gray-800 dark:to-emerald-900/50 rounded-xl p-6 shadow-lg border border-amber-200 dark:border-emerald-800">
-                            <h4 className="text-xl font-bold text-emerald-800 dark:text-emerald-300 mb-3 font-amiri">
+                        <div className="bg-ivory rounded-xl p-6 shadow-lg border border-line">
+                            <h4 className="text-xl font-bold text-emerald-800 dark:text-emerald-300 mb-3 font-display">
                                 Rayonnement Géographique
                             </h4>
                             <p className="text-gray-700 dark:text-gray-300">
@@ -472,7 +472,7 @@ const Malikite: React.FC = () => {
                     transition={{ delay: 0.9 }}
                     className="mt-16"
                 >
-                    <h3 className="text-2xl font-bold text-emerald-900 dark:text-emerald-300 mb-6 font-amiri text-center">
+                    <h3 className="text-2xl font-bold text-emerald-900 dark:text-emerald-300 mb-6 font-display text-center">
                         Découvrir les Autres Écoles
                     </h3>
                     <div className="grid md:grid-cols-3 gap-6">
@@ -486,9 +486,9 @@ const Malikite: React.FC = () => {
                                 className="group"
                             >
                                 <Link to={madhab.path} className="block h-full">
-                                    <div className="relative h-full bg-gradient-to-br from-white to-amber-50 dark:from-gray-800 dark:to-emerald-900/50 rounded-xl shadow-lg overflow-hidden border border-amber-200 dark:border-emerald-800 transition-all duration-300 hover:shadow-xl">
+                                    <div className="relative h-full bg-ivory rounded-xl shadow-lg overflow-hidden border border-line transition-all duration-300 hover:shadow-card">
                                         <div className={`bg-gradient-to-r ${madhab.color} p-4 text-white`}>
-                                            <h4 className="text-xl font-bold font-amiri">{madhab.name}</h4>
+                                            <h4 className="text-xl font-bold font-display">{madhab.name}</h4>
                                             <p className="text-sm opacity-90">{madhab.nameArabic}</p>
                                         </div>
                                         <div className="p-4">
@@ -516,11 +516,11 @@ const Malikite: React.FC = () => {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: 1.1 }}
-                    className="mt-16 bg-gradient-to-r from-amber-100 to-emerald-100 dark:from-emerald-900/30 dark:to-amber-900/30 rounded-2xl p-8 text-center shadow-lg"
+                    className="mt-16 bg-green-soft rounded-card p-8 text-center shadow-lg"
                 >
                     <div className="max-w-2xl mx-auto">
                         <div className="text-5xl mb-4 text-amber-600 dark:text-amber-400">"</div>
-                        <p className="text-xl text-gray-800 dark:text-gray-200 font-amiri leading-relaxed mb-4">
+                        <p className="text-xl text-gray-800 dark:text-gray-200 font-display leading-relaxed mb-4">
                             La science se trouve dans les cœurs, pas dans les livres.
                         </p>
                         <p className="text-sm text-emerald-700 dark:text-emerald-400">
@@ -532,7 +532,7 @@ const Malikite: React.FC = () => {
 
             <footer className="bg-emerald-900 dark:bg-emerald-950 text-white py-12 mt-16">
                 <div className="container mx-auto px-4 text-center">
-                    <p className="text-emerald-300 mb-4 font-amiri text-xl">
+                    <p className="text-emerald-300 mb-4 font-display text-xl">
                         "Dieu élèvera en degrés ceux d'entre vous qui ont cru et ceux qui ont reçu la science."
                     </p>
                     <p className="text-emerald-200 text-sm">
