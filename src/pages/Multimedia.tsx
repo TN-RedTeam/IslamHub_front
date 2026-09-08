@@ -4,6 +4,7 @@ import { Search, X, Loader2 } from 'lucide-react';
 import { dataService } from '../services/DataService';
 import { FilterSelect } from '../components/FilterSelect';
 import { VideoCard } from '../components/VideoCard';
+import { PageHeader } from '../components/PageHeader';
 import type { Multimedia as MultimediaType, MultimediaCategory } from '../types';
 import { usePageTitle } from '../hooks/usePageTitle';
 
@@ -93,29 +94,14 @@ export const Multimedia: React.FC = () => {
   return (
     <div className="min-h-screen bg-ground">
       {/* En-tête */}
-      <m.header
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="relative py-20 bg-emerald-800 dark:bg-emerald-950 overflow-hidden"
-      >
-        <div className="absolute inset-0 opacity-20 bg-arabesque" />
-        <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-amber-50 dark:from-gray-900" />
+      <PageHeader
+        eyebrow="Multimédia"
+        title="Média Islamique"
+        subtitle="Apprenez à travers notre collection de vidéos"
+        crumbs={[{ label: 'Accueil', to: '/' }, { label: 'Multimédia' }]}
+      />
 
-        <div className="relative container mx-auto px-4 text-center">
-          <m.h1
-            initial={{ scale: 0.9 }}
-            animate={{ scale: 1 }}
-            className="text-5xl md:text-6xl font-bold text-white mb-6 font-display"
-          >
-            Média Islamique
-          </m.h1>
-          <p className="text-xl text-emerald-200 max-w-3xl mx-auto">
-            Apprenez à travers notre collection de vidéos
-          </p>
-        </div>
-      </m.header>
-
-      <main className="container mx-auto px-4 py-12 -mt-12 relative z-10">
+      <main className="container mx-auto px-4 py-12 relative z-10">
         {/* Barre de recherche + filtre catégorie */}
         <m.section
           initial={{ opacity: 0 }}

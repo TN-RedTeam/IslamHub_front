@@ -7,6 +7,7 @@ import {
 } from 'lucide-react';
 import { dataService } from '../services/DataService';
 import { FilterSelect } from '../components/FilterSelect';
+import { PageHeader } from '../components/PageHeader';
 import type { Coran as CoranType } from '../types';
 import { usePageTitle } from '../hooks/usePageTitle';
 
@@ -364,41 +365,29 @@ export const Corans: React.FC = () => {
       />
 
       {/* Header */}
-      <m.header
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="relative py-20 bg-emerald-800 dark:bg-emerald-950 overflow-hidden"
+      <PageHeader
+        eyebrow="Coran"
+        title="Le Noble Coran"
+        subtitle="Explorez les versets du Livre Sacré"
+        crumbs={[{ label: 'Accueil', to: '/' }, { label: 'Coran' }]}
       >
-        <div className="absolute inset-0 opacity-20 bg-arabesque" />
-        <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-amber-50 dark:from-gray-900" />
-
-        <div className="relative container mx-auto px-4 text-center">
-          <m.h1
-            initial={{ scale: 0.9 }}
-            animate={{ scale: 1 }}
-            className="text-5xl md:text-6xl font-bold text-white mb-6 font-display"
-          >
-            Le Noble Coran
-          </m.h1>
-          <p className="text-xl text-emerald-200 max-w-3xl mx-auto">
-            Explorez les versets du Livre Sacré
-          </p>
+        <div className="flex items-center gap-3 flex-wrap">
+          {hasSearched && (
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-green-soft px-3 py-1 text-sm text-green-deep tabular-nums">
+              <Eye className="h-4 w-4" />
+              {totalCount} verset{totalCount > 1 ? 's' : ''}
+            </span>
+          )}
           <Link
             to="/coran/sourates"
-            className="inline-flex items-center gap-2 mt-6 px-5 py-2.5 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white font-medium transition-colors"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-line text-green-deep hover:bg-green-soft font-medium transition-colors"
           >
             <BookOpen className="h-5 w-5" /> Exégèse des sourates
           </Link>
-          {hasSearched && (
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full mt-6">
-              <Eye className="h-4 w-4 text-emerald-300" />
-              <span className="text-emerald-200">{totalCount} verset{totalCount > 1 ? 's' : ''} trouvé{totalCount > 1 ? 's' : ''}</span>
-            </div>
-          )}
         </div>
-      </m.header>
+      </PageHeader>
 
-      <main className="container mx-auto px-4 py-12 -mt-12 relative z-10">
+      <main className="container mx-auto px-4 py-12 relative z-10">
 
         {/* Toolbar (shown only after first search) */}
         {hasSearched && (

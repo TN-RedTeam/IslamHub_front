@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { m } from 'framer-motion';
-import { Loader2, Sparkles } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
 import { dataService } from '../services/DataService';
 import { FemmesReader } from '../components/FemmesReader';
+import { PageHeader } from '../components/PageHeader';
 import type { FemmesChapitre } from '../types';
 
 export const Femmes: React.FC = () => {
@@ -18,29 +18,12 @@ export const Femmes: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-ground">
-      <m.header
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="relative py-20 bg-emerald-800 dark:bg-emerald-950 overflow-hidden"
-      >
-        <div className="absolute inset-0 opacity-20 bg-arabesque" />
-        <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-amber-50 dark:from-gray-900" />
-        <div className="relative container mx-auto px-4 text-center">
-          <m.div
-            initial={{ scale: 0.9 }}
-            animate={{ scale: 1 }}
-            className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-white/10 backdrop-blur-sm mb-6"
-          >
-            <Sparkles className="h-10 w-10 text-white" />
-          </m.div>
-          <h1 className="text-5xl md:text-6xl font-bold text-white mb-6 font-display">
-            Les femmes en Islam
-          </h1>
-          <p className="text-xl text-emerald-200 max-w-3xl mx-auto">
-            Les règles et prescriptions spécifiques aux femmes
-          </p>
-        </div>
-      </m.header>
+      <PageHeader
+        eyebrow="Fiqh"
+        title="Les femmes en Islam"
+        subtitle="Les règles et prescriptions spécifiques aux femmes"
+        crumbs={[{ label: 'Accueil', to: '/' }, { label: 'Les femmes en Islam' }]}
+      />
 
       <main className="container mx-auto px-4 py-12 max-w-6xl">
         {loading ? (

@@ -1,12 +1,13 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { m, AnimatePresence } from 'framer-motion';
 import { Link, useSearchParams } from 'react-router-dom';
-import { Search, X, Star, ChevronRight, Loader, GraduationCap, GraduationCap as SavantIcon, Users } from 'lucide-react';
+import { Search, X, Star, ChevronRight, Loader, GraduationCap as SavantIcon, Users } from 'lucide-react';
 import { dataService } from '../services/DataService';
 import { FilterSelect } from '../components/FilterSelect';
 import { Markdown } from '../components/Markdown';
 import { EcoleBadge } from '../components/EcoleBadge';
 import { SavantHover } from '../components/SavantHover';
+import { PageHeader } from '../components/PageHeader';
 import type { Parole } from '../types';
 
 const ParoleCard: React.FC<{ parole: Parole; onClick: () => void }> = ({ parole, onClick }) => (
@@ -261,26 +262,19 @@ export const Paroles: React.FC = () => {
 
   return (
       <div className="min-h-screen bg-ground">
-        <m.header
-            initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }}
-            className="relative py-20 bg-emerald-800 dark:bg-emerald-950 overflow-hidden">
-          <div className="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/arabesque.png')]" />
-          <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-amber-50 dark:from-gray-900" />
-          <div className="relative container mx-auto px-4 text-center">
-            <m.div initial={{ scale: 0.9 }} animate={{ scale: 1 }}
-                className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-white/10 backdrop-blur-sm mb-6">
-              <GraduationCap className="h-10 w-10 text-white" />
-            </m.div>
-            <h1 className="text-5xl md:text-6xl font-bold text-white mb-6 font-display">Paroles de savants</h1>
-            <p className="text-xl text-emerald-200 max-w-3xl mx-auto">Explorez les paroles des savants de Ahlu s-Sounnah</p>
-            <Link to="/savants"
-              className="inline-flex items-center gap-2 mt-6 px-5 py-2.5 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white font-medium transition-colors">
-              <Users className="h-5 w-5" /> Découvrir les savants
-            </Link>
-          </div>
-        </m.header>
+        <PageHeader
+            eyebrow="Savants"
+            title="Paroles de savants"
+            subtitle="Explorez les paroles des savants de Ahlu s-Sounnah"
+            crumbs={[{ label: 'Accueil', to: '/' }, { label: 'Paroles' }]}
+        >
+          <Link to="/savants"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-line text-green-deep hover:bg-green-soft font-medium transition-colors">
+            <Users className="h-5 w-5" /> Découvrir les savants
+          </Link>
+        </PageHeader>
 
-        <main className="container mx-auto px-4 py-12 -mt-12 relative z-10">
+        <main className="container mx-auto px-4 py-12 relative z-10">
           <m.section
               initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }}
               className="bg-white dark:bg-gray-800 rounded-card shadow-card p-6 mb-12 border border-line">

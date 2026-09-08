@@ -4,6 +4,7 @@ import { m, AnimatePresence } from 'framer-motion';
 import { Search, X, Star, ChevronRight, Loader, SlidersHorizontal } from 'lucide-react';
 import { dataService } from '../services/DataService';
 import { FilterSelect } from '../components/FilterSelect';
+import { PageHeader } from '../components/PageHeader';
 import { slugify } from '../utils/slug';
 import type { Hadith as HadithType } from '../types';
 
@@ -307,21 +308,14 @@ export const Hadiths: React.FC = () => {
 
   return (
       <div className="min-h-screen bg-ground">
-        <m.header
-            initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }}
-            className="relative py-20 bg-emerald-800 dark:bg-emerald-950 overflow-hidden">
-          <div className="absolute inset-0 opacity-20 bg-arabesque" />
-          <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-amber-50 dark:from-gray-900" />
-          <div className="relative container mx-auto px-4 text-center">
-            <m.h1 initial={{ scale: 0.9 }} animate={{ scale: 1 }}
-                className="text-5xl md:text-6xl font-bold text-white mb-6 font-display">
-              Hadiths du Prophète ﷺ
-            </m.h1>
-            <p className="text-xl text-emerald-200 max-w-3xl mx-auto">Explorez les Hadiths à travers cette page</p>
-          </div>
-        </m.header>
+        <PageHeader
+            eyebrow="Sunna"
+            title="Hadiths du Prophète ﷺ"
+            subtitle="Explorez les Hadiths à travers cette page"
+            crumbs={[{ label: 'Accueil', to: '/' }, { label: 'Hadiths' }]}
+        />
 
-        <main className="container mx-auto px-4 py-12 -mt-12 relative z-10">
+        <main className="container mx-auto px-4 py-12 relative z-10">
           <m.section
               initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }}
               className="bg-white dark:bg-gray-800 rounded-card shadow-card p-6 mb-12 border border-line">
