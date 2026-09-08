@@ -1,12 +1,11 @@
-import { HashRouter as Router, Routes, Route } from 'react-router-dom';
+import { HashRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { LazyMotion, domAnimation } from 'framer-motion';
 import { Navigation } from './components/Navigation';
 import { PwaUpdater } from './components/PwaUpdater';
 import { Home } from './pages/Home';
 import { Hadiths } from './pages/Hadiths';
 import { HadithPage } from './pages/HadithPage';
-import { Dhikrs } from './pages/Dhikrs';
-import { Douaas } from './pages/Douaas';
+import { Invocations } from './pages/Invocations';
 import { Paroles } from './pages/Paroles';
 import { Savants } from './pages/Savants';
 import { SavantPage } from './pages/SavantPage';
@@ -47,8 +46,11 @@ function App() {
                 <Route path="/coran/sourates/:slug" element={<SouratePage />} />
                 <Route path="/hadiths" element={<Hadiths />} />
                 <Route path="/hadiths/:id/:slug" element={<HadithPage />} />
-                <Route path="/dhikrs" element={<Dhikrs />} />
-                <Route path="/douaas" element={<Douaas />} />
+                {/* Rubrique unifiée Invocations & Évocations (ex-douaas + ex-dhikrs) */}
+                <Route path="/invocations" element={<Invocations />} />
+                {/* Redirections des anciennes URL pour ne pas casser les liens */}
+                <Route path="/douaas" element={<Navigate to="/invocations" replace />} />
+                <Route path="/dhikrs" element={<Navigate to="/invocations" replace />} />
                 <Route path="/paroles" element={<Paroles />} />
                 <Route path="/savants" element={<Savants />} />
                 <Route path="/savants/:slug" element={<SavantPage />} />

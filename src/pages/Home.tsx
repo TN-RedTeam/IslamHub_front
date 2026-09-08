@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Book, BookOpen, Heart, Wind, GraduationCap, Video, Moon, Sun, Loader2 } from 'lucide-react';
+import { Book, BookOpen, Heart, GraduationCap, Video, Moon, Sun, Loader2 } from 'lucide-react';
 import { dataService } from '../services/DataService';
 import { usePageTitle } from '../hooks/usePageTitle';
 import { BISMILLAH } from '../constants/bismillah';
-import type { Hadith, Douaa, Coran } from '../types';
+import type { Hadith, Invocation, Coran } from '../types';
 
 interface SiteStats { hadiths: number; paroles: number; douaas: number; dhikrs: number; videos: number; coran: number; }
 
-const isNightDouaa = (d: Douaa | null): boolean => (d?.tag ?? '').toLowerCase().includes('nuit');
+const isNightDouaa = (d: Invocation | null): boolean => (d?.tag ?? '').toLowerCase().includes('nuit');
 const getDayOfYear = (): number => {
   const t = new Date();
   return Math.floor((t.getTime() - new Date(t.getFullYear(), 0, 0).getTime()) / 86400000);
@@ -31,7 +31,7 @@ export const Home: React.FC = () => {
   usePageTitle();
   const [stats, setStats] = useState<SiteStats>({ hadiths: 0, paroles: 0, douaas: 0, dhikrs: 0, videos: 0, coran: 0 });
   const [dailyHadith, setDailyHadith] = useState<Hadith | null>(null);
-  const [dailyDouaa, setDailyDouaa] = useState<Douaa | null>(null);
+  const [dailyDouaa, setDailyDouaa] = useState<Invocation | null>(null);
   const [dailyVerse, setDailyVerse] = useState<Coran | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -42,7 +42,7 @@ export const Home: React.FC = () => {
         const day = getDayOfYear();
         const [s, h, d, v] = await Promise.all([
           dataService.getStats(), dataService.getDailyHadith(day),
-          dataService.getDailyDouaa(day), dataService.getDailyCoran(day),
+          dataService.getDailyInvocation(day, 1), dataService.getDailyCoran(day),
         ]);
         setStats(s); setDailyHadith(h); setDailyDouaa(d); setDailyVerse(v);
       } catch (e) { console.error('Error fetching home data:', e); }
@@ -53,8 +53,7 @@ export const Home: React.FC = () => {
   const ressources = [
     { label: 'Hadiths', value: stats.hadiths, icon: Book, path: '/hadiths' },
     { label: 'Paroles', value: stats.paroles, icon: GraduationCap, path: '/paroles' },
-    { label: 'Douaas', value: stats.douaas, icon: Heart, path: '/douaas' },
-    { label: 'Dhikrs', value: stats.dhikrs, icon: Wind, path: '/dhikrs' },
+    { label: 'Invocations & Évocations', value: stats.douaas + stats.dhikrs, icon: Heart, path: '/invocations' },
     { label: 'Vidéos', value: stats.videos, icon: Video, path: '/multimedia' },
     { label: 'Versets', value: stats.coran, icon: BookOpen, path: '/coran' },
   ];
@@ -106,10 +105,10 @@ export const Home: React.FC = () => {
             </Link>
 
             {/* Douaa */}
-            <Link to="/douaas" className={`${cardBase} group`}>
+            <Link to="/invocations" className={`${cardBase} group`}>
               <div className="flex items-center gap-3">
                 <span className="w-10 h-10 rounded-card bg-green-soft text-green grid place-items-center shrink-0">{isNightDouaa(dailyDouaa) ? <Moon className="w-5 h-5" /> : <Sun className="w-5 h-5" />}</span>
-                <span><span className="block font-display font-semibold text-green-deep leading-tight">{isNightDouaa(dailyDouaa) ? 'Douʿā\' de la nuit' : 'Douʿā\' du jour'}</span>
+                <span><span className="block font-display font-semibold text-green-deep leading-tight">{isNightDouaa(dailyDouaa) ? 'Invocation de la nuit' : 'Invocation du jour'}</span>
                   {dailyDouaa?.sujet && <span className="block text-xs text-muted line-clamp-1">{dailyDouaa.sujet}</span>}</span>
               </div>
               {dailyDouaa?.texte_arabe && <p className="font-arabic text-xl text-ink leading-loose line-clamp-3" lang="ar" dir="rtl">{dailyDouaa.texte_arabe}</p>}

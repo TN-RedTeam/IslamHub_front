@@ -35,6 +35,18 @@ export interface Douaa extends BaseText {
   commentaire: string | null;
 }
 
+/** Type d'une entrée de la table unifiée `invocations`. */
+export type InvocationType = 1 | 2; // 1 = invocation (douʿā'), 2 = évocation (dhikr)
+
+/**
+ * Invocation / Évocation — table unifiée (fusion des ex-tables douaas + dhikrs).
+ * `type_id` distingue une invocation (1) d'une évocation (2).
+ */
+export interface Invocation extends BaseText {
+  type_id: InvocationType;
+  commentaire: string | null;
+}
+
 /** Parole de savant (table `paroles`) */
 export interface Parole extends BaseText {
   savant: string;

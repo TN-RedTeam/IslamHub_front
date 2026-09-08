@@ -4,6 +4,8 @@ import type {
   Coran,
   Dhikr,
   Douaa,
+  Invocation,
+  InvocationType,
   Parole,
   Multimedia,
   MultimediaCategory,
@@ -84,8 +86,8 @@ async function rpcSearch<T>(
   return shapeResult<T>(data, page, pageSize);
 }
 
-async function rpcTags(fn: string): Promise<string[]> {
-  const { data, error } = await supabase.rpc(fn);
+async function rpcTags(fn: string, args?: Record<string, unknown>): Promise<string[]> {
+  const { data, error } = await supabase.rpc(fn, args);
   if (error) throw error;
   return (data ?? []) as string[];
 }
@@ -154,6 +156,30 @@ class DataService {
   }
   async getDouaaTags(): Promise<string[]> {
     return rpcTags('tags_douaas');
+  }
+
+  // ============ Invocations & Évocations (fusion douaas + dhikrs) ============
+  // type : 1 = invocation, 2 = évocation, null/undefined = les deux.
+  async searchInvocations(
+    searchTerm: string,
+    tag?: string | null,
+    type?: InvocationType | null,
+    params?: PaginationParams,
+  ): Promise<PaginatedResponse<Invocation>> {
+    return rpcSearch<Invocation>('search_invocations', searchTerm, tag ?? null, 'tag_filter', params ?? LOAD_ALL, {
+      type_filter: type ? String(type) : '',
+    });
+  }
+  async getInvocationTags(type?: InvocationType | null): Promise<string[]> {
+    return rpcTags('tags_invocations', { type_filter: type ? String(type) : '' });
+  }
+  async getInvocationSujets(type?: InvocationType | null): Promise<string[]> {
+    return rpcTags('sujets_invocations', { type_filter: type ? String(type) : '' });
+  }
+  async getDailyInvocation(day: number, type: InvocationType = 1): Promise<Invocation | null> {
+    const { data, error } = await supabase.rpc('daily_invocation', { day, type_filter: String(type) });
+    if (error) throw error;
+    return (data ?? null) as Invocation | null;
   }
 
   // ================= Paroles =================
