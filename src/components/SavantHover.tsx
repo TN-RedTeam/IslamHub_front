@@ -2,15 +2,15 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { dataService } from '../services/DataService';
 import { slugify } from '../utils/slug';
-import type { SavantInfo } from '../types';
+import type { SavantMini } from '../types';
 
-// Cache partagé des savants (chargé une seule fois pour toute la session).
-let cache: Map<string, SavantInfo> | null = null;
-let inflight: Promise<Map<string, SavantInfo>> | null = null;
-function loadSavantsMap(): Promise<Map<string, SavantInfo>> {
+// Cache partagé de TOUS les savants (chargé une seule fois pour la session).
+let cache: Map<string, SavantMini> | null = null;
+let inflight: Promise<Map<string, SavantMini>> | null = null;
+function loadSavantsMap(): Promise<Map<string, SavantMini>> {
   if (cache) return Promise.resolve(cache);
   if (!inflight) {
-    inflight = dataService.getSavants()
+    inflight = dataService.getSavantsMini()
       .then((list) => {
         cache = new Map(list.map((s) => [s.slug, s]));
         return cache;
@@ -31,7 +31,7 @@ function loadSavantsMap(): Promise<Map<string, SavantInfo>> {
  */
 export const SavantHover: React.FC<{ nom: string; className?: string }> = ({ nom, className }) => {
   const slug = slugify(nom);
-  const [info, setInfo] = useState<SavantInfo | null>(null);
+  const [info, setInfo] = useState<SavantMini | null>(null);
   const [pos, setPos] = useState<{ top: number; left: number } | null>(null);
   const ref = useRef<HTMLSpanElement>(null);
 

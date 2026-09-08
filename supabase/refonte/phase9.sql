@@ -59,5 +59,16 @@ returns json language sql stable as $function$
   ) end;
 $function$;
 
+-- Infos légères de TOUS les savants (mini-bio au survol, même sans biographie).
+create or replace function public.savants_mini()
+returns json language sql stable as $function$
+  select coalesce(json_agg(row_to_json(x) order by x.nom), '[]'::json) from (
+    select s.nom, s.slug, e.nom as ecole, s.resume
+    from public.savants s
+    left join public.ecoles e on e.id = s.ecole_id
+  ) x;
+$function$;
+grant execute on function public.savants_mini() to anon, authenticated;
+
 -- Relecture des résumés auto :
 --   select nom, resume from public.savants where resume_auto = true order by nom;

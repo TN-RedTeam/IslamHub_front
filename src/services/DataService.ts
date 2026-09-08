@@ -10,6 +10,7 @@ import type {
   FiqhChapitre,
   FemmesChapitre,
   SavantInfo,
+  SavantMini,
   SavantDetail,
   HadithDetail,
   SourateInfo,
@@ -217,6 +218,11 @@ class DataService {
     const { data, error } = await supabase.rpc('savants_all');
     if (error) throw error;
     return (data ?? []) as SavantInfo[];
+  }
+  async getSavantsMini(): Promise<SavantMini[]> {
+    const { data, error } = await supabase.rpc('savants_mini');
+    if (error) throw error;
+    return (data ?? []) as SavantMini[];
   }
   async getSavantBySlug(slug: string): Promise<SavantDetail | null> {
     const { data, error } = await supabase.rpc('savant_by_slug', { savant_slug: slug });

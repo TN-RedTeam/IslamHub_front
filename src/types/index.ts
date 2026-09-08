@@ -105,6 +105,14 @@ export interface HadithDetail {
   recueils: string | null;
 }
 
+/** Infos légères d'un savant (mini-bio au survol). */
+export interface SavantMini {
+  nom: string;
+  slug: string;
+  ecole: string | null;
+  resume: string | null;
+}
+
 /** Fiche savant détaillée (page /savants/:slug) : bio + paroles + hadiths jugés. */
 export interface SavantDetail {
   savant: {
