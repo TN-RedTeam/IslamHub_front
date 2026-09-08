@@ -2,6 +2,7 @@ import { HashRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
 import { LazyMotion, domAnimation } from 'framer-motion';
 import { Navigation } from './components/Navigation';
 import { PwaUpdater } from './components/PwaUpdater';
+import { SiteFooter } from './components/SiteFooter';
 import { Home } from './pages/Home';
 import { Hadiths } from './pages/Hadiths';
 import { HadithPage } from './pages/HadithPage';
@@ -34,10 +35,10 @@ function App() {
           Mode NON strict : les pages encore en `motion.` continuent de fonctionner. */}
       <LazyMotion features={domAnimation}>
         <Router>
-          <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-200">
+          <div className="min-h-screen bg-ground transition-colors duration-200 flex flex-col">
             <Navigation />
             <PwaUpdater />
-            <main>
+            <main className="flex-1">
               <Routes>
                 {/* Pages principales */}
                 <Route path="/" element={<Home />} />
@@ -69,6 +70,7 @@ function App() {
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </main>
+            <SiteFooter />
           </div>
         </Router>
       </LazyMotion>

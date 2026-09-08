@@ -398,7 +398,7 @@ export const Hadiths: React.FC = () => {
 
           <section className="pb-16">
             {!hasQuery && !showAll ? (
-              <div className="text-center py-20 bg-white/70 dark:bg-gray-800/70 rounded-card border border-line">
+              <div className="text-center py-14 bg-white/70 dark:bg-gray-800/70 rounded-card border border-line">
                 <IconBadge name="search" />
                 <h3 className="text-xl font-bold text-gray-700 dark:text-gray-300 mb-2 font-display">Recherchez un hadith</h3>
                 <p className="text-gray-500 dark:text-gray-400 max-w-md mx-auto mb-6">
@@ -468,12 +468,6 @@ export const Hadiths: React.FC = () => {
           </section>
         </main>
 
-        <footer className="bg-emerald-900 dark:bg-emerald-950 text-white py-12">
-          <div className="container mx-auto px-4 text-center">
-            <p className="text-green-deep mb-4 font-display text-xl">"On n'obéit pas à une créature pour désobéir au Créateur"</p>
-            <p className="text-green-deep">© {new Date().getFullYear()} Collection de Hadiths</p>
-          </div>
-        </footer>
 
         <AnimatePresence>
           {selectedHadith && (

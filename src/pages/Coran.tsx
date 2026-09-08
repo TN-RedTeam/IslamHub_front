@@ -558,7 +558,7 @@ export const Corans: React.FC = () => {
               key="empty-state"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="text-center py-24"
+              className="text-center py-14"
             >
               <div className="max-w-lg mx-auto">
                 <m.div
@@ -670,15 +670,6 @@ export const Corans: React.FC = () => {
         </section>
       </main>
 
-      {/* Footer */}
-      <footer className="bg-emerald-900 dark:bg-emerald-950 text-white py-12">
-        <div className="container mx-auto px-4 text-center">
-          <p className="text-green-deep mb-4 font-display text-xl">
-            "Ceci est le Livre au sujet duquel il n'y a aucun doute"
-          </p>
-          <p className="text-green-deep">© {new Date().getFullYear()} Le Noble Coran</p>
-        </div>
-      </footer>
 
       {/* Modal */}
       <AnimatePresence>

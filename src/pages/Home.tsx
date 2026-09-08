@@ -148,12 +148,6 @@ export const Home: React.FC = () => {
         </div>
       </main>
 
-      <footer className="border-t border-line mt-10 py-10">
-        <div className="max-w-3xl mx-auto px-5 text-center">
-          <p className="font-display italic text-green-deep">«&nbsp;Que l'un de vous apprenne un chapitre de la religion ou l'enseigne lui vaut plus que mille rakʿah surérogatoires.&nbsp;»</p>
-          <p className="text-sm text-muted mt-3">© {new Date().getFullYear()} IslamHub</p>
-        </div>
-      </footer>
     </div>
   );
 };

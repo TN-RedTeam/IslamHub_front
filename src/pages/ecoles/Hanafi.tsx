@@ -707,16 +707,6 @@ const Hanafi: React.FC = () => {
                 </m.section>
             </main>
 
-            <footer className="bg-emerald-900 dark:bg-emerald-950 text-white py-12 mt-16">
-                <div className="container mx-auto px-4 text-center">
-                    <p className="text-green-deep mb-4 font-display text-xl">
-                        "Et dis: Seigneur, augmente mes connaissances."
-                    </p>
-                    <p className="text-green-deep text-sm">
-                        Sourate Ta-Ha, verset 114
-                    </p>
-                </div>
-            </footer>
         </div>
     );
 };

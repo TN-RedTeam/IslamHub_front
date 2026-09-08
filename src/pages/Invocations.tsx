@@ -339,7 +339,7 @@ export const Invocations: React.FC = () => {
                             <button onClick={() => doSearch(searchTerm, selectedTag, activeType)} className="px-6 py-2 bg-green hover:bg-green-deep text-white rounded-lg">Réessayer</button>
                         </div>
                     ) : !hasSearched ? (
-                        <m.div key="empty-state" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center py-24">
+                        <m.div key="empty-state" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center py-14">
                             <div className="max-w-lg mx-auto">
                                 <m.div animate={{ y: [0, -10, 0] }} transition={{ repeat: Infinity, duration: 4, ease: 'easeInOut' }}
                                             className="mx-auto mb-8 w-20 h-20 rounded-full bg-green-soft text-green grid place-items-center motion-reduce:animate-none">

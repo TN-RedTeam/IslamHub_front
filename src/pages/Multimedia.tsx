@@ -284,14 +284,6 @@ export const Multimedia: React.FC = () => {
         </section>
       </main>
 
-      <footer className="bg-emerald-900 dark:bg-emerald-950 text-white py-12">
-        <div className="container mx-auto px-4 text-center">
-          <p className="text-green-deep mb-4 font-display text-xl">
-            "Dieu existe de toute éternité et rien d'autre que Lui n'est de toute éternité"
-          </p>
-          <p className="text-green-deep">© {new Date().getFullYear()} Média Islamique</p>
-        </div>
-      </footer>
     </div>
   );
 };

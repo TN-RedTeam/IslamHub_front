@@ -253,11 +253,6 @@ export const DossierThematique: React.FC = () => {
         )}
       </main>
 
-      <footer className="bg-emerald-900 dark:bg-emerald-950 text-white py-10 mt-8">
-        <div className="container mx-auto px-4 text-center">
-          <p className="text-green-deep font-display">« Rien n'est tel que Lui »</p>
-        </div>
-      </footer>
     </div>
   );
 };
