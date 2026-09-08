@@ -79,11 +79,26 @@ const mdComponents: Components = {
   td: (props) => <td className="border border-line px-3 py-2" {...props} />,
 };
 
+/**
+ * Corrige une erreur de saisie fréquente : une espace collée à l'intérieur des
+ * marqueurs de gras/italique — « **mot ** », « ** mot** », « *mot * » — empêche
+ * CommonMark de rendre l'emphase (le délimiteur fermant ne doit pas être précédé
+ * d'une espace). On repousse ces espaces à l'extérieur des marqueurs pour que
+ * « **Ar-Raḥmān ** » devienne « **Ar-Raḥmān** » (donc effectivement en gras).
+ */
+function fixEmphasisSpacing(md: string): string {
+  return md
+    // Gras : ** ... **  (sur une même ligne, non gourmand)
+    .replace(/\*\*(\s*)([^\n]+?)(\s*)\*\*/g, (_m, lead, core, trail) => `${lead}**${core}**${trail}`)
+    // Italique : * ... *  (on évite de re-toucher les ** déjà normalisés)
+    .replace(/(^|[^*])\*(\s*)([^*\n]+?)(\s*)\*(?!\*)/g, (_m, before, lead, core, trail) => `${before}${lead}*${core}*${trail}`);
+}
+
 /** Composant Markdown réutilisable, style unifié pour tout le site. */
 export const Markdown: React.FC<{ children: string; className?: string }> = ({ children, className }) => (
   <div className={className}>
     <ReactMarkdown remarkPlugins={[remarkGfm]} components={mdComponents}>
-      {children}
+      {fixEmphasisSpacing(children)}
     </ReactMarkdown>
   </div>
 );
