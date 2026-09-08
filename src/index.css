@@ -41,6 +41,13 @@ html {
     text-align: center;
 }
 
+/* Exception Phase 10 : la GRANDE Bismillah de la home est en Amiri (le reste de
+   l'arabe reste Scheherazade New). Placé après la règle ci-dessus pour gagner. */
+.bismillah {
+    font-family: 'Amiri', 'Scheherazade New', serif !important;
+    line-height: 1.7;
+}
+
 /* Notes de bas de page Markdown (remark-gfm génère <section class="footnotes">).
    Rendu discret : petit texte grisé + trait de séparation. Le style s'applique
    ici (et pas via un composant React) car la classe .footnotes est fiable,
