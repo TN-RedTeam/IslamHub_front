@@ -1,23 +1,21 @@
-/* Inter (latin) : la police par défaut du site la référençait mais ne la
-   chargeait pas. On la charge ici pour un rendu latin net et cohérent, l'arabe
-   étant géré par Amiri via la pile de polices (voir tailwind.config.js). */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-/* Scheherazade New : police arabe soignée (essai en cours pour le texte arabe). */
-@import url('https://fonts.googleapis.com/css2?family=Scheherazade+New:wght@400;500;600;700&display=swap');
+/* Phase 11.1 — les polices (EB Garamond titres FR, Newsreader corps, Amiri
+   Bismillah, Scheherazade New arabe) sont chargées via le <link> de index.html. */
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* ── Charte visuelle (Phase 10) — tokens de couleur, mêmes classes en clair/sombre ── */
+/* ── Charte visuelle (Phase 11.1) — tokens définitifs, mêmes classes clair/sombre ──
+   Cartes/panneaux = --surface (blanc pur en clair) ; fond de page = --ground (crème).
+   Le token historique --ivory est aliasé sur --surface pour compat (bg-ivory). */
 :root {
-    --ground: #f4efe4; --ivory: #fffdf8; --ink: #1b241e; --muted: #6a766c; --line: #e7e1d1;
-    --green: #1f5540; --green-deep: #123a2c; --green-soft: #eaf1ec;
-    --gold: #a97d33; --gold-soft: #f4ead2;
+    --ground: #f2ebdd; --surface: #ffffff; --ivory: #ffffff; --ink: #1b2620; --muted: #6a746a; --line: #e5dccb;
+    --green: #1c5a43; --green-deep: #0f3d2e; --green-soft: #e6f0e9; --green-line: #cfe1d6;
+    --gold: #b0872f; --gold-soft: #f2e6cb;
 }
 .dark {
-    --ground: #0e1512; --ivory: #16201b; --ink: #eaf1ec; --muted: #9db0a5; --line: #2a3830;
-    --green: #4bbf98; --green-deep: #a7e5cd; --green-soft: #17241d;
+    --ground: #0e1512; --surface: #161f1a; --ivory: #161f1a; --ink: #eaf1ec; --muted: #9db0a5; --line: #2a3830;
+    --green: #4bbf98; --green-deep: #a7e5cd; --green-soft: #17241d; --green-line: #2f4a3c;
     --gold: #d8b466; --gold-soft: #2a2417;
 }
 @layer base {

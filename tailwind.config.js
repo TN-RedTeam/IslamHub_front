@@ -5,21 +5,22 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        // Phase 10 — charte : titres FR = Fraunces, corps/UI = Newsreader, arabe = Amiri.
-        display: ['Fraunces', 'Georgia', 'serif'],
-        // Amiri en repli pour l'arabe inline non marqué lang="ar".
-        sans: ['Newsreader', 'Amiri', 'Georgia', 'serif'],
-        arabic: ['Amiri', 'serif'],
-        amiri: ['Amiri', 'serif'], // conservé le temps du balayage 10.3
+        // Phase 11.1 — charte définitive : titres FR = EB Garamond, corps/UI = Newsreader,
+        // arabe = Scheherazade New, Bismillah home = Amiri (arabic-display).
+        display: ['"EB Garamond"', 'Georgia', 'serif'],
+        sans: ['Newsreader', 'Georgia', 'serif'],
+        arabic: ['"Scheherazade New"', 'serif'],
+        'arabic-display': ['Amiri', 'serif'], // Bismillah de la home uniquement
       },
       colors: {
-        // ---- Tokens de charte (Phase 10) : pilotés par variables CSS (clair/sombre) ----
+        // ---- Tokens de charte (Phase 11.1) : pilotés par variables CSS (clair/sombre) ----
         ground: 'var(--ground)',
-        ivory: 'var(--ivory)',
+        surface: 'var(--surface)',
+        ivory: 'var(--ivory)', // alias historique de --surface (bg-ivory)
         ink: 'var(--ink)',
         muted: 'var(--muted)',
         line: 'var(--line)',
-        green: { DEFAULT: 'var(--green)', deep: 'var(--green-deep)', soft: 'var(--green-soft)' },
+        green: { DEFAULT: 'var(--green)', deep: 'var(--green-deep)', soft: 'var(--green-soft)', line: 'var(--green-line)' },
         gold: { DEFAULT: 'var(--gold)', soft: 'var(--gold-soft)' },
         // Accents par rubrique (désaturés, identiques clair/sombre)
         ecole: { hanafi: '#b0782e', maliki: '#1f6f66', shafii: '#3c5390', hanbali: '#875073' },
