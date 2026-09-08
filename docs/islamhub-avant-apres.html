@@ -1,0 +1,170 @@
+<title>Avant / Après — Direction visuelle</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Marcellus&family=Spectral:ital,wght@0,400;0,500;0,600;1,400&display=swap">
+<style>
+  :root{
+    --page:#efe9dc;
+    --panel:#f7f3ea;
+    /* APRÈS palette */
+    --ground:#f6f2e8; --surface:#fffefb; --ink:#1a231d; --muted:#697567;
+    --line:#e6e0d0; --green:#1f5540; --green-deep:#123a2c; --gold:#a97d33;
+    /* AVANT palette (le style actuel) */
+    --a-hero:#065f46; --a-amber:#b45309; --a-amber-bg:#fffbeb; --a-emerald-bg:#ecfdf5;
+    --a-star:#f59e0b; --a-line:#fde68a;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--page);color:var(--ink);
+    font-family:Spectral,Georgia,serif;line-height:1.6;-webkit-font-smoothing:antialiased}
+  .shell{max-width:1180px;margin:0 auto;padding:34px 20px 60px}
+  .pagehead{text-align:center;margin-bottom:8px}
+  .kicker{font-family:Spectral,serif;font-size:12px;letter-spacing:.22em;text-transform:uppercase;
+    color:var(--gold);margin:0 0 8px;font-weight:600}
+  .pagehead h1{font-family:Marcellus,serif;font-weight:400;font-size:clamp(26px,4vw,38px);
+    margin:0;color:var(--green-deep);letter-spacing:.01em}
+  .pagehead p{color:var(--muted);max-width:56ch;margin:10px auto 0;font-size:15px}
+
+  .cols{display:grid;grid-template-columns:1fr;gap:22px;margin-top:34px}
+  @media(min-width:900px){.cols{grid-template-columns:1fr 1fr}}
+  .panel{background:var(--panel);border-radius:18px;padding:16px;border:1px solid #e3ddcd}
+  .tag-side{display:flex;align-items:baseline;gap:10px;margin:4px 6px 16px}
+  .tag-side .n{font-family:Marcellus,serif;font-size:15px;letter-spacing:.14em;text-transform:uppercase}
+  .tag-side.before .n{color:#9a8f7a}
+  .tag-side.after  .n{color:var(--green)}
+  .tag-side small{font-size:12.5px;color:var(--muted)}
+
+  /* ---------- AVANT (le style actuel) ---------- */
+  .a-hero{position:relative;overflow:hidden;border-radius:14px;background:var(--a-hero);
+    padding:34px 22px;text-align:center;margin-bottom:16px}
+  .a-hero::after{content:"";position:absolute;inset:0;opacity:.12;
+    background:radial-gradient(circle at 20% 20%,#fff 2px,transparent 3px) 0 0/26px 26px}
+  .a-hero h2{font-family:Amiri,serif;color:#fff;font-size:34px;margin:0;position:relative}
+  .a-hero p{color:#a7f3d0;margin:8px 0 0;position:relative;font-size:14px}
+  .a-card{position:relative;overflow:hidden;border-radius:16px;padding:22px;
+    background:linear-gradient(135deg,var(--a-amber-bg),var(--a-emerald-bg));
+    border:1px solid var(--a-line);box-shadow:0 20px 40px -12px rgba(4,120,87,.35),0 8px 16px rgba(0,0,0,.08)}
+  .a-card .star{color:var(--a-star);font-size:20px;line-height:1}
+  .a-title{font-family:Amiri,serif;font-size:22px;font-weight:700;color:#92400e;margin:0;display:flex;gap:8px;align-items:center}
+  .a-rap{color:#047857;font-style:italic;font-size:13px;margin:6px 0 0}
+  .a-inner{background:#fff;border:1px solid #fde9b8;border-radius:10px;padding:16px;margin:14px 0}
+  .a-ar{font-family:Amiri,serif;font-size:26px;text-align:right;color:#111;margin:0;line-height:1.9}
+  .a-fr{border-left:4px solid #6ee7b7;padding-left:12px;margin:14px 0 0;color:#374151;font-size:14px}
+  .a-fr .lbl{color:#b45309;font-size:12px;display:block;margin-bottom:3px}
+  .a-badge{background:#fef3c7;color:#92400e;border-radius:999px;padding:4px 12px;font-size:12px;font-weight:600}
+  .a-pills{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+  .a-pill{background:#fef3c7;color:#92400e;border-radius:999px;padding:4px 12px;font-size:11px;font-weight:600}
+  .a-more{display:block;text-align:center;color:#059669;font-weight:600;font-size:13px;margin-top:16px}
+
+  /* ---------- APRÈS (proposé) ---------- */
+  .b-head{border-bottom:1px solid var(--line);padding:6px 4px 16px;margin-bottom:18px}
+  .b-eyebrow{font-family:Spectral,serif;font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;
+    color:var(--gold);font-weight:600;margin:0 0 6px}
+  .b-h2{font-family:Marcellus,serif;font-weight:400;font-size:27px;color:var(--green-deep);margin:0;letter-spacing:.01em}
+  .b-crumb{font-size:12.5px;color:var(--muted);margin:8px 0 0}
+  .b-card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:26px;
+    box-shadow:0 1px 2px rgba(26,35,29,.03),0 12px 28px -18px rgba(26,35,29,.18)}
+  .b-top{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;
+    border-bottom:1px solid var(--line);padding-bottom:14px;margin-bottom:18px}
+  .b-title{font-family:Marcellus,serif;font-size:19px;color:var(--green-deep);margin:0;line-height:1.25}
+  .b-src{font-family:Spectral,serif;font-size:12px;letter-spacing:.06em;text-transform:uppercase;
+    color:var(--muted);margin:6px 0 0}
+  .b-auth{flex:none;font-family:Spectral,serif;font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--green);border:1px solid var(--green);border-radius:4px;padding:3px 9px;white-space:nowrap}
+  .b-ar{font-family:Amiri,serif;font-size:30px;text-align:right;color:var(--ink);line-height:2;margin:0}
+  .b-fr{position:relative;margin:20px 0 0;padding-left:18px;font-size:17px;color:var(--ink)}
+  .b-fr::before{content:"";position:absolute;left:0;top:4px;bottom:4px;width:2px;background:var(--gold)}
+  .b-foot{display:flex;align-items:center;gap:14px;margin-top:20px;padding-top:16px;
+    border-top:1px solid var(--line);font-size:12.5px;color:var(--muted)}
+  .b-foot .sep{flex:1}
+  .b-link{font-family:Spectral,serif;color:var(--green);font-weight:600;text-decoration:none;
+    border-bottom:1px solid transparent;font-size:13px}
+  .b-link:hover{border-bottom-color:var(--green)}
+  .b-tags{margin-top:14px;font-size:12.5px;color:var(--muted)}
+  .b-tags a{color:var(--green);text-decoration:none}
+  .b-tags a:hover{text-decoration:underline}
+  a:focus-visible{outline:2px solid var(--green);outline-offset:2px}
+
+  /* legend */
+  .legend{margin-top:34px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:22px 24px}
+  .legend h3{font-family:Marcellus,serif;font-weight:400;color:var(--green-deep);margin:0 0 14px;font-size:18px}
+  .legend ul{margin:0;padding:0;list-style:none;display:grid;gap:11px}
+  .legend li{display:grid;grid-template-columns:auto 1fr;gap:12px;font-size:14px;color:var(--ink)}
+  .legend .b{font-family:Spectral;color:var(--green);font-weight:600}
+  .legend .x{color:#b08968}
+  @media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="shell">
+  <div class="pagehead">
+    <p class="kicker">IslamHub · Direction visuelle</p>
+    <h1>Avant / Après</h1>
+    <p>Même hadith, même contenu — seul le style change. À gauche l'existant, à droite la
+      direction plus sobre et éditoriale qui inspire davantage confiance.</p>
+  </div>
+
+  <div class="cols">
+    <!-- ============ AVANT ============ -->
+    <section class="panel">
+      <div class="tag-side before"><span class="n">Avant</span><small>chargé · beaucoup de couleur & d'ombres</small></div>
+
+      <div class="a-hero">
+        <h2>Hadiths du Prophète ﷺ</h2>
+        <p>Explorez les Hadiths à travers cette page</p>
+      </div>
+
+      <article class="a-card">
+        <p class="a-title"><span class="star">★</span> Allah existe sans endroit</p>
+        <p class="a-rap">Rapporteur : Al-Bukhari</p>
+        <div class="a-inner">
+          <p class="a-ar">كَانَ اللهُ وَلَمْ يَكُنْ شَىءٌ غَيْرُهُ</p>
+          <div class="a-fr"><span class="lbl">Signification :</span>
+            Dieu existe de toute éternité et rien d'autre que Lui n'est de toute éternité.</div>
+        </div>
+        <div><span class="a-badge">Sahih</span></div>
+        <div class="a-pills"><span class="a-pill">▸ exemption</span><span class="a-pill">▸ croyance</span></div>
+        <span class="a-more">Lire la suite…</span>
+      </article>
+    </section>
+
+    <!-- ============ APRÈS ============ -->
+    <section class="panel">
+      <div class="tag-side after"><span class="n">Après</span><small>sobre · éditorial · une seule couleur d'accent</small></div>
+
+      <div class="b-head">
+        <p class="b-eyebrow">Hadiths</p>
+        <h2 class="b-h2">Collection du Prophète ﷺ</h2>
+        <p class="b-crumb">Accueil · Hadiths · Croyance</p>
+      </div>
+
+      <article class="b-card">
+        <div class="b-top">
+          <div>
+            <h3 class="b-title">Allah existe sans endroit</h3>
+            <p class="b-src">Al-Bukhārī · ʿImrān ibn Ḥusayn</p>
+          </div>
+          <span class="b-auth">Sahih</span>
+        </div>
+        <p class="b-ar">كَانَ اللهُ وَلَمْ يَكُنْ شَىءٌ غَيْرُهُ</p>
+        <p class="b-fr">Dieu existe de toute éternité et rien d'autre que Lui n'est de toute éternité.</p>
+        <div class="b-foot">
+          <span>Recueil Sahīh al-Bukhārī</span>
+          <span class="sep"></span>
+          <a class="b-link" href="#">Copier ↗</a>
+          <a class="b-link" href="#">Lire la fiche →</a>
+        </div>
+        <p class="b-tags">Thèmes : <a href="#">exemption</a> · <a href="#">croyance</a></p>
+      </article>
+    </section>
+  </div>
+
+  <div class="legend">
+    <h3>Ce qui change, et pourquoi</h3>
+    <ul>
+      <li><span class="b">Surfaces unies</span> <span>Fini le dégradé ambre→vert sur la carte : un fond clair uni fait ressortir le texte arabe, qui est le cœur.</span></li>
+      <li><span class="b">Une seule couleur d'accent</span> <span>Le vert porte l'identité ; l'or n'apparaît qu'en filet fin (le trait à gauche de la traduction). Plus de pastilles jaunes partout.</span></li>
+      <li><span class="b">Ombres et effets calmés</span> <span>Une ombre discrète au lieu d'une ombre colorée épaisse ; pas d'agrandissement au survol.</span></li>
+      <li><span class="b">En-tête compact</span> <span>Le grand bandeau vert plein écran devient un titre + fil d'Ariane : on va au contenu tout de suite.</span></li>
+      <li><span class="b">Typographie éditoriale</span> <span>Un serif de titre (Marcellus) + un serif de lecture (Spectral) donnent l'autorité d'un ouvrage de référence ; l'authenticité devient un cartouche discret, pas un badge criard.</span></li>
+    </ul>
+  </div>
+</div>
