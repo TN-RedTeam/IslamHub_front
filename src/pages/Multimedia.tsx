@@ -184,7 +184,7 @@ export const Multimedia: React.FC = () => {
                       <button
                         key={c.categorie}
                         onClick={() => setCategory(c.categorie)}
-                        className="px-4 py-2 rounded-full bg-green-soft text-green-deep hover:bg-green-soft dark:hover:bg-emerald-900/60 transition-colors text-sm font-medium"
+                        className="px-4 py-2 rounded-full bg-green-soft text-green-deep hover:bg-green-soft transition-colors text-sm font-medium"
                       >
                         {c.categorie}
                       </button>

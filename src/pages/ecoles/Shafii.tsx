@@ -362,7 +362,7 @@ const Shafii: React.FC = () => {
                                     key={index}
                                     className="flex items-center gap-3 p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg"
                                 >
-                                    <span className="w-8 h-8 rounded-full bg-green-soft dark:bg-emerald-900 flex items-center justify-center text-green text-sm font-bold">
+                                    <span className="w-8 h-8 rounded-full bg-green-soft flex items-center justify-center text-green text-sm font-bold">
                                         {index + 1}
                                     </span>
                                     <span className="text-gray-700 dark:text-gray-300">{teacher}</span>

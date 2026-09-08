@@ -117,7 +117,7 @@ export const DocReader: React.FC<{
                     <button
                       type="button"
                       onClick={() => setClosed((c) => ({ ...c, [s.chapitre as string]: !c[s.chapitre as string] }))}
-                      className="w-full flex items-center gap-2 px-4 py-2.5 text-left font-bold text-gray-800 dark:text-gray-100 hover:bg-green-soft dark:hover:bg-emerald-900/20"
+                      className="w-full flex items-center gap-2 px-4 py-2.5 text-left font-bold text-gray-800 dark:text-gray-100 hover:bg-green-soft"
                     >
                       <span className="w-1.5 h-1.5 rounded-full bg-gold flex-none" />
                       <span className="flex-1 truncate">{s.chapitre}</span>

@@ -151,13 +151,13 @@ export const DossierThematique: React.FC = () => {
       <main className="container mx-auto px-4 py-10 max-w-4xl space-y-8">
         {/* Actions */}
         <div className="flex flex-wrap gap-3">
-          <button onClick={copyDebate} className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white dark:bg-gray-800 border border-line text-green hover:bg-green-soft dark:hover:bg-emerald-900/40 transition-colors">
+          <button onClick={copyDebate} className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white dark:bg-gray-800 border border-line text-green hover:bg-green-soft transition-colors">
             {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />} Copier (format débat)
           </button>
-          <button onClick={share} className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white dark:bg-gray-800 border border-line text-green hover:bg-green-soft dark:hover:bg-emerald-900/40 transition-colors">
+          <button onClick={share} className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white dark:bg-gray-800 border border-line text-green hover:bg-green-soft transition-colors">
             <Share2 className="h-4 w-4" /> Partager
           </button>
-          <button onClick={toggleFav} aria-pressed={isFav} className={`inline-flex items-center gap-2 px-4 py-2 rounded-xl border transition-colors ${isFav ? 'bg-gold border-green-line text-white' : 'bg-white dark:bg-gray-800 border-line text-green hover:bg-green-soft dark:hover:bg-emerald-900/40'}`}>
+          <button onClick={toggleFav} aria-pressed={isFav} className={`inline-flex items-center gap-2 px-4 py-2 rounded-xl border transition-colors ${isFav ? 'bg-gold border-green-line text-white' : 'bg-white dark:bg-gray-800 border-line text-green hover:bg-green-soft'}`}>
             <Star className={`h-4 w-4 ${isFav ? 'fill-current' : ''}`} /> {isFav ? 'Favori' : 'Ajouter aux favoris'}
           </button>
         </div>
@@ -178,7 +178,7 @@ export const DossierThematique: React.FC = () => {
             <h2 className="text-lg font-bold text-green-deep mb-4">Les preuves</h2>
             <div className="space-y-4">
               {preuves.map((p) => p.ref && (
-                <article key={`${p.type}-${p.id}`} className="bg-white dark:bg-gray-800 rounded-card p-5 shadow border border-green-line dark:border-emerald-900">
+                <article key={`${p.type}-${p.id}`} className="bg-white dark:bg-gray-800 rounded-card p-5 shadow border border-green-line">
                   <div className="flex items-center justify-between mb-3">
                     <span className="text-xs font-semibold uppercase tracking-wide text-green">{TYPE_LABEL[p.type]}</span>
                     {p.ref.sujet && <span className="text-sm text-gray-500 dark:text-gray-400 font-display">{p.ref.sujet}</span>}
@@ -226,7 +226,7 @@ export const DossierThematique: React.FC = () => {
         {images.length > 0 && (
           <section className="grid sm:grid-cols-2 gap-4">
             {images.map((img) => (
-              <figure key={img.id} className="bg-white dark:bg-gray-800 rounded-card overflow-hidden shadow border border-green-line dark:border-emerald-900">
+              <figure key={img.id} className="bg-white dark:bg-gray-800 rounded-card overflow-hidden shadow border border-green-line">
                 <img src={img.image_url} alt={img.alt} loading="lazy" className="w-full" />
                 {(img.legende || img.source_livre) && (
                   <figcaption className="p-3 text-sm text-gray-500 dark:text-gray-400">

@@ -33,7 +33,7 @@ export const NotFound: React.FC = () => {
           </Link>
           <Link
             to="/coran"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-white dark:bg-gray-800 text-green border border-emerald-200 dark:border-emerald-700 rounded-xl shadow transition-colors hover:bg-green-soft dark:hover:bg-emerald-900/30"
+            className="inline-flex items-center gap-2 px-6 py-3 bg-white dark:bg-gray-800 text-green border border-line rounded-xl shadow transition-colors hover:bg-green-soft"
           >
             <BookOpen className="w-5 h-5" />
             Lire le Coran

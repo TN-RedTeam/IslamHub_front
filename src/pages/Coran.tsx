@@ -412,13 +412,13 @@ export const Corans: React.FC = () => {
             <div className="flex gap-2 bg-white dark:bg-gray-800 rounded-xl p-1 border border-line">
               <button
                 onClick={() => handleViewChange('grid')}
-                className={`p-2 rounded-lg transition-all duration-300 ${view === 'grid' ? 'bg-green text-white shadow-md' : 'text-green hover:bg-green-soft dark:hover:bg-emerald-900/50'}`}
+                className={`p-2 rounded-lg transition-all duration-300 ${view === 'grid' ? 'bg-green text-white shadow-md' : 'text-green hover:bg-green-soft'}`}
               >
                 <Grid3x3 className="w-5 h-5" />
               </button>
               <button
                 onClick={() => handleViewChange('list')}
-                className={`p-2 rounded-lg transition-all duration-300 ${view === 'list' ? 'bg-green text-white shadow-md' : 'text-green hover:bg-green-soft dark:hover:bg-emerald-900/50'}`}
+                className={`p-2 rounded-lg transition-all duration-300 ${view === 'list' ? 'bg-green text-white shadow-md' : 'text-green hover:bg-green-soft'}`}
               >
                 <ListIcon className="w-5 h-5" />
               </button>
@@ -595,7 +595,7 @@ export const Corans: React.FC = () => {
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                         onClick={() => handleSujetClick(sujet)}
-                        className="px-4 py-2 bg-green-soft text-green-deep rounded-full text-sm font-medium hover:bg-green-line dark:hover:bg-green-deep transition-colors border border-green-line dark:border-emerald-700"
+                        className="px-4 py-2 bg-green-soft text-green-deep rounded-full text-sm font-medium hover:bg-green-line dark:hover:bg-green-deep transition-colors border border-green-line"
                       >
                         {sujet}
                       </m.button>

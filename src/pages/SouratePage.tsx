@@ -79,7 +79,7 @@ export const SouratePage: React.FC = () => {
           </div>
         ) : (
           versets.map((v) => (
-            <article key={v.numero} className="bg-white dark:bg-gray-800 rounded-card p-6 shadow border border-green-line dark:border-emerald-900">
+            <article key={v.numero} className="bg-white dark:bg-gray-800 rounded-card p-6 shadow border border-green-line">
               <div className="flex items-center gap-2 mb-3">
                 <span className="w-8 h-8 rounded-full bg-green-soft text-green-deep dark:text-muted flex items-center justify-center text-sm font-bold shrink-0">{v.numero}</span>
               </div>
