@@ -1,144 +1,144 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { m, AnimatePresence } from 'framer-motion';
-import { Book, Heart, Wind, GraduationCap, Video, BookOpen, Sparkles, Moon, Sun, Menu, X, Bookmark } from 'lucide-react';
+import { Moon, Sun, Menu, X } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 import { InstallPWA } from './InstallPWA';
 import moment from 'moment-hijri';
 
 const navItems = [
-    { to: '/coran', icon: Bookmark, label: 'Coran' },
-    { to: '/hadiths', icon: Book, label: 'Hadiths' },
-    { to: '/dhikrs', icon: Wind, label: 'Dhikrs' },
-    { to: '/douaas', icon: Heart, label: 'Douaas' },
-    { to: '/paroles', icon: GraduationCap, label: 'Paroles' },
-    { to: '/multimedia', icon: Video, label: 'Multimedia' },
-    { to: '/ecoles', icon: BookOpen, label: 'Madhaheb' },
-    { to: '/femmes', icon: Sparkles, label: 'Femmes' },
+  { to: '/', label: 'Accueil', exact: true },
+  { to: '/coran', label: 'Coran' },
+  { to: '/hadiths', label: 'Hadiths' },
+  { to: '/dhikrs', label: 'Dhikrs' },
+  { to: '/douaas', label: 'Douaas' },
+  { to: '/paroles', label: 'Paroles' },
+  { to: '/ecoles', label: 'Madhāhib' },
+  { to: '/femmes', label: 'Femmes' },
+  { to: '/multimedia', label: 'Multimédia' },
 ];
 
+const Crescent: React.FC<{ className?: string }> = ({ className }) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className={className} aria-hidden="true">
+    <path d="M16.5 3.5a8 8 0 1 0 4 12 6.2 6.2 0 0 1-4-12z" />
+  </svg>
+);
+
 export const Navigation: React.FC = () => {
-    const { theme, toggleTheme } = useTheme();
-    const [isMenuOpen, setIsMenuOpen] = useState(false);
-    const [hijriDate, setHijriDate] = useState('');
-    const location = useLocation();
+  const { theme, toggleTheme } = useTheme();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [hijri, setHijri] = useState('');
+  const [greg, setGreg] = useState('');
+  const location = useLocation();
 
-    useEffect(() => {
-        const updateHijriDate = () => {
-            setHijriDate(moment().format('iD iMMMM iYYYY'));
-        };
-        updateHijriDate();
-        const interval = setInterval(updateHijriDate, 86400000);
-        return () => clearInterval(interval);
-    }, []);
+  useEffect(() => {
+    const update = () => {
+      setHijri(moment().format('iD iMMMM iYYYY'));
+      setGreg(new Date().toLocaleDateString('fr-FR', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' }));
+    };
+    update();
+    const interval = setInterval(update, 86400000);
+    return () => clearInterval(interval);
+  }, []);
 
-    useEffect(() => {
-        setIsMenuOpen(false);
-    }, [location.pathname]);
+  useEffect(() => { setIsMenuOpen(false); }, [location.pathname]);
 
-    return (
-        <nav className="bg-white dark:bg-gray-800 shadow-lg sticky top-0 z-50 transition-colors duration-200">
-            <div className="max-w-7xl mx-auto px-4">
-                <div className="flex items-center justify-between h-16 gap-4">
-                    {/* Gauche : logo + date hijri */}
-                    <div className="flex items-center gap-3 shrink-0">
-                        <Link to="/" className="flex items-center group">
-                            <span className="text-2xl font-bold text-emerald-600 dark:text-emerald-400 font-amiri group-hover:text-emerald-700 dark:group-hover:text-emerald-300 transition-colors">
-                                IslamicHub
-                            </span>
-                        </Link>
-                        <span className="hidden lg:inline text-base text-gray-600 dark:text-gray-300 font-amiri whitespace-nowrap">
-                            {hijriDate}
-                        </span>
-                    </div>
+  const isActive = (to: string, exact?: boolean) =>
+    exact ? location.pathname === to : location.pathname === to || location.pathname.startsWith(`${to}/`);
 
-                    {/* Centre : liens (desktop) */}
-                    <div className="hidden md:flex items-center justify-center flex-1 gap-1">
-                        {navItems.map(({ to, icon: Icon, label }) => {
-                            const isActive = location.pathname === to;
-                            return (
-                                <Link
-                                    key={to}
-                                    to={to}
-                                    className={`flex items-center px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 ${
-                                        isActive
-                                            ? 'text-emerald-700 dark:text-emerald-300 bg-emerald-100 dark:bg-emerald-900/40'
-                                            : 'text-gray-700 dark:text-gray-200 hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-900/20'
-                                    }`}
-                                >
-                                    <Icon className="w-4 h-4 mr-1.5 shrink-0" />
-                                    <span className="font-amiri">{label}</span>
-                                </Link>
-                            );
-                        })}
-                    </div>
+  return (
+    <nav className="sticky top-0 z-50 bg-ivory/95 backdrop-blur border-b border-line">
+      <div className="max-w-7xl mx-auto px-4">
+        <div className="flex items-center gap-4 h-16">
+          {/* Marque */}
+          <Link to="/" className="flex items-center gap-2.5 shrink-0" aria-label="IslamHub — accueil">
+            <span className="w-9 h-9 rounded-lg bg-green text-white grid place-items-center">
+              <Crescent className="w-5 h-5" />
+            </span>
+            <span className="font-display text-xl font-semibold text-green-deep tracking-tight">
+              Islam<span className="text-gold">Hub</span>
+            </span>
+          </Link>
 
-                    {/* Droite : installer l'app + thème (desktop) + boutons mobile */}
-                    <div className="flex items-center shrink-0 gap-2">
-                        <div className="hidden md:block">
-                            <InstallPWA />
-                        </div>
-                        <button
-                            onClick={toggleTheme}
-                            aria-label="Basculer le thème"
-                            className="hidden md:inline-flex p-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
-                        >
-                            {theme === 'dark' ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
-                        </button>
+          {/* Liens (≥ 900px) */}
+          <div className="hidden min-[900px]:flex items-center gap-0.5 flex-1">
+            {navItems.map(({ to, label, exact }) => (
+              <Link
+                key={to}
+                to={to}
+                className={`font-sans text-[14.5px] px-3 py-2 rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green ${
+                  isActive(to, exact)
+                    ? 'bg-green-soft text-green-deep font-medium'
+                    : 'text-ink hover:bg-green-soft hover:text-green-deep'
+                }`}
+              >
+                {label}
+              </Link>
+            ))}
+          </div>
 
-                        <div className="flex items-center md:hidden">
-                            <button
-                                onClick={toggleTheme}
-                                aria-label="Basculer le thème"
-                                className="p-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors mr-2"
-                            >
-                                {theme === 'dark' ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
-                            </button>
-                            <button
-                                onClick={() => setIsMenuOpen(!isMenuOpen)}
-                                aria-label={isMenuOpen ? 'Fermer le menu' : 'Ouvrir le menu'}
-                                aria-expanded={isMenuOpen}
-                                className="p-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
-                            >
-                                {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <AnimatePresence>
-                    {isMenuOpen && (
-                        <m.div
-                            initial={{ opacity: 0, height: 0 }}
-                            animate={{ opacity: 1, height: 'auto' }}
-                            exit={{ opacity: 0, height: 0 }}
-                            transition={{ duration: 0.2 }}
-                            className="md:hidden overflow-hidden"
-                        >
-                            <div className="py-4">
-                                {navItems.map(({ to, icon: Icon, label }) => {
-                                    const isActive = location.pathname === to;
-                                    return (
-                                        <Link
-                                            key={to}
-                                            to={to}
-                                            className={`flex items-center px-4 py-3 text-base font-medium transition-all duration-200 rounded-md mb-1 ${
-                                                isActive
-                                                    ? 'text-emerald-700 dark:text-emerald-300 bg-emerald-100 dark:bg-emerald-900/40'
-                                                    : 'text-gray-700 dark:text-gray-200 hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-900/20'
-                                            }`}
-                                        >
-                                            <Icon className="w-5 h-5 mr-3" />
-                                            <span className="font-amiri">{label}</span>
-                                        </Link>
-                                    );
-                                })}
-                                <InstallPWA className="flex w-full items-center gap-3 px-4 py-3 mt-1 rounded-md text-base font-medium bg-emerald-600 text-white hover:bg-emerald-700 transition-colors" />
-                            </div>
-                        </m.div>
-                    )}
-                </AnimatePresence>
+          {/* Actions (droite) */}
+          <div className="flex items-center gap-2.5 shrink-0 ml-auto min-[900px]:ml-0">
+            {/* Chip date : hijri + grégorien */}
+            <div className="hidden lg:flex items-center gap-2 px-3 py-1.5 rounded-full bg-green-soft border border-line">
+              <Crescent className="w-4 h-4 text-gold shrink-0" />
+              <span className="leading-tight">
+                <span className="block font-sans text-[13px] font-semibold text-green-deep whitespace-nowrap">{hijri}</span>
+                <span className="block text-[10px] uppercase tracking-wide text-muted">{greg}</span>
+              </span>
             </div>
-        </nav>
-    );
+
+            <div className="hidden min-[900px]:block"><InstallPWA /></div>
+
+            <button
+              onClick={toggleTheme}
+              aria-label="Basculer le thème"
+              className="w-9 h-9 grid place-items-center rounded-lg border border-line bg-ivory text-muted hover:text-green-deep hover:border-green transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green"
+            >
+              {theme === 'dark' ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+            </button>
+
+            <button
+              onClick={() => setIsMenuOpen((v) => !v)}
+              aria-label={isMenuOpen ? 'Fermer le menu' : 'Ouvrir le menu'}
+              aria-expanded={isMenuOpen}
+              className="min-[900px]:hidden w-9 h-9 grid place-items-center rounded-lg border border-line bg-ivory text-muted hover:text-green-deep transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green"
+            >
+              {isMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            </button>
+          </div>
+        </div>
+
+        {/* Menu replié (< 900px) */}
+        <AnimatePresence>
+          {isMenuOpen && (
+            <m.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.2 }}
+              className="min-[900px]:hidden overflow-hidden motion-reduce:transition-none"
+            >
+              <div className="py-3">
+                {navItems.map(({ to, label, exact }) => (
+                  <Link
+                    key={to}
+                    to={to}
+                    className={`block px-4 py-2.5 rounded-lg mb-0.5 font-sans transition-colors ${
+                      isActive(to, exact)
+                        ? 'bg-green-soft text-green-deep font-medium'
+                        : 'text-ink hover:bg-green-soft hover:text-green-deep'
+                    }`}
+                  >
+                    {label}
+                  </Link>
+                ))}
+                <InstallPWA className="mt-2 flex w-full items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-green text-white hover:bg-green-deep transition-colors" />
+              </div>
+            </m.div>
+          )}
+        </AnimatePresence>
+      </div>
+    </nav>
+  );
 };
