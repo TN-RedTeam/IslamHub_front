@@ -54,20 +54,20 @@ export const SavantPage: React.FC = () => {
     <div className="min-h-screen bg-ground">
       <m.header
         initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }}
-        className="relative py-16 bg-emerald-800 dark:bg-emerald-950 overflow-hidden">
-        <div className="absolute inset-0 opacity-20 bg-arabesque" />
-        <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-amber-50 dark:from-gray-900" />
+        className="bg-ivory border-b border-line py-10">
+        
+        
         <div className="relative container mx-auto px-4 max-w-4xl">
-          <Link to="/savants" className="inline-flex items-center gap-1.5 text-emerald-200 hover:text-white text-sm mb-4">
+          <Link to="/savants" className="inline-flex items-center gap-1.5 text-muted hover:text-green-deep text-sm mb-4">
             <ArrowLeft className="h-4 w-4" /> Tous les savants
           </Link>
-          <h1 className="text-4xl md:text-5xl font-bold text-white font-display">{savant.nom}</h1>
+          <h1 className="text-4xl md:text-5xl font-bold text-green-deep font-display">{savant.nom}</h1>
           {savant.nom_arabe && (
-            <p dir="rtl" className="font-display text-2xl text-emerald-100 mt-1 [unicode-bidi:plaintext]">{savant.nom_arabe}</p>
+            <p dir="rtl" className="font-display text-2xl text-green-deep mt-1 [unicode-bidi:plaintext]">{savant.nom_arabe}</p>
           )}
           <div className="flex items-center gap-3 flex-wrap mt-2">
             {[savant.naissance, savant.deces].filter(Boolean).length > 0 && (
-              <span className="text-emerald-200 text-sm tabular-nums">
+              <span className="text-muted text-sm tabular-nums">
                 {[savant.naissance, savant.deces].filter(Boolean).join(' – ')}
               </span>
             )}
@@ -76,7 +76,7 @@ export const SavantPage: React.FC = () => {
         </div>
       </m.header>
 
-      <main className="container mx-auto px-4 py-10 -mt-10 relative z-10 max-w-4xl space-y-8">
+      <main className="container mx-auto px-4 py-10 max-w-4xl space-y-8">
         {savant.biographie && (
           <section className="bg-white dark:bg-gray-800 rounded-card p-6 shadow border border-line">
             <Markdown>{savant.biographie}</Markdown>
@@ -119,7 +119,7 @@ export const SavantPage: React.FC = () => {
                 <li key={h.id} className="bg-white dark:bg-gray-800 rounded-xl px-4 py-3 shadow-sm border border-amber-100 dark:border-emerald-900 flex items-center justify-between gap-3">
                   <span className="text-gray-800 dark:text-gray-200 font-display">{h.sujet}</span>
                   {h.degre_authenticite && (
-                    <span className="text-xs px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-800 text-emerald-800 dark:text-emerald-200 shrink-0">{h.degre_authenticite}</span>
+                    <span className="text-xs px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-800 text-emerald-800 dark:text-muted shrink-0">{h.degre_authenticite}</span>
                   )}
                 </li>
               ))}

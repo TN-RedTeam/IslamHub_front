@@ -19,15 +19,15 @@ export const SouratesIndex: React.FC = () => {
     <div className="min-h-screen bg-ground">
       <m.header
         initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }}
-        className="relative py-16 bg-emerald-800 dark:bg-emerald-950 overflow-hidden">
-        <div className="absolute inset-0 opacity-20 bg-arabesque" />
-        <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-amber-50 dark:from-gray-900" />
+        className="bg-ivory border-b border-line py-10">
+        
+        
         <div className="relative container mx-auto px-4 max-w-4xl text-center">
-          <Link to="/coran" className="inline-flex items-center gap-1.5 text-emerald-200 hover:text-white text-sm mb-4">
+          <Link to="/coran" className="inline-flex items-center gap-1.5 text-muted hover:text-green-deep text-sm mb-4">
             <ArrowLeft className="h-4 w-4" /> Le Noble Coran
           </Link>
-          <h1 className="text-4xl md:text-5xl font-bold text-white font-display">Exégèse du Coran</h1>
-          <p className="text-emerald-200 mt-3 max-w-2xl mx-auto">Le sens des sourates et des versets, expliqué à la lumière des savants.</p>
+          <h1 className="text-4xl md:text-5xl font-bold text-green-deep font-display">Exégèse du Coran</h1>
+          <p className="text-muted mt-3 max-w-2xl mx-auto">Le sens des sourates et des versets, expliqué à la lumière des savants.</p>
         </div>
       </m.header>
 
@@ -42,11 +42,11 @@ export const SouratesIndex: React.FC = () => {
                 to={`/coran/sourates/${s.slug}`}
                 className="group bg-white dark:bg-gray-800 rounded-card border border-line shadow-sm p-5 flex items-center gap-4 hover:shadow-md hover:border-emerald-300 dark:hover:border-emerald-700 transition-all"
               >
-                <span className="shrink-0 w-11 h-11 rounded-full bg-emerald-100 dark:bg-emerald-800 text-emerald-800 dark:text-emerald-200 flex items-center justify-center font-bold">
+                <span className="shrink-0 w-11 h-11 rounded-full bg-emerald-100 dark:bg-emerald-800 text-emerald-800 dark:text-muted flex items-center justify-center font-bold">
                   {s.numero}
                 </span>
                 <span className="flex-1 min-w-0">
-                  <span className="block font-bold text-emerald-900 dark:text-emerald-200 font-display group-hover:text-emerald-700 dark:group-hover:text-emerald-100">{s.nom}</span>
+                  <span className="block font-bold text-emerald-900 dark:text-muted font-display group-hover:text-emerald-700 dark:group-hover:text-green-deep">{s.nom}</span>
                   <span className="block text-xs text-gray-500 dark:text-gray-400">
                     {[s.revelation, s.nb_versets ? `${s.nb_versets} versets` : null].filter(Boolean).join(' · ')}
                   </span>

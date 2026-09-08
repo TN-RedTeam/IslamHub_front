@@ -75,19 +75,19 @@ export const HadithPage: React.FC = () => {
     <div className="min-h-screen bg-ground">
       <m.header
         initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }}
-        className="relative py-16 bg-emerald-800 dark:bg-emerald-950 overflow-hidden">
-        <div className="absolute inset-0 opacity-20 bg-arabesque" />
-        <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-amber-50 dark:from-gray-900" />
+        className="bg-ivory border-b border-line py-10">
+        
+        
         <div className="relative container mx-auto px-4 max-w-3xl">
-          <Link to="/hadiths" className="inline-flex items-center gap-1.5 text-emerald-200 hover:text-white text-sm mb-4">
+          <Link to="/hadiths" className="inline-flex items-center gap-1.5 text-muted hover:text-green-deep text-sm mb-4">
             <ArrowLeft className="h-4 w-4" /> Tous les hadiths
           </Link>
-          <h1 className="text-3xl md:text-4xl font-bold text-white font-display">{hadith.sujet}</h1>
-          {reference && <p className="text-emerald-200 mt-2 text-sm">{reference}</p>}
+          <h1 className="text-3xl md:text-4xl font-bold text-green-deep font-display">{hadith.sujet}</h1>
+          {reference && <p className="text-muted mt-2 text-sm">{reference}</p>}
         </div>
       </m.header>
 
-      <main className="container mx-auto px-4 py-10 -mt-10 relative z-10 max-w-3xl space-y-6">
+      <main className="container mx-auto px-4 py-10 max-w-3xl space-y-6">
         <div className="flex flex-wrap gap-3">
           <button onClick={copyDebate} className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white dark:bg-gray-800 border border-line text-emerald-700 dark:text-emerald-300 hover:bg-emerald-50 dark:hover:bg-emerald-900/40 transition-colors">
             {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />} Copier (format débat)
@@ -120,7 +120,7 @@ export const HadithPage: React.FC = () => {
           {tags.length > 0 && (
             <div className="flex flex-wrap gap-2 pt-2">
               {tags.map((t) => (
-                <span key={t} className="text-xs bg-amber-100 dark:bg-emerald-800 text-amber-800 dark:text-emerald-200 px-3 py-1 rounded-full">{t}</span>
+                <span key={t} className="text-xs bg-amber-100 dark:bg-emerald-800 text-amber-800 dark:text-muted px-3 py-1 rounded-full">{t}</span>
               ))}
             </div>
           )}

@@ -136,18 +136,18 @@ export const DossierThematique: React.FC = () => {
     <div className="min-h-screen bg-ground">
       <m.header
         initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }}
-        className="relative py-16 bg-emerald-800 dark:bg-emerald-950 overflow-hidden">
-        <div className="absolute inset-0 opacity-20 bg-arabesque" />
-        <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-amber-50 dark:from-gray-900" />
+        className="bg-ivory border-b border-line py-10">
+        
+        
         <div className="relative container mx-auto px-4 max-w-4xl">
-          <Link to="/" className="inline-flex items-center gap-1.5 text-emerald-200 hover:text-white text-sm mb-4">
+          <Link to="/" className="inline-flex items-center gap-1.5 text-muted hover:text-green-deep text-sm mb-4">
             <ArrowLeft className="h-4 w-4" /> Accueil
           </Link>
-          <h1 className="text-4xl md:text-5xl font-bold text-white font-display">{dossier.h1}</h1>
+          <h1 className="text-4xl md:text-5xl font-bold text-green-deep font-display">{dossier.h1}</h1>
         </div>
       </m.header>
 
-      <main className="container mx-auto px-4 py-10 -mt-10 relative z-10 max-w-4xl space-y-8">
+      <main className="container mx-auto px-4 py-10 max-w-4xl space-y-8">
         {/* Actions */}
         <div className="flex flex-wrap gap-3">
           <button onClick={copyDebate} className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white dark:bg-gray-800 border border-line text-emerald-700 dark:text-emerald-300 hover:bg-emerald-50 dark:hover:bg-emerald-900/40 transition-colors">

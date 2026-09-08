@@ -53,24 +53,24 @@ export const SouratePage: React.FC = () => {
     <div className="min-h-screen bg-ground">
       <m.header
         initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }}
-        className="relative py-16 bg-emerald-800 dark:bg-emerald-950 overflow-hidden">
-        <div className="absolute inset-0 opacity-20 bg-arabesque" />
-        <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-amber-50 dark:from-gray-900" />
+        className="bg-ivory border-b border-line py-10">
+        
+        
         <div className="relative container mx-auto px-4 max-w-3xl text-center">
-          <Link to="/coran/sourates" className="inline-flex items-center gap-1.5 text-emerald-200 hover:text-white text-sm mb-4">
+          <Link to="/coran/sourates" className="inline-flex items-center gap-1.5 text-muted hover:text-green-deep text-sm mb-4">
             <ArrowLeft className="h-4 w-4" /> Toutes les sourates
           </Link>
-          <h1 className="text-3xl md:text-4xl font-bold text-white font-display">
+          <h1 className="text-3xl md:text-4xl font-bold text-green-deep font-display">
             {sourate.numero}. {sourate.nom}
           </h1>
-          {sourate.nom_arabe && <p className="text-2xl text-emerald-100 font-arabic mt-2">{sourate.nom_arabe}</p>}
-          <p className="text-emerald-200 mt-2 text-sm">
+          {sourate.nom_arabe && <p className="text-2xl text-green-deep font-arabic mt-2">{sourate.nom_arabe}</p>}
+          <p className="text-muted mt-2 text-sm">
             {[sourate.revelation, sourate.nb_versets ? `${sourate.nb_versets} versets` : null].filter(Boolean).join(' · ')}
           </p>
         </div>
       </m.header>
 
-      <main className="container mx-auto px-4 py-10 -mt-10 relative z-10 max-w-3xl space-y-6">
+      <main className="container mx-auto px-4 py-10 max-w-3xl space-y-6">
         {versets.length === 0 ? (
           <div className="text-center py-16 bg-white dark:bg-gray-800 rounded-card shadow border border-line">
             <BookOpen className="h-10 w-10 mx-auto mb-3 text-emerald-500 opacity-70" />
@@ -80,7 +80,7 @@ export const SouratePage: React.FC = () => {
           versets.map((v) => (
             <article key={v.numero} className="bg-white dark:bg-gray-800 rounded-card p-6 shadow border border-amber-100 dark:border-emerald-900">
               <div className="flex items-center gap-2 mb-3">
-                <span className="w-8 h-8 rounded-full bg-emerald-100 dark:bg-emerald-800 text-emerald-800 dark:text-emerald-200 flex items-center justify-center text-sm font-bold shrink-0">{v.numero}</span>
+                <span className="w-8 h-8 rounded-full bg-emerald-100 dark:bg-emerald-800 text-emerald-800 dark:text-muted flex items-center justify-center text-sm font-bold shrink-0">{v.numero}</span>
               </div>
               {v.texte_arabe && (
                 <p className="text-3xl leading-loose text-right font-arabic text-gray-900 dark:text-white whitespace-pre-wrap">{v.texte_arabe}</p>
