@@ -55,6 +55,34 @@ export interface SavantInfo {
   nb_paroles: number;         // nombre de paroles rattachées
 }
 
+/** Coran — exégèse (Phase 8). */
+export interface SourateInfo {
+  numero: number;
+  nom: string;
+  nom_arabe: string | null;
+  slug: string;
+  revelation: string | null;
+  nb_versets: number | null;
+  a_du_contenu: boolean;
+}
+export interface SourateDetail {
+  sourate: {
+    numero: number;
+    nom: string;
+    nom_arabe: string | null;
+    slug: string;
+    revelation: string | null;
+    nb_versets: number | null;
+  };
+  versets: {
+    numero: number;
+    texte_arabe: string | null;
+    texte_francais: string | null;
+    phonetique: string | null;
+    exegeses: { texte: string; source: string | null }[];
+  }[];
+}
+
 /** Fiche d'un hadith (page /hadiths/:id/:slug). */
 export interface HadithDetail {
   id: number;

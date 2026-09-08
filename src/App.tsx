@@ -11,6 +11,8 @@ import { Paroles } from './pages/Paroles';
 import { Savants } from './pages/Savants';
 import { SavantPage } from './pages/SavantPage';
 import { Corans } from './pages/Coran';
+import { SouratesIndex } from './pages/SouratesIndex';
+import { SouratePage } from './pages/SouratePage';
 import { Multimedia } from './pages/Multimedia';
 import { Femmes } from './pages/Femmes';
 import { ThemeProvider } from './context/ThemeContext';
@@ -41,6 +43,8 @@ function App() {
                 {/* Pages principales */}
                 <Route path="/" element={<Home />} />
                 <Route path="/coran" element={<Corans />} />
+                <Route path="/coran/sourates" element={<SouratesIndex />} />
+                <Route path="/coran/sourates/:slug" element={<SouratePage />} />
                 <Route path="/hadiths" element={<Hadiths />} />
                 <Route path="/hadiths/:id/:slug" element={<HadithPage />} />
                 <Route path="/dhikrs" element={<Dhikrs />} />

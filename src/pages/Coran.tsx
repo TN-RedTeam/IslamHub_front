@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { Link } from 'react-router-dom';
 import { m, AnimatePresence } from 'framer-motion';
 import {
   Search, Filter, X, Star, Loader,
-  Tags, Hash, Eye, List as ListIcon, Grid3x3
+  Tags, Hash, Eye, List as ListIcon, Grid3x3, BookOpen
 } from 'lucide-react';
 import { dataService } from '../services/DataService';
 import { FilterSelect } from '../components/FilterSelect';
@@ -382,6 +383,12 @@ export const Corans: React.FC = () => {
           <p className="text-xl text-emerald-200 max-w-3xl mx-auto">
             Explorez les versets du Livre Sacré
           </p>
+          <Link
+            to="/coran/sourates"
+            className="inline-flex items-center gap-2 mt-6 px-5 py-2.5 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white font-medium transition-colors"
+          >
+            <BookOpen className="h-5 w-5" /> Exégèse des sourates
+          </Link>
           {hasSearched && (
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full mt-6">
               <Eye className="h-4 w-4 text-emerald-300" />

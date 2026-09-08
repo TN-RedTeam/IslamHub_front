@@ -27,8 +27,11 @@ Reportée volontairement : la config dépend de l'URL finale du site.
       (dans `_legacy`) peuvent y aller.
 
 ## Phase 8 — Coran → exégèse
-- [ ] Tables `sourates` / `versets` / `exegeses` + page tafsir. Commencer par
-      al-Fātiḥa, al-Ikhlāṣ, Āyat al-Kursī, et les versets équivoques (20:5 ; 42:11).
+- [x] Structure `sourates`/`versets`/`exegeses` + RPC + pages `/coran/sourates`
+      et `/coran/sourates/:slug` + lien depuis la page Coran. 5 sourates semées.
+- [ ] **Contenu** : coller les versets (arabe + traduction + phonétique) et les
+      exégèses via `supabase/refonte/phase8.sql` (template). Commencer par
+      al-Fātiḥa, al-Ikhlāṣ, Āyat al-Kursī (2:255), et les versets équivoques (20:5 ; 42:11).
 
 ## Divers
 - [x] Passe « coquilles de sujets » — faite (voir `supabase/refonte/coquilles_sujets.sql`).
