@@ -64,9 +64,9 @@ export const Home: React.FC = () => {
     <div className="min-h-screen bg-ground">
       <main className="max-w-5xl mx-auto px-5 pb-16">
         {/* Hero — Bismillah */}
-        <section className="relative overflow-hidden bg-ivory border border-line rounded-panel mt-6 px-7 py-14 text-center">
+        <section className="relative overflow-hidden bg-ivory border border-line rounded-panel mt-6 px-7 py-11 text-center">
           <Ornament />
-          <p className="bismillah text-green-deep" lang="ar" dir="rtl" style={{ fontSize: 'clamp(38px,8vw,72px)' }}>{BISMILLAH}</p>
+          <p className="bismillah font-arabic-display text-green-deep" lang="ar" dir="rtl" style={{ fontSize: 'clamp(38px,8vw,72px)' }}>{BISMILLAH}</p>
           <p className="font-display italic text-green mt-5" style={{ fontSize: 'clamp(17px,2.4vw,22px)' }}>
             Bienvenue sur <span className="not-italic font-semibold">IslamHub</span>
           </p>
