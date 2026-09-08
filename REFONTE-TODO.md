@@ -14,6 +14,16 @@ Reportée volontairement : la config dépend de l'URL finale du site.
 - [ ] Adapter les liens `<Link>`/canonical/OG (déjà en place via `useSeo`).
 > À faire en une passe le jour où le domaine est choisi.
 
+## Phase 9 — /savants en annuaire
+- [x] Colonnes (nom_arabe, naissance, deces, resume, resume_auto, domaines),
+      résumés auto-générés, RPC enrichies, page annuaire (grille + recherche +
+      filtres + tri + chips), fiche enrichie (nom arabe + dates). Voir
+      `supabase/refonte/phase9.sql`.
+- [ ] **À faire (toi)** : relire les 10 `resume` auto (`resume_auto=true`) ;
+      remplir `nom_arabe`, `naissance`, `deces`, `domaines` (Hadith/Fiqh/Aqida/
+      Tafsir/Langue) pour enrichir les cartes.
+- [ ] Ajouter la maquette au repo pour comparaison fine (fait : docs/savants-annuaire-mockup.html).
+
 ## Phase 6 — reste
 - [ ] Migration des extraits de savants de `src/_legacy/` : **21 des 22 fichiers
       étaient vides**, seul `Al-Baghdadiyy.tsx` avait du contenu →

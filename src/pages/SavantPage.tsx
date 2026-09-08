@@ -61,8 +61,16 @@ export const SavantPage: React.FC = () => {
           <Link to="/savants" className="inline-flex items-center gap-1.5 text-emerald-200 hover:text-white text-sm mb-4">
             <ArrowLeft className="h-4 w-4" /> Tous les savants
           </Link>
-          <div className="flex items-center gap-3 flex-wrap">
-            <h1 className="text-4xl md:text-5xl font-bold text-white font-amiri">{savant.nom}</h1>
+          <h1 className="text-4xl md:text-5xl font-bold text-white font-amiri">{savant.nom}</h1>
+          {savant.nom_arabe && (
+            <p dir="rtl" className="font-amiri text-2xl text-emerald-100 mt-1 [unicode-bidi:plaintext]">{savant.nom_arabe}</p>
+          )}
+          <div className="flex items-center gap-3 flex-wrap mt-2">
+            {[savant.naissance, savant.deces].filter(Boolean).length > 0 && (
+              <span className="text-emerald-200 text-sm tabular-nums">
+                {[savant.naissance, savant.deces].filter(Boolean).join(' – ')}
+              </span>
+            )}
             {savant.ecole && <EcoleBadge ecole={savant.ecole} />}
           </div>
         </div>

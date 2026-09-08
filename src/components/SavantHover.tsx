@@ -23,10 +23,6 @@ function loadSavantsMap(): Promise<Map<string, SavantInfo>> {
   return inflight;
 }
 
-function bioSnippet(bio: string): string {
-  return bio.replace(/[#*_>[\]`]/g, '').replace(/\s+/g, ' ').trim().slice(0, 160);
-}
-
 /**
  * Nom de savant cliquable (→ /savants/:slug) avec mini-bio au survol/focus :
  * nom + école + début de biographie + lien « biographie complète ».
@@ -76,8 +72,8 @@ export const SavantHover: React.FC<{ nom: string; className?: string }> = ({ nom
         >
           <span className="block font-bold text-emerald-900 dark:text-emerald-200 font-amiri">{info.nom}</span>
           {info.ecole && <span className="block text-xs text-emerald-600 dark:text-emerald-400 mb-1">{info.ecole}</span>}
-          {info.biographie && (
-            <span className="block text-xs text-gray-600 dark:text-gray-400 leading-relaxed">{bioSnippet(info.biographie)}…</span>
+          {info.resume && (
+            <span className="block text-xs text-gray-600 dark:text-gray-400 leading-relaxed">{info.resume}</span>
           )}
           <Link to={`/savants/${slug}`} onClick={(e) => e.stopPropagation()} className="block mt-2 text-xs font-medium text-emerald-600 dark:text-emerald-400 hover:underline">
             Biographie complète →

@@ -48,11 +48,15 @@ export type Savant = Parole;
 export interface SavantInfo {
   id: number;
   nom: string;
+  nom_arabe: string | null;
   slug: string;               // segment d'URL de la fiche savant
   ecole: string | null;       // nom de l'école (Hanafi, Malikite...)
   ecole_slug: string | null;  // segment d'URL de la page école
-  biographie: string | null;  // Markdown
-  nb_paroles: number;         // nombre de paroles rattachées
+  naissance: string | null;   // ex « 150 H »
+  deces: string | null;
+  resume: string | null;      // phrase courte affichée sur la carte
+  domaines: string[];         // Hadith, Fiqh, Aqida, Tafsir, Langue…
+  nb_paroles: number;
 }
 
 /** Coran — exégèse (Phase 8). */
@@ -107,6 +111,9 @@ export interface SavantDetail {
     id: number;
     nom: string;
     slug: string;
+    nom_arabe: string | null;
+    naissance: string | null;
+    deces: string | null;
     biographie: string | null;
     ecole: string | null;
     ecole_slug: string | null;
