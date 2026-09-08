@@ -30,14 +30,14 @@ const CollapsibleSection: React.FC<SectionProps> = ({ title, icon, children, def
                     <div className="w-10 h-10 rounded-full bg-green flex items-center justify-center text-white">
                         {icon}
                     </div>
-                    <h3 className="text-xl font-bold text-emerald-800 dark:text-emerald-200 font-display">
+                    <h3 className="text-xl font-bold text-green-deep font-display">
                         {title}
                     </h3>
                 </div>
                 {isOpen ? (
-                    <ChevronUp className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
+                    <ChevronUp className="w-5 h-5 text-green" />
                 ) : (
-                    <ChevronDown className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
+                    <ChevronDown className="w-5 h-5 text-green" />
                 )}
             </button>
             <AnimatePresence>
@@ -116,7 +116,7 @@ const Hanbalite: React.FC = () => {
                     transition={{ delay: 0.4 }}
                     className="mb-16"
                 >
-                    <h2 className="text-3xl font-bold text-emerald-900 dark:text-emerald-300 mb-6 font-display text-center">
+                    <h2 className="text-3xl font-bold text-green-deep mb-6 font-display text-center">
                         L'Imam Ahmad Ibnou Hanbal
                     </h2>
                     <div className="max-w-4xl mx-auto">
@@ -137,7 +137,7 @@ const Hanbalite: React.FC = () => {
                     transition={{ delay: 0.5 }}
                     className="mb-16 space-y-6"
                 >
-                    <h2 className="text-3xl font-bold text-emerald-900 dark:text-emerald-300 mb-8 font-display text-center">
+                    <h2 className="text-3xl font-bold text-green-deep mb-8 font-display text-center">
                         Biographie détaillée
                     </h2>
 
@@ -214,7 +214,7 @@ const Hanbalite: React.FC = () => {
                             Lorsque l'Imam Ahmad eut atteint quinze ans lunaires, il chercha à apprendre la science et le hadith. Il a alors voyagé dans différents pays afin de rechercher le hadith auprès des savants spécialistes de cette science.
                         </p>
 
-                        <h4 className="font-bold text-lg text-emerald-700 dark:text-emerald-300 mb-2 mt-4">À Bassora</h4>
+                        <h4 className="font-bold text-lg text-green mb-2 mt-4">À Bassora</h4>
                         <p className="mb-4">
                             Parmi les voyages qui ont contribué à l'élargissement de sa science, il y a ses cinq voyages à Bassora (Al-Basrah) –ville située au sud de l'Iraq actuel–.
                         </p>
@@ -225,7 +225,7 @@ const Hanbalite: React.FC = () => {
                             Un grand nombre de savants résidaient alors dans cette ville.
                         </p>
 
-                        <h4 className="font-bold text-lg text-emerald-700 dark:text-emerald-300 mb-2 mt-4">Sa rencontre avec l'Imam Ach-Chafi^iyy au Hijaz</h4>
+                        <h4 className="font-bold text-lg text-green mb-2 mt-4">Sa rencontre avec l'Imam Ach-Chafi^iyy au Hijaz</h4>
                         <p className="mb-4">
                             Comptent parmi ses voyages les plus bénéfiques, ceux qu'il a accomplis vers le Hijaz –région de la péninsule arabique–.
                         </p>
@@ -236,12 +236,12 @@ const Hanbalite: React.FC = () => {
                             À Bagdad, il a rencontré Soufyan Ibnou ^Ouyaynah qui, à cette époque, était incontestablement le spécialiste de la science du hadith (mouhaddith) du Hijaz. Il a appris auprès de lui et en a tiré de grands profits.
                         </p>
 
-                        <h4 className="font-bold text-lg text-emerald-700 dark:text-emerald-300 mb-2 mt-4">À Koufa</h4>
+                        <h4 className="font-bold text-lg text-green mb-2 mt-4">À Koufa</h4>
                         <p className="mb-4">
                             L'Imam Ahmad s'est également rendu à Koufa (Al-Koufah) –ville d'Iraq– où il a acquis la science. L'Iraq était à l'époque une terre de science, de nombreux savants y vivaient et les étudiants en science de la religion s'y rendaient en grand nombre.
                         </p>
 
-                        <h4 className="font-bold text-lg text-emerald-700 dark:text-emerald-300 mb-2 mt-4">À Sanaa</h4>
+                        <h4 className="font-bold text-lg text-green mb-2 mt-4">À Sanaa</h4>
                         <p className="mb-4">
                             L'Imam Ahmad a également voyagé à Sanaa (San^a') –capitale actuelle du Yémen– où il a appris le hadith auprès de ^Abdou r-Razzaq Ibnou Hammam. Il y est resté deux ans malgré la rudesse de la vie. En effet, il patientait dans les difficultés en proposant de transporter les affaires des gens jusqu'à Sanaa contre rémunération.
                         </p>
@@ -299,7 +299,7 @@ const Hanbalite: React.FC = () => {
                             Il existe de nos jours un groupe de gens qui prétendent suivre l'école de l'Imam Ahmad Ibnou Hanbal, alors qu'ils n'ont pas les mêmes croyances que ce grand savant. Pire encore, ce groupe juge toute personne qui n'adopterait pas ses croyances mécréante. Nous montrons ici que l'Imam Ahmad avait la croyance des prophètes et des compagnons du Dernier des prophètes, que Allah l'élève en degré.
                         </p>
 
-                        <h4 className="font-bold text-lg text-emerald-700 dark:text-emerald-300 mb-2 mt-6">L'Imam Ahmad exemptait Allah de la forme et de l'image</h4>
+                        <h4 className="font-bold text-lg text-green mb-2 mt-6">L'Imam Ahmad exemptait Allah de la forme et de l'image</h4>
                         <p className="mb-4">
                             Dans son livre: I^tiqadou l-'Imami l-Moubajjali Ahmad Ibnou Hanbal –La Croyance de l'Imam Ahmad Ibnou Hanbal–, Abou l-Fadl At-Tamimiyy Al-hanbaliyy rapporte que l'Imam Ahmad a dit : (mahma tasawwarta bibalik fal-Lahou bikhilafi dhalika) ce qui signifie : « Quoi que tu imagines en ton esprit Dieu en est différent. ». Cette parole est en fait tirée du hadith du Prophète ﷺ  :
                         </p>
@@ -328,7 +328,7 @@ const Hanbalite: React.FC = () => {
                             On réplique à cette prétention de la manière suivante : Dieu a d'abord créé l'eau et le trône. Après la création de ces deux créatures-là, Il a créé d'autres créatures à savoir la lumière et l'obscurité. Il y a donc eu toute une époque entre la création des deux premières créatures et la suite, où il n'y avait ni lumière ni obscurité. Bien qu'on ne puisse pas imaginer cette réalité, il est un devoir d'y croire puisque cela a été rapporté dans le Qour'an.
                         </p>
 
-                        <h4 className="font-bold text-lg text-emerald-700 dark:text-emerald-300 mb-2 mt-6">L'Imam Ahmad dit que Allah n'est pas un corps</h4>
+                        <h4 className="font-bold text-lg text-green mb-2 mt-6">L'Imam Ahmad dit que Allah n'est pas un corps</h4>
                         <p className="mb-4">
                             Dans son livre: 'I^tiqadou l-'Imami l-Moubajjali Ahmad Ibnou Hanbal –La Croyance de l'Imam Ahmad Ibnou Hanbal–, Abou l-Fadl At-Tamimiyy Al-hanbaliyy rapporte que l'Imam Ahmad a dit :
                         </p>
@@ -336,7 +336,7 @@ const Hanbalite: React.FC = () => {
                             « Les noms sont tirés de la religion (chari^ah) et de la langue arabe ; or les spécialistes de la langue arabe ont mentionné que le mot « corps » (jism) est employé pour tout ce qui présente une longueur, une largeur, une épaisseur, une composition, une image et une constitution, et Allah –ta^ala– est exempt de tout cela. Il n'est donc pas permis de L'appeler corps (jism) puisqu'Il est exempt de ce qui impliquerait qu'Il soit un corps et cela n'a pas été cité dans la religion (chari^ah) : c'est donc infondé ».
                         </p>
 
-                        <h4 className="font-bold text-lg text-emerald-700 dark:text-emerald-300 mb-2 mt-6">L'Imam Ahmad déclarait mécréant quiconque attribue le corps à Allah</h4>
+                        <h4 className="font-bold text-lg text-green mb-2 mt-6">L'Imam Ahmad déclarait mécréant quiconque attribue le corps à Allah</h4>
                         <p className="mb-4">
                             Az–Zarkachiyy a rapporté dans son livre Tachnifou l-Maçami^ de l'auteur du livre Al-Khisal qu'il a dit : l'Imam Ahmad Ibnou Hanbal a dit :
                         </p>
@@ -356,7 +356,7 @@ const Hanbalite: React.FC = () => {
                             L'Imam Al-Bayhaqiyy a également rapporté cette parole dans son livre Manaqibou Ahmad –manuscrit– de l'Imam Abou l-Fadl At-Tamimiyy qui était maître et fils du maître des hanbalites à Bagdad.
                         </p>
 
-                        <h4 className="font-bold text-lg text-emerald-700 dark:text-emerald-300 mb-2 mt-6">L'Imam Ahmad considérait permise l'interprétation (at-ta'wil) qui est conforme aux textes de la religion et à la langue des arabes</h4>
+                        <h4 className="font-bold text-lg text-green mb-2 mt-6">L'Imam Ahmad considérait permise l'interprétation (at-ta'wil) qui est conforme aux textes de la religion et à la langue des arabes</h4>
                         <p className="mb-4">
                             Il a interprété lui-même le verset 22 de Sourate Al-Fajr :
                         </p>
@@ -370,7 +370,7 @@ const Hanbalite: React.FC = () => {
                             Les gens de ce groupe disent que l'interprétation revient à nier les attributs de Dieu, ils disent (at-ta'wilou ta^til) c'est-à-dire que celui qui pratique l'inter­prétation des textes tomberait d'après eux dans la négation de l'existence de Dieu et de Ses attributs. Selon eux, l'Imam Ahmad serait mécréant puisqu'il a interprété cette ayah. Comment peuvent-ils encore, après cela, se réclamer de l'école de l'Imam Ahmad ?
                         </p>
 
-                        <h4 className="font-bold text-lg text-emerald-700 dark:text-emerald-300 mb-2 mt-6">L'Imam Ahmad considérait permise la recherche des bénédictions de la tombe du Prophète ﷺ </h4>
+                        <h4 className="font-bold text-lg text-green mb-2 mt-6">L'Imam Ahmad considérait permise la recherche des bénédictions de la tombe du Prophète ﷺ </h4>
                         <p className="mb-4">
                             ^Abdou l-Lah le fils de l'Imam Ahmad a rapporté de son père qu'il a dit dans le livre Al-^Ilalou waMa^rifatou r-Rijal : « Je l'ai interrogé –c'est-à-dire qu'il a posé la question à son père l'Imam Ahmad– au sujet d'un homme qui toucherait ou embrasserait le minbar du Prophète pour en rechercher les bénédictions (tabarrouk) et qui agirait de la même manière avec la tombe ou ce qui est de cet ordre en voulant par-là se rapprocher de l'agrément de Allah ». Il lui a dit : « Il n'y a pas de mal en cela. »
                         </p>
@@ -378,7 +378,7 @@ const Hanbalite: React.FC = () => {
                             Or certains extrémistes propagent de nos jours que rechercher les bénédictions –faire le tabarrouk– par les traces du Messager ﷺ  serait une forme d'association et que celui qui le fait ne serait plus musulman. D'après eux, Ahmad et son fils sont mécréants.
                         </p>
 
-                        <h4 className="font-bold text-lg text-emerald-700 dark:text-emerald-300 mb-2 mt-6">L'Imam Ahmad considérait permise l'invocation par le degré des Prophètes et des saints</h4>
+                        <h4 className="font-bold text-lg text-green mb-2 mt-6">L'Imam Ahmad considérait permise l'invocation par le degré des Prophètes et des saints</h4>
                         <p className="mb-4">
                             Il a été rapporté par l'Imam Al-Mardawiyy, dans son livre Al-'Insaf, que l'Imam Ahmad a écrit dans son Mansak adressé à Al-Marwadhiyy qu'il est recommandé à celui qui demande à Allah la pluie de faire l'invocation par le degré du Prophète ﷺ .
                         </p>
@@ -386,7 +386,7 @@ const Hanbalite: React.FC = () => {
                             Pourquoi certains égarés disent-ils maintenant que l'invocation par le degré du Prophète serait interdite et qu'elle serait une forme d'association ? Ils sont allés jusqu'à inventer une règle qui n'existe pas dans l'Islam selon laquelle appeler quelqu'un qui n'est pas vivant et présent serait de l'associa­tion(chirk).
                         </p>
 
-                        <h4 className="font-bold text-lg text-emerald-700 dark:text-emerald-300 mb-2 mt-6">L'Imam Ahmad ne jugeait pas interdit de voyager pour visiter la tombe du Prophète ﷺ </h4>
+                        <h4 className="font-bold text-lg text-green mb-2 mt-6">L'Imam Ahmad ne jugeait pas interdit de voyager pour visiter la tombe du Prophète ﷺ </h4>
                         <p className="mb-4">
                             Bien au contraire, il considérait ce voyage comme une chose recommandée, contrairement aux extrémistes qui considèrent ce voyage comme une désobéissance et même de la mécréance si c'est par recherche des bénédictions. Or les spécialistes de la jurisprudence hanbalite sont unanimes qu'il est recommandé pour celui qui termine son pèlerinage de voyager de la Mecque honorée vers Médine l'Illuminée pour visiter la tombe du Bien-aimé, le Prophète Mouhammad ﷺ , ce qui fait largement la distance du voyage.
                         </p>
@@ -445,7 +445,7 @@ const Hanbalite: React.FC = () => {
                         <p className="mb-4">
                             – Nombreux sont les savants qui ont innocenté l’Imâm Ahmad de la croyance des moujassimah (corporalistes). Parmi eux :
                         </p>
-                        <ul className="list-disc pl-6 space-y-2 marker:text-emerald-500 mb-4">
+                        <ul className="list-disc pl-6 space-y-2 marker:text-green mb-4">
                             <li>Le grand savant Hanbalite, l’Imâm Ibnou l-Jawzi (رحمه الله), un pilier dans l’école de l’Imâm Ahmad, qui a dit : <b>« Ahmad (C’est-à-dire l’Imâm Ahmad Ibnou Hanbal) n’a jamais attribué de direction à Al-Bârî (Le Créateur : c’est-à-dire Allâh)»</b> [Daf’ou Choubahi t-Tachbîh]</li>
                             <li>Le Qâdî Badrou d-Dîn Ibnou Jamâ’ah (رحمه الله) qui a dit : « Certes l’Imâm Ahmad Ibnou Hanbal n’a jamais attribué de direction à Al-Bârî (Le Créateur : c’est-à-dire Allâh)» [Îdâhou d-Dalîl]</li>
                             <li>Le Chaykh Ibn ‘Allân As-Siddîqi (رحمه الله) qui a dit : <b>« Allâh ta’âlâ est exempt de la direction, de l’endroit, du corps et de toutes les caractéristiques de ce qui entre en existence. Ceci est la croyance des gens de la vérité, parmi lesquels figure l’Imâm Ahmad [Ibn Hanbal]. Quant à ce que certains lui ont attribué comme parole affirmant une direction ou des choses semblables, c’est un mensonge manifeste à son encontre ainsi qu’à l’encontre de ses premiers compagnons, comme l’a expliqué Ibn Al-Jawzi, l’un des grands savants hanbalites»</b> [Al-Foutoûhâtou r-Rabbâniyyah]</li>
@@ -466,7 +466,7 @@ const Hanbalite: React.FC = () => {
                         <p className="mb-4">
                             – L’Imâm Ahmad [Ibn Hambal] a été interrogé au sujet de l’istiwâ [de Allâh], il a dit : <b>« Istawâ tel qu’Il l’a porté à notre connaissance, et non pas comme cela pourrait passer par l’imagination des humains.»</b> [Rapporté par l’Imâm Ahmad Ar-Rifâ’i]
                         </p>
-                        <ul className="list-disc pl-6 space-y-2 marker:text-emerald-500 mb-4">
+                        <ul className="list-disc pl-6 space-y-2 marker:text-green mb-4">
                             <li>L'Imâm Ibnou 'Abdi s-Salâm dans son livre « Hallou r-Roumoûz » ;</li>
                             <li>Le Chaykh Taqiyyou d-Dîn Al-Hisni dans son livre « Daf'ou choubahi man chabbaha wa tamarrad » ;</li>
                             <li>Le Chaykh Moujîrou d-Dîn Al-'Oulaymi Al-Hambali dans son tafsîr ;</li>
@@ -494,7 +494,7 @@ const Hanbalite: React.FC = () => {
                         <p className="mb-4">
                             – Cette interprétation de l’Imâm Ahmad Ibn Hanbal a été mentionnée dans de nombreux ouvrages de savants. Parmi eux :
                         </p>
-                       <ul className="list-disc pl-6 space-y-2 marker:text-emerald-500 mb-4">
+                       <ul className="list-disc pl-6 space-y-2 marker:text-green mb-4">
                            <li>Le Hâfidh Al-Bayhaqi, avec une chaîne de transmission authentique comme le mentionne Ibnou Kathîr [Dans son livre Al-Bidâyah wa n-Nihâyah]</li>
                            <li>L’Imâm Ibnou l-Jawzi Al-Hanbali [dans son livre Daf’ou Choubahi t-Tachbîh]</li>
                            <li>Le Chaykh Ahmad Ibn Hamdân Al-Hanbali [dans son livre Nihâyatou l-Moubtadi-în]</li>
@@ -519,7 +519,7 @@ const Hanbalite: React.FC = () => {
                             Vertueux, ascète, savant aux qualités innombrables, l'Imam Ahmad en plus de sa grande science dans la religion était connu de tous pour son comportement d'excellence. Il agissait en bien envers les autres, était poli et ne prononçait aucune parole vile.
                         </p>
 
-                        <h4 className="font-bold text-lg text-emerald-700 dark:text-emerald-300 mb-2 mt-6">Le comportement de l'Imam Ahmad</h4>
+                        <h4 className="font-bold text-lg text-green mb-2 mt-6">Le comportement de l'Imam Ahmad</h4>
                         <p className="mb-4">
                             C'est par son excellence de comportement que l'Imam Ahmad, que Allah l'agrée, a été connu. Les gens parlaient de lui, de son comportement et il était considéré meilleur que beaucoup d'autres.
                         </p>
@@ -527,7 +527,7 @@ const Hanbalite: React.FC = () => {
                             Il est rapporté de Abou l-Houçayn Ibnou l-Mounada qu'il a dit : J'ai entendu mon grand-père dire : « Ahmad était parmi les gens, celui qui était le plus pudique et celui qui avait une grandeur d'âme, celui qui avait le meilleur comportement et la plus grande politesse. Il écoutait beaucoup ceux qui parlaient et baissait le regard. Il se détournait de ce qui était mauvais et des paroles inutiles. On entendait de lui la citation du hadith, la mention des gens vertueux, des gens ascètes. Il parlait calmement et avec de belles paroles. »
                         </p>
 
-                        <h4 className="font-bold text-lg text-emerald-700 dark:text-emerald-300 mb-2 mt-6">Sa dignité dans la pauvreté et son ascèse</h4>
+                        <h4 className="font-bold text-lg text-green mb-2 mt-6">Sa dignité dans la pauvreté et son ascèse</h4>
                         <p className="mb-4">
                             Il a été rapporté qu'un homme s'était rendu chez Ahmad Ibnou Hanbal à la suite du vol des vêtements de Ahmad. Cet homme était reparti chez lui chercher cent dirhams, mais Ahmad n'avait pas voulu les prendre ni en tant que cadeau, ni en tant que prêt. Ahmad lui avait dit : – N'est-ce pas que tu as entendu avec moi le hadith de Ibnou ^Ouyaynah ?   – Oui, répondit l'homme. Puis Ahmad lui dit –Veux-tu que je te l'écrive ? – d'accord, lui répondit l'homme. Il l'a donc écrit en contrepartie de quelques dirhams avec lesquelles il a pu s'acheter deux vêtements.
                         </p>
@@ -544,7 +544,7 @@ const Hanbalite: React.FC = () => {
                             Les récits rapportés sur son délaissement des plaisirs du bas monde et sa pratique de l'ascèse, sur le fait qu'il suivait le chemin du soufisme, sont trop nombreux pour être cités ici.
                         </p>
 
-                        <h4 className="font-bold text-lg text-emerald-700 dark:text-emerald-300 mb-2 mt-6">Sa modestie</h4>
+                        <h4 className="font-bold text-lg text-green mb-2 mt-6">Sa modestie</h4>
                         <p className="mb-4">
                             L'Imam Ahmad Ibnou Hanbal était, que Allah l'agrée, très modeste vis-à-vis des savants et extrêmement humble envers eux. Lorsqu'il aimait quelqu'un, c'était par recherche de l'agrément de Allah et lorsqu'il détestait quelqu'un, c'était par obéissance à Allah.
                         </p>
@@ -562,7 +562,7 @@ const Hanbalite: React.FC = () => {
                             At–Tabaraniyy et Al-Bayhaqiyy ont rapporté qu'une femme, atteinte de paralysie des jambes depuis vingt ans, avait dit un jour à son fils d'aller chez Ahmad pour qu'il lui fasse des invocations. À son arrivée chez Ahmad, il frappa à la porte et lui expliqua le but de sa visite. Ahmad dit alors : « J'ai davantage besoin de ses invocations qu'elle n'a besoin des miennes. » Et il lui a fait une invocation. À son retour, le fils vit sa mère marcher sur ses jambes, qui lui disait : « Allah m'a accordé la guérison. »
                         </p>
 
-                        <h4 className="font-bold text-lg text-emerald-700 dark:text-emerald-300 mb-2 mt-6">Ach-Chafi^iyy a recherché les bénédictions par l'Imam Ahmad</h4>
+                        <h4 className="font-bold text-lg text-green mb-2 mt-6">Ach-Chafi^iyy a recherché les bénédictions par l'Imam Ahmad</h4>
                         <p className="mb-4">
                             Al-Bayhaqiyy rapporte que Ar-Rabi^ a dit : « Ach-Chafi^iyy m'a confié une lettre à remettre à Ahmad. Je l'ai donc rencontré juste après qu'il a accompli la prière du matin (as–soubh) et la lui ai remise. Il m'a demandé : "L'as-tu lue ?" Je lui ai répondu : "Non." Il l'a prise et quand il en termina la lecture il a pleuré. Je lui ai demandé alors : « Ya 'Aba ^Abdi l-Lah, qu'as-tu lu ? » Il a répondu : « Ach-Chafi^iyy m'informe qu'il a vu le Prophète dans le rêve lui dire ce qui signifie : Écris à Abou ^Abdi l-Lah Ahmad Ibnou Hanbal, passe lui mon salam et dis-lui : Tu seras éprouvé pour que tu dises que le Qour'an est créé. Alors ne les écoute pas, Allah t'en rétribuera jusqu'au Jour dernier. » J'ai dit alors à Ahmad Ibnou Hanbal : « Quelle est ma récompense pour cette nouvelle ? » Il a retiré le vêtement qu'il portait et me l'a remis. Lorsque je suis retourné chez Ach-Chafi^iyy, je l'ai informé de ce qui s'était passé, alors il m'a dit : « Je ne vais pas t'attrister en te demandant ce vêtement mais trempe-le dans l'eau et donne-moi de cette eau pour les bénédictions. »
                         </p>
@@ -577,12 +577,12 @@ const Hanbalite: React.FC = () => {
                             Le décès de l'Imam Ahmad a eu lieu à Bagdad un vendredi 12 du mois de Rabi^ou l-'Awwal en l'an 241 de l'Hégire. Des centaines de milliers de musulmans ont suivi son convoi funéraire.
                         </p>
 
-                        <h4 className="font-bold text-lg text-emerald-700 dark:text-emerald-300 mb-2 mt-6">Le décès d'un homme de grande valeur</h4>
+                        <h4 className="font-bold text-lg text-green mb-2 mt-6">Le décès d'un homme de grande valeur</h4>
                         <p className="mb-4">
                             Ibnou Khil-likan a cité dans Al-Wafayat que l'Imam Ahmad est décédé à Bagdad aux alentours du vendredi 12 du mois de Rabi^ou l-'Awwal en l'an 241 de l'Hégire. Un soir l'Imam Ahmad, que Allah l'agrée, est tombé malade de la fièvre. Sa maladie a duré neuf jours. Puis, il décéda à l'âge de soixante-dix-sept ans. Il a été enterré au cimetière de Bab Harb à Bagdad et environ huit cent mille hommes et soixante mille femmes ont assisté à la prière funéraire (Janazah). Et il a été dit que le jour de sa mort vingt mille personnes se sont converties à l'Islam.
                         </p>
 
-                        <h4 className="font-bold text-lg text-emerald-700 dark:text-emerald-300 mb-2 mt-6">Le testament de l'Imam Ahmad Ibnou Hanbal</h4>
+                        <h4 className="font-bold text-lg text-green mb-2 mt-6">Le testament de l'Imam Ahmad Ibnou Hanbal</h4>
                         <p className="mb-4">
                             L'Imam Ahmad Ibnou Hanbal que Allah l'agrée, a rédigé son testament dont nous citerons le début : « Bismi l-Lahi r-Rahmani r-Rahim, ceci est ce que recommande Ahmad Ibnou Mouhammad Ibnou Hanbal, il confirme qu'il témoigne qu'il n'est de dieu que Allah, Lui seul Il n'a pas d'associé, et que Mouhammad est Son esclave et Son Messager, envoyé avec la droiture et la religion de vérité, pour la manifester entièrement malgré l'opposition des associateurs. Et il recommande à ceux qui lui obéissent de sa famille et de sa parenté, d'adorer Allah parmi ceux qui L'adorent et de louer Allah parmi ceux qui Le louent, et qu'ils donnent le conseil à la communauté musulmane. Et je témoigne que mon cœur est satisfait du fait que Allah est mon Seigneur et que l'Islam est ma religion et que Mouhammad est mon Prophète. »
                         </p>
@@ -611,13 +611,13 @@ const Hanbalite: React.FC = () => {
                     transition={{ delay: 0.6 }}
                     className="mb-16"
                 >
-                    <h3 className="text-2xl font-bold text-emerald-900 dark:text-emerald-300 mb-8 font-display text-center">
+                    <h3 className="text-2xl font-bold text-green-deep mb-8 font-display text-center">
                         Caractéristiques de l'École Hanbalite
                     </h3>
                     <div className="grid md:grid-cols-3 gap-6">
                         <div className="bg-white/80 dark:bg-gray-800/80 rounded-xl p-6 shadow-lg border border-line">
                             <div className="w-12 h-12 rounded-full bg-amber-100 dark:bg-emerald-800 flex items-center justify-center mb-4">
-                                <BookOpen className="h-6 w-6 text-amber-600 dark:text-emerald-400" />
+                                <BookOpen className="h-6 w-6 text-amber-600" />
                             </div>
                             <h4 className="text-lg font-bold text-gray-800 dark:text-white mb-2">
                                 Attachement au Texte
@@ -629,7 +629,7 @@ const Hanbalite: React.FC = () => {
                         </div>
                         <div className="bg-white/80 dark:bg-gray-800/80 rounded-xl p-6 shadow-lg border border-line">
                             <div className="w-12 h-12 rounded-full bg-amber-100 dark:bg-emerald-800 flex items-center justify-center mb-4">
-                                <Scale className="h-6 w-6 text-amber-600 dark:text-emerald-400" />
+                                <Scale className="h-6 w-6 text-amber-600" />
                             </div>
                             <h4 className="text-lg font-bold text-gray-800 dark:text-white mb-2">
                                 Rigueur Juridique
@@ -641,7 +641,7 @@ const Hanbalite: React.FC = () => {
                         </div>
                         <div className="bg-white/80 dark:bg-gray-800/80 rounded-xl p-6 shadow-lg border border-line">
                             <div className="w-12 h-12 rounded-full bg-amber-100 dark:bg-emerald-800 flex items-center justify-center mb-4">
-                                <Users className="h-6 w-6 text-amber-600 dark:text-emerald-400" />
+                                <Users className="h-6 w-6 text-amber-600" />
                             </div>
                             <h4 className="text-lg font-bold text-gray-800 dark:text-white mb-2">
                                 Influence Moderne
@@ -672,7 +672,7 @@ const Hanbalite: React.FC = () => {
                         <p className="text-xl text-gray-800 dark:text-gray-200 font-display leading-relaxed mb-4">
                             Quoi que tu imagines en ton esprit, Dieu en est différent.
                         </p>
-                        <p className="text-sm text-emerald-700 dark:text-emerald-400">
+                        <p className="text-sm text-green">
                             - Imam Ahmad ibn Hanbal
                         </p>
                     </div>

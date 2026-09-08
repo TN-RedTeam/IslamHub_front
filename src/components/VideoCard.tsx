@@ -49,7 +49,7 @@ export const VideoCard: React.FC<VideoCardProps> = ({ video, index = 0 }) => {
             type="button"
             onClick={() => setPlaying(true)}
             aria-label={`Lire la vidéo : ${video.titre}`}
-            className="group absolute inset-0 w-full h-full focus:outline-none focus:ring-4 focus:ring-emerald-500"
+            className="group absolute inset-0 w-full h-full focus:outline-none focus:ring-4 focus:ring-green"
           >
             <img
               src={`https://i.ytimg.com/vi/${video.youtube_id}/hqdefault.jpg`}
@@ -62,7 +62,7 @@ export const VideoCard: React.FC<VideoCardProps> = ({ video, index = 0 }) => {
               }}
             />
             <span className="absolute inset-0 bg-black/30 group-hover:bg-black/50 transition-colors flex items-center justify-center">
-              <span className="w-16 h-16 rounded-full bg-emerald-600 group-hover:bg-emerald-500 flex items-center justify-center shadow-card transition-transform group-hover:scale-110">
+              <span className="w-16 h-16 rounded-full bg-green group-hover:bg-green flex items-center justify-center shadow-card transition-transform group-hover:scale-110">
                 <Play className="w-7 h-7 text-white fill-white ml-1" />
               </span>
             </span>
@@ -81,14 +81,14 @@ export const VideoCard: React.FC<VideoCardProps> = ({ video, index = 0 }) => {
             {video.titre}
           </h3>
           {video.categorie && (
-            <span className="shrink-0 px-2 py-1 rounded-full bg-emerald-100 dark:bg-emerald-900/50 text-emerald-800 dark:text-emerald-200 text-xs font-medium">
+            <span className="shrink-0 px-2 py-1 rounded-full bg-emerald-100 dark:bg-emerald-900/50 text-green-deep text-xs font-medium">
               {video.categorie}
             </span>
           )}
         </div>
 
         {video.savant && (
-          <p className="text-sm text-emerald-700 dark:text-emerald-400 font-medium mb-2">
+          <p className="text-sm text-green font-medium mb-2">
             {video.savant}
           </p>
         )}

@@ -35,25 +35,25 @@ function isArabic(node: React.ReactNode): boolean {
  *       s'affiche automatiquement en bas du bloc.
  */
 const mdComponents: Components = {
-  h1: ({ children }) => <h3 lang={isArabic(children) ? 'ar' : undefined} className="text-xl font-bold text-emerald-800 dark:text-emerald-300 mt-4 mb-2 font-display">{children}</h3>,
+  h1: ({ children }) => <h3 lang={isArabic(children) ? 'ar' : undefined} className="text-xl font-bold text-green-deep mt-4 mb-2 font-display">{children}</h3>,
   h2: ({ children, id }) =>
     // remark-gfm génère un <h2 id="footnote-label"> pour le titre des notes :
     // on le garde masqué (sr-only) au lieu d'afficher "Footnotes".
     id === 'footnote-label'
       ? <h2 className="sr-only">{children}</h2>
-      : <h4 lang={isArabic(children) ? 'ar' : undefined} className="text-lg font-bold text-emerald-800 dark:text-emerald-300 mt-4 mb-2 font-display">{children}</h4>,
-  h3: ({ children }) => <h4 lang={isArabic(children) ? 'ar' : undefined} className="text-lg font-bold text-emerald-800 dark:text-emerald-300 mt-4 mb-2 font-display">{children}</h4>,
+      : <h4 lang={isArabic(children) ? 'ar' : undefined} className="text-lg font-bold text-green-deep mt-4 mb-2 font-display">{children}</h4>,
+  h3: ({ children }) => <h4 lang={isArabic(children) ? 'ar' : undefined} className="text-lg font-bold text-green-deep mt-4 mb-2 font-display">{children}</h4>,
   p: ({ children }) => isArabic(children)
     ? <p lang="ar" dir="rtl" className="text-xl leading-loose my-3 text-gray-900 dark:text-white">{children}</p>
     : <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-3">{children}</p>,
-  ul: (props) => <ul className="list-disc pl-6 mb-3 space-y-1 marker:text-emerald-500" {...props} />,
-  ol: (props) => <ol className="list-decimal pl-6 mb-3 space-y-1 marker:text-emerald-500" {...props} />,
+  ul: (props) => <ul className="list-disc pl-6 mb-3 space-y-1 marker:text-green" {...props} />,
+  ol: (props) => <ol className="list-decimal pl-6 mb-3 space-y-1 marker:text-green" {...props} />,
   li: ({ children }) => isArabic(children)
-    ? <li lang="ar" dir="rtl" className="leading-loose text-gray-900 dark:text-white marker:text-emerald-500">{children}</li>
+    ? <li lang="ar" dir="rtl" className="leading-loose text-gray-900 dark:text-white marker:text-green">{children}</li>
     : <li className="text-gray-700 dark:text-gray-300 leading-relaxed">{children}</li>,
   strong: (props) => <strong className="font-semibold text-gray-900 dark:text-white" {...props} />,
   em: (props) => <em className="italic" {...props} />,
-  blockquote: (props) => <blockquote className="border-l-4 border-emerald-400 pl-4 italic text-gray-600 dark:text-gray-400 my-3" {...props} />,
+  blockquote: (props) => <blockquote className="border-l-4 border-green pl-4 italic text-gray-600 dark:text-gray-400 my-3" {...props} />,
   a: (props) => {
     const href = (props as { href?: string }).href ?? '';
     // Flèche de retour "↩" de la note : inutile ici (pas de navigation), on la masque.
@@ -62,12 +62,12 @@ const mdComponents: Components = {
     // (un lien #user-content-fn casserait le HashRouter du site, et les ids
     //  se répètent entre entrées puisque la numérotation repart à 1 à chaque fois.)
     if (href.startsWith('#user-content-fn')) {
-      return <span className="text-emerald-600 dark:text-emerald-400 font-semibold">{props.children}</span>;
+      return <span className="text-green font-semibold">{props.children}</span>;
     }
-    return <a className="text-emerald-600 dark:text-emerald-400 underline" target="_blank" rel="noopener noreferrer" {...props} />;
+    return <a className="text-green underline" target="_blank" rel="noopener noreferrer" {...props} />;
   },
   hr: (props) => <hr className="my-4 border-line" {...props} />,
-  sup: (props) => <sup className="text-xs text-emerald-600 dark:text-emerald-400 font-semibold" {...props} />,
+  sup: (props) => <sup className="text-xs text-green font-semibold" {...props} />,
   // La section des notes de bas de page (className="footnotes") est stylée
   // globalement dans index.css : plus petite, grisée, avec trait de séparation.
   table: (props) => (

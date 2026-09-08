@@ -59,7 +59,7 @@ export const InstallPWA: React.FC<{ className?: string }> = ({ className }) => {
       aria-label="Installer l'application"
       className={
         className ??
-        'inline-flex items-center gap-1.5 px-3 py-2 rounded-md text-sm font-medium bg-emerald-600 text-white hover:bg-emerald-700 transition-colors'
+        'inline-flex items-center gap-1.5 px-3 py-2 rounded-md text-sm font-medium bg-green text-white hover:bg-green-deep transition-colors'
       }
     >
       <Download className="w-4 h-4 shrink-0" />

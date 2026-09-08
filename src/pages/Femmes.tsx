@@ -28,7 +28,7 @@ export const Femmes: React.FC = () => {
       <main className="container mx-auto px-4 py-12 max-w-6xl">
         {loading ? (
           <div className="flex justify-center py-16">
-            <Loader2 className="w-8 h-8 text-emerald-600 animate-spin" />
+            <Loader2 className="w-8 h-8 text-green animate-spin" />
           </div>
         ) : chapitres.length === 0 ? (
           <p className="text-center text-gray-500 dark:text-gray-400 py-16">

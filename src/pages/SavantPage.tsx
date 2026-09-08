@@ -31,7 +31,7 @@ export const SavantPage: React.FC = () => {
   if (loading) {
     return (
       <div className="min-h-screen bg-ground flex items-center justify-center">
-        <Loader2 className="h-10 w-10 text-emerald-600 dark:text-emerald-400 animate-spin" />
+        <Loader2 className="h-10 w-10 text-green animate-spin" />
       </div>
     );
   }
@@ -42,7 +42,7 @@ export const SavantPage: React.FC = () => {
         <div className="text-center max-w-md mx-auto p-8 bg-white dark:bg-gray-800 rounded-card shadow-card">
           <div className="text-6xl mb-4">🧕</div>
           <h1 className="text-xl font-bold text-gray-700 dark:text-gray-300 mb-2 font-display">Savant introuvable</h1>
-          <Link to="/savants" className="px-6 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg transition-colors inline-block mt-2">Tous les savants</Link>
+          <Link to="/savants" className="px-6 py-2 bg-green hover:bg-green-deep text-white rounded-lg transition-colors inline-block mt-2">Tous les savants</Link>
         </div>
       </div>
     );
@@ -85,7 +85,7 @@ export const SavantPage: React.FC = () => {
 
         {paroles.length > 0 && (
           <section>
-            <h2 className="text-lg font-bold text-emerald-800 dark:text-emerald-300 mb-4 flex items-center gap-2">
+            <h2 className="text-lg font-bold text-green-deep mb-4 flex items-center gap-2">
               <MessageSquareQuote className="h-5 w-5" /> Ses paroles ({paroles.length})
             </h2>
             <div className="space-y-4">
@@ -111,7 +111,7 @@ export const SavantPage: React.FC = () => {
 
         {hadiths_juges.length > 0 && (
           <section>
-            <h2 className="text-lg font-bold text-emerald-800 dark:text-emerald-300 mb-4 flex items-center gap-2">
+            <h2 className="text-lg font-bold text-green-deep mb-4 flex items-center gap-2">
               <ShieldCheck className="h-5 w-5" /> Hadiths qu'il a authentifiés ({hadiths_juges.length})
             </h2>
             <ul className="space-y-2">
@@ -119,7 +119,7 @@ export const SavantPage: React.FC = () => {
                 <li key={h.id} className="bg-white dark:bg-gray-800 rounded-xl px-4 py-3 shadow-sm border border-amber-100 dark:border-emerald-900 flex items-center justify-between gap-3">
                   <span className="text-gray-800 dark:text-gray-200 font-display">{h.sujet}</span>
                   {h.degre_authenticite && (
-                    <span className="text-xs px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-800 text-emerald-800 dark:text-muted shrink-0">{h.degre_authenticite}</span>
+                    <span className="text-xs px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-800 text-green-deep dark:text-muted shrink-0">{h.degre_authenticite}</span>
                   )}
                 </li>
               ))}

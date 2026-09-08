@@ -59,7 +59,7 @@ export const SavantHover: React.FC<{ nom: string; className?: string }> = ({ nom
       <Link
         to={`/savants/${slug}`}
         onClick={(e) => e.stopPropagation()}
-        className={className ?? 'text-emerald-700 dark:text-emerald-300 hover:underline'}
+        className={className ?? 'text-green hover:underline'}
       >
         {nom}
       </Link>
@@ -70,12 +70,12 @@ export const SavantHover: React.FC<{ nom: string; className?: string }> = ({ nom
           style={{ position: 'fixed', top: pos.top, left: pos.left }}
           className="z-[60] block w-72 max-w-[calc(100vw-1rem)] rounded-xl border border-line bg-white dark:bg-gray-800 shadow-card p-3 text-left"
         >
-          <span className="block font-bold text-emerald-900 dark:text-emerald-200 font-display">{info.nom}</span>
-          {info.ecole && <span className="block text-xs text-emerald-600 dark:text-emerald-400 mb-1">{info.ecole}</span>}
+          <span className="block font-bold text-green-deep font-display">{info.nom}</span>
+          {info.ecole && <span className="block text-xs text-green mb-1">{info.ecole}</span>}
           {info.resume && (
             <span className="block text-xs text-gray-600 dark:text-gray-400 leading-relaxed">{info.resume}</span>
           )}
-          <Link to={`/savants/${slug}`} onClick={(e) => e.stopPropagation()} className="block mt-2 text-xs font-medium text-emerald-600 dark:text-emerald-400 hover:underline">
+          <Link to={`/savants/${slug}`} onClick={(e) => e.stopPropagation()} className="block mt-2 text-xs font-medium text-green hover:underline">
             Biographie complète →
           </Link>
         </span>

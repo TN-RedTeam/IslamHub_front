@@ -17,7 +17,7 @@ const ParoleCard: React.FC<{ parole: Parole; onClick: () => void }> = ({ parole,
         className="relative bg-ivory rounded-card p-6 shadow-card border border-line space-y-4 overflow-hidden cursor-pointer h-full flex flex-col"
     >
       <div className="absolute top-0 right-0 w-24 h-24 opacity-20">
-        <svg viewBox="0 0 100 100" className="text-amber-500 dark:text-emerald-400">
+        <svg viewBox="0 0 100 100" className="text-amber-500">
           <path fill="currentColor" d="M20,20 Q30,10 40,20 T60,20 T80,20 T100,20" className="transform rotate-45" />
         </svg>
       </div>
@@ -34,7 +34,7 @@ const ParoleCard: React.FC<{ parole: Parole; onClick: () => void }> = ({ parole,
       {(parole.savant || parole.ecole) && (
           <div className="flex items-center justify-between gap-2 flex-wrap">
             {parole.savant && (
-                <span className="text-sm text-emerald-700 dark:text-emerald-300 italic">
+                <span className="text-sm text-green italic">
                   Savant : <SavantHover nom={parole.savant} />
                 </span>
             )}
@@ -48,7 +48,7 @@ const ParoleCard: React.FC<{ parole: Parole; onClick: () => void }> = ({ parole,
         </p>
 
         {parole.texte_francais && (
-            <div className="mt-4 pl-4 border-l-4 border-amber-300 dark:border-emerald-600 line-clamp-2">
+            <div className="mt-4 pl-4 border-l-4 border-amber-300 dark:border-green line-clamp-2">
               <p className="text-sm text-amber-700 dark:text-amber-200 mb-1">Signification :</p>
               <p className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap [unicode-bidi:plaintext]">{parole.texte_francais}</p>
             </div>
@@ -60,7 +60,7 @@ const ParoleCard: React.FC<{ parole: Parole; onClick: () => void }> = ({ parole,
             <m.span
                 key={tag.trim()}
                 whileHover={{ scale: 1.05 }}
-                className="text-xs bg-amber-100 dark:bg-emerald-800 text-amber-800 dark:text-emerald-200 px-3 py-1 rounded-full flex items-center"
+                className="text-xs bg-amber-100 dark:bg-emerald-800 text-amber-800 px-3 py-1 rounded-full flex items-center"
             >
               <ChevronRight className="h-3 w-3 mr-1" />
               {tag.trim()}
@@ -69,7 +69,7 @@ const ParoleCard: React.FC<{ parole: Parole; onClick: () => void }> = ({ parole,
       </div>
 
       <div className="mt-auto pt-4 text-center">
-        <button className="text-emerald-600 dark:text-emerald-400 text-sm font-medium hover:underline">
+        <button className="text-green text-sm font-medium hover:underline">
           Lire la suite...
         </button>
       </div>
@@ -106,7 +106,7 @@ const ParoleModal: React.FC<{ parole: Parole | null; onClose: () => void }> = ({
                 {parole.sujet}
               </h2>
               {parole.savant && (
-                  <p className="text-emerald-700 dark:text-emerald-400 mt-1">
+                  <p className="text-green mt-1">
                     Savant : <SavantHover nom={parole.savant} />
                   </p>
               )}
@@ -126,8 +126,8 @@ const ParoleModal: React.FC<{ parole: Parole | null; onClose: () => void }> = ({
               )}
 
               {parole.texte_francais && (
-                  <div className="mt-6 pl-4 border-l-4 border-emerald-500">
-                    <p className="text-sm text-emerald-700 dark:text-emerald-400 mb-2">Traduction :</p>
+                  <div className="mt-6 pl-4 border-l-4 border-green">
+                    <p className="text-sm text-green mb-2">Traduction :</p>
                     <p className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap [unicode-bidi:plaintext]">{parole.texte_francais}</p>
                   </div>
               )}
@@ -135,7 +135,7 @@ const ParoleModal: React.FC<{ parole: Parole | null; onClose: () => void }> = ({
 
             {parole.explication && (
                 <div className="mt-6 bg-emerald-50 dark:bg-emerald-900/30 p-6 rounded-lg">
-                  <p className="text-lg font-bold text-emerald-800 dark:text-emerald-300 mb-3">Explication :</p>
+                  <p className="text-lg font-bold text-green-deep mb-3">Explication :</p>
                   <Markdown>{parole.explication}</Markdown>
                 </div>
             )}
@@ -144,7 +144,7 @@ const ParoleModal: React.FC<{ parole: Parole | null; onClose: () => void }> = ({
               {(parole.tag || '').split(',').filter(Boolean).map(tag => (
                   <span
                       key={tag.trim()}
-                      className="text-xs bg-amber-100 dark:bg-emerald-800 text-amber-800 dark:text-emerald-200 px-3 py-1 rounded-full"
+                      className="text-xs bg-amber-100 dark:bg-emerald-800 text-amber-800 px-3 py-1 rounded-full"
                   >
                     {tag.trim()}
                   </span>
@@ -254,7 +254,7 @@ export const Paroles: React.FC = () => {
             <h3 className="text-xl font-bold text-red-600 dark:text-red-400 mb-2">Une erreur est survenue</h3>
             <p className="text-gray-600 dark:text-gray-400 mb-6">{error}</p>
             <button onClick={() => doSearch(searchTerm, selectedTag, selectedSavant, 0, false)}
-                className="px-6 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg transition-colors">Réessayer</button>
+                className="px-6 py-2 bg-green hover:bg-green-deep text-white rounded-lg transition-colors">Réessayer</button>
           </div>
         </div>
     );
@@ -281,15 +281,15 @@ export const Paroles: React.FC = () => {
             <div className="flex flex-col md:flex-row gap-6">
               <div className="flex-1 relative">
                 <div className="absolute left-3 top-1/2 transform -translate-y-1/2">
-                  <Search className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
+                  <Search className="h-5 w-5 text-green" />
                 </div>
                 <input
                     type="text" aria-label="Rechercher une parole" placeholder="Rechercher une parole, un savant..."
-                    className="w-full pl-12 pr-6 py-3 rounded-xl border border-line bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-transparent text-lg font-display"
+                    className="w-full pl-12 pr-6 py-3 rounded-xl border border-line bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-green focus:border-transparent text-lg font-display"
                     value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
                 {isLoading && (
                     <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
-                      <Loader className="h-5 w-5 text-emerald-600 dark:text-emerald-400 animate-spin" />
+                      <Loader className="h-5 w-5 text-green animate-spin" />
                     </div>
                 )}
               </div>
@@ -308,13 +308,13 @@ export const Paroles: React.FC = () => {
             {(selectedTag || selectedSavant) && (
                 <m.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}
                     className="mt-4 flex items-center justify-between bg-emerald-50 dark:bg-emerald-900/30 rounded-lg px-4 py-2">
-                  <span className="font-medium text-emerald-800 dark:text-emerald-200 flex flex-wrap items-center gap-2">
+                  <span className="font-medium text-green-deep flex flex-wrap items-center gap-2">
                     Filtres :
                     {selectedTag && <span className="px-2 py-0.5 bg-emerald-100 dark:bg-emerald-800 rounded-full text-sm">{selectedTag}</span>}
                     {selectedSavant && <span className="px-2 py-0.5 bg-emerald-100 dark:bg-emerald-800 rounded-full text-sm">{selectedSavant}</span>}
                   </span>
                   <button onClick={handleResetFilters} aria-label="Retirer les filtres"
-                      className="text-emerald-600 dark:text-emerald-400 hover:text-emerald-800 dark:hover:text-emerald-200 p-1 shrink-0">
+                      className="text-green hover:text-green-deep dark:hover:text-emerald-200 p-1 shrink-0">
                     <X className="h-5 w-5" />
                   </button>
                 </m.div>
@@ -330,7 +330,7 @@ export const Paroles: React.FC = () => {
                   Saisissez un mot-clé (cherche aussi les tags), un savant, choisissez un sujet — ou affichez tout.
                 </p>
                 <button onClick={() => setShowAll(true)}
-                    className="inline-flex items-center gap-2 px-6 py-3 mb-6 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-medium shadow">
+                    className="inline-flex items-center gap-2 px-6 py-3 mb-6 rounded-xl bg-green hover:bg-green-deep text-white font-medium shadow">
                   Tout afficher{totalCount > 0 ? ` (${totalCount})` : ''}
                 </button>
                 {allTags.length > 0 && (
@@ -338,7 +338,7 @@ export const Paroles: React.FC = () => {
                     <span className="w-full text-sm text-gray-400 mb-1">Sujets :</span>
                     {allTags.slice(0, 8).map((t) => (
                       <button key={t} onClick={() => setSelectedTag(t)}
-                          className="px-4 py-2 rounded-full text-sm font-medium bg-amber-100 dark:bg-emerald-800/60 text-amber-800 dark:text-emerald-200 hover:bg-amber-200 dark:hover:bg-emerald-700 transition-colors">
+                          className="px-4 py-2 rounded-full text-sm font-medium bg-amber-100 dark:bg-emerald-800/60 text-amber-800 hover:bg-amber-200 dark:hover:bg-green-deep transition-colors">
                         {t}
                       </button>
                     ))}
@@ -347,8 +347,8 @@ export const Paroles: React.FC = () => {
               </div>
             ) : isLoading ? (
               <div className="flex flex-col items-center py-16 gap-4">
-                <Loader className="h-12 w-12 text-emerald-600 dark:text-emerald-400 animate-spin" />
-                <p className="text-emerald-700 dark:text-emerald-300 font-display text-xl">Recherche en cours...</p>
+                <Loader className="h-12 w-12 text-green animate-spin" />
+                <p className="text-green font-display text-xl">Recherche en cours...</p>
               </div>
             ) : paroles.length === 0 ? (
               <m.div key="no-results" initial={{ opacity: 0 }} animate={{ opacity: 1 }}
@@ -358,13 +358,13 @@ export const Paroles: React.FC = () => {
                   <h3 className="text-xl font-bold text-gray-700 dark:text-gray-300 mb-2">Aucun résultat trouvé</h3>
                   <p className="text-gray-500 dark:text-gray-400 mb-6">Essayez de modifier vos critères de recherche</p>
                   <button onClick={handleResetFilters}
-                      className="px-6 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg transition-colors">Réinitialiser</button>
+                      className="px-6 py-2 bg-green hover:bg-green-deep text-white rounded-lg transition-colors">Réinitialiser</button>
                 </div>
               </m.div>
             ) : (
               <>
                 <m.p initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-                    className="text-sm font-medium text-emerald-700 dark:text-emerald-400 mb-6">
+                    className="text-sm font-medium text-green mb-6">
                   {paroles.length}{total > paroles.length ? ` / ${total}` : ''} parole{total > 1 ? 's' : ''} trouvée{total > 1 ? 's' : ''}
                 </m.p>
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -382,8 +382,8 @@ export const Paroles: React.FC = () => {
                     <div ref={loadMoreRef} className="flex justify-center py-8">
                       {isLoadingMore ? (
                           <div className="flex flex-col items-center gap-3">
-                            <Loader className="h-8 w-8 text-emerald-600 dark:text-emerald-400 animate-spin" />
-                            <p className="text-emerald-600 dark:text-emerald-400 text-sm">Chargement…</p>
+                            <Loader className="h-8 w-8 text-green animate-spin" />
+                            <p className="text-green text-sm">Chargement…</p>
                           </div>
                       ) : <div className="h-10" />}
                     </div>

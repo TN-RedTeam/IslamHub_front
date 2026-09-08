@@ -111,11 +111,11 @@ export const Multimedia: React.FC = () => {
         >
           <div className="flex flex-col md:flex-row gap-6">
             <div className="flex-1 relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-emerald-600 dark:text-emerald-400" />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-green" />
               <input
                 type="text"
                 placeholder="Rechercher une vidéo, un savant, un sujet..."
-                className="w-full pl-12 pr-6 py-3 rounded-xl border border-line bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-transparent text-lg"
+                className="w-full pl-12 pr-6 py-3 rounded-xl border border-line bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-green focus:border-transparent text-lg"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
@@ -136,14 +136,14 @@ export const Multimedia: React.FC = () => {
               animate={{ opacity: 1 }}
               className="mt-4 flex items-center justify-between bg-emerald-50 dark:bg-emerald-900/30 rounded-lg px-4 py-2"
             >
-              <span className="font-medium text-emerald-800 dark:text-emerald-200 text-sm">
+              <span className="font-medium text-green-deep text-sm">
                 {hasSearched && !isLoading
                   ? `${totalCount} vidéo${totalCount > 1 ? 's' : ''} trouvée${totalCount > 1 ? 's' : ''}`
                   : 'Recherche en cours…'}
               </span>
               <button
                 onClick={resetFilters}
-                className="text-emerald-600 dark:text-emerald-400 hover:text-emerald-800 dark:hover:text-emerald-200 p-1"
+                className="text-green hover:text-green-deep dark:hover:text-emerald-200 p-1"
                 aria-label="Réinitialiser les filtres"
               >
                 <X className="h-5 w-5" />
@@ -183,7 +183,7 @@ export const Multimedia: React.FC = () => {
                       <button
                         key={c.categorie}
                         onClick={() => setCategory(c.categorie)}
-                        className="px-4 py-2 rounded-full bg-emerald-100 dark:bg-emerald-900/40 text-emerald-800 dark:text-emerald-200 hover:bg-emerald-200 dark:hover:bg-emerald-900/60 transition-colors text-sm font-medium"
+                        className="px-4 py-2 rounded-full bg-emerald-100 dark:bg-emerald-900/40 text-green-deep hover:bg-green-soft dark:hover:bg-emerald-900/60 transition-colors text-sm font-medium"
                       >
                         {c.categorie}
                       </button>
@@ -246,7 +246,7 @@ export const Multimedia: React.FC = () => {
                 </p>
                 <button
                   onClick={resetFilters}
-                  className="px-6 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg transition-colors"
+                  className="px-6 py-2 bg-green hover:bg-green-deep text-white rounded-lg transition-colors"
                 >
                   Réinitialiser
                 </button>
@@ -271,7 +271,7 @@ export const Multimedia: React.FC = () => {
                 {hasMore && (
                   <div ref={loadMoreRef} className="flex justify-center mt-12">
                     {isLoadingMore ? (
-                      <Loader2 className="w-8 h-8 text-emerald-600 animate-spin" />
+                      <Loader2 className="w-8 h-8 text-green animate-spin" />
                     ) : (
                       <div className="h-8" />
                     )}

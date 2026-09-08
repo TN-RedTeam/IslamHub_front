@@ -52,7 +52,7 @@ export const HadithPage: React.FC = () => {
   if (loading) {
     return (
       <div className="min-h-screen bg-ground flex items-center justify-center">
-        <Loader2 className="h-10 w-10 text-emerald-600 dark:text-emerald-400 animate-spin" />
+        <Loader2 className="h-10 w-10 text-green animate-spin" />
       </div>
     );
   }
@@ -63,7 +63,7 @@ export const HadithPage: React.FC = () => {
         <div className="text-center max-w-md mx-auto p-8 bg-white dark:bg-gray-800 rounded-card shadow-card">
           <div className="text-6xl mb-4">📖</div>
           <h1 className="text-xl font-bold text-gray-700 dark:text-gray-300 mb-2 font-display">Hadith introuvable</h1>
-          <Link to="/hadiths" className="px-6 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg transition-colors inline-block mt-2">Tous les hadiths</Link>
+          <Link to="/hadiths" className="px-6 py-2 bg-green hover:bg-green-deep text-white rounded-lg transition-colors inline-block mt-2">Tous les hadiths</Link>
         </div>
       </div>
     );
@@ -89,10 +89,10 @@ export const HadithPage: React.FC = () => {
 
       <main className="container mx-auto px-4 py-10 max-w-3xl space-y-6">
         <div className="flex flex-wrap gap-3">
-          <button onClick={copyDebate} className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white dark:bg-gray-800 border border-line text-emerald-700 dark:text-emerald-300 hover:bg-emerald-50 dark:hover:bg-emerald-900/40 transition-colors">
+          <button onClick={copyDebate} className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white dark:bg-gray-800 border border-line text-green hover:bg-green-soft dark:hover:bg-emerald-900/40 transition-colors">
             {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />} Copier (format débat)
           </button>
-          <button onClick={share} className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white dark:bg-gray-800 border border-line text-emerald-700 dark:text-emerald-300 hover:bg-emerald-50 dark:hover:bg-emerald-900/40 transition-colors">
+          <button onClick={share} className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white dark:bg-gray-800 border border-line text-green hover:bg-green-soft dark:hover:bg-emerald-900/40 transition-colors">
             <Share2 className="h-4 w-4" /> Partager
           </button>
         </div>
@@ -106,14 +106,14 @@ export const HadithPage: React.FC = () => {
             </div>
           )}
           {hadith.texte_francais && (
-            <div className="pl-4 border-l-4 border-emerald-500">
-              <p className="text-sm text-emerald-700 dark:text-emerald-400 mb-1">Traduction :</p>
+            <div className="pl-4 border-l-4 border-green">
+              <p className="text-sm text-green mb-1">Traduction :</p>
               <p className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap [unicode-bidi:plaintext]">{hadith.texte_francais}</p>
             </div>
           )}
           {hadith.explication && (
             <div className="bg-emerald-50 dark:bg-emerald-900/30 rounded-lg p-4">
-              <p className="text-sm font-bold text-emerald-800 dark:text-emerald-300 mb-1">Explication :</p>
+              <p className="text-sm font-bold text-green-deep mb-1">Explication :</p>
               <p className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap [unicode-bidi:plaintext]">{hadith.explication}</p>
             </div>
           )}

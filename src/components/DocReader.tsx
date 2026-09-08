@@ -73,7 +73,7 @@ export const DocReader: React.FC<{
       {/* ---------- Sommaire ---------- */}
       <aside className="lg:sticky lg:top-24 bg-white dark:bg-gray-800 rounded-card border border-line shadow-sm overflow-hidden">
         <div className="flex items-center justify-between px-4 pt-4 pb-2">
-          <span className="font-bold text-emerald-900 dark:text-emerald-300 font-display text-lg">Sommaire</span>
+          <span className="font-bold text-green-deep font-display text-lg">Sommaire</span>
           <span className="text-xs text-gray-400 font-medium">{total} sujets</span>
         </div>
 
@@ -86,7 +86,7 @@ export const DocReader: React.FC<{
               onChange={(e) => setQuery(e.target.value)}
               placeholder={searchPlaceholder}
               aria-label="Rechercher dans le sommaire"
-              className="w-full pl-9 pr-3 py-2 rounded-lg text-sm bg-gray-50 dark:bg-gray-900 border border-line text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+              className="w-full pl-9 pr-3 py-2 rounded-lg text-sm bg-gray-50 dark:bg-gray-900 border border-line text-gray-900 dark:text-white focus:ring-2 focus:ring-green focus:border-transparent"
             />
           </div>
         </div>
@@ -95,7 +95,7 @@ export const DocReader: React.FC<{
         <button
           type="button"
           onClick={() => setTocOpen((v) => !v)}
-          className="lg:hidden w-full flex items-center justify-between px-4 py-2.5 text-sm font-semibold text-emerald-800 dark:text-emerald-300 border-t border-line"
+          className="lg:hidden w-full flex items-center justify-between px-4 py-2.5 text-sm font-semibold text-green-deep border-t border-line"
           aria-expanded={tocOpen}
         >
           <span className="flex items-center gap-2">
@@ -117,7 +117,7 @@ export const DocReader: React.FC<{
                     <button
                       type="button"
                       onClick={() => setClosed((c) => ({ ...c, [s.chapitre as string]: !c[s.chapitre as string] }))}
-                      className="w-full flex items-center gap-2 px-4 py-2.5 text-left font-bold text-gray-800 dark:text-gray-100 hover:bg-emerald-50 dark:hover:bg-emerald-900/20"
+                      className="w-full flex items-center gap-2 px-4 py-2.5 text-left font-bold text-gray-800 dark:text-gray-100 hover:bg-green-soft dark:hover:bg-emerald-900/20"
                     >
                       <span className="w-1.5 h-1.5 rounded-full bg-amber-500 flex-none" />
                       <span className="flex-1 truncate">{s.chapitre}</span>
@@ -136,7 +136,7 @@ export const DocReader: React.FC<{
                             onClick={() => pick(it.key)}
                             className={`block w-full text-left text-sm leading-snug px-4 py-2 border-l-2 transition-colors ${
                               on
-                                ? 'bg-emerald-50 dark:bg-emerald-900/30 text-emerald-800 dark:text-emerald-200 border-amber-500 font-semibold'
+                                ? 'bg-emerald-50 dark:bg-emerald-900/30 text-green-deep border-amber-500 font-semibold'
                                 : 'text-gray-600 dark:text-gray-400 border-transparent hover:bg-gray-50 dark:hover:bg-gray-900/40 hover:text-gray-900 dark:hover:text-gray-200'
                             } ${hasHeader ? 'pl-8' : ''}`}
                           >
@@ -170,7 +170,7 @@ export const DocReader: React.FC<{
                   <ChevronRight className="w-3 h-3" />
                 </>
               )}
-              <span className="text-emerald-600 dark:text-emerald-400">{current.title}</span>
+              <span className="text-green">{current.title}</span>
             </div>
             <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white font-display leading-tight mb-6">
               {current.title}

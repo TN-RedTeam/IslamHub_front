@@ -31,14 +31,14 @@ const CollapsibleSection: React.FC<SectionProps> = ({ title, icon, children, def
                     <div className="w-10 h-10 rounded-full bg-green flex items-center justify-center text-white">
                         {icon}
                     </div>
-                    <h3 className="text-xl font-bold text-emerald-800 dark:text-emerald-200 font-display">
+                    <h3 className="text-xl font-bold text-green-deep font-display">
                         {title}
                     </h3>
                 </div>
                 {isOpen ? (
-                    <ChevronUp className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
+                    <ChevronUp className="w-5 h-5 text-green" />
                 ) : (
-                    <ChevronDown className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
+                    <ChevronDown className="w-5 h-5 text-green" />
                 )}
             </button>
             <AnimatePresence>
@@ -194,7 +194,7 @@ const Shafii: React.FC = () => {
                     transition={{ delay: 0.4 }}
                     className="mb-16"
                 >
-                    <h2 className="text-3xl font-bold text-emerald-900 dark:text-emerald-300 mb-6 font-display text-center">
+                    <h2 className="text-3xl font-bold text-green-deep mb-6 font-display text-center">
                         L'Imam Ach-Chafi^iyy
                     </h2>
                     <div className="max-w-4xl mx-auto">
@@ -220,7 +220,7 @@ const Shafii: React.FC = () => {
                     transition={{ delay: 0.5 }}
                     className="mb-16 space-y-6"
                 >
-                    <h2 className="text-3xl font-bold text-emerald-900 dark:text-emerald-300 mb-8 font-display text-center">
+                    <h2 className="text-3xl font-bold text-green-deep mb-8 font-display text-center">
                         Biographie détaillée
                     </h2>
 
@@ -239,7 +239,7 @@ const Shafii: React.FC = () => {
                             un Hachémite et un Mouttalibiyy.
                         </p>
                         <p>
-                            Il est surnommé <span className="font-bold text-emerald-600 dark:text-emerald-400">Abou ^Abdil-Lah</span>.
+                            Il est surnommé <span className="font-bold text-green">Abou ^Abdil-Lah</span>.
                             Quant au terme "Chafi^iyy", il est attribué à son quatrième ascendant Chafi^ fils de As-Sa'ib.
                         </p>
                     </CollapsibleSection>
@@ -304,7 +304,7 @@ const Shafii: React.FC = () => {
                         </p>
                         <p className="mb-4">
                             Il fut le premier à codifier les principes de la jurisprudence islamique (oussoul al-fiqh)
-                            dans son célèbre ouvrage <span className="font-bold text-emerald-600 dark:text-emerald-400">"Ar-Riçalah"</span>.
+                            dans son célèbre ouvrage <span className="font-bold text-green">"Ar-Riçalah"</span>.
                             Cet ouvrage établit les fondements méthodologiques pour comprendre et interpréter les textes religieux.
                         </p>
                         <p className="mb-4">
@@ -313,7 +313,7 @@ const Shafii: React.FC = () => {
                             notamment en Égypte, en Asie du Sud-Est, au Yémen et en Afrique de l'Est.
                         </p>
                         <div className="bg-emerald-50 dark:bg-emerald-900/30 rounded-lg p-4 mt-4">
-                            <p className="text-emerald-800 dark:text-emerald-200 font-medium">
+                            <p className="text-green-deep font-medium">
                                 L'école Chafi^iyy représente environ 15% des musulmans dans le monde et reste
                                 particulièrement influente dans les domaines de la jurisprudence, du hadith et
                                 des principes de jurisprudence.
@@ -362,7 +362,7 @@ const Shafii: React.FC = () => {
                                     key={index}
                                     className="flex items-center gap-3 p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg"
                                 >
-                                    <span className="w-8 h-8 rounded-full bg-emerald-100 dark:bg-emerald-900 flex items-center justify-center text-emerald-600 dark:text-emerald-400 text-sm font-bold">
+                                    <span className="w-8 h-8 rounded-full bg-emerald-100 dark:bg-emerald-900 flex items-center justify-center text-green text-sm font-bold">
                                         {index + 1}
                                     </span>
                                     <span className="text-gray-700 dark:text-gray-300">{teacher}</span>
@@ -416,7 +416,7 @@ const Shafii: React.FC = () => {
                         </p>
                         <div className="space-y-4">
                             <div className="flex items-start gap-4">
-                                <div className="w-3 h-3 rounded-full bg-emerald-500 mt-2"></div>
+                                <div className="w-3 h-3 rounded-full bg-green mt-2"></div>
                                 <div>
                                     <h4 className="font-bold text-gray-800 dark:text-gray-200">La Mecque</h4>
                                     <p className="text-gray-600 dark:text-gray-400">
@@ -474,8 +474,8 @@ const Shafii: React.FC = () => {
                             Il a clairement exprimé sa croyance en l'unicité d'Allah et en Ses attributs parfaits.
                         </p>
                         <div className="space-y-4">
-                            <div className="p-4 bg-emerald-50 dark:bg-emerald-900/30 rounded-lg border-l-4 border-emerald-500">
-                                <p className="italic text-emerald-800 dark:text-emerald-200">
+                            <div className="p-4 bg-emerald-50 dark:bg-emerald-900/30 rounded-lg border-l-4 border-green">
+                                <p className="italic text-green-deep">
                                     "J'ai cru en Allah et en ce qui est venu de la part d'Allah, selon ce qu'a voulu Allah.
                                     Et j'ai cru en le Messager d'Allah et en ce qui est venu de la part du Messager d'Allah,
                                     selon ce qu'a voulu le Messager d'Allah."
@@ -524,7 +524,7 @@ const Shafii: React.FC = () => {
                     transition={{ delay: 0.6 }}
                     className="mb-16"
                 >
-                    <h3 className="text-2xl font-bold text-emerald-900 dark:text-emerald-300 mb-8 font-display text-center">
+                    <h3 className="text-2xl font-bold text-green-deep mb-8 font-display text-center">
                         Hiérarchie des Sources selon l'École Shafi'ite
                     </h3>
                     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -538,7 +538,7 @@ const Shafii: React.FC = () => {
                                 className="bg-white/80 dark:bg-gray-800/80 rounded-xl p-6 shadow-lg border border-line"
                             >
                                 <div className="w-12 h-12 rounded-full bg-amber-100 dark:bg-emerald-800 flex items-center justify-center mb-4">
-                                    <source.icon className="h-6 w-6 text-amber-600 dark:text-emerald-400" />
+                                    <source.icon className="h-6 w-6 text-amber-600" />
                                 </div>
                                 <h4 className="text-lg font-bold text-gray-800 dark:text-white mb-2">
                                     {source.title}
@@ -561,7 +561,7 @@ const Shafii: React.FC = () => {
                     <div className="bg-green-soft rounded-card p-6 shadow-lg border border-line">
                         <div className="flex flex-col md:flex-row items-center gap-6">
                             <div className="flex-1 text-center md:text-left">
-                                <h3 className="text-2xl font-bold text-emerald-900 dark:text-emerald-300 mb-3 font-display">
+                                <h3 className="text-2xl font-bold text-green-deep mb-3 font-display">
                                     Ar-Riçalah et l'Usul al-Fiqh
                                 </h3>
                                 <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
@@ -574,7 +574,7 @@ const Shafii: React.FC = () => {
                             </div>
                             <div className="text-center">
                                 <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-amber-100 dark:bg-emerald-800">
-                                    <BookOpen className="h-10 w-10 text-amber-600 dark:text-emerald-400" />
+                                    <BookOpen className="h-10 w-10 text-amber-600" />
                                 </div>
                             </div>
                         </div>
@@ -588,12 +588,12 @@ const Shafii: React.FC = () => {
                     transition={{ delay: 0.85 }}
                     className="mb-16"
                 >
-                    <h3 className="text-2xl font-bold text-emerald-900 dark:text-emerald-300 mb-8 font-display text-center">
+                    <h3 className="text-2xl font-bold text-green-deep mb-8 font-display text-center">
                         Particularités de l'École Shafi'ite
                     </h3>
                     <div className="grid md:grid-cols-3 gap-6">
                         <div className="bg-ivory rounded-xl p-6 shadow-lg border border-line">
-                            <h4 className="text-xl font-bold text-emerald-800 dark:text-emerald-300 mb-3 font-display">
+                            <h4 className="text-xl font-bold text-green-deep mb-3 font-display">
                                 Équilibre Méthodologique
                             </h4>
                             <p className="text-gray-700 dark:text-gray-300">
@@ -602,7 +602,7 @@ const Shafii: React.FC = () => {
                             </p>
                         </div>
                         <div className="bg-ivory rounded-xl p-6 shadow-lg border border-line">
-                            <h4 className="text-xl font-bold text-emerald-800 dark:text-emerald-300 mb-3 font-display">
+                            <h4 className="text-xl font-bold text-green-deep mb-3 font-display">
                                 Rejet de l'Istihsan
                             </h4>
                             <p className="text-gray-700 dark:text-gray-300">
@@ -611,7 +611,7 @@ const Shafii: React.FC = () => {
                             </p>
                         </div>
                         <div className="bg-ivory rounded-xl p-6 shadow-lg border border-line">
-                            <h4 className="text-xl font-bold text-emerald-800 dark:text-emerald-300 mb-3 font-display">
+                            <h4 className="text-xl font-bold text-green-deep mb-3 font-display">
                                 Rayonnement Mondial
                             </h4>
                             <p className="text-gray-700 dark:text-gray-300">
@@ -640,7 +640,7 @@ const Shafii: React.FC = () => {
                         <p className="text-xl text-gray-800 dark:text-gray-200 font-display leading-relaxed mb-4">
                             La science est ce qui profite, non ce qui est mémorisé.
                         </p>
-                        <p className="text-sm text-emerald-700 dark:text-emerald-400">
+                        <p className="text-sm text-green">
                             - L'Imam Ach-Chafi^iyy
                         </p>
                     </div>

@@ -30,14 +30,14 @@ const CollapsibleSection: React.FC<SectionProps> = ({ title, icon, children, def
                     <div className="w-10 h-10 rounded-full bg-green flex items-center justify-center text-white">
                         {icon}
                     </div>
-                    <h3 className="text-xl font-bold text-emerald-800 dark:text-emerald-200 font-display">
+                    <h3 className="text-xl font-bold text-green-deep font-display">
                         {title}
                     </h3>
                 </div>
                 {isOpen ? (
-                    <ChevronUp className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
+                    <ChevronUp className="w-5 h-5 text-green" />
                 ) : (
-                    <ChevronDown className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
+                    <ChevronDown className="w-5 h-5 text-green" />
                 )}
             </button>
             <AnimatePresence>
@@ -622,7 +622,7 @@ const Hanafi: React.FC = () => {
                     transition={{ delay: 0.6 }}
                     className="mb-16"
                 >
-                    <h3 className="text-2xl font-bold text-emerald-900 dark:text-emerald-300 mb-8 font-display text-center">
+                    <h3 className="text-2xl font-bold text-green-deep mb-8 font-display text-center">
                         Sources et Méthodologie de l'École Hanafite
                     </h3>
                     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -636,7 +636,7 @@ const Hanafi: React.FC = () => {
                                 className="bg-white/80 dark:bg-gray-800/80 rounded-xl p-6 shadow-lg border border-line"
                             >
                                 <div className="w-12 h-12 rounded-full bg-amber-100 dark:bg-emerald-800 flex items-center justify-center mb-4">
-                                    <principle.icon className="h-6 w-6 text-amber-600 dark:text-emerald-400" />
+                                    <principle.icon className="h-6 w-6 text-amber-600" />
                                 </div>
                                 <h4 className="text-lg font-bold text-gray-800 dark:text-white mb-2">
                                     {principle.title}
@@ -656,12 +656,12 @@ const Hanafi: React.FC = () => {
                     transition={{ delay: 0.8 }}
                     className="mb-16"
                 >
-                    <h3 className="text-2xl font-bold text-emerald-900 dark:text-emerald-300 mb-8 font-display text-center">
+                    <h3 className="text-2xl font-bold text-green-deep mb-8 font-display text-center">
                         Particularités de l'École Hanafite
                     </h3>
                     <div className="grid md:grid-cols-2 gap-6">
                         <div className="bg-ivory rounded-xl p-6 shadow-lg border border-line">
-                            <h4 className="text-xl font-bold text-emerald-800 dark:text-emerald-300 mb-3 font-display">
+                            <h4 className="text-xl font-bold text-green-deep mb-3 font-display">
                                 Flexibilité et Adaptabilité
                             </h4>
                             <p className="text-gray-700 dark:text-gray-300">
@@ -671,7 +671,7 @@ const Hanafi: React.FC = () => {
                             </p>
                         </div>
                         <div className="bg-ivory rounded-xl p-6 shadow-lg border border-line">
-                            <h4 className="text-xl font-bold text-emerald-800 dark:text-emerald-300 mb-3 font-display">
+                            <h4 className="text-xl font-bold text-green-deep mb-3 font-display">
                                 Rayonnement Géographique
                             </h4>
                             <p className="text-gray-700 dark:text-gray-300">
@@ -700,7 +700,7 @@ const Hanafi: React.FC = () => {
                         <p className="text-xl text-gray-800 dark:text-gray-200 font-display leading-relaxed mb-4">
                             La science est plus précieuse que l'argent, car la science te protège tandis que tu dois protéger l'argent.
                         </p>
-                        <p className="text-sm text-emerald-700 dark:text-emerald-400">
+                        <p className="text-sm text-green">
                             - Imam Abou Hanifa
                         </p>
                     </div>
