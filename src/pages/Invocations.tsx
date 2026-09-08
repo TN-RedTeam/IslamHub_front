@@ -247,11 +247,11 @@ export const Invocations: React.FC = () => {
                                     role="tab"
                                     aria-selected={on}
                                     onClick={() => handleTypeChange(t.id)}
-                                    className={`flex items-center gap-2 px-5 py-2 rounded-full text-[15px] font-medium transition-colors focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-green focus-visible:outline-offset-2 ${
+                                    className={`px-5 py-2 rounded-full text-[15px] font-medium transition-colors focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-green focus-visible:outline-offset-2 ${
                                         on ? 'bg-green text-white' : 'text-muted hover:text-green-deep'
                                     }`}
                                 >
-                                    <Icon name={t.icon} className="w-[17px] h-[17px]" />{t.label}
+                                    {t.label}
                                 </button>
                             );
                         })}
