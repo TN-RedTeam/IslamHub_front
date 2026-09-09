@@ -9,12 +9,13 @@ import moment from 'moment-hijri';
 const navItems = [
   { to: '/', label: 'Accueil', exact: true },
   { to: '/coran', label: 'Coran' },
+  { to: '/croyance', label: 'Croyance' },
   { to: '/hadiths', label: 'Hadiths' },
-  { to: '/invocations', label: 'Invocations & Évocations' },
-  { to: '/paroles', label: 'Paroles' },
   { to: '/ecoles', label: 'Madhāhib' },
-  { to: '/femmes', label: 'Femmes' },
+  { to: '/paroles', label: 'Paroles' },
+  { to: '/invocations', label: 'Invocations & Évocations', short: 'Invocations' },
   { to: '/multimedia', label: 'Multimédia' },
+  { to: '/femmes', label: 'Femmes' },
 ];
 
 // Noms français (translittérés) des 12 mois du calendrier hégirien, dans l'ordre.
@@ -71,19 +72,20 @@ export const Navigation: React.FC = () => {
             </span>
           </Link>
 
-          {/* Liens (≥ 900px) */}
-          <div className="hidden min-[900px]:flex items-center gap-0.5 flex-1">
-            {navItems.map(({ to, label, exact }) => (
+          {/* Liens (≥ 900px). Le libellé court évite tout débordement en desktop
+              intermédiaire ; le libellé complet reste dans le drawer mobile. */}
+          <div className="hidden min-[900px]:flex items-center gap-0.5 flex-1 min-w-0">
+            {navItems.map(({ to, label, short, exact }) => (
               <Link
                 key={to}
                 to={to}
-                className={`font-sans text-[14.5px] px-3 py-2 rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green ${
+                className={`font-sans text-[14px] px-2.5 py-2 rounded-lg whitespace-nowrap transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green ${
                   isActive(to, exact)
                     ? 'bg-green-soft text-green-deep font-medium'
                     : 'text-ink hover:bg-green-soft hover:text-green-deep'
                 }`}
               >
-                {label}
+                {short ?? label}
               </Link>
             ))}
           </div>
