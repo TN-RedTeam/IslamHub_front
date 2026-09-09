@@ -8,6 +8,7 @@ import type {
   InvocationType,
   VersetEquivoqueCard,
   VersetEquivoqueDetail,
+  NomAllah,
   Parole,
   Multimedia,
   MultimediaCategory,
@@ -212,6 +213,16 @@ class DataService {
     const { data, error } = await supabase.rpc('get_verset_equivoque', { p_slug: slug });
     if (error) throw error;
     return (data ?? null) as VersetEquivoqueDetail | null;
+  }
+
+  // ============ Les 99 Noms d'Allah (Phase 12.5) ============
+  async getNomsAllah(): Promise<NomAllah[]> {
+    const { data, error } = await supabase
+      .from('noms_allah')
+      .select('id,ordre,nom_arabe,translitteration,sens_fr,explication,slug,a_relire')
+      .order('ordre', { ascending: true });
+    if (error) throw error;
+    return (data ?? []) as NomAllah[];
   }
 
   // ================= Paroles =================

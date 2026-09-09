@@ -22,6 +22,7 @@ import { NomsEtAttributs } from './pages/croyance/NomsEtAttributs';
 import { PiliersDeLaFoi } from './pages/croyance/PiliersDeLaFoi';
 import { VersetsEquivoques } from './pages/croyance/VersetsEquivoques';
 import { VersetEquivoque } from './pages/croyance/VersetEquivoque';
+import { NomsDAllah } from './pages/croyance/NomsDAllah';
 import { DossierThematique } from './pages/DossierThematique';
 import { NotFound } from './pages/NotFound';
 
@@ -69,15 +70,7 @@ function App() {
                 <Route path="/croyance/piliers-de-la-foi" element={<PiliersDeLaFoi />} />
                 <Route path="/croyance/versets-equivoques" element={<VersetsEquivoques />} />
                 <Route path="/croyance/versets-equivoques/:slug" element={<VersetEquivoque />} />
-                {/* /croyance/noms-d-allah : ajouté en 12.5 */}
-                <Route
-                  path="/croyance/noms-d-allah"
-                  element={
-                    <div className="min-h-screen bg-ground grid place-items-center px-5">
-                      <p className="text-muted">Les 99 Noms d'Allah — bientôt disponible.</p>
-                    </div>
-                  }
-                />
+                <Route path="/croyance/noms-d-allah" element={<NomsDAllah />} />
                 <Route path="/dossiers/:slug" element={<DossierThematique />} />
 
                 {/* Écoles (madhāhib) */}

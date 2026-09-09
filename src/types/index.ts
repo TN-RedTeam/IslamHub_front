@@ -390,3 +390,17 @@ export interface VersetEquivoqueDetail {
   images: VersetImage[];
   lies: { slug: string; theme: string; sourate: string; ayah: number | null }[];
 }
+
+// ==========================================
+// Les 99 Noms d'Allah (Phase 12.5)
+// ==========================================
+export interface NomAllah {
+  id: number;
+  ordre: number | null;
+  nom_arabe: string;
+  translitteration: string | null;
+  sens_fr: string | null;       // rempli par l'auteur
+  explication: string | null;
+  slug: string;
+  a_relire?: boolean;
+}
