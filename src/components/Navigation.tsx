@@ -11,7 +11,7 @@ const navItems = [
   { to: '/coran', label: 'Coran' },
   { to: '/croyance', label: 'Croyance' },
   { to: '/hadiths', label: 'Hadiths' },
-  { to: '/ecoles', label: 'Madhāhib' },
+  { to: '/ecoles', label: 'Écoles' },
   { to: '/paroles', label: 'Paroles' },
   { to: '/invocations', label: 'Invocations & Évocations', short: 'Invocations' },
   { to: '/multimedia', label: 'Multimédia' },

@@ -108,7 +108,7 @@ const Hanafi: React.FC = () => {
                     eyebrow="École juridique"
                     title="École Hanafite"
                     subtitle="L'école de la raison et de l'opinion — Fondée par l'Imam Abou Hanifa an-Nou'man"
-                    crumbs={[{ label: 'Accueil', to: '/' }, { label: 'Madhāhib', to: '/madhaheb' }, { label: 'École Hanafite' }]}
+                    crumbs={[{ label: 'Accueil', to: '/' }, { label: 'Écoles', to: '/ecoles' }, { label: 'École Hanafite' }]}
                 />
             </div>
 

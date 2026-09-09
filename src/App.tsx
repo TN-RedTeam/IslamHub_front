@@ -59,8 +59,10 @@ function App() {
                 <Route path="/femmes" element={<Femmes />} />
                 <Route path="/dossiers/:slug" element={<DossierThematique />} />
 
-                {/* Écoles (Madhaheb) */}
+                {/* Écoles (madhāhib) */}
                 <Route path="/ecoles" element={<Madhaheb />} />
+                {/* Redirection de l'ancienne route pour ne pas casser les liens */}
+                <Route path="/madhaheb" element={<Navigate to="/ecoles" replace />} />
                 <Route path="/ecoles/Hanafi" element={<Hanafi />} />
                 <Route path="/ecoles/Malikite" element={<Malikite />} />
                 <Route path="/ecoles/Shafii" element={<Shafii />} />
