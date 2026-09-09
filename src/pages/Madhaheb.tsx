@@ -24,14 +24,15 @@ const ECOLES = [
 ];
 
 export const Madhaheb: React.FC = () => {
-  usePageTitle('Les écoles (Madhāhib)');
+  usePageTitle('Écoles');
 
   return (
     <div className="min-h-screen bg-ground">
       <main className="max-w-5xl mx-auto px-5 py-10">
         <header className="text-center mb-8">
-          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-gold mb-2">Fiqh · Les écoles</p>
-          <h1 className="font-display font-semibold text-green-deep" style={{ fontSize: 'clamp(26px,4vw,38px)' }}>Les Quatre Écoles Juridiques</h1>
+          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-gold mb-2">Fiqh</p>
+          <h1 className="font-display font-semibold text-green-deep" style={{ fontSize: 'clamp(26px,4vw,38px)' }}>Écoles</h1>
+          <p className="text-muted mt-1">Les écoles juridiques (madhāhib)</p>
           <div className="w-16 h-0.5 bg-gold rounded mx-auto mt-4 mb-5" />
           <p className="text-muted max-w-[64ch] mx-auto">
             Les madhāhib représentent les méthodologies d'interprétation des sources. Chacune offre une compréhension riche et nuancée de la Charia, dans l'unité fondamentale de l'Islam.

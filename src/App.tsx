@@ -17,6 +17,12 @@ import { Multimedia } from './pages/Multimedia';
 import { Femmes } from './pages/Femmes';
 import { ThemeProvider } from './context/ThemeContext';
 import { Madhaheb } from './pages/Madhaheb';
+import { Croyance } from './pages/Croyance';
+import { NomsEtAttributs } from './pages/croyance/NomsEtAttributs';
+import { PiliersDeLaFoi } from './pages/croyance/PiliersDeLaFoi';
+import { VersetsEquivoques } from './pages/croyance/VersetsEquivoques';
+import { VersetEquivoque } from './pages/croyance/VersetEquivoque';
+import { NomsDAllah } from './pages/croyance/NomsDAllah';
 import { DossierThematique } from './pages/DossierThematique';
 import { NotFound } from './pages/NotFound';
 
@@ -57,10 +63,20 @@ function App() {
                 <Route path="/savants/:slug" element={<SavantPage />} />
                 <Route path="/multimedia" element={<Multimedia />} />
                 <Route path="/femmes" element={<Femmes />} />
+
+                {/* Croyance (Aqida) */}
+                <Route path="/croyance" element={<Croyance />} />
+                <Route path="/croyance/noms-et-attributs" element={<NomsEtAttributs />} />
+                <Route path="/croyance/piliers-de-la-foi" element={<PiliersDeLaFoi />} />
+                <Route path="/croyance/versets-equivoques" element={<VersetsEquivoques />} />
+                <Route path="/croyance/versets-equivoques/:slug" element={<VersetEquivoque />} />
+                <Route path="/croyance/noms-d-allah" element={<NomsDAllah />} />
                 <Route path="/dossiers/:slug" element={<DossierThematique />} />
 
-                {/* Écoles (Madhaheb) */}
+                {/* Écoles (madhāhib) */}
                 <Route path="/ecoles" element={<Madhaheb />} />
+                {/* Redirection de l'ancienne route pour ne pas casser les liens */}
+                <Route path="/madhaheb" element={<Navigate to="/ecoles" replace />} />
                 <Route path="/ecoles/Hanafi" element={<Hanafi />} />
                 <Route path="/ecoles/Malikite" element={<Malikite />} />
                 <Route path="/ecoles/Shafii" element={<Shafii />} />

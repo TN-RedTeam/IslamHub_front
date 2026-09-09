@@ -5,6 +5,7 @@ import { Loader2, ArrowLeft, MessageSquareQuote, ShieldCheck } from 'lucide-reac
 import { dataService } from '../services/DataService';
 import { Markdown } from '../components/Markdown';
 import { EcoleBadge } from '../components/EcoleBadge';
+import { BadgeGeneration, honorificFor } from '../components/BadgeGeneration';
 import { useSeo } from '../hooks/useSeo';
 import type { SavantDetail } from '../types';
 import { IconBadge } from '../components/Icon';
@@ -62,9 +63,14 @@ export const SavantPage: React.FC = () => {
           <Link to="/savants" className="inline-flex items-center gap-1.5 text-muted hover:text-green-deep text-sm mb-4">
             <ArrowLeft className="h-4 w-4" /> Tous les savants
           </Link>
-          <h1 className="text-4xl md:text-5xl font-bold text-green-deep font-display">{savant.nom}</h1>
+          <div className="flex items-baseline gap-3 flex-wrap">
+            <h1 className="text-4xl md:text-5xl font-bold text-green-deep font-display">{savant.nom}</h1>
+            {honorificFor(savant.generation) && (
+              <span className="font-arabic text-muted text-lg" lang="ar" dir="rtl">{honorificFor(savant.generation)}</span>
+            )}
+          </div>
           {savant.nom_arabe && (
-            <p dir="rtl" className="font-display text-2xl text-green-deep mt-1 [unicode-bidi:plaintext]">{savant.nom_arabe}</p>
+            <p dir="rtl" lang="ar" className="font-arabic text-2xl text-green-deep mt-1 [unicode-bidi:plaintext]">{savant.nom_arabe}</p>
           )}
           <div className="flex items-center gap-3 flex-wrap mt-2">
             {[savant.naissance, savant.deces].filter(Boolean).length > 0 && (
@@ -73,6 +79,7 @@ export const SavantPage: React.FC = () => {
               </span>
             )}
             {savant.ecole && <EcoleBadge ecole={savant.ecole} />}
+            <BadgeGeneration generation={savant.generation} />
           </div>
         </div>
       </m.header>

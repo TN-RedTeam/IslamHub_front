@@ -10,7 +10,7 @@ interface Crumb { label: string; to?: string; }
  */
 export const PageHeader: React.FC<{
   eyebrow?: string;
-  title: string;
+  title: React.ReactNode;
   subtitle?: string;
   crumbs?: Crumb[];
   children?: React.ReactNode; // actions éventuelles à droite

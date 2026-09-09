@@ -9,12 +9,13 @@ import moment from 'moment-hijri';
 const navItems = [
   { to: '/', label: 'Accueil', exact: true },
   { to: '/coran', label: 'Coran' },
+  { to: '/croyance', label: 'Croyance' },
   { to: '/hadiths', label: 'Hadiths' },
-  { to: '/invocations', label: 'Invocations & Évocations' },
+  { to: '/ecoles', label: 'Écoles' },
   { to: '/paroles', label: 'Paroles' },
-  { to: '/ecoles', label: 'Madhāhib' },
-  { to: '/femmes', label: 'Femmes' },
+  { to: '/invocations', label: 'Invocations & Évocations' },
   { to: '/multimedia', label: 'Multimédia' },
+  { to: '/femmes', label: 'Femmes' },
 ];
 
 // Noms français (translittérés) des 12 mois du calendrier hégirien, dans l'ordre.
@@ -71,13 +72,14 @@ export const Navigation: React.FC = () => {
             </span>
           </Link>
 
-          {/* Liens (≥ 900px) */}
-          <div className="hidden min-[900px]:flex items-center gap-0.5 flex-1">
+          {/* Liens en ligne à partir de 1180px (9 entrées avec libellés complets,
+              dont « Invocations & Évocations ») ; en dessous, drawer hamburger. */}
+          <div className="hidden min-[1180px]:flex items-center gap-0.5 flex-1 min-w-0">
             {navItems.map(({ to, label, exact }) => (
               <Link
                 key={to}
                 to={to}
-                className={`font-sans text-[14.5px] px-3 py-2 rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green ${
+                className={`font-sans text-[13.5px] px-2.5 py-2 rounded-lg whitespace-nowrap transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green ${
                   isActive(to, exact)
                     ? 'bg-green-soft text-green-deep font-medium'
                     : 'text-ink hover:bg-green-soft hover:text-green-deep'
@@ -89,7 +91,7 @@ export const Navigation: React.FC = () => {
           </div>
 
           {/* Actions (droite) */}
-          <div className="flex items-center gap-2.5 shrink-0 ml-auto min-[900px]:ml-0">
+          <div className="flex items-center gap-2.5 shrink-0 ml-auto min-[1180px]:ml-0">
             {/* Chip date hégirienne : français + arabe (pas de date grégorienne) */}
             <div
               className="hidden lg:flex items-center gap-2 px-3 py-1.5 rounded-full bg-green-soft border border-line"
@@ -102,7 +104,7 @@ export const Navigation: React.FC = () => {
               </span>
             </div>
 
-            <div className="hidden min-[900px]:block"><InstallPWA /></div>
+            <div className="hidden min-[1180px]:block"><InstallPWA /></div>
 
             <button
               onClick={toggleTheme}
@@ -116,14 +118,14 @@ export const Navigation: React.FC = () => {
               onClick={() => setIsMenuOpen((v) => !v)}
               aria-label={isMenuOpen ? 'Fermer le menu' : 'Ouvrir le menu'}
               aria-expanded={isMenuOpen}
-              className="min-[900px]:hidden w-9 h-9 grid place-items-center rounded-lg border border-line bg-ivory text-muted hover:text-green-deep transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green"
+              className="min-[1180px]:hidden w-9 h-9 grid place-items-center rounded-lg border border-line bg-ivory text-muted hover:text-green-deep transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green"
             >
               {isMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
           </div>
         </div>
 
-        {/* Menu replié (< 900px) */}
+        {/* Menu replié (< 1180px) */}
         <AnimatePresence>
           {isMenuOpen && (
             <m.div
@@ -131,7 +133,7 @@ export const Navigation: React.FC = () => {
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
               transition={{ duration: 0.2 }}
-              className="min-[900px]:hidden overflow-hidden motion-reduce:transition-none"
+              className="min-[1180px]:hidden overflow-hidden motion-reduce:transition-none"
             >
               <div className="py-3">
                 {navItems.map(({ to, label, exact }) => (

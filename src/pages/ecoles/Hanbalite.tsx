@@ -75,7 +75,7 @@ const Hanbalite: React.FC = () => {
                     eyebrow="École juridique"
                     title="École Hanbalite"
                     subtitle="L'école du texte et de la tradition — Fondée par l'Imam Ahmad ibn Hanbal (780-855 EC)"
-                    crumbs={[{ label: 'Accueil', to: '/' }, { label: 'Madhāhib', to: '/madhaheb' }, { label: 'École Hanbalite' }]}
+                    crumbs={[{ label: 'Accueil', to: '/' }, { label: 'Écoles', to: '/ecoles' }, { label: 'École Hanbalite' }]}
                 />
             </div>
 

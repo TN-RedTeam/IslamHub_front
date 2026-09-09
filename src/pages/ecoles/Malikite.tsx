@@ -109,7 +109,7 @@ const Malikite: React.FC = () => {
                     eyebrow="École juridique"
                     title="École Malikite"
                     subtitle="L'école de la pratique médinoise — Fondée par l'Imam Malik ibn Anas (711-795 EC)"
-                    crumbs={[{ label: 'Accueil', to: '/' }, { label: 'Madhāhib', to: '/madhaheb' }, { label: 'École Malikite' }]}
+                    crumbs={[{ label: 'Accueil', to: '/' }, { label: 'Écoles', to: '/ecoles' }, { label: 'École Malikite' }]}
                 />
             </div>
 

@@ -223,7 +223,7 @@ export const Invocations: React.FC = () => {
     return (
         <div className="min-h-screen bg-ground">
             <PageHeader
-                eyebrow="Spiritualité"
+                eyebrow="Adoration"
                 title="Invocations & Évocations"
                 subtitle="« Invoquez-Moi, Je vous répondrai » — Sourate Ghafir, verset 60"
                 crumbs={[{ label: 'Accueil', to: '/' }, { label: 'Invocations & Évocations' }]}

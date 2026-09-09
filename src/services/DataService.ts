@@ -6,6 +6,9 @@ import type {
   Douaa,
   Invocation,
   InvocationType,
+  VersetEquivoqueCard,
+  VersetEquivoqueDetail,
+  NomAllah,
   Parole,
   Multimedia,
   MultimediaCategory,
@@ -180,6 +183,46 @@ class DataService {
     const { data, error } = await supabase.rpc('daily_invocation', { day, type_filter: String(type) });
     if (error) throw error;
     return (data ?? null) as Invocation | null;
+  }
+
+  // ============ Versets équivoques (Phase 12.4) ============
+  async searchVersetsEquivoques(
+    searchTerm: string,
+    theme?: string | null,
+    sourate?: string | null,
+    params?: PaginationParams,
+  ): Promise<PaginatedResponse<VersetEquivoqueCard>> {
+    const page = params?.page ?? 0;
+    const pageSize = params?.pageSize ?? 24;
+    // theme/sourate viennent d'un menu (valeurs exactes en base) : pas de
+    // nettoyage de caractères (l'apostrophe de « L'istiwāʾ » doit être conservée).
+    // Les paramètres RPC sont liés côté PostgREST — pas de risque d'injection.
+    const { data, error } = await supabase.rpc('search_versets_equivoques', {
+      q: searchTerm.trim().slice(0, 300),
+      theme_filter: (theme ?? '').trim(),
+      sourate_filter: (sourate ?? '').trim(),
+      page_num: page,
+      page_size: pageSize,
+    });
+    if (error) throw error;
+    return shapeResult<VersetEquivoqueCard>(data, page, pageSize);
+  }
+  async getVersetThemes(): Promise<string[]> { return rpcTags('themes_versets_equivoques'); }
+  async getVersetSourates(): Promise<string[]> { return rpcTags('sourates_versets_equivoques'); }
+  async getVersetEquivoque(slug: string): Promise<VersetEquivoqueDetail | null> {
+    const { data, error } = await supabase.rpc('get_verset_equivoque', { p_slug: slug });
+    if (error) throw error;
+    return (data ?? null) as VersetEquivoqueDetail | null;
+  }
+
+  // ============ Les 99 Noms d'Allah (Phase 12.5) ============
+  async getNomsAllah(): Promise<NomAllah[]> {
+    const { data, error } = await supabase
+      .from('noms_allah')
+      .select('id,ordre,nom_arabe,translitteration,sens_fr,explication,slug,a_relire')
+      .order('ordre', { ascending: true });
+    if (error) throw error;
+    return (data ?? []) as NomAllah[];
   }
 
   // ================= Paroles =================

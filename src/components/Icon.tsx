@@ -17,6 +17,8 @@ const PATHS: Record<string, React.ReactNode> = {
   folder: <path d="M3 7a2 2 0 0 1 2-2h4l2 2h6a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />,
   user: <><circle cx="12" cy="8" r="3.6" /><path d="M4.5 20c0-3.9 3.4-6 7.5-6s7.5 2.1 7.5 6" /></>,
   alert: <><path d="M12 3l9 16H3z" /><path d="M12 10v4M12 17h.01" /></>,
+  star: <path d="M12 3l2.1 6.3H20l-5 3.9 2 6.3-5-4-5 4 2-6.3-5-3.9h5.9z" />,
+  pillars: <path d="M4 9l8-5 8 5M6 9v9M10 9v9M14 9v9M18 9v9M4 21h16" />,
 };
 
 export type IconName = keyof typeof PATHS;

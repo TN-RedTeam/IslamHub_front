@@ -4,8 +4,13 @@ import { Landmark } from 'lucide-react';
 
 /** Mappe le nom d'école (colonne `ecole`) vers le segment d'URL de sa page. */
 export const ECOLE_ROUTE: Record<string, string> = {
-  'Hanafi': 'Hanafi',
+  // Noms normalisés (adjectifs)
+  'Hanafite': 'Hanafi',
   'Malikite': 'Malikite',
+  'Shafiite': 'Shafii',
+  'Hanbalite': 'Hanbalite',
+  // Anciens libellés conservés en repli (données non encore migrées)
+  'Hanafi': 'Hanafi',
   'Ach-Chafi^iyy': 'Shafii',
   'Hanbali': 'Hanbalite',
 };

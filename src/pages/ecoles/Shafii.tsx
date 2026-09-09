@@ -153,7 +153,7 @@ const Shafii: React.FC = () => {
                     eyebrow="École juridique"
                     title="École Shafi'ite"
                     subtitle="L'école équilibrée entre texte et raison — Fondée par l'Imam Mouhammad fils de Idris Ach-Chafi^iyy (150 H - 204 H / 767-820 EC)"
-                    crumbs={[{ label: 'Accueil', to: '/' }, { label: 'Madhāhib', to: '/madhaheb' }, { label: "École Shafi'ite" }]}
+                    crumbs={[{ label: 'Accueil', to: '/' }, { label: 'Écoles', to: '/ecoles' }, { label: "École Shafi'ite" }]}
                 />
             </div>
 

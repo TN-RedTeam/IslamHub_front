@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Loader2, Search, Users } from 'lucide-react';
 import { dataService } from '../services/DataService';
 import { useSeo } from '../hooks/useSeo';
+import { BadgeGeneration } from '../components/BadgeGeneration';
 import type { SavantInfo } from '../types';
 
 // Libellés d'affichage des domaines (valeur en base → étiquette FR).
@@ -27,6 +28,7 @@ export const Savants: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [q, setQ] = useState('');
   const [ecole, setEcole] = useState('');
+  const [gen, setGen] = useState(''); // '', 'sahabi', 'salaf', 'khalaf'
   const [sort, setSort] = useState<'az' | 'epoque'>('az');
   const [domaines, setDomaines] = useState<Set<string>>(new Set());
 
@@ -60,12 +62,17 @@ export const Savants: React.FC = () => {
         if (!hay.includes(term) && !(s.nom_arabe && raw && s.nom_arabe.includes(raw))) return false;
       }
       if (ecole && s.ecole !== ecole) return false;
+      if (gen) {
+        const g = s.generation ?? '';
+        if (gen === 'salaf') { if (g !== 'tabii' && g !== 'tabi_tabii') return false; }
+        else if (g !== gen) return false;
+      }
       if (sel.length && !sel.every((d) => (s.domaines ?? []).includes(d))) return false;
       return true;
     });
     out.sort((a, b) => (sort === 'epoque' ? epoque(a) - epoque(b) : a.nom.localeCompare(b.nom, 'fr')));
     return out;
-  }, [savants, q, ecole, sort, domaines]);
+  }, [savants, q, ecole, gen, sort, domaines]);
 
   return (
     <div className="min-h-screen bg-ground">
@@ -104,6 +111,17 @@ export const Savants: React.FC = () => {
           >
             <option value="">Toutes les écoles</option>
             {ecoles.map((e) => <option key={e} value={e}>{e}</option>)}
+          </select>
+          <select
+            aria-label="Filtrer par génération"
+            value={gen}
+            onChange={(e) => setGen(e.target.value)}
+            className="py-2.5 px-3 rounded-lg border border-line bg-white dark:bg-gray-800 text-gray-900 dark:text-white cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green"
+          >
+            <option value="">Toutes générations</option>
+            <option value="sahabi">Compagnons</option>
+            <option value="salaf">Salaf</option>
+            <option value="khalaf">Khalaf</option>
           </select>
           <select
             aria-label="Trier"
@@ -172,7 +190,7 @@ export const Savants: React.FC = () => {
                     <span className="min-w-0">
                       <span className="block font-display text-xl font-bold leading-tight text-green-deep group-hover:text-green">{s.nom}</span>
                       {s.nom_arabe && (
-                        <span dir="rtl" className="block font-display text-base text-gray-500 dark:text-gray-400 [unicode-bidi:plaintext]">{s.nom_arabe}</span>
+                        <span dir="rtl" lang="ar" className="block font-arabic text-base text-gray-500 dark:text-gray-400 [unicode-bidi:plaintext]">{s.nom_arabe}</span>
                       )}
                     </span>
                   </div>
@@ -186,7 +204,11 @@ export const Savants: React.FC = () => {
                           <span className="w-1.5 h-1.5 rounded-full bg-gold" /> {s.ecole}
                         </span>
                       )}
+                      <BadgeGeneration generation={s.generation} />
                     </div>
+                  )}
+                  {!dates && !s.ecole && s.generation && (
+                    <div><BadgeGeneration generation={s.generation} /></div>
                   )}
 
                   {s.resume && (
