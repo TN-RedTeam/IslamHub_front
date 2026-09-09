@@ -72,9 +72,9 @@ Projet Supabase : `kxzfwtwbghuvnlueusvp`. Tout se fait dans **Supabase → SQL E
 
 ## 4. Tables annexes + liaisons
 
-**Référentiels** : `savants(id, nom, nom_arabe, naissance, deces, resume, domaines[], biographie, ecole_id, slug)`,
-`ecoles(id, nom, slug)`, `statuts(id, nom)`, `narrateurs(id, nom)`, `recueils(id, nom)`,
-`tags(id, nom, slug)`.
+**Référentiels** : `savants(id, nom, nom_arabe, naissance, deces, resume, domaines[], biographie, ecole_id, slug, generation, generation_a_verifier, resume_auto)`,
+`ecoles(id, nom, slug)`, `statuts(id, nom)`, `narrateurs(id, nom, generation)`, `recueils(id, nom)`,
+`tags(id, nom, slug)`. *(Voir §10 pour le détail des colonnes techniques.)*
 
 **Liaisons hadith → plusieurs valeurs** :
 - `hadith_rapporteurs(hadith_id, savant_id)` — qui rapporte (relié aux `savants`).
@@ -214,3 +214,53 @@ Les images ne vont **pas** en base : seule leur **URL** est stockée
 
 Avant toute grosse modification : voir la section « backup » — un `pg_dump`
 (ou l'export Supabase) capture tout (schéma + données + fonctions).
+
+---
+
+## 10. Colonnes & tables particulières (à quoi elles servent)
+
+### Booléens / colonnes techniques
+
+- **`savants.generation`** *(texte)* — génération du savant. Valeurs autorisées
+  (contrainte CHECK) : `sahabi` (Compagnon), `salaf` (générique), `tabii`,
+  `tabi_tabii`, `khalaf`. Pilote le **badge** affiché sur la fiche, l'annuaire
+  et les paroles. Toute autre valeur est **refusée** à l'écriture (c'est la
+  cause du message d'erreur si on tape autre chose).
+- **`savants.generation_a_verifier`** *(booléen)* — `true` quand la `generation`
+  a été **amorcée automatiquement** (déduite des dates de décès) et reste **à
+  vérifier**. Mets-le à `false` quand tu confirmes la valeur à la main.
+- **`savants.resume_auto`** *(booléen, défaut `false`)* — indique que le champ
+  `resume` (la phrase courte de la carte d'annuaire) a été **généré
+  automatiquement** (dérivé de la biographie) et non écrit à la main. Sert
+  seulement à repérer les résumés à relire ; **n'influence pas l'affichage**.
+- **`noms_allah.a_relire`** *(booléen, défaut `true`)* — marque que la ligne
+  (nom arabe + translittération) vient d'une **liste amorcée** et doit être
+  **relue/validée**. Passe-le à `false` une fois vérifié. (Le `sens_fr` et
+  l'`explication`, eux, sont à saisir par l'auteur.)
+- **`dossiers.published`** *(booléen)* — un dossier n'apparaît sur le site que
+  si `published = true`. Permet de préparer un dossier **en brouillon**.
+- **`dossiers.meta_description`** *(texte)* — la **description SEO** de la page
+  du dossier (balise `<meta name="description">` + aperçu de partage). Optionnel :
+  si vide, aucune meta n'est posée.
+- **`fiqh.type`** *(texte)* — catégorie/nature d'un point de fiqh (ex.
+  « jugement », « preuve », « avis »…). **Champ libre, actuellement vide partout**,
+  prévu pour classer les points dans un chapitre. Tu peux l'ignorer pour l'instant.
+- **`paroles.search_fr`** *(tsvector)* — **index de recherche plein-texte
+  français**, rempli **automatiquement** par un trigger. Utilisé par la fonction
+  `search_paroles`. **Ne jamais l'écrire à la main.** (idem `hadiths.search_fr`)
+
+### Tables : `recueils`, `tags`, `tag`
+
+- **`recueils`** *(20 lignes — utile)* — la **liste des recueils de hadiths**
+  (Al-Bukhârî, Muslim, At-Tirmidhî…). Reliée aux hadiths via
+  `hadith_sources(hadith_id, recueil_id, numero, chapitre)` pour afficher
+  « Rapporté par … (n°…) ».
+- **`tags`** *(pluriel — 87 lignes — utile)* — le **référentiel normalisé des
+  mots-clés** (`id, nom, slug`), relié aux hadiths par `hadith_tags`. C'est la
+  version « propre » et réutilisable des tags (une ligne par tag, avec slug).
+- **`tag`** *(singulier — 34 lignes — INUTILE / hérité)* — table **redondante et
+  non utilisée** : aucune liaison ne pointe vers elle et le code ne l'interroge
+  jamais. À ne pas confondre avec (a) la **colonne** texte `tag` (CSV) des tables
+  de contenu, ni (b) la table `tags` ci-dessus (qui, elle, sert). Elle peut être
+  supprimée sans risque (`drop table public.tag;`) — laissée en place elle est
+  simplement inerte.
