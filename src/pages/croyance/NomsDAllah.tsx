@@ -63,13 +63,20 @@ export const NomsDAllah: React.FC = () => {
             {filtered.map((n) => (
               <article
                 key={n.id}
-                className="relative flex flex-col items-center text-center rounded-card border border-line bg-surface p-5 shadow-card hover:shadow-card-hover hover:-translate-y-0.5 transition-all motion-reduce:transition-none motion-reduce:hover:translate-y-0"
+                className="relative flex flex-col items-center text-center overflow-hidden rounded-card border border-line bg-surface p-5 pt-8 shadow-card hover:shadow-card-hover hover:-translate-y-0.5 transition-all motion-reduce:transition-none motion-reduce:hover:translate-y-0"
               >
                 {n.ordre != null && (
-                  <span className="absolute top-3 left-3.5 font-display text-sm text-gold tabular-nums" aria-hidden="true">{n.ordre}</span>
+                  <span className="absolute top-2.5 left-3.5 font-display text-sm text-gold tabular-nums" aria-hidden="true">{n.ordre}</span>
                 )}
-                <p className="font-arabic text-green-deep leading-[1.7] my-1" dir="rtl" lang="ar" style={{ fontSize: 'clamp(30px,5vw,40px)' }}>{n.nom_arabe}</p>
-                {n.translitteration && <p className="font-display text-green-deep text-[15px] mt-1">{n.translitteration}</p>}
+                <p
+                  className="font-arabic text-green-deep leading-[1.7] my-1 w-full break-words [overflow-wrap:anywhere]"
+                  dir="rtl"
+                  lang="ar"
+                  style={{ fontSize: 'clamp(24px,3.4vw,32px)' }}
+                >
+                  {n.nom_arabe}
+                </p>
+                {n.translitteration && <p className="font-display text-green-deep text-[15px] mt-1 w-full break-words">{n.translitteration}</p>}
                 <p className="text-sm text-muted mt-0.5 min-h-[1.25rem]">{n.sens_fr || <span className="italic text-muted">à venir</span>}</p>
               </article>
             ))}

@@ -311,7 +311,7 @@ export const Hadiths: React.FC = () => {
       <div className="min-h-screen bg-ground">
         <PageHeader
             eyebrow="Sunna"
-            title="Hadiths du Prophète ﷺ"
+            title={<>Hadiths du Prophète <span className="font-arabic align-middle text-[0.85em]" lang="ar">{'\uFDFA'}</span></>}
             subtitle="Explorez les Hadiths à travers cette page"
             crumbs={[{ label: 'Accueil', to: '/' }, { label: 'Hadiths' }]}
         />
