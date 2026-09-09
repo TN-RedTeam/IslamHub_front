@@ -69,6 +69,7 @@ export interface SavantInfo {
   resume: string | null;      // phrase courte affichée sur la carte
   domaines: string[];         // Hadith, Fiqh, Aqida, Tafsir, Langue…
   nb_paroles: number;
+  generation?: string | null; // sahabi | tabii | tabi_tabii | khalaf (Phase 12.6)
 }
 
 /** Coran — exégèse (Phase 8). */
@@ -137,6 +138,7 @@ export interface SavantDetail {
     biographie: string | null;
     ecole: string | null;
     ecole_slug: string | null;
+    generation?: string | null; // Phase 12.6
   };
   paroles: {
     id: number;
@@ -354,6 +356,7 @@ export interface VersetPreuve {
   texte_francais: string | null;
   savant: string | null;
   savant_slug: string | null;
+  generation: string | null;
   ecole: string | null;
   sujet: string | null;
   degre: string | null;

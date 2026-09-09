@@ -4,6 +4,7 @@ import { Loader2, Copy, Check, Share2, Star, ChevronRight, BookOpen } from 'luci
 import { dataService } from '../../services/DataService';
 import { Markdown } from '../../components/Markdown';
 import { Lightbox, type LightboxImage } from '../../components/Lightbox';
+import { BadgeGeneration } from '../../components/BadgeGeneration';
 import { useSeo } from '../../hooks/useSeo';
 import type { VersetEquivoqueDetail, VersetPreuve } from '../../types';
 
@@ -266,6 +267,7 @@ const SavantQuote: React.FC<{ p: VersetPreuve }> = ({ p }) => (
         <span className="font-display font-semibold text-[17px] text-green-deep">{p.savant}</span>
       )}
       {p.ecole && <span className="text-[11px] font-medium text-green-deep bg-green-soft border border-green-line px-2 py-0.5 rounded-full">{p.ecole}</span>}
+      <BadgeGeneration generation={p.generation} withHonorific />
     </div>
     {p.texte_arabe && <p className="font-arabic text-xl leading-[1.9] text-right text-ink" lang="ar" dir="rtl">{p.texte_arabe}</p>}
     {p.texte_francais && <p className="text-[15px] text-ink mt-2.5">{p.texte_francais}</p>}
