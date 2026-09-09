@@ -1,0 +1,106 @@
+<title>Versets équivoques — Index</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Scheherazade+New:wght@400;500;700&family=EB+Garamond:ital,wght@0,500;0,600;1,500&family=Newsreader:opsz,wght@6..72,400;6..72,500&display=swap">
+<style>
+  :root{--ground:#f2ebdd;--surface:#fff;--ink:#1b2620;--muted:#6a746a;--line:#e5dccb;
+    --green:#1c5a43;--green-deep:#0f3d2e;--green-soft:#e6f0e9;--green-line:#cfe1d6;--gold:#b0872f}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--ground);color:var(--ink);font-family:Newsreader,Georgia,serif;line-height:1.6}
+  .wrap{max-width:1080px;margin:0 auto;padding:26px 22px 60px}
+  .crumb{font-size:12.5px;color:var(--muted);margin:0 0 6px}
+  .eye{font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:600;margin:0 0 4px}
+  h1{font-family:"EB Garamond",serif;font-weight:600;font-size:clamp(28px,4.4vw,42px);color:var(--green-deep);margin:0}
+  .lede{color:var(--muted);font-size:15px;margin:8px 0 0;max-width:62ch}
+  .lede b{color:var(--ink)}
+
+  .controls{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin:24px 0 6px;
+    padding:14px;background:var(--surface);border:1px solid var(--line);border-radius:14px}
+  .search{position:relative;flex:1 1 240px}
+  .search svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--green);opacity:.8}
+  .search input{width:100%;padding:11px 14px 11px 38px;border:1px solid var(--line);border-radius:10px;background:var(--surface);color:var(--ink);font:inherit;font-size:15px}
+  select{padding:11px 14px;border:1px solid var(--line);border-radius:10px;background:var(--surface);color:var(--ink);font:inherit;font-size:14px;cursor:pointer}
+  .count{font-size:13px;color:var(--muted);margin:16px 2px 14px}
+  .count b{color:var(--green)}
+
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px;
+    box-shadow:0 1px 2px rgba(27,38,32,.03);display:flex;flex-direction:column;gap:12px;text-decoration:none;color:inherit;
+    transition:box-shadow .2s,transform .2s,border-color .2s}
+  .card:hover{transform:translateY(-2px);box-shadow:0 2px 6px rgba(27,38,32,.05),0 16px 34px -20px rgba(27,38,32,.3);border-color:var(--green)}
+  .card-top{display:flex;justify-content:space-between;align-items:center;gap:10px}
+  .theme{font-size:11.5px;font-weight:600;letter-spacing:.02em;color:var(--green-deep);background:var(--green-soft);border:1px solid var(--green-line);padding:4px 11px;border-radius:999px}
+  .ref{font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
+  .ar{font-family:"Scheherazade New",serif;font-size:24px;line-height:1.9;text-align:right;direction:rtl;color:var(--ink);margin:2px 0}
+  .visee{font-size:14px;color:var(--ink);opacity:.82;margin:0}
+  .long{font-size:11px;color:var(--gold);font-weight:600;letter-spacing:.03em}
+  .more{margin-top:auto;padding-top:8px;font-size:13.5px;font-weight:600;color:var(--green);display:inline-flex;gap:6px;align-items:center}
+  .card:hover .more{gap:9px}
+  .empty{grid-column:1/-1;text-align:center;padding:40px;color:var(--muted)}
+  a:focus-visible{outline:2px solid var(--green);outline-offset:2px}
+  @media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="wrap">
+  <p class="crumb">Accueil · Croyance</p>
+  <p class="eye">Croyance · Mutashābihāt</p>
+  <h1>Versets équivoques</h1>
+  <p class="lede">Les versets dont le sens apparent prêterait à confusion sur Allah — <b>on va à l'essentiel</b> :
+    le sens conforme à Sa transcendance, avec les preuves. Cadre : sourate Āl ʿImrān, verset 7.</p>
+
+  <div class="controls" role="search">
+    <div class="search">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+      <input id="q" type="text" placeholder="Rechercher un verset, un thème…" aria-label="Rechercher">
+    </div>
+    <select id="theme" aria-label="Filtrer par thème">
+      <option value="">Tous les thèmes</option>
+      <option>L'istiwā'</option><option>L'exemption du lieu</option><option>La « main »</option>
+      <option>Le « visage »</option><option>La maʿiyya</option><option>La « venue »</option><option>L'« œil »</option>
+    </select>
+    <select id="sourate" aria-label="Filtrer par sourate">
+      <option value="">Toutes les sourates</option>
+      <option>Al-Baqara</option><option>Al-Qaṣaṣ</option><option>Al-Fatḥ</option><option>Al-Ḥadīd</option>
+      <option>Al-Mulk</option><option>Ṭā-Hā</option><option>Al-Fajr</option>
+    </select>
+  </div>
+  <p class="count" id="count"></p>
+
+  <div class="grid" id="grid"></div>
+</div>
+
+<script>
+const V=[
+ {th:"L'istiwā'",sr:"Ṭā-Hā",ref:"20:5",ar:"الرَّحْمَٰنُ عَلَى الْعَرْشِ اسْتَوَىٰ",vi:"Un établissement digne d'Allah, sans installation ni lieu."},
+ {th:"L'exemption du lieu",sr:"Al-Mulk",ref:"67:16",ar:"أَأَمِنتُم مَّن فِي السَّمَاءِ",vi:"Ce que « fī s-samāʾ » désigne réellement — Allah est exempt d'endroit."},
+ {th:"La « main »",sr:"Al-Fatḥ",ref:"48:10",ar:"يَدُ اللَّهِ فَوْقَ أَيْدِيهِمْ",vi:"Le sens de yad attribué à Allah, sans membre ni organe."},
+ {th:"Le « visage »",sr:"Al-Qaṣaṣ",ref:"28:88",ar:"كُلُّ شَيْءٍ هَالِكٌ إِلَّا وَجْهَهُ",vi:"Le sens de wajh, sans forme ni corps."},
+ {th:"La maʿiyya",sr:"Al-Ḥadīd",ref:"57:4",ar:"وَهُوَ مَعَكُمْ أَيْنَ مَا كُنتُمْ",vi:"Une présence par la science, non par le lieu."},
+ {th:"Le « visage »",sr:"Al-Baqara",ref:"2:115",ar:"فَأَيْنَمَا تُوَلُّوا فَثَمَّ وَجْهُ اللَّهِ",vi:"Le sens visé, dans une longue sourate — d'où l'intérêt d'une fiche dédiée.",long:true},
+ {th:"La « venue »",sr:"Al-Fajr",ref:"89:22",ar:"وَجَاءَ رَبُّكَ",vi:"Le sens de la « venue », sans déplacement ni mouvement."},
+ {th:"L'« œil »",sr:"Ṭā-Hā",ref:"20:39",ar:"وَلِتُصْنَعَ عَلَىٰ عَيْنِي",vi:"Le sens de ʿayn : la protection et le soin d'Allah."},
+];
+const grid=document.getElementById('grid'),count=document.getElementById('count');
+const q=document.getElementById('q'),th=document.getElementById('theme'),sr=document.getElementById('sourate');
+function slug(s){return s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')}
+function render(){
+  const term=q.value.trim().toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
+  const list=V.filter(v=>{
+    if(th.value&&v.th!==th.value)return false;
+    if(sr.value&&v.sr!==sr.value)return false;
+    if(term){const hay=(v.th+' '+v.sr+' '+v.vi).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
+      if(!hay.includes(term)&&!v.ar.includes(q.value.trim()))return false;}
+    return true;
+  });
+  count.innerHTML='<b>'+list.length+'</b> verset'+(list.length>1?'s':'');
+  grid.innerHTML=list.length?list.map(v=>`
+    <a class="card" href="#/versets-equivoques/${slug(v.th+'-'+v.ref)}">
+      <div class="card-top"><span class="theme">${v.th}</span><span class="ref">${v.sr} · ${v.ref}</span></div>
+      <p class="ar">${v.ar}</p>
+      <p class="visee">${v.vi}</p>
+      ${v.long?'<span class="long">Sourate longue — non couverte par le tafsir</span>':''}
+      <span class="more">Voir l'explication →</span>
+    </a>`).join(''):'<div class="empty">Aucun verset ne correspond.</div>';
+}
+q.oninput=render;th.onchange=render;sr.onchange=render;render();
+</script>

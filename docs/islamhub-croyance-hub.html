@@ -1,0 +1,93 @@
+<title>Hub Croyance</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,500;0,600;1,500&family=Newsreader:opsz,wght@6..72,400;6..72,500&display=swap">
+<style>
+  :root{--ground:#f2ebdd;--surface:#fff;--ink:#1b2620;--muted:#6a746a;--line:#e5dccb;
+    --green:#1c5a43;--green-deep:#0f3d2e;--green-soft:#e6f0e9;--green-line:#cfe1d6;--gold:#b0872f;--gold-soft:#f2e6cb}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--ground);color:var(--ink);font-family:Newsreader,Georgia,serif;line-height:1.6}
+  .wrap{max-width:1000px;margin:0 auto;padding:28px 22px 64px}
+  .crumb{font-size:12.5px;color:var(--muted);margin:0 0 6px}
+  .eye{font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:600;margin:0 0 4px}
+  h1{font-family:"EB Garamond",serif;font-weight:600;font-size:clamp(30px,5vw,46px);color:var(--green-deep);margin:0}
+  .lede{color:var(--muted);font-size:16px;margin:10px 0 0;max-width:62ch}
+
+  .divider{width:56px;height:2px;background:var(--gold);border-radius:2px;margin:26px 0}
+
+  /* featured card */
+  .feat{display:grid;grid-template-columns:1fr;gap:0;background:var(--surface);border:1px solid var(--line);
+    border-radius:16px;overflow:hidden;box-shadow:0 1px 2px rgba(27,38,32,.03),0 14px 34px -24px rgba(27,38,32,.3);
+    text-decoration:none;color:inherit;transition:box-shadow .2s,transform .2s,border-color .2s}
+  @media(min-width:680px){.feat{grid-template-columns:150px 1fr}}
+  .feat:hover{transform:translateY(-2px);border-color:var(--green);box-shadow:0 2px 8px rgba(27,38,32,.06),0 22px 44px -24px rgba(27,38,32,.4)}
+  .feat .art{background:linear-gradient(135deg,var(--green),var(--green-deep));display:grid;place-items:center;color:#fff;padding:26px}
+  .feat .body{padding:24px 26px}
+  .feat .tag{display:inline-block;font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;
+    color:#7a5a17;background:var(--gold-soft);border:1px solid #e6d3a3;padding:3px 11px;border-radius:999px;margin-bottom:10px}
+  .feat h2{font-family:"EB Garamond",serif;font-weight:600;font-size:26px;color:var(--green-deep);margin:0 0 6px}
+  .feat p{margin:0;color:var(--ink);opacity:.85;font-size:15px;max-width:52ch}
+  .feat .go{margin-top:14px;font-weight:600;color:var(--green);font-size:14px;display:inline-flex;gap:6px;align-items:center}
+  .feat:hover .go{gap:9px}
+
+  .grid{display:grid;grid-template-columns:1fr;gap:16px;margin-top:16px}
+  @media(min-width:680px){.grid{grid-template-columns:1fr 1fr}}
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:22px;text-decoration:none;color:inherit;
+    display:flex;flex-direction:column;gap:10px;box-shadow:0 1px 2px rgba(27,38,32,.03);transition:box-shadow .2s,transform .2s,border-color .2s}
+  .card:hover{transform:translateY(-2px);border-color:var(--green);box-shadow:0 2px 6px rgba(27,38,32,.05),0 18px 36px -22px rgba(27,38,32,.32)}
+  .card .ic{width:44px;height:44px;border-radius:11px;background:var(--green-soft);color:var(--green);display:grid;place-items:center}
+  .card h3{font-family:"EB Garamond",serif;font-weight:600;font-size:20px;color:var(--green-deep);margin:0}
+  .card p{margin:0;font-size:14.5px;color:var(--ink);opacity:.82}
+  .card .go{margin-top:auto;padding-top:6px;font-weight:600;color:var(--green);font-size:13.5px;display:inline-flex;gap:6px;align-items:center}
+  .card:hover .go{gap:9px}
+
+  .foot{margin-top:30px;font-size:13.5px;color:var(--muted);background:var(--surface);border:1px solid var(--line);
+    border-left:3px solid var(--gold);border-radius:0 10px 10px 0;padding:14px 18px}
+  .foot b{color:var(--ink)}
+  a:focus-visible{outline:2px solid var(--green);outline-offset:2px}
+  @media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="wrap">
+  <p class="crumb">Accueil · Croyance</p>
+  <p class="eye">Aqida</p>
+  <h1>La Croyance</h1>
+  <p class="lede">La croyance authentique en Allah, exempt de toute ressemblance avec Ses créatures — exposée
+    simplement, et prouvée par le Coran, la Sunna et les paroles des savants.</p>
+
+  <div class="divider"></div>
+
+  <!-- Section phare -->
+  <a class="feat" href="#/versets-equivoques">
+    <div class="art" aria-hidden="true">
+      <svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
+        <path d="M12 5C9.5 5 6 6 5 6.7v12C6 18 9.5 17 12 17s6 1 7 1.7v-12C18 6 14.5 5 12 5z"/><path d="M12 6.7v11"/></svg>
+    </div>
+    <div class="body">
+      <span class="tag">Section phare</span>
+      <h2>Versets équivoques</h2>
+      <p>Le sens réel des versets sur les Attributs d'Allah — l'istiwā', la « main », le « visage »… — avec
+        les preuves, sans détour. On va à l'essentiel.</p>
+      <span class="go">Explorer les versets →</span>
+    </div>
+  </a>
+
+  <div class="grid">
+    <a class="card" href="#/croyance/noms-et-attributs">
+      <span class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 3l2.1 6.3H20l-5 3.9 2 6.3-5-4-5 4 2-6.3-5-3.9h5.9z"/></svg></span>
+      <h3>Les Noms et Attributs d'Allah</h3>
+      <p>Ce qu'il convient de croire d'Allah, exempt de tout lieu, forme et ressemblance avec les créatures.</p>
+      <span class="go">Découvrir →</span>
+    </a>
+    <a class="card" href="#/croyance/piliers-de-la-foi">
+      <span class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 9l8-5 8 5M6 9v9M10 9v9M14 9v9M18 9v9M4 21h16"/></svg></span>
+      <h3>Les piliers de la foi</h3>
+      <p>Les six fondements : croire en Allah, en Ses anges, en Ses livres, en Ses prophètes, au Jour dernier et au destin.</p>
+      <span class="go">Découvrir →</span>
+    </a>
+  </div>
+
+  <p class="foot"><b>Note :</b> pas de rubrique « réfutations » qui nomme qui que ce soit. Là où une idée fausse
+    doit être corrigée, elle l'est <b>au cas par cas et sur l'argument</b> (ex. la section « L'interprétation erronée »
+    dans chaque fiche de verset) — jamais en pointant une personne. Le positif porte, la correction suit.</p>
+</div>
