@@ -1,19 +1,58 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Search, Loader } from 'lucide-react';
+import { Search, Loader, X } from 'lucide-react';
 import { dataService } from '../../services/DataService';
 import { PageHeader } from '../../components/PageHeader';
+import { Markdown } from '../../components/Markdown';
 import { usePageTitle } from '../../hooks/usePageTitle';
 import type { NomAllah } from '../../types';
 
 // Recherche insensible aux diacritiques (côté client).
 const norm = (s: string) => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
 
+// ─── Modale : nom complet + sens + explication ────────────────────────────────
+const NomModal: React.FC<{ nom: NomAllah; onClose: () => void }> = ({ nom, onClose }) => {
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
+    document.addEventListener('keydown', onKey);
+    return () => document.removeEventListener('keydown', onKey);
+  }, [onClose]);
+
+  return (
+    <div
+      role="dialog" aria-modal="true" aria-label={nom.translitteration || 'Nom'}
+      className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4"
+      onClick={onClose}
+    >
+      <div
+        onClick={(e) => e.stopPropagation()}
+        className="relative w-full max-w-lg max-h-[90vh] overflow-y-auto rounded-card bg-surface border border-line p-7 shadow-card-hover text-center"
+      >
+        <button onClick={onClose} aria-label="Fermer" className="absolute top-3 right-3 w-9 h-9 grid place-items-center rounded-full text-muted hover:text-green-deep hover:bg-green-soft focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green">
+          <X className="w-5 h-5" />
+        </button>
+        {nom.ordre != null && <p className="font-display text-gold text-sm mb-1 tabular-nums">{nom.ordre}</p>}
+        <p className="font-arabic text-green-deep leading-[1.9]" dir="rtl" lang="ar" style={{ fontSize: 'clamp(34px,7vw,48px)' }}>{nom.nom_arabe}</p>
+        {nom.translitteration && <p className="font-display text-green-deep text-xl mt-2">{nom.translitteration}</p>}
+        {nom.sens_fr
+          ? <p className="text-ink text-lg mt-1">{nom.sens_fr}</p>
+          : <p className="text-muted italic mt-1">Sens à venir.</p>}
+        {nom.explication && (
+          <div className="mt-5 pt-5 border-t border-line text-left">
+            <Markdown>{nom.explication}</Markdown>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
 export const NomsDAllah: React.FC = () => {
   usePageTitle("Les 99 Noms d'Allah");
   const [noms, setNoms] = useState<NomAllah[]>([]);
   const [loading, setLoading] = useState(true);
   const [q, setQ] = useState('');
+  const [selected, setSelected] = useState<NomAllah | null>(null);
 
   useEffect(() => {
     dataService.getNomsAllah()
@@ -59,26 +98,37 @@ export const NomsDAllah: React.FC = () => {
         ) : filtered.length === 0 ? (
           <p className="text-center py-16 text-muted rounded-card border border-line bg-surface">Aucun nom ne correspond.</p>
         ) : (
-          <div className="grid gap-4" style={{ gridTemplateColumns: 'repeat(auto-fill,minmax(200px,1fr))' }}>
+          <div className="grid gap-4" style={{ gridTemplateColumns: 'repeat(auto-fill,minmax(180px,1fr))' }}>
             {filtered.map((n) => (
-              <article
+              <button
                 key={n.id}
-                className="relative flex flex-col items-center text-center overflow-hidden rounded-card border border-line bg-surface p-5 pt-8 shadow-card hover:shadow-card-hover hover:-translate-y-0.5 transition-all motion-reduce:transition-none motion-reduce:hover:translate-y-0"
+                type="button"
+                onClick={() => setSelected(n)}
+                aria-label={`${n.translitteration ?? 'Nom'} — voir le détail`}
+                className="group relative flex flex-col items-center text-center overflow-hidden rounded-card border border-line bg-surface px-4 pt-8 pb-4 shadow-card hover:shadow-card-hover hover:-translate-y-0.5 transition-all motion-reduce:transition-none motion-reduce:hover:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green"
               >
                 {n.ordre != null && (
                   <span className="absolute top-2.5 left-3.5 font-display text-sm text-gold tabular-nums" aria-hidden="true">{n.ordre}</span>
                 )}
+                {/* Hauteur réservée : 2 lignes d'arabe, pour que toutes les cartes soient identiques. */}
                 <p
-                  className="font-arabic text-green-deep leading-[1.9] my-1 w-full [word-break:normal] [overflow-wrap:normal] hyphens-none"
+                  className="font-arabic text-green-deep w-full text-center leading-[1.7] [word-break:normal] [overflow-wrap:normal] line-clamp-2 min-h-[2.3em]"
                   dir="rtl"
                   lang="ar"
-                  style={{ fontSize: 'clamp(21px,3vw,28px)' }}
+                  style={{ fontSize: 'clamp(20px,2.8vw,26px)' }}
                 >
                   {n.nom_arabe}
                 </p>
-                {n.translitteration && <p className="font-display text-green-deep text-[15px] mt-1 w-full break-words">{n.translitteration}</p>}
-                <p className="text-sm text-muted mt-0.5 min-h-[1.25rem]">{n.sens_fr || <span className="italic text-muted">à venir</span>}</p>
-              </article>
+                {n.translitteration && (
+                  <p className="font-display text-green-deep text-[15px] mt-1.5 w-full truncate">{n.translitteration}</p>
+                )}
+                <p className="text-[13px] text-muted mt-0.5 w-full line-clamp-2 min-h-[2.4em]">
+                  {n.sens_fr || <span className="italic">à venir</span>}
+                </p>
+                {n.explication && (
+                  <span className="mt-1.5 text-[11px] font-medium text-green group-hover:underline">Détails</span>
+                )}
+              </button>
             ))}
           </div>
         )}
@@ -89,6 +139,8 @@ export const NomsDAllah: React.FC = () => {
           <Link to="/croyance" className="text-green font-medium hover:underline">Retour à la Croyance</Link>
         </p>
       </main>
+
+      {selected && <NomModal nom={selected} onClose={() => setSelected(null)} />}
     </div>
   );
 };
