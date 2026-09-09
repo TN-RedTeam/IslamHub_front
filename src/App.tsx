@@ -17,6 +17,9 @@ import { Multimedia } from './pages/Multimedia';
 import { Femmes } from './pages/Femmes';
 import { ThemeProvider } from './context/ThemeContext';
 import { Madhaheb } from './pages/Madhaheb';
+import { Croyance } from './pages/Croyance';
+import { NomsEtAttributs } from './pages/croyance/NomsEtAttributs';
+import { PiliersDeLaFoi } from './pages/croyance/PiliersDeLaFoi';
 import { DossierThematique } from './pages/DossierThematique';
 import { NotFound } from './pages/NotFound';
 
@@ -57,6 +60,20 @@ function App() {
                 <Route path="/savants/:slug" element={<SavantPage />} />
                 <Route path="/multimedia" element={<Multimedia />} />
                 <Route path="/femmes" element={<Femmes />} />
+
+                {/* Croyance (Aqida) */}
+                <Route path="/croyance" element={<Croyance />} />
+                <Route path="/croyance/noms-et-attributs" element={<NomsEtAttributs />} />
+                <Route path="/croyance/piliers-de-la-foi" element={<PiliersDeLaFoi />} />
+                {/* /croyance/versets-equivoques : ajouté en 12.4 · /croyance/noms-d-allah : ajouté en 12.5 */}
+                <Route
+                  path="/croyance/noms-d-allah"
+                  element={
+                    <div className="min-h-screen bg-ground grid place-items-center px-5">
+                      <p className="text-muted">Les 99 Noms d'Allah — bientôt disponible.</p>
+                    </div>
+                  }
+                />
                 <Route path="/dossiers/:slug" element={<DossierThematique />} />
 
                 {/* Écoles (madhāhib) */}
