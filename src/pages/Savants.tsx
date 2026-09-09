@@ -64,7 +64,7 @@ export const Savants: React.FC = () => {
       if (ecole && s.ecole !== ecole) return false;
       if (gen) {
         const g = s.generation ?? '';
-        if (gen === 'salaf') { if (g !== 'tabii' && g !== 'tabi_tabii') return false; }
+        if (gen === 'salaf') { if (g !== 'salaf' && g !== 'tabii' && g !== 'tabi_tabii') return false; }
         else if (g !== gen) return false;
       }
       if (sel.length && !sel.every((d) => (s.domaines ?? []).includes(d))) return false;

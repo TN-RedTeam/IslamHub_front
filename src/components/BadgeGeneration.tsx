@@ -10,7 +10,7 @@ import React from 'react';
  *   sahabi  -> radiya Llahu 'anhu
  *   autres  -> rahimahu Llah
  */
-type Gen = 'sahabi' | 'tabii' | 'tabi_tabii' | 'khalaf';
+type Gen = 'sahabi' | 'salaf' | 'tabii' | 'tabi_tabii' | 'khalaf';
 
 // radiya Llahu 'anhu
 const HONOR_SAHABI = '\u0631\u0636\u064A \u0627\u0644\u0644\u0647 \u0639\u0646\u0647';
@@ -19,6 +19,7 @@ const HONOR_DEFAULT = '\u0631\u062D\u0645\u0647 \u0627\u0644\u0644\u0647';
 
 const GEN: Record<Gen, { label: string; cls: string; honor: string }> = {
   sahabi:     { label: 'Compagnon', cls: 'bg-gold-soft text-[#7a5a17] border-[#e6d3a3]', honor: HONOR_SAHABI },
+  salaf:      { label: 'Salaf',     cls: 'bg-green-soft text-green-deep border-green-line', honor: HONOR_DEFAULT },
   tabii:      { label: 'Salaf',     cls: 'bg-green-soft text-green-deep border-green-line', honor: HONOR_DEFAULT },
   tabi_tabii: { label: 'Salaf',     cls: 'bg-green-soft text-green-deep border-green-line', honor: HONOR_DEFAULT },
   khalaf:     { label: 'Khalaf',    cls: 'bg-transparent text-muted border-line',           honor: HONOR_DEFAULT },
