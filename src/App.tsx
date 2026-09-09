@@ -20,6 +20,8 @@ import { Madhaheb } from './pages/Madhaheb';
 import { Croyance } from './pages/Croyance';
 import { NomsEtAttributs } from './pages/croyance/NomsEtAttributs';
 import { PiliersDeLaFoi } from './pages/croyance/PiliersDeLaFoi';
+import { VersetsEquivoques } from './pages/croyance/VersetsEquivoques';
+import { VersetEquivoque } from './pages/croyance/VersetEquivoque';
 import { DossierThematique } from './pages/DossierThematique';
 import { NotFound } from './pages/NotFound';
 
@@ -65,7 +67,9 @@ function App() {
                 <Route path="/croyance" element={<Croyance />} />
                 <Route path="/croyance/noms-et-attributs" element={<NomsEtAttributs />} />
                 <Route path="/croyance/piliers-de-la-foi" element={<PiliersDeLaFoi />} />
-                {/* /croyance/versets-equivoques : ajouté en 12.4 · /croyance/noms-d-allah : ajouté en 12.5 */}
+                <Route path="/croyance/versets-equivoques" element={<VersetsEquivoques />} />
+                <Route path="/croyance/versets-equivoques/:slug" element={<VersetEquivoque />} />
+                {/* /croyance/noms-d-allah : ajouté en 12.5 */}
                 <Route
                   path="/croyance/noms-d-allah"
                   element={

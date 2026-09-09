@@ -326,3 +326,67 @@ export interface DossierData {
   images: DossierImage[];
   lies: { slug: string; h1: string }[];
 }
+
+// ==========================================
+// Versets équivoques (Phase 12.4)
+// ==========================================
+
+/** Carte d'index d'un verset équivoque. */
+export interface VersetEquivoqueCard {
+  id: number;
+  slug: string;
+  theme: string;
+  sourate: string;
+  sourate_num: number | null;
+  ayah: number | null;
+  verset_arabe: string;
+  verset_traduction: string | null;
+  sens_juste: string | null;
+}
+
+/** Preuve rattachée à un verset (coranique libre, ou hadith/parole résolu). */
+export interface VersetPreuve {
+  id: number;
+  type: 'coran' | 'hadith' | 'parole';
+  ordre: number;
+  contenu_libre: string | null;
+  texte_arabe: string | null;
+  texte_francais: string | null;
+  savant: string | null;
+  savant_slug: string | null;
+  ecole: string | null;
+  sujet: string | null;
+  degre: string | null;
+  hadith_slug: string | null;
+}
+
+/** Scan de livre attaché à un verset. */
+export interface VersetImage {
+  id: number;
+  image_url: string;
+  legende: string | null;
+  alt: string;
+  source_livre: string | null;
+  ordre: number;
+}
+
+/** Détail complet d'une fiche de verset équivoque. */
+export interface VersetEquivoqueDetail {
+  verset: {
+    id: number;
+    slug: string;
+    theme: string;
+    sourate: string;
+    sourate_num: number | null;
+    ayah: number | null;
+    verset_arabe: string;
+    verset_traduction: string | null;
+    verset_phonetique: string | null;
+    sens_juste: string | null;
+    objection: string | null;
+    reponse: string | null;
+  };
+  preuves: VersetPreuve[];
+  images: VersetImage[];
+  lies: { slug: string; theme: string; sourate: string; ayah: number | null }[];
+}
