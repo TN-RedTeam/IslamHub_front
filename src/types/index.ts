@@ -18,6 +18,7 @@ export interface Hadith extends BaseText {
   rapporteur: string | null;
   narrateur: string | null;
   statut: string | null;
+  narrateur_generation?: string | null; // génération du narrateur (Phase 12.6, option 1)
 }
 
 /** Verset du Coran */
@@ -114,6 +115,7 @@ export interface HadithDetail {
   juge_par: string | null;
   rapporteur: string | null;
   narrateur: string | null;
+  narrateur_generation?: string | null;
   tag: string | null;
   recueils: string | null;
 }

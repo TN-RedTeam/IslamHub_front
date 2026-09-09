@@ -69,10 +69,10 @@ export const NomsDAllah: React.FC = () => {
                   <span className="absolute top-2.5 left-3.5 font-display text-sm text-gold tabular-nums" aria-hidden="true">{n.ordre}</span>
                 )}
                 <p
-                  className="font-arabic text-green-deep leading-[1.7] my-1 w-full break-words [overflow-wrap:anywhere]"
+                  className="font-arabic text-green-deep leading-[1.9] my-1 w-full [word-break:normal] [overflow-wrap:normal] hyphens-none"
                   dir="rtl"
                   lang="ar"
-                  style={{ fontSize: 'clamp(24px,3.4vw,32px)' }}
+                  style={{ fontSize: 'clamp(21px,3vw,28px)' }}
                 >
                   {n.nom_arabe}
                 </p>

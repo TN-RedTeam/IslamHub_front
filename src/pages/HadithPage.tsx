@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { m } from 'framer-motion';
 import { Loader2, ArrowLeft, Copy, Check, Share2 } from 'lucide-react';
 import { dataService } from '../services/DataService';
+import { BadgeGeneration } from '../components/BadgeGeneration';
 import { useSeo } from '../hooks/useSeo';
 import type { HadithDetail } from '../types';
 import { IconBadge } from '../components/Icon';
@@ -85,6 +86,12 @@ export const HadithPage: React.FC = () => {
           </Link>
           <h1 className="text-3xl md:text-4xl font-bold text-green-deep font-display">{hadith.sujet}</h1>
           {reference && <p className="text-muted mt-2 text-sm">{reference}</p>}
+          {hadith.narrateur && (
+            <p className="text-muted mt-1.5 text-sm flex items-center gap-2 flex-wrap">
+              Narrateur : {hadith.narrateur}
+              <BadgeGeneration generation={hadith.narrateur_generation} withHonorific />
+            </p>
+          )}
         </div>
       </m.header>
 
