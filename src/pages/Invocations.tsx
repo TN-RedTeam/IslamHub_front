@@ -6,7 +6,7 @@ import { FilterSelect } from '../components/FilterSelect';
 import { PageHeader } from '../components/PageHeader';
 import type { Invocation as InvocationType, InvocationType as TypeId } from '../types';
 import { usePageTitle } from '../hooks/usePageTitle';
-import { Icon, IconBadge, type IconName } from '../components/Icon';
+import { IconBadge, type IconName } from '../components/Icon';
 
 interface Item extends Omit<InvocationType, 'tag'> {
     tag: string | null;
@@ -344,10 +344,6 @@ export const Invocations: React.FC = () => {
                     ) : !hasSearched ? (
                         <m.div key="empty-state" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center py-14">
                             <div className="max-w-lg mx-auto">
-                                <m.div animate={{ y: [0, -10, 0] }} transition={{ repeat: Infinity, duration: 4, ease: 'easeInOut' }}
-                                            className="mx-auto mb-8 w-20 h-20 rounded-full bg-green-soft text-green grid place-items-center motion-reduce:animate-none">
-                                    <Icon name={meta.icon} className="w-10 h-10" />
-                                </m.div>
                                 <h3 className="text-3xl font-semibold text-green-deep mb-4 font-display">
                                     Recherchez parmi les {meta.nounPlural}
                                 </h3>
