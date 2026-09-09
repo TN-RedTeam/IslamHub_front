@@ -5,6 +5,7 @@ import { Search, X, Star, ChevronRight, Loader, SlidersHorizontal } from 'lucide
 import { dataService } from '../services/DataService';
 import { FilterSelect } from '../components/FilterSelect';
 import { PageHeader } from '../components/PageHeader';
+import { BadgeGeneration } from '../components/BadgeGeneration';
 import { slugify } from '../utils/slug';
 import type { Hadith as HadithType } from '../types';
 import { IconBadge } from '../components/Icon';
@@ -35,11 +36,12 @@ const HadithCard: React.FC<{ hadith: Hadith; onClick: () => void }> = ({ hadith,
       </div>
 
       {hadith.sujet && (
-          <div className="flex items-center">
-            <Star className="h-5 w-5 text-gold mr-2" />
+          <div className="flex items-center gap-2">
+            <Star className="h-5 w-5 text-gold mr-1 shrink-0" />
             <h3 className="text-xl font-bold text-green-deep font-display">
               {hadith.sujet}
             </h3>
+            <BadgeGeneration generation={hadith.narrateur_generation} className="ml-auto shrink-0" />
           </div>
       )}
 
@@ -118,8 +120,9 @@ const HadithModal: React.FC<{ hadith: Hadith; onClose: () => void }> = ({ hadith
                   </p>
               )}
               {hadith.narrateur && (
-                  <p className="text-gray-600 dark:text-gray-400 mt-1">
-                    Narrateur: {hadith.narrateur}
+                  <p className="text-gray-600 dark:text-gray-400 mt-1 flex items-center gap-2 flex-wrap">
+                    Narrateur : {hadith.narrateur}
+                    <BadgeGeneration generation={hadith.narrateur_generation} withHonorific />
                   </p>
               )}
             </div>
