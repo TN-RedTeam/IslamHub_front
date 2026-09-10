@@ -72,7 +72,7 @@ export const Navigation: React.FC = () => {
 
   return (
     <nav className="sticky top-0 z-50 bg-ivory/95 backdrop-blur border-b border-line">
-      <div className="max-w-7xl mx-auto px-4">
+      <div className="max-w-[1440px] mx-auto px-4">
         <div className="flex items-center gap-4 h-16">
           {/* Marque */}
           <Link to="/" className="flex items-center gap-2.5 shrink-0" aria-label="IslamHub — accueil">
@@ -82,9 +82,9 @@ export const Navigation: React.FC = () => {
             </span>
           </Link>
 
-          {/* Liens en ligne à partir de 1180px (9 entrées avec libellés complets,
+          {/* Liens en ligne à partir de 1360px (9 entrées avec libellés complets,
               dont « Invocations & Évocations ») ; en dessous, drawer hamburger. */}
-          <div className="hidden min-[1180px]:flex items-center gap-0.5 flex-1 min-w-0">
+          <div className="hidden min-[1360px]:flex items-center gap-0.5 flex-1 min-w-0">
             {navItems.map(({ to, label, exact }) => (
               <Link
                 key={to}
@@ -101,10 +101,10 @@ export const Navigation: React.FC = () => {
           </div>
 
           {/* Actions (droite) */}
-          <div className="flex items-center gap-2.5 shrink-0 ml-auto min-[1180px]:ml-0">
+          <div className="flex items-center gap-2.5 shrink-0 ml-auto min-[1360px]:ml-0">
             {/* Chip date : badge marque + hijri translittéré (ligne 1) + grégorien (ligne 2) */}
             <div
-              className="hidden lg:flex items-center gap-2.5 px-3 py-1.5 rounded-full bg-surface border border-line"
+              className="hidden min-[1360px]:flex items-center gap-2.5 px-3 py-1.5 rounded-full bg-surface border border-line"
               aria-label={`Date : ${hijriFr}`}
             >
               <BrandBadge px={30} radius="rounded-lg" mark={19} />
@@ -114,7 +114,7 @@ export const Navigation: React.FC = () => {
               </span>
             </div>
 
-            <div className="hidden min-[1180px]:block"><InstallPWA /></div>
+            <div className="hidden min-[1360px]:block"><InstallPWA /></div>
 
             <button
               onClick={toggleTheme}
@@ -128,14 +128,14 @@ export const Navigation: React.FC = () => {
               onClick={() => setIsMenuOpen((v) => !v)}
               aria-label={isMenuOpen ? 'Fermer le menu' : 'Ouvrir le menu'}
               aria-expanded={isMenuOpen}
-              className="min-[1180px]:hidden w-9 h-9 grid place-items-center rounded-lg border border-line bg-ivory text-muted hover:text-green-deep transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green"
+              className="min-[1360px]:hidden w-9 h-9 grid place-items-center rounded-lg border border-line bg-ivory text-muted hover:text-green-deep transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green"
             >
               {isMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
           </div>
         </div>
 
-        {/* Menu replié (< 1180px) */}
+        {/* Menu replié (< 1360px) */}
         <AnimatePresence>
           {isMenuOpen && (
             <m.div
@@ -143,7 +143,7 @@ export const Navigation: React.FC = () => {
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
               transition={{ duration: 0.2 }}
-              className="min-[1180px]:hidden overflow-hidden motion-reduce:transition-none"
+              className="min-[1360px]:hidden overflow-hidden motion-reduce:transition-none"
             >
               <div className="py-3">
                 {navItems.map(({ to, label, exact }) => (
