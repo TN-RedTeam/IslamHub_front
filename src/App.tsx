@@ -18,7 +18,7 @@ import { Femmes } from './pages/Femmes';
 import { ThemeProvider } from './context/ThemeContext';
 import { Madhaheb } from './pages/Madhaheb';
 import { Croyance } from './pages/Croyance';
-import { NomsEtAttributs } from './pages/croyance/NomsEtAttributs';
+import { NomsEtAttributs } from './pages/croyance/Attributs';
 import { PiliersDeLaFoi } from './pages/croyance/PiliersDeLaFoi';
 import { VersetsEquivoques } from './pages/croyance/VersetsEquivoques';
 import { VersetEquivoque } from './pages/croyance/VersetEquivoque';
