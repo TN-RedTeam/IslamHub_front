@@ -9,7 +9,7 @@ interface Card { to: string; title: string; desc: string; icon: IconName; }
 const CARDS: Card[] = [
   {
     to: '/croyance/noms-et-attributs',
-    title: "Les Noms et Attributs d'Allah",
+    title: "Les Attributs d'Allah",
     desc: "Ce qu'il convient de croire d'Allah, exempt de tout lieu, forme et ressemblance avec les créatures.",
     icon: 'star',
   },

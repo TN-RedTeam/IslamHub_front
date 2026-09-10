@@ -4,7 +4,7 @@ import { Markdown } from '../../components/Markdown';
 import { usePageTitle } from '../../hooks/usePageTitle';
 
 /**
- * Exposé éditorial « Les Noms et Attributs d'Allah ».
+ * Exposé éditorial « Les Attributs d'Allah ».
  * Le contenu doctrinal est saisi/vérifié par l'auteur : ce fichier fournit la
  * structure et un texte d'amorce marqué « à compléter » — rien n'est fabriqué.
  */
@@ -29,14 +29,14 @@ complétées prochainement :_
 `;
 
 export const NomsEtAttributs: React.FC = () => {
-  usePageTitle("Les Noms et Attributs d'Allah");
+  usePageTitle("Les Attributs d'Allah");
   return (
     <div className="min-h-screen bg-ground">
       <PageHeader
         eyebrow="Aqida"
-        title="Les Noms et Attributs d'Allah"
+        title="Les Attributs d'Allah"
         subtitle="Ce qu'il convient de croire d'Allah, exempt de tout lieu, forme et ressemblance."
-        crumbs={[{ label: 'Accueil', to: '/' }, { label: 'Croyance', to: '/croyance' }, { label: 'Noms et Attributs' }]}
+        crumbs={[{ label: 'Accueil', to: '/' }, { label: 'Croyance', to: '/croyance' }, { label: "Attributs d'Allah" }]}
       />
       <main className="max-w-3xl mx-auto px-5 py-10">
         <article className="rounded-card border border-line bg-surface p-6 sm:p-8 shadow-card">
