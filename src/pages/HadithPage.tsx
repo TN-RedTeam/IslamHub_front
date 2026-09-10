@@ -4,6 +4,7 @@ import { m } from 'framer-motion';
 import { Loader2, ArrowLeft, Copy, Check, Share2 } from 'lucide-react';
 import { dataService } from '../services/DataService';
 import { BadgeGeneration } from '../components/BadgeGeneration';
+import { Markdown } from '../components/Markdown';
 import { useSeo } from '../hooks/useSeo';
 import type { HadithDetail } from '../types';
 import { IconBadge } from '../components/Icon';
@@ -116,13 +117,13 @@ export const HadithPage: React.FC = () => {
           {hadith.texte_francais && (
             <div className="pl-4 border-l-4 border-green">
               <p className="text-sm text-green mb-1">Traduction :</p>
-              <p className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap [unicode-bidi:plaintext]">{hadith.texte_francais}</p>
+              <Markdown className="[unicode-bidi:plaintext]">{hadith.texte_francais}</Markdown>
             </div>
           )}
           {hadith.explication && (
             <div className="bg-green-soft rounded-lg p-4">
               <p className="text-sm font-bold text-green-deep mb-1">Explication :</p>
-              <p className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap [unicode-bidi:plaintext]">{hadith.explication}</p>
+              <Markdown className="[unicode-bidi:plaintext]">{hadith.explication}</Markdown>
             </div>
           )}
           {tags.length > 0 && (

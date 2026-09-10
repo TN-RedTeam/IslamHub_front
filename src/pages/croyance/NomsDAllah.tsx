@@ -35,7 +35,7 @@ const NomModal: React.FC<{ nom: NomAllah; onClose: () => void }> = ({ nom, onClo
         <p className="font-arabic text-green-deep leading-[1.9]" dir="rtl" lang="ar" style={{ fontSize: 'clamp(34px,7vw,48px)' }}>{nom.nom_arabe}</p>
         {nom.translitteration && <p className="font-display text-green-deep text-xl mt-2">{nom.translitteration}</p>}
         {nom.sens_fr
-          ? <p className="text-ink text-lg mt-1">{nom.sens_fr}</p>
+          ? <div className="mt-1 text-lg"><Markdown>{nom.sens_fr}</Markdown></div>
           : <p className="text-muted italic mt-1">Sens à venir.</p>}
         {nom.explication && (
           <div className="mt-5 pt-5 border-t border-line text-left">

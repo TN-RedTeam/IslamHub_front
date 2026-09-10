@@ -129,7 +129,7 @@ const ParoleModal: React.FC<{ parole: Parole | null; onClose: () => void }> = ({
               {parole.texte_francais && (
                   <div className="mt-6 pl-4 border-l-4 border-green">
                     <p className="text-sm text-green mb-2">Traduction :</p>
-                    <p className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap [unicode-bidi:plaintext]">{parole.texte_francais}</p>
+                    <Markdown className="[unicode-bidi:plaintext]">{parole.texte_francais}</Markdown>
                   </div>
               )}
             </div>

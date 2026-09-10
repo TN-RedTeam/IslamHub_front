@@ -4,6 +4,7 @@ import { Search, Filter, X, Star, Loader, Tags, Hash } from 'lucide-react';
 import { dataService } from '../services/DataService';
 import { FilterSelect } from '../components/FilterSelect';
 import { PageHeader } from '../components/PageHeader';
+import { Markdown } from '../components/Markdown';
 import type { Invocation as InvocationType, InvocationType as TypeId } from '../types';
 import { usePageTitle } from '../hooks/usePageTitle';
 import { IconBadge, type IconName } from '../components/Icon';
@@ -102,19 +103,19 @@ const InvocationModal: React.FC<{ item: Item; onClose: () => void; onTagClick?: 
                         {item.texte_francais && (
                             <div className="mt-6 pl-4 border-l-4 border-green">
                                 <p className="text-sm text-green mb-2">Traduction :</p>
-                                <p className="text-ink whitespace-pre-wrap [unicode-bidi:plaintext]">{item.texte_francais}</p>
+                                <Markdown className="[unicode-bidi:plaintext]">{item.texte_francais}</Markdown>
                             </div>
                         )}
                         {item.explication && (
                             <div className="mt-6 bg-white dark:bg-gray-700 p-6 rounded-lg border border-line">
                                 <p className="text-lg font-semibold text-green-deep mb-3">Explication :</p>
-                                <p className="text-ink whitespace-pre-wrap [unicode-bidi:plaintext]">{item.explication}</p>
+                                <Markdown className="[unicode-bidi:plaintext]">{item.explication}</Markdown>
                             </div>
                         )}
                         {item.commentaire && (
                             <div className="mt-6 bg-white dark:bg-gray-700 p-6 rounded-lg border border-line">
                                 <p className="text-lg font-semibold text-green-deep mb-3">Commentaire :</p>
-                                <p className="text-ink whitespace-pre-wrap [unicode-bidi:plaintext]">{item.commentaire}</p>
+                                <Markdown className="[unicode-bidi:plaintext]">{item.commentaire}</Markdown>
                             </div>
                         )}
                     </div>

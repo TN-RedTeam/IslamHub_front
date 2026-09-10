@@ -5,6 +5,7 @@ import { Search, X, Star, ChevronRight, Loader, SlidersHorizontal } from 'lucide
 import { dataService } from '../services/DataService';
 import { FilterSelect } from '../components/FilterSelect';
 import { PageHeader } from '../components/PageHeader';
+import { Markdown } from '../components/Markdown';
 import { BadgeGeneration } from '../components/BadgeGeneration';
 import { slugify } from '../utils/slug';
 import type { Hadith as HadithType } from '../types';
@@ -149,7 +150,7 @@ const HadithModal: React.FC<{ hadith: Hadith; onClose: () => void }> = ({ hadith
             {hadith.texte_francais && (
                 <div className="mt-6 pl-4 border-l-4 border-green">
                   <p className="text-sm text-green mb-2">Traduction:</p>
-                  <p className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap [unicode-bidi:plaintext]">{hadith.texte_francais}</p>
+                  <Markdown className="[unicode-bidi:plaintext]">{hadith.texte_francais}</Markdown>
                 </div>
             )}
           </div>
@@ -157,7 +158,7 @@ const HadithModal: React.FC<{ hadith: Hadith; onClose: () => void }> = ({ hadith
           {hadith.explication && (
               <div className="mt-6 bg-green-soft p-6 rounded-lg">
                 <p className="text-lg font-bold text-green-deep mb-3">Explication:</p>
-                <p className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap [unicode-bidi:plaintext]">{hadith.explication}</p>
+                <Markdown className="[unicode-bidi:plaintext]">{hadith.explication}</Markdown>
               </div>
           )}
 
