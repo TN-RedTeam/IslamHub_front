@@ -429,3 +429,10 @@ export interface Attribut {
   explication: string | null;   // rempli par l'auteur (Supabase)
   citations: AttributCitation[];
 }
+
+/** Page d'exposé éditorial (table `exposes`) — contenu Markdown éditable en base. */
+export interface Expose {
+  slug: string;
+  titre: string | null;
+  contenu_md: string | null;
+}

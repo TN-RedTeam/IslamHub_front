@@ -10,6 +10,7 @@ import type {
   VersetEquivoqueDetail,
   NomAllah,
   Attribut,
+  Expose,
   Parole,
   Multimedia,
   MultimediaCategory,
@@ -231,6 +232,17 @@ class DataService {
     const { data, error } = await supabase.rpc('get_attributs');
     if (error) throw error;
     return (data ?? []) as Attribut[];
+  }
+
+  // ============ Pages d'exposé (table `exposes`, Markdown éditable) ============
+  async getExpose(slug: string): Promise<Expose | null> {
+    const { data, error } = await supabase
+      .from('exposes')
+      .select('slug,titre,contenu_md')
+      .eq('slug', slug)
+      .maybeSingle();
+    if (error) throw error;
+    return (data ?? null) as Expose | null;
   }
 
   // ================= Paroles =================
