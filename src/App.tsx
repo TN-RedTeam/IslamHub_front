@@ -18,7 +18,7 @@ import { Femmes } from './pages/Femmes';
 import { ThemeProvider } from './context/ThemeContext';
 import { Madhaheb } from './pages/Madhaheb';
 import { Croyance } from './pages/Croyance';
-import { NomsEtAttributs } from './pages/croyance/Attributs';
+import { Attributs } from './pages/croyance/Attributs';
 import { PiliersDeLaFoi } from './pages/croyance/PiliersDeLaFoi';
 import { VersetsEquivoques } from './pages/croyance/VersetsEquivoques';
 import { VersetEquivoque } from './pages/croyance/VersetEquivoque';
@@ -66,7 +66,9 @@ function App() {
 
                 {/* Croyance (Aqida) */}
                 <Route path="/croyance" element={<Croyance />} />
-                <Route path="/croyance/noms-et-attributs" element={<NomsEtAttributs />} />
+                <Route path="/croyance/attributs" element={<Attributs />} />
+                {/* Redirection de l'ancienne URL */}
+                <Route path="/croyance/noms-et-attributs" element={<Navigate to="/croyance/attributs" replace />} />
                 <Route path="/croyance/piliers-de-la-foi" element={<PiliersDeLaFoi />} />
                 <Route path="/croyance/versets-equivoques" element={<VersetsEquivoques />} />
                 <Route path="/croyance/versets-equivoques/:slug" element={<VersetEquivoque />} />

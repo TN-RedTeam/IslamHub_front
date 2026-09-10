@@ -3,7 +3,7 @@ import { PageHeader } from '../../components/PageHeader';
 import { usePageTitle } from '../../hooks/usePageTitle';
 
 /**
- * « Les Attributs d'Allah » — les treize attributs qu'il est du devoir de
+ * « Les Attributs de Allah » — les treize attributs qu'il est du devoir de
  * connaître (aṣ-ṣifāt al-wājiba). Structure : sommaire ancré (sticky) + une
  * section par attribut. Corps en romain (l'italique est réservé à l'emphase).
  * L'énumération (noms + glose FR) est la liste reconnue ; l'exposé détaillé de
@@ -27,17 +27,17 @@ const ATTRIBUTS: Attribut[] = [
   { id: 'kalam',        nom: 'Al-Kalām',                     gloss: "la parole" },
 ];
 
-export const NomsEtAttributs: React.FC = () => {
-  usePageTitle("Les Attributs d'Allah");
+export const Attributs: React.FC = () => {
+  usePageTitle("Les Attributs de Allah");
   const items = useMemo(() => ATTRIBUTS, []);
 
   return (
     <div className="min-h-screen bg-ground">
       <PageHeader
         eyebrow="Aqida"
-        title="Les Attributs d'Allah"
+        title="Les Attributs de Allah"
         subtitle="Les treize attributs qu'il est du devoir de connaître, exempt de tout lieu, forme et ressemblance."
-        crumbs={[{ label: 'Accueil', to: '/' }, { label: 'Croyance', to: '/croyance' }, { label: "Attributs d'Allah" }]}
+        crumbs={[{ label: 'Accueil', to: '/' }, { label: 'Croyance', to: '/croyance' }, { label: "Attributs de Allah" }]}
       />
 
       <main className="max-w-5xl mx-auto px-5 py-8 pb-16">
@@ -84,4 +84,4 @@ export const NomsEtAttributs: React.FC = () => {
   );
 };
 
-export default NomsEtAttributs;
+export default Attributs;
