@@ -9,6 +9,7 @@ import type {
   VersetEquivoqueCard,
   VersetEquivoqueDetail,
   NomAllah,
+  Attribut,
   Parole,
   Multimedia,
   MultimediaCategory,
@@ -223,6 +224,13 @@ class DataService {
       .order('ordre', { ascending: true });
     if (error) throw error;
     return (data ?? []) as NomAllah[];
+  }
+
+  // ============ Les Attributs d'Allah (Phase 13.6, BDD) ============
+  async getAttributs(): Promise<Attribut[]> {
+    const { data, error } = await supabase.rpc('get_attributs');
+    if (error) throw error;
+    return (data ?? []) as Attribut[];
   }
 
   // ================= Paroles =================

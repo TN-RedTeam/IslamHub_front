@@ -409,3 +409,23 @@ export interface NomAllah {
   slug: string;
   a_relire?: boolean;
 }
+
+// ==========================================
+// Les Attributs d'Allah (aṣ-ṣifāt) — Phase 13.6 (BDD)
+// ==========================================
+export interface AttributCitation {
+  id: number;
+  arabe: string;
+  phonetique: string | null;
+  signification: string | null;
+  ref: string | null;
+}
+export interface Attribut {
+  id: number;
+  ordre: number | null;
+  slug: string;
+  nom: string;
+  gloss: string | null;
+  explication: string | null;   // rempli par l'auteur (Supabase)
+  citations: AttributCitation[];
+}
