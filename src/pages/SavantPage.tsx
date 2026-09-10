@@ -66,11 +66,11 @@ export const SavantPage: React.FC = () => {
           <div className="flex items-baseline gap-3 flex-wrap">
             <h1 className="text-4xl md:text-5xl font-bold text-green-deep font-display">{savant.nom}</h1>
             {honorificFor(savant.generation) && (
-              <span className="font-arabic text-muted text-lg" lang="ar" dir="rtl">{honorificFor(savant.generation)}</span>
+              <span className="font-arabic-name font-medium text-green-deep text-lg" lang="ar" dir="rtl">{honorificFor(savant.generation)}</span>
             )}
           </div>
           {savant.nom_arabe && (
-            <p dir="rtl" lang="ar" className="font-arabic text-2xl text-green-deep mt-1 [unicode-bidi:plaintext]">{savant.nom_arabe}</p>
+            <p dir="rtl" lang="ar" className="font-arabic-name font-medium text-2xl text-green-deep mt-1 [unicode-bidi:plaintext]">{savant.nom_arabe}</p>
           )}
           <div className="flex items-center gap-3 flex-wrap mt-2">
             {[savant.naissance, savant.deces].filter(Boolean).length > 0 && (

@@ -41,7 +41,7 @@ export const BadgeGeneration: React.FC<{ generation?: string | null; withHonorif
         {g.label}
       </span>
       {withHonorific && (
-        <span className="font-arabic text-muted text-[15px]" lang="ar" dir="rtl">{g.honor}</span>
+        <span className="font-arabic-name font-medium text-ink text-[15px]" lang="ar" dir="rtl">{g.honor}</span>
       )}
     </span>
   );
