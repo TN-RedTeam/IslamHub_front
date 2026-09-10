@@ -413,21 +413,17 @@ export interface NomAllah {
 // ==========================================
 // Les Attributs d'Allah (aṣ-ṣifāt) — Phase 13.6 (BDD)
 // ==========================================
-export interface AttributCitation {
-  id: number;
-  arabe: string;
-  phonetique: string | null;
-  signification: string | null;
-  ref: string | null;
-}
 export interface Attribut {
   id: number;
   ordre: number | null;
   slug: string;
-  nom: string;
-  gloss: string | null;
-  explication: string | null;   // rempli par l'auteur (Supabase)
-  citations: AttributCitation[];
+  nom: string;                    // translittération (ex. Al-ʿIlm)
+  gloss: string | null;          // glose FR (ex. La science)
+  explication: string | null;    // exposé FR, rempli par l'auteur
+  verset_arabe: string | null;         // citation coranique (arabe)
+  verset_phonetique: string | null;    // translittération du verset
+  verset_signification: string | null; // sens FR (affiché en gras)
+  verset_ref: string | null;           // ex. « Sourate Al-Baqara, 282 »
 }
 
 /** Page d'exposé éditorial (table `exposes`) — contenu Markdown éditable en base. */

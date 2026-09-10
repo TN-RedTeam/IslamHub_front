@@ -229,7 +229,10 @@ class DataService {
 
   // ============ Les Attributs d'Allah (Phase 13.6, BDD) ============
   async getAttributs(): Promise<Attribut[]> {
-    const { data, error } = await supabase.rpc('get_attributs');
+    const { data, error } = await supabase
+      .from('attributs')
+      .select('id,ordre,slug,nom,gloss,explication,verset_arabe,verset_phonetique,verset_signification,verset_ref')
+      .order('ordre', { ascending: true });
     if (error) throw error;
     return (data ?? []) as Attribut[];
   }

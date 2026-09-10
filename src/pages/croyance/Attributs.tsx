@@ -70,22 +70,22 @@ export const Attributs: React.FC = () => {
                     <p className="text-ink leading-relaxed max-w-[65ch] whitespace-pre-line">{a.explication}</p>
                   )}
 
-                  {a.citations.map((c) => (
-                    <figure key={c.id} className="rounded-xl border border-line bg-surface p-4 mt-3">
-                      <p className="font-arabic text-2xl leading-loose text-right text-ink whitespace-pre-wrap" dir="rtl" lang="ar">{c.arabe}</p>
-                      {c.phonetique && (
-                        <p className="text-sm text-muted italic mt-2 [unicode-bidi:plaintext]">{c.phonetique}</p>
+                  {a.verset_arabe && (
+                    <figure className="rounded-xl border border-line bg-surface p-4 mt-3">
+                      <p className="font-arabic text-2xl leading-loose text-right text-ink whitespace-pre-wrap" dir="rtl" lang="ar">{a.verset_arabe}</p>
+                      {a.verset_phonetique && (
+                        <p className="text-sm text-muted italic mt-2 [unicode-bidi:plaintext]">{a.verset_phonetique}</p>
                       )}
-                      {c.signification && (
-                        <p className="text-ink font-bold mt-2 [unicode-bidi:plaintext]">{c.signification}</p>
+                      {a.verset_signification && (
+                        <p className="text-ink font-bold mt-2 [unicode-bidi:plaintext]">{a.verset_signification}</p>
                       )}
-                      {c.ref && (
-                        <figcaption className="text-xs uppercase tracking-wide text-gold font-semibold mt-2">{c.ref}</figcaption>
+                      {a.verset_ref && (
+                        <figcaption className="text-xs uppercase tracking-wide text-gold font-semibold mt-2">{a.verset_ref}</figcaption>
                       )}
                     </figure>
-                  ))}
+                  )}
 
-                  {!a.explication && a.citations.length === 0 && (
+                  {!a.explication && !a.verset_arabe && (
                     <p className="text-muted italic">Exposé à compléter.</p>
                   )}
                 </section>
