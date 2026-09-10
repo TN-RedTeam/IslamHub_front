@@ -413,6 +413,15 @@ export interface NomAllah {
 // ==========================================
 // Les Attributs d'Allah (aṣ-ṣifāt) — Phase 13.6 (BDD)
 // ==========================================
+/** Une preuve d'un attribut (verset coranique ou hadith), table enfant. */
+export interface AttributCitation {
+  id: number;
+  type: 'verset' | 'hadith';
+  arabe: string | null;
+  phonetique: string | null;
+  signification: string | null;  // sens FR (affiché en gras)
+  ref: string | null;            // ex. « Sourate Al-Baqara, 282 »
+}
 export interface Attribut {
   id: number;
   ordre: number | null;
@@ -420,10 +429,7 @@ export interface Attribut {
   nom: string;                    // translittération (ex. Al-ʿIlm)
   gloss: string | null;          // glose FR (ex. La science)
   explication: string | null;    // exposé FR, rempli par l'auteur
-  verset_arabe: string | null;         // citation coranique (arabe)
-  verset_phonetique: string | null;    // translittération du verset
-  verset_signification: string | null; // sens FR (affiché en gras)
-  verset_ref: string | null;           // ex. « Sourate Al-Baqara, 282 »
+  citations: AttributCitation[]; // 0..N preuves (versets et/ou hadiths)
 }
 
 /** Page d'exposé éditorial (table `exposes`) — contenu Markdown éditable en base. */
