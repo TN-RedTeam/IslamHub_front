@@ -12,19 +12,20 @@ import { usePageTitle } from '../../hooks/usePageTitle';
 interface Attribut { id: string; nom: string; gloss: string; corps?: string }
 
 const ATTRIBUTS: Attribut[] = [
-  { id: 'wujud',        nom: 'Al-Wujūd',                     gloss: "l'existence" },
-  { id: 'qidam',        nom: 'Al-Qidam',                     gloss: "l'éternité sans début" },
-  { id: 'baqa',         nom: 'Al-Baqāʾ',                     gloss: "la pérennité sans fin" },
-  { id: 'mukhalafa',    nom: 'Al-Mukhālafatu li-l-ḥawādith', gloss: "la non-ressemblance aux créatures" },
-  { id: 'qiyam',        nom: 'Al-Qiyāmu bi-nafsih',          gloss: "le fait de ne dépendre de rien" },
-  { id: 'wahdaniyya',   nom: 'Al-Waḥdāniyya',                gloss: "l'unicité" },
-  { id: 'qudra',        nom: 'Al-Qudra',                     gloss: "la toute-puissance" },
-  { id: 'irada',        nom: 'Al-Irāda',                     gloss: "la volonté" },
-  { id: 'ilm',          nom: 'Al-ʿIlm',                      gloss: "le savoir (l'omniscience)" },
-  { id: 'hayat',        nom: 'Al-Ḥayāt',                     gloss: "la vie" },
-  { id: 'sam',          nom: 'As-Samʿ',                      gloss: "l'ouïe" },
-  { id: 'basar',        nom: 'Al-Baṣar',                     gloss: "la vue" },
-  { id: 'kalam',        nom: 'Al-Kalām',                     gloss: "la parole" },
+  { id: 'wujud',        nom: 'Al-Woujūd',                    gloss: "L'existence" },
+  { id: 'qidam',        nom: 'Al-Qidam',                     gloss: "Le non commencement" },
+  { id: 'baqa',         nom: 'Al-Baqāʾ',                     gloss: "La non fin" },
+  { id: 'wahdaniyya',   nom: 'Al-Waḥdāniyya',                gloss: "L'unicité" },
+  { id: 'qiyam',        nom: 'Al-Qiyāmu bi-nafsih',          gloss: "Le non besoin" },
+  { id: 'mukhalafa',    nom: 'Al-Moukhālafatu li-l-ḥawādith', gloss: "La non-ressemblance aux créatures" },
+  { id: 'hayat',        nom: 'Al-Ḥayāt',                     gloss: "La vie" },
+  { id: 'qudra',        nom: 'Al-Qudra',                     gloss: "La puissance" },
+  { id: 'irada',        nom: 'Al-Irāda',                     gloss: "La volonté" },
+  { id: 'ilm',          nom: 'Al-ʿIlm',                      gloss: "La science" },
+  { id: 'sam',          nom: 'As-Samʿ',                      gloss: "L'ouïe" },
+  { id: 'basar',        nom: 'Al-Baṣar',                     gloss: "La vue" },
+  { id: 'kalam',        nom: 'Al-Kalām',                     gloss: "La parole" },
+  
 ];
 
 export const Attributs: React.FC = () => {
@@ -42,10 +43,8 @@ export const Attributs: React.FC = () => {
 
       <main className="max-w-5xl mx-auto px-5 py-8 pb-16">
         <p className="text-ink max-w-[65ch] mb-6">
-          Il est un devoir de connaître treize attributs d'Allah. Allah est exempt de tout lieu,
-          de toute direction et de toute ressemblance avec Ses créatures :{' '}
-          <em>rien ne Lui ressemble</em>. On affirme de Lui ce que le Coran et la Sunna ont affirmé,
-          sans Lui attribuer de corps, de forme ni de limite.
+        Les savants de l’Islam confirment que Dieu (Allah) n’est pas limité et que Ses attributs sont éternels, et que 13 sont obligatoires à connaître pour tout musulman pour qu’il puisse protéger sa croyance en Dieu.
+        Allah a les attributs de perfection absolue qui sont dignes de Lui et Il est exempt de tout attribut d’imperfection à Son égard. Les savants musulmans ont dit qu’il est un devoir pour toute personne pubère, saine d’esprit et à qui est parvenu l’appel à l’Islam (moukallaf), de connaître 13 attributs de Allah.
         </p>
 
         <div className="grid grid-cols-1 min-[860px]:grid-cols-[220px_1fr] gap-7">
