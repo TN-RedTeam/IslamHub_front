@@ -27,26 +27,38 @@ const HIJRI_MONTHS_FR = [
   'Ramadân', 'Chawwâl', 'Dhou al-qiʿda', 'Dhou al-hijja',
 ];
 
-const Crescent: React.FC<{ className?: string }> = ({ className }) => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className={className} aria-hidden="true">
-    <path d="M16.5 3.5a8 8 0 1 0 4 12 6.2 6.2 0 0 1-4-12z" />
+// Marque IslamHub : croissant + étoile, motif or clair (#caa24a).
+const Mark: React.FC<{ size?: number }> = ({ size = 26 }) => (
+  <svg width={size} height={size} viewBox="0 0 40 40" fill="none" aria-hidden="true">
+    <path d="M27 8 A13 13 0 1 0 27 32 A10 10 0 1 1 27 8Z" fill="#caa24a" />
+    <path d="M30 15 l1.3 3.4 3.7.2-2.9 2.3 1 3.6-3.1-2-3.1 2 1-3.6-2.9-2.3 3.7-.2z" fill="#caa24a" />
   </svg>
+);
+
+// Badge vert profond (dégradé fixe, lisible en clair comme en sombre) portant la marque.
+const BrandBadge: React.FC<{ px: number; radius: string; mark: number }> = ({ px, radius, mark }) => (
+  <span
+    className={`grid place-items-center shrink-0 bg-[linear-gradient(140deg,#1c5a43,#0f3d2e)] ${radius}`}
+    style={{ width: px, height: px }}
+  >
+    <Mark size={mark} />
+  </span>
 );
 
 export const Navigation: React.FC = () => {
   const { theme, toggleTheme } = useTheme();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [hijriFr, setHijriFr] = useState('');
-  const [hijriAr, setHijriAr] = useState('');
+  const [greg, setGreg] = useState('');
   const location = useLocation();
 
   useEffect(() => {
     const update = () => {
       const d = moment();
-      // Date hégirienne en français : chiffres latins + mois translittéré.
+      // Date hégirienne translittérée (chiffres latins + mois translittéré).
       setHijriFr(`${d.iDate()} ${HIJRI_MONTHS_FR[d.iMonth()]} ${d.iYear()}`);
-      // Date hégirienne en arabe : générée par moment-hijri (chiffres et mois arabes).
-      setHijriAr(d.format('iD iMMMM iYYYY'));
+      // Date grégorienne (2ᵉ ligne, discrète).
+      setGreg(new Date().toLocaleDateString('fr-FR', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' }));
     };
     update();
     const interval = setInterval(update, 3600000); // rafraîchit chaque heure (passage de jour)
@@ -64,11 +76,9 @@ export const Navigation: React.FC = () => {
         <div className="flex items-center gap-4 h-16">
           {/* Marque */}
           <Link to="/" className="flex items-center gap-2.5 shrink-0" aria-label="IslamHub — accueil">
-            <span className="w-9 h-9 rounded-lg bg-green text-white grid place-items-center">
-              <Crescent className="w-5 h-5" />
-            </span>
-            <span className="font-display text-xl font-semibold text-green-deep tracking-tight">
-              Islam<span className="text-gold">Hub</span>
+            <BrandBadge px={40} radius="rounded-[11px]" mark={26} />
+            <span className="font-display text-2xl font-bold tracking-tight">
+              <span className="text-green-deep">Islam</span><span className="text-gold">Hub</span>
             </span>
           </Link>
 
@@ -92,15 +102,15 @@ export const Navigation: React.FC = () => {
 
           {/* Actions (droite) */}
           <div className="flex items-center gap-2.5 shrink-0 ml-auto min-[1180px]:ml-0">
-            {/* Chip date hégirienne : français + arabe (pas de date grégorienne) */}
+            {/* Chip date : badge marque + hijri translittéré (ligne 1) + grégorien (ligne 2) */}
             <div
-              className="hidden lg:flex items-center gap-2 px-3 py-1.5 rounded-full bg-green-soft border border-line"
-              aria-label={`Date hégirienne : ${hijriFr}`}
+              className="hidden lg:flex items-center gap-2.5 px-3 py-1.5 rounded-full bg-surface border border-line"
+              aria-label={`Date : ${hijriFr}`}
             >
-              <Crescent className="w-4 h-4 text-gold shrink-0" />
-              <span className="leading-tight text-right">
-                <span className="block font-sans text-[13px] font-semibold text-green-deep whitespace-nowrap">{hijriFr}</span>
-                <span dir="rtl" className="block font-arabic text-[12px] leading-snug text-muted whitespace-nowrap [unicode-bidi:plaintext]">{hijriAr}</span>
+              <BrandBadge px={30} radius="rounded-lg" mark={19} />
+              <span className="leading-tight">
+                <span className="block font-display font-semibold text-[13px] text-green-deep whitespace-nowrap">{hijriFr}</span>
+                <span className="block text-[11px] text-muted whitespace-nowrap first-letter:uppercase">{greg}</span>
               </span>
             </div>
 

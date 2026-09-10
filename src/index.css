@@ -46,6 +46,17 @@ html {
     line-height: 1.7;
 }
 
+/* Système de polices arabes par usage (Phase 13.4). Placées APRÈS la règle
+   [lang="ar"] pour la surcharger (même spécificité, !important, source plus
+   tardive) : un élément lang="ar" + .font-arabic-name/quran prend bien la
+   police voulue. */
+.font-arabic-name {
+    font-family: 'Noto Naskh Arabic', 'Scheherazade New', serif !important;
+}
+.font-arabic-quran {
+    font-family: 'Amiri Quran', 'Scheherazade New', serif !important;
+}
+
 /* Notes de bas de page Markdown (remark-gfm génère <section class="footnotes">).
    Rendu discret : petit texte grisé + trait de séparation. Le style s'applique
    ici (et pas via un composant React) car la classe .footnotes est fiable,

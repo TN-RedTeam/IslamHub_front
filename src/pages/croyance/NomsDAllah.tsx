@@ -32,7 +32,7 @@ const NomModal: React.FC<{ nom: NomAllah; onClose: () => void }> = ({ nom, onClo
           <X className="w-5 h-5" />
         </button>
         {nom.ordre != null && <p className="font-display text-gold text-sm mb-1 tabular-nums">{nom.ordre}</p>}
-        <p className="font-arabic text-green-deep leading-[1.9]" dir="rtl" lang="ar" style={{ fontSize: 'clamp(34px,7vw,48px)' }}>{nom.nom_arabe}</p>
+        <p className="font-arabic-quran text-green-deep leading-[1.9]" dir="rtl" lang="ar" style={{ fontSize: 'clamp(34px,7vw,48px)' }}>{nom.nom_arabe}</p>
         {nom.translitteration && <p className="font-display text-green-deep text-xl mt-2">{nom.translitteration}</p>}
         {nom.sens_fr
           ? <div className="mt-1 text-lg"><Markdown>{nom.sens_fr}</Markdown></div>
@@ -112,7 +112,7 @@ export const NomsDAllah: React.FC = () => {
                 )}
                 {/* Hauteur réservée : 2 lignes d'arabe, pour que toutes les cartes soient identiques. */}
                 <p
-                  className="font-arabic text-green-deep w-full text-center leading-[1.7] [word-break:normal] [overflow-wrap:normal] line-clamp-2 min-h-[2.3em]"
+                  className="font-arabic-quran text-green-deep w-full text-center leading-[1.7] [word-break:normal] [overflow-wrap:normal] line-clamp-2 min-h-[2.3em]"
                   dir="rtl"
                   lang="ar"
                   style={{ fontSize: 'clamp(20px,2.8vw,26px)' }}

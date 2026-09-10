@@ -43,14 +43,14 @@ export const RelatedSchools: React.FC<{ current: AccentKey }> = ({ current }) =>
             >
               <div className="flex items-center gap-3.5 px-5 pt-5">
                 <span
-                  className={`shrink-0 w-11 h-11 rounded-full grid place-items-center font-arabic text-xl ring-1 ring-inset ${a.soft} ${a.text} ${a.ring}`}
+                  className={`shrink-0 w-11 h-11 rounded-full grid place-items-center font-arabic-name text-xl ring-1 ring-inset ${a.soft} ${a.text} ${a.ring}`}
                   aria-hidden="true"
                 >
                   {MADHHAB_AR[s.arIndex]?.charAt(0)}
                 </span>
                 <span>
                   <span className="block font-display text-lg font-semibold text-green-deep leading-tight">{s.name}</span>
-                  <span dir="rtl" className="block font-arabic text-sm text-muted [unicode-bidi:plaintext]">{MADHHAB_AR[s.arIndex]}</span>
+                  <span dir="rtl" className="block font-arabic-name font-medium text-sm text-ink [unicode-bidi:plaintext]">{MADHHAB_AR[s.arIndex]}</span>
                 </span>
               </div>
               <div className="flex flex-col flex-1 px-5 pt-3 pb-5">

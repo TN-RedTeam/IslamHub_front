@@ -49,12 +49,12 @@ export const Madhaheb: React.FC = () => {
                 className={`group flex flex-col rounded-card border border-line ${a.filet} border-t-[3px] bg-ivory shadow-card hover:shadow-card-hover hover:-translate-y-0.5 transition-all motion-reduce:transition-none motion-reduce:hover:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green`}
               >
                 <div className="flex items-center gap-3.5 px-6 pt-5">
-                  <span className={`shrink-0 w-12 h-12 rounded-full grid place-items-center font-arabic text-2xl ring-1 ring-inset ${a.soft} ${a.text} ${a.ring}`} aria-hidden="true">
+                  <span className={`shrink-0 w-12 h-12 rounded-full grid place-items-center font-arabic-name text-2xl ring-1 ring-inset ${a.soft} ${a.text} ${a.ring}`} aria-hidden="true">
                     {MADHHAB_AR[i]?.charAt(0)}
                   </span>
                   <span>
                     <span className="block font-display text-xl font-semibold text-green-deep leading-tight">{e.name}</span>
-                    <span dir="rtl" className="block font-arabic text-[15px] text-muted [unicode-bidi:plaintext]">{MADHHAB_AR[i]}</span>
+                    <span dir="rtl" className="block font-arabic-name font-medium text-[15px] text-ink [unicode-bidi:plaintext]">{MADHHAB_AR[i]}</span>
                   </span>
                 </div>
 

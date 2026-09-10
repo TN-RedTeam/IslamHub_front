@@ -190,7 +190,7 @@ export const Savants: React.FC = () => {
                     <span className="min-w-0">
                       <span className="block font-display text-xl font-bold leading-tight text-green-deep group-hover:text-green">{s.nom}</span>
                       {s.nom_arabe && (
-                        <span dir="rtl" lang="ar" className="block font-arabic text-base text-gray-500 dark:text-gray-400 [unicode-bidi:plaintext]">{s.nom_arabe}</span>
+                        <span dir="rtl" lang="ar" className="block font-arabic-name font-medium text-base text-ink [unicode-bidi:plaintext]">{s.nom_arabe}</span>
                       )}
                     </span>
                   </div>

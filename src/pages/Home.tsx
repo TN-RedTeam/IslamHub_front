@@ -88,7 +88,7 @@ export const Home: React.FC = () => {
         {isLoading ? (
           <div className="flex justify-center py-16"><Loader2 className="w-8 h-8 text-green animate-spin" /></div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {/* Hadith */}
             <Link to="/hadiths" className={`${cardBase} group`}>
               <div className="flex items-center gap-3">
@@ -137,7 +137,7 @@ export const Home: React.FC = () => {
         {/* Explorer les ressources */}
         <h2 className="font-display font-semibold text-green-deep text-center mt-14" style={{ fontSize: 'clamp(20px,3vw,26px)' }}>Explorer nos ressources</h2>
         <div className="w-16 h-0.5 bg-gold rounded mx-auto mt-3.5 mb-7" />
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
           {ressources.map((r) => (
             <Link key={r.label} to={r.path} className="flex flex-col items-center gap-2 rounded-card border border-line bg-ivory p-4 shadow-card hover:shadow-card-hover hover:border-green transition-all motion-reduce:transition-none">
               <span className="w-11 h-11 rounded-card bg-green-soft text-green grid place-items-center"><r.icon className="w-5 h-5" /></span>

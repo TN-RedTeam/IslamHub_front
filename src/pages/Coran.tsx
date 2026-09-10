@@ -412,13 +412,17 @@ export const Corans: React.FC = () => {
             <div className="flex gap-2 bg-white dark:bg-gray-800 rounded-xl p-1 border border-line">
               <button
                 onClick={() => handleViewChange('grid')}
-                className={`p-2 rounded-lg transition-all duration-300 ${view === 'grid' ? 'bg-green text-white shadow-md' : 'text-green hover:bg-green-soft'}`}
+                aria-pressed={view === 'grid'}
+                aria-label="Affichage en grille"
+                className={`p-2 rounded-lg transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green ${view === 'grid' ? 'bg-green text-white shadow-md' : 'text-green hover:bg-green-soft'}`}
               >
                 <Grid3x3 className="w-5 h-5" />
               </button>
               <button
                 onClick={() => handleViewChange('list')}
-                className={`p-2 rounded-lg transition-all duration-300 ${view === 'list' ? 'bg-green text-white shadow-md' : 'text-green hover:bg-green-soft'}`}
+                aria-pressed={view === 'list'}
+                aria-label="Affichage en liste"
+                className={`p-2 rounded-lg transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green ${view === 'list' ? 'bg-green text-white shadow-md' : 'text-green hover:bg-green-soft'}`}
               >
                 <ListIcon className="w-5 h-5" />
               </button>
@@ -631,7 +635,7 @@ export const Corans: React.FC = () => {
 
           ) : (
             <>
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              <div className={view === 'list' ? 'flex flex-col gap-4' : 'grid grid-cols-1 lg:grid-cols-2 gap-8'}>
                 <AnimatePresence mode="wait">
                   {corans.map((coran, index) => (
                     <m.div
