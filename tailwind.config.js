@@ -9,8 +9,11 @@ export default {
         // arabe = Scheherazade New, Bismillah home = Amiri (arabic-display).
         display: ['"EB Garamond"', 'Georgia', 'serif'],
         sans: ['Newsreader', 'Georgia', 'serif'],
-        arabic: ['"Scheherazade New"', 'serif'],
-        'arabic-display': ['Amiri', 'serif'], // Bismillah de la home uniquement
+        // Système de polices arabes par usage (Phase 13.4)
+        arabic: ['"Scheherazade New"', 'serif'],          // lecture : hadiths, versets, invocations, paroles
+        'arabic-display': ['Amiri', 'serif'],             // grande Bismillah de la home uniquement
+        'arabic-name': ['"Noto Naskh Arabic"', 'serif'],  // NOMS & UI : écoles, savants, honorifiques
+        'arabic-quran': ['"Amiri Quran"', 'serif'],       // les 99 Noms d'Allah uniquement
       },
       colors: {
         // ---- Tokens de charte (Phase 11.1) : pilotés par variables CSS (clair/sombre) ----
