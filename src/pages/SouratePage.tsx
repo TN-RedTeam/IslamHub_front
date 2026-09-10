@@ -90,8 +90,8 @@ export const SouratePage: React.FC = () => {
                 <p className="text-gray-600 dark:text-gray-300 italic mt-3 whitespace-pre-wrap [unicode-bidi:plaintext]">{v.phonetique}</p>
               )}
               {v.texte_francais && (
-                <div className="mt-3 pl-4 border-l-4 border-green">
-                  <p className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap [unicode-bidi:plaintext]">{v.texte_francais}</p>
+                <div className="mt-3 pl-4 border-l-4 border-green [unicode-bidi:plaintext]">
+                  <Markdown>{v.texte_francais}</Markdown>
                 </div>
               )}
               {v.exegeses.length > 0 && (
