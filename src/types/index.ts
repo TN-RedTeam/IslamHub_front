@@ -51,7 +51,26 @@ export interface Invocation extends BaseText {
 /** Parole de savant (table `paroles`) */
 export interface Parole extends BaseText {
   savant: string;
+  slug?: string | null;  // segment d'URL de la page /paroles/:slug
   ecole?: string | null; // école du savant (dénormalisée) : Hanafi, Malikite...
+}
+
+/** Fiche parole complète (page /paroles/:slug) : parole + savant + référence + scan. */
+export interface ParoleDetail {
+  id: number;
+  slug: string;
+  sujet: string | null;
+  texte_arabe: string | null;
+  texte_francais: string | null;
+  phonetique: string | null;
+  explication: string | null;
+  source_livre: string | null;
+  page: string | null;
+  image_url: string | null;      // scan du livre
+  ecole: string | null;
+  savant: string | null;
+  savant_slug: string | null;    // → /savants/:slug
+  generation: string | null;     // badge de génération
 }
 
 /** Alias historique — `Parole` est le nom canonique. */
