@@ -518,36 +518,55 @@ Avant toute grosse modification : voir la section « backup » — un `pg_dump`
 
 ### Tables : `recueils`, `tags`, `tag`
 
-- **`recueils`** *(utile)* — un **livre / recueil de hadiths**, avec :
-  - **`nom`** — le nom **de l'auteur** (Al-Bukhârî, Muslim, At-Tirmidhî…),
-    utilisé comme **repli** d'affichage si aucun titre n'est saisi ;
-  - **`titre`** *(texte, optionnel)* — le **titre du livre** (ex. « Sahih
-    al-Bukhari », « Al-Moustadrak »). **C'est lui qui s'affiche** sur la fiche
-    hadith quand il est renseigné ;
-  - **`savant_id`** *(FK → `savants`)* — l'**auteur** du livre.
+- **`recueils`** *(utile)* — un **ouvrage** (un livre = une ligne), relié à son
+  **auteur**. Colonnes :
+  - **`titre`** — l'**identité du livre** (ex. « Sahih al-Bukhari »). **C'est lui
+    qui s'affiche** comme source sur la fiche hadith.
+  - **`titre_arabe`** *(optionnel)* — le titre en arabe.
+  - **`savant_id`** *(FK → `savants`)* — l'**auteur** de l'ouvrage. Le nom de
+    l'auteur vient du join, il n'est **pas** stocké dans `recueils`.
+  - **`slug`** *(unique)* — id d'URL (future page d'ouvrage).
+  - **`type`** — `'recueil'` (original) · `'sharh'` (commentaire) · `'hashiya'`
+    (glose). Défaut `'recueil'`.
+  - **`commente_recueil_id`** *(FK → `recueils.id`, nullable)* — pour un
+    `sharh`/`hashiya` : l'**ouvrage commenté**. L'auteur de l'original se déduit
+    par `commente_recueil_id → recueils → savant_id`.
+  - **`nom`** *(obsolète)* — ancien nom d'auteur, **conservé provisoirement** en
+    repli d'affichage, à **supprimer** une fois tous les `titre` renseignés.
 
-  Un même auteur peut avoir **plusieurs livres = plusieurs lignes** (c'est le but
-  de `titre` + `savant_id`). Les grands recueils à ouvrage unique ont déjà un
-  `titre` ; les auteurs à plusieurs ouvrages (Al-Bayhaqî, At-Tabarânî, Ibn Hajar,
-  As-Sakhâwî, Ibn al-Jawzî, As-Souyoutî, Al-Qourtoubî, Aboû l-Qâçim) ont `titre`
-  à **NULL** : à compléter, ou à **éclater** en une ligne par livre. Reliée aux
-  hadiths via `hadith_sources(hadith_id, recueil_id, numero, chapitre)`.
+  Un même auteur peut avoir **plusieurs livres = plusieurs lignes**. Certains
+  `titre` sont **provisoires** (auteurs à plusieurs ouvrages : Al-Bayhaqî,
+  At-Tabarânî, Ibn Hajar, As-Sakhâwî, Ibn al-Jawzî, As-Souyoutî, Al-Qourtoubî) et
+  Aboû l-Qâçim al-Ansârî reste **à renseigner**. Reliée aux hadiths via
+  `hadith_sources(hadith_id, recueil_id, numero, chapitre)` — un hadith pointe
+  vers un ouvrage + son `numero`.
 
   ```sql
-  -- Renseigner le titre d'un recueil existant
-  update public.recueils set titre = 'As-Sounan al-Koubra' where nom = 'Al-Bayhaqi';
+  -- Corriger / renseigner le titre d'un ouvrage
+  update public.recueils set titre = 'Al-Asma'' wa s-Sifat', slug = 'al-asma-wa-s-sifat'
+  where slug = 'as-sounan-al-koubra';   -- (ou l'ouvrage voulu)
 
-  -- Ajouter un SECOND livre pour un auteur qui en a plusieurs (nouvelle ligne)
-  insert into public.recueils (nom, titre, savant_id)
-  select s.nom, 'Al-Asma'' wa s-Sifat', s.id
+  -- Ajouter un SECOND livre d'un auteur (nouvelle ligne, même savant_id)
+  insert into public.recueils (slug, titre, savant_id)
+  select 'shou-ab-al-iman', 'Shou''ab al-Iman', s.id
   from public.savants s where s.slug = 'al-bayhaqi';
-  -- puis relier un hadith à CE livre précis :
-  -- insert into public.hadith_sources (hadith_id, recueil_id, numero)
-  -- select :HID, r.id, '123' from public.recueils r where r.titre = 'Al-Asma'' wa s-Sifat';
+
+  -- Un COMMENTAIRE (sharḥ) = un ouvrage à part entière qui en commente un autre
+  insert into public.recueils (slug, titre, savant_id, type, commente_recueil_id)
+  select 'at-tawshih', 'At-Tawshīḥ', s.id, 'sharh', r.id
+  from public.savants s, public.recueils r
+  where s.slug = 'imam-as-souyoutiyy' and r.titre = 'Sahih al-Bukhari';
+  -- Affichage : « At-Tawshīḥ — commentaire de Sahih al-Bukhari (par Imam As-Souyoutiyy) »
+
+  -- Relier un hadith à un ouvrage précis + son numéro
+  insert into public.hadith_sources (hadith_id, recueil_id, numero)
+  select :HID, r.id, '2517' from public.recueils r where r.slug = 'sahih-al-bukhari';
   ```
 
-  > Le `numero` de `hadith_sources` (n° du hadith dans le recueil) n'est pas
-  > encore rempli : ajoute-le pour afficher « … (n° 2517) ».
+  > Le libellé de source est construit par la fonction `recueil_label(recueil_id,
+  > numero)` (titre + éventuel titre arabe + clause de commentaire + n°), utilisée
+  > par `get_hadith` et `get_dossier`. Le `numero` de `hadith_sources` est encore
+  > vide partout : renseigne-le pour afficher « … (n° 2517) ».
 - **`tags`** *(pluriel — 87 lignes — utile)* — le **référentiel normalisé des
   mots-clés** (`id, nom, slug`), relié aux hadiths par `hadith_tags`. C'est la
   version « propre » et réutilisable des tags (une ligne par tag, avec slug).

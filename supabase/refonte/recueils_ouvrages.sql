@@ -75,3 +75,39 @@ alter table public.recueils alter column nom drop not null;
 -- select 'at-tawshih', 'At-Tawshīḥ', s.id, 'sharh', r.id
 -- from public.savants s, public.recueils r
 -- where s.slug = 'imam-as-souyoutiyy' and r.titre = 'Sahih al-Bukhari';
+
+-- ─────────────────────────────────────────────────────────────────────────
+-- ÉTAPE 4 — Affichage : libellé de source (fonction) + RPC
+-- ─────────────────────────────────────────────────────────────────────────
+
+-- Libellé = titre (+ titre_arabe) ; pour un sharḥ/ḥāshiya :
+-- « {titre} — commentaire de {ouvrage commenté} (par {auteur du commentaire}) » ;
+-- + « (n° …) » si le numéro du hadith est fourni.
+create or replace function public.recueil_label(p_recueil_id bigint, p_numero text default null)
+returns text language sql stable as $function$
+  select coalesce(nullif(btrim(r.titre), ''), r.nom)
+      || coalesce(' — ' || nullif(btrim(r.titre_arabe), ''), '')
+      || case
+           when r.type in ('sharh','hashiya') and base.id is not null then
+             ' — ' || (case r.type when 'hashiya' then 'glose de ' else 'commentaire de ' end)
+             || coalesce(nullif(btrim(base.titre), ''), base.nom)
+             || coalesce(' (par ' || cs.nom || ')', '')
+           else '' end
+      || coalesce(' (n° ' || nullif(btrim(p_numero), '') || ')', '')
+  from public.recueils r
+  left join public.recueils base on base.id = r.commente_recueil_id
+  left join public.savants  cs   on cs.id = r.savant_id and r.type in ('sharh','hashiya')
+  where r.id = p_recueil_id;
+$function$;
+grant execute on function public.recueil_label(bigint, text) to anon, authenticated;
+
+-- get_hadith / get_dossier : la source est agrégée via recueil_label().
+--   (select string_agg(public.recueil_label(hs.recueil_id, hs.numero), ', ')
+--      from public.hadith_sources hs where hs.hadith_id = h.id) as recueils
+
+-- ─────────────────────────────────────────────────────────────────────────
+-- ÉTAPE 5 (EN ATTENTE DU FEU VERT) — retrait du doublon `nom`
+-- ─────────────────────────────────────────────────────────────────────────
+-- À exécuter seulement quand TOUS les titre sont renseignés et vérifiés :
+--   alter table public.recueils drop column nom;
+-- (recueil_label repli déjà sur nom ; une fois nom retiré, garantir titre NOT NULL.)
