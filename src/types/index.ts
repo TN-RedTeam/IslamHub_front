@@ -19,6 +19,7 @@ export interface Hadith extends BaseText {
   narrateur: string | null;
   statut: string | null;
   narrateur_generation?: string | null; // génération du narrateur (Phase 12.6, option 1)
+  recueils?: string | null;              // libellé de source (livre + n°), via recueil_label
 }
 
 /** Verset du Coran */

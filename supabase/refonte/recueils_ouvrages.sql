@@ -135,3 +135,32 @@ $function$;
 -- (c) Suppression de nom + (d) titre requis.
 alter table public.recueils drop column nom;
 alter table public.recueils alter column titre set not null;
+
+-- ─────────────────────────────────────────────────────────────────────────
+-- SUIVI — search_hadiths expose aussi la source (recueils) pour la carte/modale
+-- ─────────────────────────────────────────────────────────────────────────
+-- Ajout dans le SELECT des lignes renvoyées :
+--   (select string_agg(public.recueil_label(hs.recueil_id, hs.numero), ', ')
+--      from public.hadith_sources hs where hs.hadith_id = filtered.id) as recueils
+
+-- ─────────────────────────────────────────────────────────────────────────
+-- SUIVI — libellé centré auteur + chapitre
+-- ─────────────────────────────────────────────────────────────────────────
+-- recueil_label devient (recueil_id, numero, chapitre) et rend :
+--   « {auteur} dans {titre} (chapitre, n° X) »  (auteur via join savants),
+--   sharḥ : « … , commentaire de {ouvrage} ({auteur original}) ».
+-- get_hadith / search_hadiths / get_dossier passent hs.numero ET hs.chapitre.
+-- L'ancienne signature recueil_label(bigint, text) est supprimée.
+
+-- ─────────────────────────────────────────────────────────────────────────
+-- SUIVI — hadith_sources : retrait de numero et chapitre
+-- ─────────────────────────────────────────────────────────────────────────
+-- L'auteur préfère une source simple « {auteur} dans {titre} » sans saisir
+-- n°/chapitre. hadith_sources = (hadith_id, recueil_id) uniquement.
+-- recueil_label repasse à 1 argument (recueil_id) ; get_hadith / search_hadiths
+-- / get_dossier appellent recueil_label(hs.recueil_id).
+-- (Backup: backup.hadith_sources_before_drop.)
+--   drop function public.recueil_label(bigint, text, text);
+--   create function public.recueil_label(p_recueil_id bigint) ...;
+--   alter table public.hadith_sources drop column numero;
+--   alter table public.hadith_sources drop column chapitre;
