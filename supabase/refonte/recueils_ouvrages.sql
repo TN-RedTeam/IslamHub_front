@@ -142,3 +142,12 @@ alter table public.recueils alter column titre set not null;
 -- Ajout dans le SELECT des lignes renvoyées :
 --   (select string_agg(public.recueil_label(hs.recueil_id, hs.numero), ', ')
 --      from public.hadith_sources hs where hs.hadith_id = filtered.id) as recueils
+
+-- ─────────────────────────────────────────────────────────────────────────
+-- SUIVI — libellé centré auteur + chapitre
+-- ─────────────────────────────────────────────────────────────────────────
+-- recueil_label devient (recueil_id, numero, chapitre) et rend :
+--   « {auteur} dans {titre} (chapitre, n° X) »  (auteur via join savants),
+--   sharḥ : « … , commentaire de {ouvrage} ({auteur original}) ».
+-- get_hadith / search_hadiths / get_dossier passent hs.numero ET hs.chapitre.
+-- L'ancienne signature recueil_label(bigint, text) est supprimée.
