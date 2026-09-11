@@ -56,3 +56,22 @@ set slug = lower(regexp_replace(
 where slug is null;
 
 create unique index if not exists recueils_slug_unique on public.recueils(slug);
+
+-- ─────────────────────────────────────────────────────────────────────────
+-- ÉTAPE 3 — Commentaires (sharḥ / ḥāshiya) par auto-référence
+-- ─────────────────────────────────────────────────────────────────────────
+
+-- `nom` devient redondant (déduit de savant_id -> savants.nom) et destiné à
+-- disparaître : on lève le NOT NULL dès maintenant pour permettre d'insérer de
+-- nouveaux ouvrages/commentaires sans le renseigner. (DROP COLUMN plus tard.)
+alter table public.recueils alter column nom drop not null;
+
+-- Un commentaire = un ouvrage à part entière : savant_id = le commentateur,
+-- type = 'sharh' (ou 'hashiya'), commente_recueil_id = l'ouvrage commenté.
+-- L'auteur de l'original se déduit : commente_recueil_id -> recueils -> savant_id.
+-- Exemple (commentaire d'As-Souyoutiyy sur le Sahih al-Bukhari) :
+--
+-- insert into public.recueils (slug, titre, savant_id, type, commente_recueil_id)
+-- select 'at-tawshih', 'At-Tawshīḥ', s.id, 'sharh', r.id
+-- from public.savants s, public.recueils r
+-- where s.slug = 'imam-as-souyoutiyy' and r.titre = 'Sahih al-Bukhari';
