@@ -106,8 +106,32 @@ grant execute on function public.recueil_label(bigint, text) to anon, authentica
 --      from public.hadith_sources hs where hs.hadith_id = h.id) as recueils
 
 -- ─────────────────────────────────────────────────────────────────────────
--- ÉTAPE 5 (EN ATTENTE DU FEU VERT) — retrait du doublon `nom`
+-- ÉTAPE 5 — Retrait du doublon `nom` (après feu vert)
 -- ─────────────────────────────────────────────────────────────────────────
--- À exécuter seulement quand TOUS les titre sont renseignés et vérifiés :
---   alter table public.recueils drop column nom;
--- (recueil_label repli déjà sur nom ; une fois nom retiré, garantir titre NOT NULL.)
+
+-- (a) Aucun titre ne doit rester NULL : repli provisoire sur nom.
+--     (id 13 Aboû l-Qâçim al-Ansârî : placeholder = nom d'auteur, à remplacer
+--      par le vrai titre d'ouvrage.)
+update public.recueils set titre = nom where titre is null or btrim(titre) = '';
+
+-- (b) recueil_label n'utilise plus nom (titre devient obligatoire).
+create or replace function public.recueil_label(p_recueil_id bigint, p_numero text default null)
+returns text language sql stable as $function$
+  select r.titre
+      || coalesce(' — ' || nullif(btrim(r.titre_arabe), ''), '')
+      || case
+           when r.type in ('sharh','hashiya') and base.id is not null then
+             ' — ' || (case r.type when 'hashiya' then 'glose de ' else 'commentaire de ' end)
+             || base.titre
+             || coalesce(' (par ' || cs.nom || ')', '')
+           else '' end
+      || coalesce(' (n° ' || nullif(btrim(p_numero), '') || ')', '')
+  from public.recueils r
+  left join public.recueils base on base.id = r.commente_recueil_id
+  left join public.savants  cs   on cs.id = r.savant_id and r.type in ('sharh','hashiya')
+  where r.id = p_recueil_id;
+$function$;
+
+-- (c) Suppression de nom + (d) titre requis.
+alter table public.recueils drop column nom;
+alter table public.recueils alter column titre set not null;

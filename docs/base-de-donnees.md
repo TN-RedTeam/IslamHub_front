@@ -531,13 +531,15 @@ Avant toute grosse modification : voir la section « backup » — un `pg_dump`
   - **`commente_recueil_id`** *(FK → `recueils.id`, nullable)* — pour un
     `sharh`/`hashiya` : l'**ouvrage commenté**. L'auteur de l'original se déduit
     par `commente_recueil_id → recueils → savant_id`.
-  - **`nom`** *(obsolète)* — ancien nom d'auteur, **conservé provisoirement** en
-    repli d'affichage, à **supprimer** une fois tous les `titre` renseignés.
+
+  > L'ancienne colonne `nom` (nom d'auteur) a été **supprimée** : le nom de
+  > l'auteur vient du join `savant_id → savants.nom`, il n'est plus stocké ici.
 
   Un même auteur peut avoir **plusieurs livres = plusieurs lignes**. Certains
   `titre` sont **provisoires** (auteurs à plusieurs ouvrages : Al-Bayhaqî,
-  At-Tabarânî, Ibn Hajar, As-Sakhâwî, Ibn al-Jawzî, As-Souyoutî, Al-Qourtoubî) et
-  Aboû l-Qâçim al-Ansârî reste **à renseigner**. Reliée aux hadiths via
+  At-Tabarânî, Ibn Hajar, As-Sakhâwî, Ibn al-Jawzî, As-Souyoutî, Al-Qourtoubî) ;
+  **Aboû l-Qâçim al-Ansârî** porte encore un **titre placeholder** (= son nom) à
+  remplacer par le vrai ouvrage. Reliée aux hadiths via
   `hadith_sources(hadith_id, recueil_id, numero, chapitre)` — un hadith pointe
   vers un ouvrage + son `numero`.
 
