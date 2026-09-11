@@ -8,6 +8,7 @@ import { Hadiths } from './pages/Hadiths';
 import { HadithPage } from './pages/HadithPage';
 import { Invocations } from './pages/Invocations';
 import { Paroles } from './pages/Paroles';
+import { ParolePage } from './pages/ParolePage';
 import { Savants } from './pages/Savants';
 import { SavantPage } from './pages/SavantPage';
 import { Corans } from './pages/Coran';
@@ -59,6 +60,7 @@ function App() {
                 <Route path="/douaas" element={<Navigate to="/invocations" replace />} />
                 <Route path="/dhikrs" element={<Navigate to="/invocations" replace />} />
                 <Route path="/paroles" element={<Paroles />} />
+                <Route path="/paroles/:slug" element={<ParolePage />} />
                 <Route path="/savants" element={<Savants />} />
                 <Route path="/savants/:slug" element={<SavantPage />} />
                 <Route path="/multimedia" element={<Multimedia />} />
