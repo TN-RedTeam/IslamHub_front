@@ -151,3 +151,16 @@ alter table public.recueils alter column titre set not null;
 --   sharḥ : « … , commentaire de {ouvrage} ({auteur original}) ».
 -- get_hadith / search_hadiths / get_dossier passent hs.numero ET hs.chapitre.
 -- L'ancienne signature recueil_label(bigint, text) est supprimée.
+
+-- ─────────────────────────────────────────────────────────────────────────
+-- SUIVI — hadith_sources : retrait de numero et chapitre
+-- ─────────────────────────────────────────────────────────────────────────
+-- L'auteur préfère une source simple « {auteur} dans {titre} » sans saisir
+-- n°/chapitre. hadith_sources = (hadith_id, recueil_id) uniquement.
+-- recueil_label repasse à 1 argument (recueil_id) ; get_hadith / search_hadiths
+-- / get_dossier appellent recueil_label(hs.recueil_id).
+-- (Backup: backup.hadith_sources_before_drop.)
+--   drop function public.recueil_label(bigint, text, text);
+--   create function public.recueil_label(p_recueil_id bigint) ...;
+--   alter table public.hadith_sources drop column numero;
+--   alter table public.hadith_sources drop column chapitre;

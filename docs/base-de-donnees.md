@@ -83,7 +83,7 @@ Projet Supabase : `kxzfwtwbghuvnlueusvp`. Tout se fait dans **Supabase → SQL E
 **Liaisons hadith → plusieurs valeurs** :
 - `hadith_rapporteurs(hadith_id, savant_id)` — qui rapporte (relié aux `savants`).
 - `hadith_narrateurs(hadith_id, narrateur_id)` — le(s) narrateur(s) (Compagnons).
-- `hadith_sources(hadith_id, recueil_id, numero, chapitre)` — recueil + réf précise.
+- `hadith_sources(hadith_id, recueil_id)` — relie un hadith à ses ouvrages (recueils).
 - `hadith_tags(hadith_id, tag_id)` — tags normalisés.
 
 ### Recette : ajouter un hadith avec plusieurs rapporteurs / narrateurs / tags
@@ -95,10 +95,9 @@ values ('⟨sujet⟩', '⟨arabe⟩', '⟨traduction⟩', '⟨phonétique⟩', '
         'Sahih', null)
 returning id;   -- note l'id renvoyé → :HID
 
--- 2) rapporteurs (crée le recueil/savant s'il manque, puis relie)
-insert into public.recueils (nom) values ('At-Tirmidhi') on conflict (nom) do nothing;
-insert into public.hadith_sources (hadith_id, recueil_id, numero)
-select :HID, r.id, '2517' from public.recueils r where r.nom = 'At-Tirmidhi';
+-- 2) source : relie le hadith à un ouvrage existant (voir §10 pour créer un ouvrage)
+insert into public.hadith_sources (hadith_id, recueil_id)
+select :HID, r.id from public.recueils r where r.slug = 'jami-at-tirmidhi';
 
 -- 3) narrateur
 insert into public.narrateurs (nom) values ('Abou Hourayrah') on conflict (nom) do nothing;
@@ -540,8 +539,9 @@ Avant toute grosse modification : voir la section « backup » — un `pg_dump`
   At-Tabarânî, Ibn Hajar, As-Sakhâwî, Ibn al-Jawzî, As-Souyoutî, Al-Qourtoubî) ;
   **Aboû l-Qâçim al-Ansârî** porte encore un **titre placeholder** (= son nom) à
   remplacer par le vrai ouvrage. Reliée aux hadiths via
-  `hadith_sources(hadith_id, recueil_id, numero, chapitre)` — un hadith pointe
-  vers un ouvrage + son `numero`.
+  `hadith_sources(hadith_id, recueil_id)` — un hadith pointe vers un ou plusieurs
+  ouvrages (le n° et le chapitre ont été retirés : la source affichée est
+  simplement « {auteur} dans {titre} »).
 
   ```sql
   -- Corriger / renseigner le titre d'un ouvrage
@@ -560,15 +560,15 @@ Avant toute grosse modification : voir la section « backup » — un `pg_dump`
   where s.slug = 'imam-as-souyoutiyy' and r.titre = 'Sahih al-Bukhari';
   -- Affichage : « At-Tawshīḥ — commentaire de Sahih al-Bukhari (par Imam As-Souyoutiyy) »
 
-  -- Relier un hadith à un ouvrage précis + son numéro
-  insert into public.hadith_sources (hadith_id, recueil_id, numero)
-  select :HID, r.id, '2517' from public.recueils r where r.slug = 'sahih-al-bukhari';
+  -- Relier un hadith à un ouvrage (aucun n°/chapitre à saisir)
+  insert into public.hadith_sources (hadith_id, recueil_id)
+  select :HID, r.id from public.recueils r where r.slug = 'sahih-al-bukhari';
   ```
 
-  > Le libellé de source est construit par la fonction `recueil_label(recueil_id,
-  > numero)` (titre + éventuel titre arabe + clause de commentaire + n°), utilisée
-  > par `get_hadith` et `get_dossier`. Le `numero` de `hadith_sources` est encore
-  > vide partout : renseigne-le pour afficher « … (n° 2517) ».
+  > Le libellé de source est construit par la fonction `recueil_label(recueil_id)`
+  > (« {auteur} dans {titre} », + clause de commentaire pour un sharḥ), utilisée par
+  > `get_hadith`, `search_hadiths` et `get_dossier`. L'auteur vient du join
+  > `savant_id → savants`.
 - **`tags`** *(pluriel — 87 lignes — utile)* — le **référentiel normalisé des
   mots-clés** (`id, nom, slug`), relié aux hadiths par `hadith_tags`. C'est la
   version « propre » et réutilisable des tags (une ligne par tag, avec slug).
