@@ -76,8 +76,9 @@ Projet Supabase : `kxzfwtwbghuvnlueusvp`. Tout se fait dans **Supabase → SQL E
 ## 4. Tables annexes + liaisons
 
 **Référentiels** : `savants(id, nom, nom_arabe, naissance, deces, resume, domaines[], biographie, ecole_id, slug, generation, generation_a_verifier, resume_auto)`,
-`ecoles(id, nom, slug)`, `statuts(id, nom)`, `narrateurs(id, nom, generation)`, `recueils(id, nom)`,
-`tags(id, nom, slug)`. *(Voir §10 pour le détail des colonnes techniques.)*
+`ecoles(id, nom, slug)`, `statuts(id, nom)`, `narrateurs(id, nom, generation)`,
+`recueils(id, nom, titre, savant_id)`, `tags(id, nom, slug)`.
+*(Voir §10 pour le détail des colonnes techniques.)*
 
 **Liaisons hadith → plusieurs valeurs** :
 - `hadith_rapporteurs(hadith_id, savant_id)` — qui rapporte (relié aux `savants`).
@@ -517,10 +518,36 @@ Avant toute grosse modification : voir la section « backup » — un `pg_dump`
 
 ### Tables : `recueils`, `tags`, `tag`
 
-- **`recueils`** *(20 lignes — utile)* — la **liste des recueils de hadiths**
-  (Al-Bukhârî, Muslim, At-Tirmidhî…). Reliée aux hadiths via
-  `hadith_sources(hadith_id, recueil_id, numero, chapitre)` pour afficher
-  « Rapporté par … (n°…) ».
+- **`recueils`** *(utile)* — un **livre / recueil de hadiths**, avec :
+  - **`nom`** — le nom **de l'auteur** (Al-Bukhârî, Muslim, At-Tirmidhî…),
+    utilisé comme **repli** d'affichage si aucun titre n'est saisi ;
+  - **`titre`** *(texte, optionnel)* — le **titre du livre** (ex. « Sahih
+    al-Bukhari », « Al-Moustadrak »). **C'est lui qui s'affiche** sur la fiche
+    hadith quand il est renseigné ;
+  - **`savant_id`** *(FK → `savants`)* — l'**auteur** du livre.
+
+  Un même auteur peut avoir **plusieurs livres = plusieurs lignes** (c'est le but
+  de `titre` + `savant_id`). Les grands recueils à ouvrage unique ont déjà un
+  `titre` ; les auteurs à plusieurs ouvrages (Al-Bayhaqî, At-Tabarânî, Ibn Hajar,
+  As-Sakhâwî, Ibn al-Jawzî, As-Souyoutî, Al-Qourtoubî, Aboû l-Qâçim) ont `titre`
+  à **NULL** : à compléter, ou à **éclater** en une ligne par livre. Reliée aux
+  hadiths via `hadith_sources(hadith_id, recueil_id, numero, chapitre)`.
+
+  ```sql
+  -- Renseigner le titre d'un recueil existant
+  update public.recueils set titre = 'As-Sounan al-Koubra' where nom = 'Al-Bayhaqi';
+
+  -- Ajouter un SECOND livre pour un auteur qui en a plusieurs (nouvelle ligne)
+  insert into public.recueils (nom, titre, savant_id)
+  select s.nom, 'Al-Asma'' wa s-Sifat', s.id
+  from public.savants s where s.slug = 'al-bayhaqi';
+  -- puis relier un hadith à CE livre précis :
+  -- insert into public.hadith_sources (hadith_id, recueil_id, numero)
+  -- select :HID, r.id, '123' from public.recueils r where r.titre = 'Al-Asma'' wa s-Sifat';
+  ```
+
+  > Le `numero` de `hadith_sources` (n° du hadith dans le recueil) n'est pas
+  > encore rempli : ajoute-le pour afficher « … (n° 2517) ».
 - **`tags`** *(pluriel — 87 lignes — utile)* — le **référentiel normalisé des
   mots-clés** (`id, nom, slug`), relié aux hadiths par `hadith_tags`. C'est la
   version « propre » et réutilisable des tags (une ligne par tag, avec slug).
