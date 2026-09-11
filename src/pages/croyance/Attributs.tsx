@@ -27,6 +27,13 @@ const Preuve: React.FC<{ c: AttributCitation }> = ({ c }) => (
   </figure>
 );
 
+// Défilement en douceur vers un attribut (ancre interne). On NE change pas le
+// hash de l'URL : sous HashRouter, `href="#..."` serait interprété comme une
+// route et provoquerait un 404 — d'où le scroll géré en JS.
+const scrollToAttribut = (slug: string) => {
+  document.getElementById(`attribut-${slug}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+};
+
 export const Attributs: React.FC = () => {
   usePageTitle("Les Attributs de Allah");
   const [items, setItems] = useState<Attribut[]>([]);
@@ -65,7 +72,8 @@ export const Attributs: React.FC = () => {
                 {items.map((a, i) => (
                   <li key={a.id}>
                     <a
-                      href={`#${a.slug}`}
+                      href={`#attribut-${a.slug}`}
+                      onClick={(e) => { e.preventDefault(); scrollToAttribut(a.slug); }}
                       className="inline-flex items-baseline gap-1.5 px-2.5 py-1 rounded-full border border-line text-sm text-ink hover:bg-green-soft hover:text-green-deep hover:border-green transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green"
                     >
                       <span className="font-display font-semibold text-gold text-[12px] tabular-nums">{i + 1}</span>
@@ -78,7 +86,7 @@ export const Attributs: React.FC = () => {
 
             {/* Sections */}
             {items.map((a, i) => (
-              <section key={a.id} id={a.slug} className="mb-10" style={{ scrollMarginTop: 20 }}>
+              <section key={a.id} id={`attribut-${a.slug}`} className="mb-10" style={{ scrollMarginTop: 80 }}>
                 <h2 className="font-display font-semibold text-green-deep text-[22px] mb-2 flex items-center gap-2.5">
                   <span className="w-[26px] h-[26px] rounded-full bg-green-soft text-green grid place-items-center text-sm shrink-0 font-display tabular-nums">{i + 1}</span>
                   {a.nom}{a.gloss && <span className="text-muted font-sans text-base font-normal">— {a.gloss}</span>}

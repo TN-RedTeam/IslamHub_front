@@ -11,13 +11,13 @@ const CARDS: Card[] = [
     to: '/croyance/attributs',
     title: "Les Attributs de Allah",
     desc: "Ce qu'il convient de croire d'Allah, exempt de tout lieu, forme et ressemblance avec les créatures.",
-    icon: 'star',
+    icon: 'diamant',
   },
   {
     to: '/croyance/noms-d-allah',
     title: "Les 99 Noms d'Allah",
     desc: "Les plus beaux noms d'Allah, en arabe et en français, à parcourir et à méditer.",
-    icon: 'beads',
+    icon: 'qalam',
   },
   {
     to: '/croyance/piliers-de-la-foi',
@@ -45,7 +45,7 @@ export const Croyance: React.FC = () => {
 
         <div className="w-14 h-0.5 bg-gold rounded my-7" />
 
-        {/* Section phare — Versets équivoques */}
+        {/* Au cœur de la croyance — Versets équivoques */}
         <Link
           to="/croyance/versets-equivoques"
           className="group grid grid-cols-1 sm:grid-cols-[150px_1fr] overflow-hidden rounded-panel border border-line bg-surface shadow-card hover:shadow-card-hover hover:-translate-y-0.5 hover:border-green transition-all motion-reduce:transition-none motion-reduce:hover:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green"
@@ -55,7 +55,7 @@ export const Croyance: React.FC = () => {
           </div>
           <div className="p-6 sm:p-7">
             <span className="inline-block text-[11px] font-semibold uppercase tracking-[0.1em] text-[#7a5a17] bg-gold-soft border border-[#e6d3a3] px-2.5 py-0.5 rounded-full mb-2.5">
-              Section phare
+              Au cœur de la croyance
             </span>
             <h2 className="font-display font-semibold text-green-deep text-2xl mb-1.5">Versets équivoques</h2>
             <p className="text-ink/85 text-[15px] max-w-[52ch]">
@@ -88,11 +88,12 @@ export const Croyance: React.FC = () => {
           ))}
         </div>
 
-        <p className="mt-8 text-[13.5px] text-muted bg-surface border border-line border-l-[3px] border-l-gold rounded-r-card px-4 py-3.5">
-          <b className="text-ink">Note :</b> pas de rubrique «&nbsp;réfutations&nbsp;» qui nomme qui que ce soit. Là où une
-          idée fausse doit être corrigée, elle l'est <b className="text-ink">au cas par cas et sur l'argument</b>
-          {' '}(la section «&nbsp;L'interprétation erronée&nbsp;» dans chaque fiche de verset) — jamais en pointant une personne.
-        </p>
+        {/* Ornement de fin : parenthèses coraniques ornées (Amiri), discret et doré. */}
+        <div className="flex items-center justify-center gap-3 mt-10 text-gold" aria-hidden="true">
+          <span className="font-arabic-display text-3xl leading-none">{'\uFD3E'}</span>
+          <span className="w-1.5 h-1.5 rotate-45 bg-gold rounded-[1px]" />
+          <span className="font-arabic-display text-3xl leading-none">{'\uFD3F'}</span>
+        </div>
       </main>
     </div>
   );
