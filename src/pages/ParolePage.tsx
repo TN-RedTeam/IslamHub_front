@@ -46,13 +46,8 @@ export const ParolePage: React.FC = () => {
 
   const reference = [p.source_livre, p.page ? `p. ${p.page}` : ''].filter(Boolean).join(' — ');
 
-  // Scans : la table enfant `parole_images` (0..N) ; repli sur l'ancienne
-  // colonne unique `image_url` si aucune ligne enfant n'existe encore.
-  const scans: ParoleImage[] = p.images && p.images.length
-    ? p.images
-    : p.image_url
-      ? [{ id: 0, image_url: p.image_url, legende: p.source_livre, alt: `Scan du livre${p.source_livre ? ` — ${p.source_livre}` : ''}${p.page ? `, p. ${p.page}` : ''}`, source_livre: p.source_livre, ordre: 0 }]
-      : [];
+  // Scans du livre : 0..N, depuis la table enfant `parole_images`.
+  const scans: ParoleImage[] = p.images ?? [];
 
   return (
     <div className="min-h-screen bg-ground">
@@ -112,21 +107,27 @@ export const ParolePage: React.FC = () => {
             <h2 className="font-display font-semibold text-green-deep text-lg mb-2">
               {scans.length > 1 ? `Scans du livre (${scans.length})` : 'Scan du livre'}
             </h2>
-            <div className="flex flex-wrap gap-3">
+            <div className={`grid gap-4 ${scans.length > 1 ? 'sm:grid-cols-2' : 'sm:grid-cols-1'}`}>
               {scans.map((s) => (
-                <button
-                  key={s.id}
-                  onClick={() => setZoomed({ image_url: s.image_url, alt: s.alt, legende: s.legende ?? undefined, source_livre: s.source_livre ?? reference ?? undefined })}
-                  className="block rounded-card border border-line overflow-hidden hover:border-green transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green"
-                  aria-label={`Agrandir : ${s.alt}`}
-                >
-                  <img
-                    src={s.image_url}
-                    alt={s.alt}
-                    loading="lazy"
-                    className="max-h-[300px] w-auto object-contain bg-white"
-                  />
-                </button>
+                <figure key={s.id} className="rounded-card border border-line bg-surface overflow-hidden">
+                  <button
+                    onClick={() => setZoomed({ image_url: s.image_url, alt: s.alt, legende: s.legende ?? undefined, source_livre: s.source_livre ?? reference ?? undefined })}
+                    className="block w-full hover:opacity-95 transition-opacity focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green"
+                    aria-label={`Agrandir : ${s.alt}`}
+                  >
+                    <img
+                      src={s.image_url}
+                      alt={s.alt}
+                      loading="lazy"
+                      className="w-full max-h-[460px] object-contain bg-white"
+                    />
+                  </button>
+                  {(s.legende || s.source_livre) && (
+                    <figcaption className="px-3 py-2 text-sm text-muted border-t border-line">
+                      {s.legende}{s.legende && s.source_livre ? ' — ' : ''}{s.source_livre}
+                    </figcaption>
+                  )}
+                </figure>
               ))}
             </div>
           </section>

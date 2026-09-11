@@ -446,10 +446,11 @@ Les images ne vont **pas** en base : seule leur **URL** est stockée
 
 ### Scans d'une **parole** (`parole_images`) — 0..N par parole
 
-Une parole peut avoir **plusieurs** scans (`paroles.image_url`, à colonne unique,
-est **historique** ; la table enfant `parole_images` est la cible). Les scans ne
-vivent **que** sur la parole (`/paroles/:slug`) — sur la page d'un attribut on ne
-montre qu'un extrait court **sans** scan, avec un lien vers la parole.
+Une parole peut avoir **plusieurs** scans. Il n'y a **pas** de colonne image sur
+`paroles` : les scans passent **uniquement** par la table enfant `parole_images`
+(0..N par parole). Ils ne vivent **que** sur la parole (`/paroles/:slug`) — sur
+la page d'un attribut on ne montre qu'un extrait court **sans** scan, avec un
+lien vers la parole.
 
 `parole_images(parole_id, image_url, alt, legende, source_livre, ordre)` — mêmes
 colonnes et **même règle pour `alt`** que `dossier_images` (voir §5.4).

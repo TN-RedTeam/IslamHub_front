@@ -76,12 +76,11 @@ export interface ParoleDetail {
   explication: string | null;
   source_livre: string | null;
   page: string | null;
-  image_url: string | null;      // scan unique historique (compat ; préférer `images`)
   ecole: string | null;
   savant: string | null;
   savant_slug: string | null;    // → /savants/:slug
   generation: string | null;     // badge de génération
-  images: ParoleImage[];         // 0..N scans du livre
+  images: ParoleImage[];         // 0..N scans du livre (table parole_images)
 }
 
 /** Alias historique — `Parole` est le nom canonique. */
