@@ -42,13 +42,23 @@ const HadithCard: React.FC<{ hadith: Hadith; onClick: () => void }> = ({ hadith,
             <h3 className="text-xl font-bold text-green-deep font-display">
               {hadith.sujet}
             </h3>
-            <BadgeGeneration generation={hadith.narrateur_generation} className="ml-auto shrink-0" />
           </div>
       )}
 
-      {hadith.rapporteur && (
-          <div className="text-sm text-green italic">
-            Rapporteur: {hadith.rapporteur}
+      {(hadith.narrateur || hadith.rapporteur || hadith.recueils) && (
+          <div className="space-y-1 text-sm">
+            {hadith.narrateur && (
+                <div className="flex items-center gap-2 flex-wrap">
+                  <span className="text-green italic"><span className="text-muted not-italic">Narrateur :</span> {hadith.narrateur}</span>
+                  <BadgeGeneration generation={hadith.narrateur_generation} className="shrink-0" />
+                </div>
+            )}
+            {hadith.rapporteur && (
+                <div className="text-muted italic">Rapporté par : {hadith.rapporteur}</div>
+            )}
+            {hadith.recueils && (
+                <div className="text-muted [unicode-bidi:plaintext]">Source : {hadith.recueils}</div>
+            )}
           </div>
       )}
 
@@ -124,6 +134,11 @@ const HadithModal: React.FC<{ hadith: Hadith; onClose: () => void }> = ({ hadith
                   <p className="text-gray-600 dark:text-gray-400 mt-1 flex items-center gap-2 flex-wrap">
                     Narrateur : {hadith.narrateur}
                     <BadgeGeneration generation={hadith.narrateur_generation} withHonorific />
+                  </p>
+              )}
+              {hadith.recueils && (
+                  <p className="text-gray-600 dark:text-gray-400 mt-1 [unicode-bidi:plaintext]">
+                    Source : {hadith.recueils}
                   </p>
               )}
             </div>

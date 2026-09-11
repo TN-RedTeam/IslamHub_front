@@ -33,15 +33,15 @@ export const HadithPage: React.FC = () => {
     return () => { alive = false; };
   }, [numId]);
 
+  const source = hadith?.recueils ? `Rapporté par ${hadith.recueils}` : '';
   const reference = hadith && [
-    hadith.recueils ? `Rapporté par ${hadith.recueils}` : '',
     hadith.degre_authenticite ? `Authenticité : ${hadith.degre_authenticite}${hadith.juge_par ? ` (${hadith.juge_par})` : ''}` : '',
     hadith.type_hadith || '',
   ].filter(Boolean).join(' — ');
 
   const copyDebate = async () => {
     if (!hadith) return;
-    const txt = [hadith.texte_arabe, hadith.texte_francais ? `« ${hadith.texte_francais} »` : '', reference]
+    const txt = [hadith.texte_arabe, hadith.texte_francais ? `« ${hadith.texte_francais} »` : '', source, reference]
       .filter(Boolean).join('\n');
     try { await navigator.clipboard.writeText(txt); setCopied(true); setTimeout(() => setCopied(false), 2000); } catch { /* ignore */ }
   };
@@ -86,13 +86,14 @@ export const HadithPage: React.FC = () => {
             <ArrowLeft className="h-4 w-4" /> Tous les hadiths
           </Link>
           <h1 className="text-3xl md:text-4xl font-bold text-green-deep font-display">{hadith.sujet}</h1>
-          {reference && <p className="text-muted mt-2 text-sm">{reference}</p>}
           {hadith.narrateur && (
-            <p className="text-muted mt-1.5 text-sm flex items-center gap-2 flex-wrap">
+            <p className="text-muted mt-2 text-sm flex items-center gap-2 flex-wrap">
               Narrateur : {hadith.narrateur}
               <BadgeGeneration generation={hadith.narrateur_generation} withHonorific />
             </p>
           )}
+          {source && <p className="text-muted mt-1.5 text-sm [unicode-bidi:plaintext]">{source}</p>}
+          {reference && <p className="text-muted mt-1 text-sm">{reference}</p>}
         </div>
       </m.header>
 

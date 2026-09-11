@@ -135,3 +135,10 @@ $function$;
 -- (c) Suppression de nom + (d) titre requis.
 alter table public.recueils drop column nom;
 alter table public.recueils alter column titre set not null;
+
+-- ─────────────────────────────────────────────────────────────────────────
+-- SUIVI — search_hadiths expose aussi la source (recueils) pour la carte/modale
+-- ─────────────────────────────────────────────────────────────────────────
+-- Ajout dans le SELECT des lignes renvoyées :
+--   (select string_agg(public.recueil_label(hs.recueil_id, hs.numero), ', ')
+--      from public.hadith_sources hs where hs.hadith_id = filtered.id) as recueils
