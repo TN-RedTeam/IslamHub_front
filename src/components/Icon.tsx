@@ -19,6 +19,10 @@ const PATHS: Record<string, React.ReactNode> = {
   alert: <><path d="M12 3l9 16H3z" /><path d="M12 10v4M12 17h.01" /></>,
   star: <path d="M12 3l2.1 6.3H20l-5 3.9 2 6.3-5-4-5 4 2-6.3-5-3.9h5.9z" />,
   pillars: <path d="M4 9l8-5 8 5M6 9v9M10 9v9M14 9v9M18 9v9M4 21h16" />,
+  // Diamant (facettes de la perfection) — Attributs d'Allah.
+  diamant: <><path d="M6 3h12l3 6-9 12L3 9z" /><path d="M3 9h18M9 3 6 9l6 12M15 3l3 6-6 12" /></>,
+  // Qalam (plume, les noms calligraphiés) — 99 Noms.
+  qalam: <><path d="M5 19l1.2-4.2L16.5 4.5a2 2 0 0 1 2.8 2.8L9 17.6z" /><path d="M14.5 6.5l3 3" /><path d="M5 19l3.2-1.1" /></>,
 };
 
 export type IconName = keyof typeof PATHS;
