@@ -432,14 +432,25 @@ export interface NomAllah {
 // ==========================================
 // Les Attributs d'Allah (aṣ-ṣifāt) — Phase 13.6 (BDD)
 // ==========================================
-/** Une preuve d'un attribut (verset coranique ou hadith), table enfant. */
+/**
+ * Une preuve d'un attribut, table enfant.
+ * - `type = 'verset' | 'hadith'` : preuve en clair (arabe/phonetique/signification/ref).
+ * - `type = 'parole'` : référence une parole existante (`paroles`). Le back-end
+ *   renseigne alors savant/savant_slug/generation/parole_slug et remplit
+ *   arabe/signification/ref depuis la parole — SANS le scan (réservé à /paroles/:slug).
+ */
 export interface AttributCitation {
   id: number;
-  type: 'verset' | 'hadith';
+  type: 'verset' | 'hadith' | 'parole';
   arabe: string | null;
   phonetique: string | null;
   signification: string | null;  // sens FR (affiché en gras)
   ref: string | null;            // ex. « Sourate Al-Baqara, 282 »
+  // Champs renseignés uniquement pour les preuves de type 'parole' :
+  parole_slug?: string | null;   // → /paroles/:slug
+  savant?: string | null;
+  savant_slug?: string | null;   // → /savants/:slug
+  generation?: string | null;    // badge de génération
 }
 export interface Attribut {
   id: number;
