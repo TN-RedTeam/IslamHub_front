@@ -444,6 +444,35 @@ Les images ne vont **pas** en base : seule leur **URL** est stockée
 > Toujours **doubler l'image d'une transcription texte** (arabe + traduction) sur
 > la page et remplir `alt` : une image n'est ni indexée par Google ni accessible.
 
+### Scans d'une **parole** (`parole_images`) — 0..N par parole
+
+Une parole peut avoir **plusieurs** scans (`paroles.image_url`, à colonne unique,
+est **historique** ; la table enfant `parole_images` est la cible). Les scans ne
+vivent **que** sur la parole (`/paroles/:slug`) — sur la page d'un attribut on ne
+montre qu'un extrait court **sans** scan, avec un lien vers la parole.
+
+`parole_images(parole_id, image_url, alt, legende, source_livre, ordre)` — mêmes
+colonnes et **même règle pour `alt`** que `dossier_images` (voir §5.4).
+
+```sql
+-- Rattacher 3 pages scannées à une parole (via son slug).
+insert into public.parole_images (parole_id, image_url, alt, legende, source_livre, ordre)
+select p.id, v.image_url, v.alt, v.legende, v.source_livre, v.ordre
+from public.paroles p,
+  (values
+    ('https://kxzfwtwbghuvnlueusvp.supabase.co/storage/v1/object/public/references/⟨livre-p12⟩.webp',
+     '⟨ce que montre la page 12 : savant, livre, passage cité⟩', '⟨légende⟩', '⟨livre, p. 12⟩', 0),
+    ('https://kxzfwtwbghuvnlueusvp.supabase.co/storage/v1/object/public/references/⟨livre-p13⟩.webp',
+     '⟨ce que montre la page 13⟩', '⟨légende⟩', '⟨livre, p. 13⟩', 1),
+    ('https://kxzfwtwbghuvnlueusvp.supabase.co/storage/v1/object/public/references/⟨livre-p14⟩.webp',
+     '⟨ce que montre la page 14⟩', '⟨légende⟩', '⟨livre, p. 14⟩', 2)
+  ) as v(image_url, alt, legende, source_livre, ordre)
+where p.slug = '⟨slug-de-la-parole⟩';
+```
+
+La page `/paroles/:slug` affiche alors les 3 scans, chacun agrandissable en
+lightbox (fermable Échap). `ordre` fixe l'ordre d'affichage.
+
 ---
 
 ## 9. Sauvegarde

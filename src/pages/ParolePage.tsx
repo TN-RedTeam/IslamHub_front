@@ -3,18 +3,18 @@ import { useParams, Link } from 'react-router-dom';
 import { Loader2, ArrowLeft } from 'lucide-react';
 import { dataService } from '../services/DataService';
 import { Markdown } from '../components/Markdown';
-import { Lightbox } from '../components/Lightbox';
+import { Lightbox, type LightboxImage } from '../components/Lightbox';
 import { BadgeGeneration, honorificFor } from '../components/BadgeGeneration';
 import { EcoleBadge } from '../components/EcoleBadge';
 import { useSeo } from '../hooks/useSeo';
-import type { ParoleDetail } from '../types';
+import type { ParoleDetail, ParoleImage } from '../types';
 
 export const ParolePage: React.FC = () => {
   const { slug = '' } = useParams();
   const [p, setP] = useState<ParoleDetail | null>(null);
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
-  const [zoom, setZoom] = useState(false);
+  const [zoomed, setZoomed] = useState<LightboxImage | null>(null);
 
   useSeo({
     title: p ? (p.sujet || `Parole de ${p.savant}`) : 'Parole',
@@ -45,6 +45,14 @@ export const ParolePage: React.FC = () => {
   }
 
   const reference = [p.source_livre, p.page ? `p. ${p.page}` : ''].filter(Boolean).join(' — ');
+
+  // Scans : la table enfant `parole_images` (0..N) ; repli sur l'ancienne
+  // colonne unique `image_url` si aucune ligne enfant n'existe encore.
+  const scans: ParoleImage[] = p.images && p.images.length
+    ? p.images
+    : p.image_url
+      ? [{ id: 0, image_url: p.image_url, legende: p.source_livre, alt: `Scan du livre${p.source_livre ? ` — ${p.source_livre}` : ''}${p.page ? `, p. ${p.page}` : ''}`, source_livre: p.source_livre, ordre: 0 }]
+      : [];
 
   return (
     <div className="min-h-screen bg-ground">
@@ -98,22 +106,29 @@ export const ParolePage: React.FC = () => {
           </section>
         )}
 
-        {/* Scan du livre */}
-        {p.image_url && (
+        {/* Scans du livre (0..N) */}
+        {scans.length > 0 && (
           <section className="mt-6">
-            <h2 className="font-display font-semibold text-green-deep text-lg mb-2">Scan du livre</h2>
-            <button
-              onClick={() => setZoom(true)}
-              className="block rounded-card border border-line overflow-hidden hover:border-green transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green"
-              aria-label="Agrandir le scan du livre"
-            >
-              <img
-                src={p.image_url}
-                alt={`Scan du livre${p.source_livre ? ` — ${p.source_livre}` : ''}${p.page ? `, p. ${p.page}` : ''}`}
-                loading="lazy"
-                className="max-h-[420px] w-auto object-contain bg-white"
-              />
-            </button>
+            <h2 className="font-display font-semibold text-green-deep text-lg mb-2">
+              {scans.length > 1 ? `Scans du livre (${scans.length})` : 'Scan du livre'}
+            </h2>
+            <div className="flex flex-wrap gap-3">
+              {scans.map((s) => (
+                <button
+                  key={s.id}
+                  onClick={() => setZoomed({ image_url: s.image_url, alt: s.alt, legende: s.legende ?? undefined, source_livre: s.source_livre ?? reference ?? undefined })}
+                  className="block rounded-card border border-line overflow-hidden hover:border-green transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green"
+                  aria-label={`Agrandir : ${s.alt}`}
+                >
+                  <img
+                    src={s.image_url}
+                    alt={s.alt}
+                    loading="lazy"
+                    className="max-h-[300px] w-auto object-contain bg-white"
+                  />
+                </button>
+              ))}
+            </div>
           </section>
         )}
 
@@ -124,10 +139,7 @@ export const ParolePage: React.FC = () => {
         </div>
       </main>
 
-      <Lightbox
-        image={zoom && p.image_url ? { image_url: p.image_url, alt: `Scan — ${p.source_livre || p.sujet || p.savant}`, legende: p.source_livre, source_livre: reference || null } : null}
-        onClose={() => setZoom(false)}
-      />
+      <Lightbox image={zoomed} onClose={() => setZoomed(null)} />
     </div>
   );
 };

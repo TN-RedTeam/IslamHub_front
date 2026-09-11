@@ -55,7 +55,17 @@ export interface Parole extends BaseText {
   ecole?: string | null; // école du savant (dénormalisée) : Hanafi, Malikite...
 }
 
-/** Fiche parole complète (page /paroles/:slug) : parole + savant + référence + scan. */
+/** Un scan de livre rattaché à une parole (table `parole_images`). */
+export interface ParoleImage {
+  id: number;
+  image_url: string;
+  legende: string | null;
+  alt: string;
+  source_livre: string | null;
+  ordre: number;
+}
+
+/** Fiche parole complète (page /paroles/:slug) : parole + savant + référence + scans. */
 export interface ParoleDetail {
   id: number;
   slug: string;
@@ -66,11 +76,12 @@ export interface ParoleDetail {
   explication: string | null;
   source_livre: string | null;
   page: string | null;
-  image_url: string | null;      // scan du livre
+  image_url: string | null;      // scan unique historique (compat ; préférer `images`)
   ecole: string | null;
   savant: string | null;
   savant_slug: string | null;    // → /savants/:slug
   generation: string | null;     // badge de génération
+  images: ParoleImage[];         // 0..N scans du livre
 }
 
 /** Alias historique — `Parole` est le nom canonique. */
