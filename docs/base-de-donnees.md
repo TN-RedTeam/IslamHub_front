@@ -76,8 +76,9 @@ Projet Supabase : `kxzfwtwbghuvnlueusvp`. Tout se fait dans **Supabase → SQL E
 ## 4. Tables annexes + liaisons
 
 **Référentiels** : `savants(id, nom, nom_arabe, naissance, deces, resume, domaines[], biographie, ecole_id, slug, generation, generation_a_verifier, resume_auto)`,
-`ecoles(id, nom, slug)`, `statuts(id, nom)`, `narrateurs(id, nom, generation)`, `recueils(id, nom)`,
-`tags(id, nom, slug)`. *(Voir §10 pour le détail des colonnes techniques.)*
+`ecoles(id, nom, slug)`, `statuts(id, nom)`, `narrateurs(id, nom, generation)`,
+`recueils(id, nom, titre, savant_id)`, `tags(id, nom, slug)`.
+*(Voir §10 pour le détail des colonnes techniques.)*
 
 **Liaisons hadith → plusieurs valeurs** :
 - `hadith_rapporteurs(hadith_id, savant_id)` — qui rapporte (relié aux `savants`).
@@ -444,6 +445,36 @@ Les images ne vont **pas** en base : seule leur **URL** est stockée
 > Toujours **doubler l'image d'une transcription texte** (arabe + traduction) sur
 > la page et remplir `alt` : une image n'est ni indexée par Google ni accessible.
 
+### Scans d'une **parole** (`parole_images`) — 0..N par parole
+
+Une parole peut avoir **plusieurs** scans. Il n'y a **pas** de colonne image sur
+`paroles` : les scans passent **uniquement** par la table enfant `parole_images`
+(0..N par parole). Ils ne vivent **que** sur la parole (`/paroles/:slug`) — sur
+la page d'un attribut on ne montre qu'un extrait court **sans** scan, avec un
+lien vers la parole.
+
+`parole_images(parole_id, image_url, alt, legende, source_livre, ordre)` — mêmes
+colonnes et **même règle pour `alt`** que `dossier_images` (voir §5.4).
+
+```sql
+-- Rattacher 3 pages scannées à une parole (via son slug).
+insert into public.parole_images (parole_id, image_url, alt, legende, source_livre, ordre)
+select p.id, v.image_url, v.alt, v.legende, v.source_livre, v.ordre
+from public.paroles p,
+  (values
+    ('https://kxzfwtwbghuvnlueusvp.supabase.co/storage/v1/object/public/references/⟨livre-p12⟩.webp',
+     '⟨ce que montre la page 12 : savant, livre, passage cité⟩', '⟨légende⟩', '⟨livre, p. 12⟩', 0),
+    ('https://kxzfwtwbghuvnlueusvp.supabase.co/storage/v1/object/public/references/⟨livre-p13⟩.webp',
+     '⟨ce que montre la page 13⟩', '⟨légende⟩', '⟨livre, p. 13⟩', 1),
+    ('https://kxzfwtwbghuvnlueusvp.supabase.co/storage/v1/object/public/references/⟨livre-p14⟩.webp',
+     '⟨ce que montre la page 14⟩', '⟨légende⟩', '⟨livre, p. 14⟩', 2)
+  ) as v(image_url, alt, legende, source_livre, ordre)
+where p.slug = '⟨slug-de-la-parole⟩';
+```
+
+La page `/paroles/:slug` affiche alors les 3 scans, chacun agrandissable en
+lightbox (fermable Échap). `ordre` fixe l'ordre d'affichage.
+
 ---
 
 ## 9. Sauvegarde
@@ -487,10 +518,57 @@ Avant toute grosse modification : voir la section « backup » — un `pg_dump`
 
 ### Tables : `recueils`, `tags`, `tag`
 
-- **`recueils`** *(20 lignes — utile)* — la **liste des recueils de hadiths**
-  (Al-Bukhârî, Muslim, At-Tirmidhî…). Reliée aux hadiths via
-  `hadith_sources(hadith_id, recueil_id, numero, chapitre)` pour afficher
-  « Rapporté par … (n°…) ».
+- **`recueils`** *(utile)* — un **ouvrage** (un livre = une ligne), relié à son
+  **auteur**. Colonnes :
+  - **`titre`** — l'**identité du livre** (ex. « Sahih al-Bukhari »). **C'est lui
+    qui s'affiche** comme source sur la fiche hadith.
+  - **`titre_arabe`** *(optionnel)* — le titre en arabe.
+  - **`savant_id`** *(FK → `savants`)* — l'**auteur** de l'ouvrage. Le nom de
+    l'auteur vient du join, il n'est **pas** stocké dans `recueils`.
+  - **`slug`** *(unique)* — id d'URL (future page d'ouvrage).
+  - **`type`** — `'recueil'` (original) · `'sharh'` (commentaire) · `'hashiya'`
+    (glose). Défaut `'recueil'`.
+  - **`commente_recueil_id`** *(FK → `recueils.id`, nullable)* — pour un
+    `sharh`/`hashiya` : l'**ouvrage commenté**. L'auteur de l'original se déduit
+    par `commente_recueil_id → recueils → savant_id`.
+
+  > L'ancienne colonne `nom` (nom d'auteur) a été **supprimée** : le nom de
+  > l'auteur vient du join `savant_id → savants.nom`, il n'est plus stocké ici.
+
+  Un même auteur peut avoir **plusieurs livres = plusieurs lignes**. Certains
+  `titre` sont **provisoires** (auteurs à plusieurs ouvrages : Al-Bayhaqî,
+  At-Tabarânî, Ibn Hajar, As-Sakhâwî, Ibn al-Jawzî, As-Souyoutî, Al-Qourtoubî) ;
+  **Aboû l-Qâçim al-Ansârî** porte encore un **titre placeholder** (= son nom) à
+  remplacer par le vrai ouvrage. Reliée aux hadiths via
+  `hadith_sources(hadith_id, recueil_id, numero, chapitre)` — un hadith pointe
+  vers un ouvrage + son `numero`.
+
+  ```sql
+  -- Corriger / renseigner le titre d'un ouvrage
+  update public.recueils set titre = 'Al-Asma'' wa s-Sifat', slug = 'al-asma-wa-s-sifat'
+  where slug = 'as-sounan-al-koubra';   -- (ou l'ouvrage voulu)
+
+  -- Ajouter un SECOND livre d'un auteur (nouvelle ligne, même savant_id)
+  insert into public.recueils (slug, titre, savant_id)
+  select 'shou-ab-al-iman', 'Shou''ab al-Iman', s.id
+  from public.savants s where s.slug = 'al-bayhaqi';
+
+  -- Un COMMENTAIRE (sharḥ) = un ouvrage à part entière qui en commente un autre
+  insert into public.recueils (slug, titre, savant_id, type, commente_recueil_id)
+  select 'at-tawshih', 'At-Tawshīḥ', s.id, 'sharh', r.id
+  from public.savants s, public.recueils r
+  where s.slug = 'imam-as-souyoutiyy' and r.titre = 'Sahih al-Bukhari';
+  -- Affichage : « At-Tawshīḥ — commentaire de Sahih al-Bukhari (par Imam As-Souyoutiyy) »
+
+  -- Relier un hadith à un ouvrage précis + son numéro
+  insert into public.hadith_sources (hadith_id, recueil_id, numero)
+  select :HID, r.id, '2517' from public.recueils r where r.slug = 'sahih-al-bukhari';
+  ```
+
+  > Le libellé de source est construit par la fonction `recueil_label(recueil_id,
+  > numero)` (titre + éventuel titre arabe + clause de commentaire + n°), utilisée
+  > par `get_hadith` et `get_dossier`. Le `numero` de `hadith_sources` est encore
+  > vide partout : renseigne-le pour afficher « … (n° 2517) ».
 - **`tags`** *(pluriel — 87 lignes — utile)* — le **référentiel normalisé des
   mots-clés** (`id, nom, slug`), relié aux hadiths par `hadith_tags`. C'est la
   version « propre » et réutilisable des tags (une ligne par tag, avec slug).
