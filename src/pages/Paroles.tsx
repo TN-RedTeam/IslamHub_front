@@ -1,21 +1,27 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { m, AnimatePresence } from 'framer-motion';
-import { Link, useSearchParams } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { Search, X, Star, ChevronRight, Loader, GraduationCap as SavantIcon, Users } from 'lucide-react';
 import { dataService } from '../services/DataService';
 import { FilterSelect } from '../components/FilterSelect';
-import { Markdown } from '../components/Markdown';
 import { EcoleBadge } from '../components/EcoleBadge';
 import { SavantHover } from '../components/SavantHover';
 import { PageHeader } from '../components/PageHeader';
 import type { Parole } from '../types';
 import { IconBadge } from '../components/Icon';
 
-const ParoleCard: React.FC<{ parole: Parole; onClick: () => void }> = ({ parole, onClick }) => (
+const ParoleCard: React.FC<{ parole: Parole }> = ({ parole }) => {
+  const navigate = useNavigate();
+  const go = () => { if (parole.slug) navigate(`/paroles/${parole.slug}`); };
+  return (
     <m.div
         whileHover={{ scale: 1.01 }}
-        onClick={onClick}
-        className="relative bg-ivory rounded-card p-6 shadow-card border border-line space-y-4 overflow-hidden cursor-pointer h-full flex flex-col"
+        onClick={go}
+        role="link"
+        tabIndex={0}
+        aria-label={`Parole : ${parole.sujet || parole.savant}`}
+        onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(); } }}
+        className="relative bg-ivory rounded-card p-6 shadow-card border border-line space-y-4 overflow-hidden cursor-pointer h-full flex flex-col focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green"
     >
       <div className="absolute top-0 right-0 w-24 h-24 opacity-20">
         <svg viewBox="0 0 100 100" className="text-gold">
@@ -35,7 +41,7 @@ const ParoleCard: React.FC<{ parole: Parole; onClick: () => void }> = ({ parole,
       {(parole.savant || parole.ecole) && (
           <div className="flex items-center justify-between gap-2 flex-wrap">
             {parole.savant && (
-                <span className="text-sm text-green italic">
+                <span className="text-sm text-green italic" onClick={(e) => e.stopPropagation()}>
                   Savant : <SavantHover nom={parole.savant} />
                 </span>
             )}
@@ -75,85 +81,6 @@ const ParoleCard: React.FC<{ parole: Parole; onClick: () => void }> = ({ parole,
         </button>
       </div>
     </m.div>
-);
-
-const ParoleModal: React.FC<{ parole: Parole | null; onClose: () => void }> = ({ parole, onClose }) => {
-  if (!parole) return null;
-  return (
-      <m.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4"
-          onClick={onClose}
-      >
-        <m.div
-            initial={{ scale: 0.9, y: 50 }}
-            animate={{ scale: 1, y: 0 }}
-            onClick={(e) => e.stopPropagation()}
-            className="bg-white dark:bg-gray-800 rounded-card p-8 max-w-4xl w-full max-h-[90vh] overflow-y-auto relative"
-        >
-          <button
-              onClick={onClose}
-              aria-label="Fermer"
-              className="absolute top-4 right-4 p-2 text-gray-500 hover:text-gray-700 dark:hover:text-gray-300"
-          >
-            <X className="h-6 w-6" />
-          </button>
-
-          <div className="space-y-6">
-            <div>
-              <h2 className="text-2xl font-bold text-green-deep font-display">
-                {parole.sujet}
-              </h2>
-              {parole.savant && (
-                  <p className="text-green mt-1">
-                    Savant : <SavantHover nom={parole.savant} />
-                  </p>
-              )}
-              {parole.ecole && <div className="mt-2"><EcoleBadge ecole={parole.ecole} /></div>}
-            </div>
-
-            <div className="bg-green-soft dark:bg-gray-700 p-6 rounded-lg">
-              <p className="text-3xl text-gray-900 dark:text-white font-arabic leading-loose text-right whitespace-pre-wrap">
-                {parole.texte_arabe}
-              </p>
-
-              {parole['phonétique'] && (
-                  <div className="mt-6 bg-white dark:bg-gray-600 p-4 rounded">
-                    <p className="text-sm text-green-deep mb-2">Phonétique :</p>
-                    <p className="text-gray-700 dark:text-gray-200 whitespace-pre-wrap [unicode-bidi:plaintext]">{parole['phonétique']}</p>
-                  </div>
-              )}
-
-              {parole.texte_francais && (
-                  <div className="mt-6 pl-4 border-l-4 border-green">
-                    <p className="text-sm text-green mb-2">Traduction :</p>
-                    <Markdown className="[unicode-bidi:plaintext]">{parole.texte_francais}</Markdown>
-                  </div>
-              )}
-            </div>
-
-            {parole.explication && (
-                <div className="mt-6 bg-green-soft p-6 rounded-lg">
-                  <p className="text-lg font-bold text-green-deep mb-3">Explication :</p>
-                  <Markdown>{parole.explication}</Markdown>
-                </div>
-            )}
-
-            <div className="flex flex-wrap gap-2">
-              {(parole.tag || '').split(',').filter(Boolean).map(tag => (
-                  <span
-                      key={tag.trim()}
-                      className="text-xs bg-green-soft text-green-deep px-3 py-1 rounded-full"
-                  >
-                    {tag.trim()}
-                  </span>
-              ))}
-            </div>
-          </div>
-        </m.div>
-      </m.div>
   );
 };
 
@@ -177,7 +104,6 @@ export const Paroles: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [selected, setSelected] = useState<Parole | null>(null);
 
   const [searchParams] = useSearchParams();
   const loadMoreRef = useRef<HTMLDivElement>(null);
@@ -374,7 +300,7 @@ export const Paroles: React.FC = () => {
                         <m.div key={parole.id}
                             initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: Math.min(index % ITEMS_PER_PAGE, 10) * 0.05 }} layout>
-                          <ParoleCard parole={parole} onClick={() => setSelected(parole)} />
+                          <ParoleCard parole={parole} />
                         </m.div>
                     ))}
                   </AnimatePresence>
@@ -393,11 +319,6 @@ export const Paroles: React.FC = () => {
             )}
           </section>
         </main>
-
-
-        <AnimatePresence>
-          {selected && <ParoleModal parole={selected} onClose={() => setSelected(null)} />}
-        </AnimatePresence>
       </div>
   );
 };

@@ -12,6 +12,7 @@ import type {
   Attribut,
   Expose,
   Parole,
+  ParoleDetail,
   Multimedia,
   MultimediaCategory,
   FiqhChapitre,
@@ -264,6 +265,12 @@ class DataService {
   }
   async getParoleNames(): Promise<string[]> {
     return rpcTags('names_paroles');
+  }
+  /** Fiche parole complète (page /paroles/:slug). */
+  async getParole(slug: string): Promise<ParoleDetail | null> {
+    const { data, error } = await supabase.rpc('get_parole', { p_slug: slug });
+    if (error) throw error;
+    return (data ?? null) as ParoleDetail | null;
   }
 
   // ===== Sujets (liste des sujets distincts, pour le menu déroulant) =====

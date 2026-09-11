@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Loader } from 'lucide-react';
+import { Loader, ArrowRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { PageHeader } from '../../components/PageHeader';
+import { BadgeGeneration } from '../../components/BadgeGeneration';
 import { dataService } from '../../services/DataService';
 import { usePageTitle } from '../../hooks/usePageTitle';
 import type { Attribut, AttributCitation } from '../../types';
@@ -12,20 +14,51 @@ import type { Attribut, AttributCitation } from '../../types';
  * Table des matières ancrée en haut + une section par attribut ; corps en romain.
  */
 
-// Bloc de preuve : tag (Coran/Hadith) → arabe → phonétique → signification (gras) → réf.
-const Preuve: React.FC<{ c: AttributCitation }> = ({ c }) => (
-  <figure className="rounded-xl border border-line bg-surface p-4 mt-3">
-    <span className={`inline-block text-[11px] font-semibold uppercase tracking-[0.08em] px-2 py-0.5 rounded-full mb-2 ${
-      c.type === 'hadith' ? 'bg-gold-soft text-[#7a5a17] border border-[#e6d3a3]' : 'bg-green-soft text-green-deep border border-green-line'
-    }`}>
-      {c.type === 'hadith' ? 'Hadith' : 'Coran'}
-    </span>
-    {c.arabe && <p className="font-arabic text-2xl leading-loose text-right text-ink whitespace-pre-wrap" dir="rtl" lang="ar">{c.arabe}</p>}
-    {c.phonetique && <p className="text-sm text-muted italic mt-2 [unicode-bidi:plaintext]">{c.phonetique}</p>}
-    {c.signification && <p className="text-ink font-bold mt-2 [unicode-bidi:plaintext]">{c.signification}</p>}
-    {c.ref && <figcaption className="text-xs uppercase tracking-wide text-gold font-semibold mt-2">{c.ref}</figcaption>}
-  </figure>
-);
+// Bloc de preuve. Deux rendus :
+//  • verset/hadith → preuve en clair : tag → arabe → phonétique → signification (gras) → réf.
+//  • parole        → extrait court référencé depuis `paroles` : savant (lien) + badge +
+//                    citation courte + référence, SANS le scan, avec un lien vers la
+//                    page de parole complète (/paroles/:slug) qui, elle, porte le scan.
+const Preuve: React.FC<{ c: AttributCitation }> = ({ c }) => {
+  if (c.type === 'parole') {
+    return (
+      <figure className="rounded-xl border border-line bg-surface p-4 mt-3">
+        <div className="flex items-center gap-2 flex-wrap mb-2">
+          <span className="inline-block text-[11px] font-semibold uppercase tracking-[0.08em] px-2 py-0.5 rounded-full bg-green-soft text-green-deep border border-green-line">
+            Parole de savant
+          </span>
+          {c.savant && (c.savant_slug ? (
+            <Link to={`/savants/${c.savant_slug}`} className="font-display font-semibold text-green-deep hover:underline">{c.savant}</Link>
+          ) : (
+            <span className="font-display font-semibold text-green-deep">{c.savant}</span>
+          ))}
+          <BadgeGeneration generation={c.generation ?? null} />
+        </div>
+        {c.arabe && <p className="font-arabic text-2xl leading-loose text-right text-ink whitespace-pre-wrap line-clamp-3" dir="rtl" lang="ar">{c.arabe}</p>}
+        {c.signification && <p className="text-ink mt-2 line-clamp-3 [unicode-bidi:plaintext]">{c.signification}</p>}
+        {c.ref && <figcaption className="text-xs uppercase tracking-wide text-gold font-semibold mt-2">{c.ref}</figcaption>}
+        {c.parole_slug && (
+          <Link to={`/paroles/${c.parole_slug}`} className="inline-flex items-center gap-1.5 mt-3 text-green font-medium hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green rounded">
+            Voir la parole complète et le scan <ArrowRight className="w-4 h-4" />
+          </Link>
+        )}
+      </figure>
+    );
+  }
+  return (
+    <figure className="rounded-xl border border-line bg-surface p-4 mt-3">
+      <span className={`inline-block text-[11px] font-semibold uppercase tracking-[0.08em] px-2 py-0.5 rounded-full mb-2 ${
+        c.type === 'hadith' ? 'bg-gold-soft text-[#7a5a17] border border-[#e6d3a3]' : 'bg-green-soft text-green-deep border border-green-line'
+      }`}>
+        {c.type === 'hadith' ? 'Hadith' : 'Coran'}
+      </span>
+      {c.arabe && <p className="font-arabic text-2xl leading-loose text-right text-ink whitespace-pre-wrap" dir="rtl" lang="ar">{c.arabe}</p>}
+      {c.phonetique && <p className="text-sm text-muted italic mt-2 [unicode-bidi:plaintext]">{c.phonetique}</p>}
+      {c.signification && <p className="text-ink font-bold mt-2 [unicode-bidi:plaintext]">{c.signification}</p>}
+      {c.ref && <figcaption className="text-xs uppercase tracking-wide text-gold font-semibold mt-2">{c.ref}</figcaption>}
+    </figure>
+  );
+};
 
 // Défilement en douceur vers un attribut (ancre interne). On NE change pas le
 // hash de l'URL : sous HashRouter, `href="#..."` serait interprété comme une

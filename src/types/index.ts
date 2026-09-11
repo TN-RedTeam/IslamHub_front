@@ -51,7 +51,26 @@ export interface Invocation extends BaseText {
 /** Parole de savant (table `paroles`) */
 export interface Parole extends BaseText {
   savant: string;
+  slug?: string | null;  // segment d'URL de la page /paroles/:slug
   ecole?: string | null; // école du savant (dénormalisée) : Hanafi, Malikite...
+}
+
+/** Fiche parole complète (page /paroles/:slug) : parole + savant + référence + scan. */
+export interface ParoleDetail {
+  id: number;
+  slug: string;
+  sujet: string | null;
+  texte_arabe: string | null;
+  texte_francais: string | null;
+  phonetique: string | null;
+  explication: string | null;
+  source_livre: string | null;
+  page: string | null;
+  image_url: string | null;      // scan du livre
+  ecole: string | null;
+  savant: string | null;
+  savant_slug: string | null;    // → /savants/:slug
+  generation: string | null;     // badge de génération
 }
 
 /** Alias historique — `Parole` est le nom canonique. */
@@ -413,14 +432,25 @@ export interface NomAllah {
 // ==========================================
 // Les Attributs d'Allah (aṣ-ṣifāt) — Phase 13.6 (BDD)
 // ==========================================
-/** Une preuve d'un attribut (verset coranique ou hadith), table enfant. */
+/**
+ * Une preuve d'un attribut, table enfant.
+ * - `type = 'verset' | 'hadith'` : preuve en clair (arabe/phonetique/signification/ref).
+ * - `type = 'parole'` : référence une parole existante (`paroles`). Le back-end
+ *   renseigne alors savant/savant_slug/generation/parole_slug et remplit
+ *   arabe/signification/ref depuis la parole — SANS le scan (réservé à /paroles/:slug).
+ */
 export interface AttributCitation {
   id: number;
-  type: 'verset' | 'hadith';
+  type: 'verset' | 'hadith' | 'parole';
   arabe: string | null;
   phonetique: string | null;
   signification: string | null;  // sens FR (affiché en gras)
   ref: string | null;            // ex. « Sourate Al-Baqara, 282 »
+  // Champs renseignés uniquement pour les preuves de type 'parole' :
+  parole_slug?: string | null;   // → /paroles/:slug
+  savant?: string | null;
+  savant_slug?: string | null;   // → /savants/:slug
+  generation?: string | null;    // badge de génération
 }
 export interface Attribut {
   id: number;
