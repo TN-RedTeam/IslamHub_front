@@ -90,7 +90,7 @@ export const HadithPage: React.FC = () => {
           {hadith.narrateur && (
             <p className="text-muted mt-2 text-sm flex items-center gap-2 flex-wrap">
               Narrateur : {hadith.narrateur}
-              <BadgeGeneration generation={hadith.narrateur_generation} withHonorific />
+              <BadgeGeneration generation={hadith.narrateur_generation} role={hadith.narrateur_role} sexe={hadith.narrateur_sexe} withHonorific />
             </p>
           )}
           {hadith.sources && hadith.sources.length > 0 && (

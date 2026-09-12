@@ -76,7 +76,7 @@ Projet Supabase : `kxzfwtwbghuvnlueusvp`. Tout se fait dans **Supabase → SQL E
 ## 4. Tables annexes + liaisons
 
 **Référentiels** : `savants(id, nom, nom_arabe, naissance, deces, resume, domaines[], biographie, ecole_id, slug, generation, generation_a_verifier, resume_auto)`,
-`ecoles(id, nom, slug)`, `statuts(id, nom)`, `narrateurs(id, nom, generation)`,
+`ecoles(id, nom, slug)`, `statuts(id, nom)`, `narrateurs(id, nom, generation, role, sexe)`,
 `recueils(id, nom, titre, savant_id)`, `tags(id, nom, slug)`.
 *(Voir §10 pour le détail des colonnes techniques.)*
 
@@ -515,6 +515,18 @@ Avant toute grosse modification : voir la section « backup » — un `pg_dump`
 - **`paroles.search_fr`** *(tsvector)* — **index de recherche plein-texte
   français**, rempli **automatiquement** par un trigger. Utilisé par la fonction
   `search_paroles`. **Ne jamais l'écrire à la main.** (idem `hadiths.search_fr`)
+
+- **`narrateurs.role`** *(texte, optionnel)* — rôle distinctif d'un narrateur, qui
+  affiche un **badge à part** (au lieu du simple « Compagnon ») :
+  `'epouse_prophete'` → badge **« Épouse du Prophète »** (or plein),
+  `'calife_rachidoun'` → badge **« Calife bien-guidé »** (vert plein).
+  Déjà renseigné : les épouses (ʿAichah + ids 31–39) et les califes présents
+  (Omar, Ali). Ajoute Aboû Bakr / ʿUthmân avec `role='calife_rachidoun'` si tu
+  les crées.
+- **`narrateurs.sexe`** *(`f` | `m`, optionnel)* — décline l'**honorifique** au bon
+  genre : femme → `رضي الله عنها`, homme → `رضي الله عنه`. Mis à `f` pour les
+  épouses. (L'honorifique n'apparaît pas dans la fenêtre modale, seulement sur la
+  page dédiée.)
 
 ### Tables : `recueils`, `tags`, `tag`
 

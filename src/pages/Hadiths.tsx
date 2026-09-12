@@ -51,7 +51,7 @@ const HadithCard: React.FC<{ hadith: Hadith; onClick: () => void }> = ({ hadith,
             {hadith.narrateur && (
                 <div className="flex items-center gap-2 flex-wrap">
                   <span className="text-green italic"><span className="text-muted not-italic">Narrateur :</span> {hadith.narrateur}</span>
-                  <BadgeGeneration generation={hadith.narrateur_generation} className="shrink-0" />
+                  <BadgeGeneration generation={hadith.narrateur_generation} role={hadith.narrateur_role} sexe={hadith.narrateur_sexe} className="shrink-0" />
                 </div>
             )}
             {(hadith.sources && hadith.sources.length > 0) ? (
@@ -133,7 +133,7 @@ const HadithModal: React.FC<{ hadith: Hadith; onClose: () => void }> = ({ hadith
               {hadith.narrateur && (
                   <p className="text-gray-600 dark:text-gray-400 mt-1 flex items-center gap-2 flex-wrap">
                     Narrateur : {hadith.narrateur}
-                    <BadgeGeneration generation={hadith.narrateur_generation} withHonorific />
+                    <BadgeGeneration generation={hadith.narrateur_generation} role={hadith.narrateur_role} />
                   </p>
               )}
             </div>

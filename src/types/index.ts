@@ -31,6 +31,8 @@ export interface Hadith extends BaseText {
   narrateur: string | null;
   statut: string | null;
   narrateur_generation?: string | null; // génération du narrateur (Phase 12.6, option 1)
+  narrateur_role?: string | null;        // epouse_prophete | calife_rachidoun (badge distinct)
+  narrateur_sexe?: string | null;        // f | m (honorifique au bon genre)
   recueils?: string | null;              // libellé de source condensé (repli)
   sources?: HadithSource[];              // source structurée (groupée par rapporteur)
 }
@@ -159,6 +161,8 @@ export interface HadithDetail {
   rapporteur: string | null;
   narrateur: string | null;
   narrateur_generation?: string | null;
+  narrateur_role?: string | null;   // epouse_prophete | calife_rachidoun
+  narrateur_sexe?: string | null;   // f | m
   tag: string | null;
   recueils: string | null;
   sources?: HadithSource[];   // source structurée (groupée par rapporteur)
