@@ -172,3 +172,13 @@ alter table public.recueils alter column titre set not null;
 --   « {auteur} dans {t1}, {t2} et {t3}, {autre auteur} dans {t} ».
 -- get_hadith / search_hadiths / get_dossier l'appellent. recueil_label(bigint)
 -- (par ligne) est supprimée.
+
+-- ─────────────────────────────────────────────────────────────────────────
+-- SUIVI — annulation du retrait : numero/chapitre restaurés (optionnels)
+-- ─────────────────────────────────────────────────────────────────────────
+-- On remet numero et chapitre (nullable) et on restaure les valeurs depuis
+-- backup.hadith_sources_before_drop. recueils_for_hadith ajoute « (chapitre,
+-- n° X) » APRÈS chaque titre, uniquement si renseigné, tout en gardant le
+-- regroupement par auteur.
+--   alter table public.hadith_sources add column numero text, add column chapitre text;
+--   update ... from backup.hadith_sources_before_drop ...;

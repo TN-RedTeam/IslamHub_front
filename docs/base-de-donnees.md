@@ -83,7 +83,8 @@ Projet Supabase : `kxzfwtwbghuvnlueusvp`. Tout se fait dans **Supabase → SQL E
 **Liaisons hadith → plusieurs valeurs** :
 - `hadith_rapporteurs(hadith_id, savant_id)` — qui rapporte (relié aux `savants`).
 - `hadith_narrateurs(hadith_id, narrateur_id)` — le(s) narrateur(s) (Compagnons).
-- `hadith_sources(hadith_id, recueil_id)` — relie un hadith à ses ouvrages (recueils).
+- `hadith_sources(hadith_id, recueil_id, numero, chapitre)` — relie un hadith à ses
+  ouvrages (recueils) ; `numero` et `chapitre` sont **optionnels** (affichés seulement s'ils sont renseignés).
 - `hadith_tags(hadith_id, tag_id)` — tags normalisés.
 
 ### Recette : ajouter un hadith avec plusieurs rapporteurs / narrateurs / tags
@@ -539,9 +540,9 @@ Avant toute grosse modification : voir la section « backup » — un `pg_dump`
   At-Tabarânî, Ibn Hajar, As-Sakhâwî, Ibn al-Jawzî, As-Souyoutî, Al-Qourtoubî) ;
   **Aboû l-Qâçim al-Ansârî** porte encore un **titre placeholder** (= son nom) à
   remplacer par le vrai ouvrage. Reliée aux hadiths via
-  `hadith_sources(hadith_id, recueil_id)` — un hadith pointe vers un ou plusieurs
-  ouvrages (le n° et le chapitre ont été retirés : la source affichée est
-  simplement « {auteur} dans {titre} »).
+  `hadith_sources(hadith_id, recueil_id, numero, chapitre)` — un hadith pointe vers
+  un ou plusieurs ouvrages ; `numero` et `chapitre` sont **optionnels** et
+  n'apparaissent dans la source que s'ils sont renseignés.
 
   ```sql
   -- Corriger / renseigner le titre d'un ouvrage
@@ -567,9 +568,17 @@ Avant toute grosse modification : voir la section « backup » — un `pg_dump`
 
   > La source est construite par `recueils_for_hadith(hadith_id)`, **groupée par
   > auteur** : le rapporteur n'apparaît qu'une fois, ses ouvrages joints par « et »
-  > (ex. « Al-Bayhaqi dans Al-Asma' wa as-Sifat et Al-Da'awat al-Kabir »). Utilisée
-  > par `get_hadith`, `search_hadiths` et `get_dossier` ; l'auteur vient du join
-  > `savant_id → savants`.
+  > (ex. « Al-Bayhaqi dans Al-Asma' wa as-Sifat et Al-Da'awat al-Kabir »). Le
+  > chapitre et le n° (colonnes de `hadith_sources`) sont ajoutés entre parenthèses
+  > **seulement s'ils sont renseignés** (ex. « … (Kitab Bad' al-Khalq, n° 3191) »).
+  > Utilisée par `get_hadith`, `search_hadiths` et `get_dossier` ; l'auteur vient du
+  > join `savant_id → savants`.
+
+  ```sql
+  -- (optionnel) préciser le n° et/ou le chapitre d'une source
+  update public.hadith_sources set numero = '3191', chapitre = 'Kitab Bad'' al-Khalq'
+  where hadith_id = :HID and recueil_id = (select id from public.recueils where slug = 'sahih-al-bukhari');
+  ```
 - **`tags`** *(pluriel — 87 lignes — utile)* — le **référentiel normalisé des
   mots-clés** (`id, nom, slug`), relié aux hadiths par `hadith_tags`. C'est la
   version « propre » et réutilisable des tags (une ligne par tag, avec slug).
