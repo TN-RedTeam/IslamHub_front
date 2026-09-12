@@ -572,7 +572,10 @@ Avant toute grosse modification : voir la section « backup » — un `pg_dump`
   > chapitre et le n° (colonnes de `hadith_sources`) sont ajoutés entre parenthèses
   > **seulement s'ils sont renseignés** (ex. « … (Kitab Bad' al-Khalq, n° 3191) »).
   > Utilisée par `get_hadith`, `search_hadiths` et `get_dossier` ; l'auteur vient du
-  > join `savant_id → savants`.
+  > join `savant_id → savants`. **Les rapporteurs sont ordonnés par année de décès
+  > croissante** (`savants.deces`, ex. « 256 H ») — donc le maître avant l'élève
+  > (Malik 179 → Ahmad 241 → Al-Bukhari 256 → Muslim 261). Pour changer l'ordre,
+  > corrige la date de décès du savant ; ceux sans date passent en dernier.
 
   ```sql
   -- (optionnel) préciser le n° et/ou le chapitre d'une source

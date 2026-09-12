@@ -190,3 +190,11 @@ alter table public.recueils alter column titre set not null;
 -- rapporteur : [ { savant, savant_slug, livres:[ {titre, reference} ] } ].
 -- get_hadith / search_hadiths renvoient ce tableau dans `sources` (en plus de
 -- la chaîne `recueils`). Le front le met en forme (composant HadithSources).
+
+-- ─────────────────────────────────────────────────────────────────────────
+-- SUIVI — ordre des rapporteurs par année de décès (maître → élève)
+-- ─────────────────────────────────────────────────────────────────────────
+-- Dates de décès (H) renseignées pour les grands rapporteurs ; recueils_for_hadith
+-- et recueils_json_for_hadith trient les rapporteurs par savants.deces croissant
+-- (année extraite via regexp), nulls last, puis recueil_id. Corriger l'ordre =
+-- corriger la date de décès du savant.
