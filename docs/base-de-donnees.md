@@ -525,8 +525,8 @@ Avant toute grosse modification : voir la section « backup » — un `pg_dump`
   les crées.
 - **`narrateurs.sexe`** *(`f` | `m`, optionnel)* — décline l'**honorifique** au bon
   genre : femme → `رضي الله عنها`, homme → `رضي الله عنه`. Mis à `f` pour les
-  épouses. (L'honorifique n'apparaît pas dans la fenêtre modale, seulement sur la
-  page dédiée.)
+  épouses. (La valeur brute `f`/`m` n'est jamais affichée : elle ne sert qu'à
+  choisir l'honorifique.)
 
 ### Tables : `recueils`, `tags`, `tag`
 

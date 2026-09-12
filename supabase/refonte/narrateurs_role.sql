@@ -20,4 +20,4 @@ update public.narrateurs set role = 'calife_rachidoun', sexe = 'm' where id in (
 
 -- get_hadith / search_hadiths renvoient narrateur_role + narrateur_sexe (en plus
 -- de narrateur_generation) ; le composant BadgeGeneration en déduit le badge et
--- l'honorifique (au bon genre ; honorifique masqué dans la modale).
+-- l'honorifique (au bon genre).
