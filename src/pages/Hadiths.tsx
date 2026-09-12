@@ -7,6 +7,7 @@ import { FilterSelect } from '../components/FilterSelect';
 import { PageHeader } from '../components/PageHeader';
 import { Markdown } from '../components/Markdown';
 import { BadgeGeneration } from '../components/BadgeGeneration';
+import { HadithSources } from '../components/HadithSources';
 import { slugify } from '../utils/slug';
 import type { Hadith as HadithType } from '../types';
 import { IconBadge } from '../components/Icon';
@@ -50,15 +51,14 @@ const HadithCard: React.FC<{ hadith: Hadith; onClick: () => void }> = ({ hadith,
             {hadith.narrateur && (
                 <div className="flex items-center gap-2 flex-wrap">
                   <span className="text-green italic"><span className="text-muted not-italic">Narrateur :</span> {hadith.narrateur}</span>
-                  <BadgeGeneration generation={hadith.narrateur_generation} className="shrink-0" />
+                  <BadgeGeneration generation={hadith.narrateur_generation} role={hadith.narrateur_role} sexe={hadith.narrateur_sexe} className="shrink-0" />
                 </div>
             )}
-            {hadith.rapporteur && (
+            {(hadith.sources && hadith.sources.length > 0) ? (
+                <div className="text-muted italic">Rapporté par : <HadithSources sources={hadith.sources} compact /></div>
+            ) : hadith.rapporteur ? (
                 <div className="text-muted italic">Rapporté par : {hadith.rapporteur}</div>
-            )}
-            {hadith.recueils && (
-                <div className="text-muted [unicode-bidi:plaintext]">Source : {hadith.recueils}</div>
-            )}
+            ) : null}
           </div>
       )}
 
@@ -133,12 +133,7 @@ const HadithModal: React.FC<{ hadith: Hadith; onClose: () => void }> = ({ hadith
               {hadith.narrateur && (
                   <p className="text-gray-600 dark:text-gray-400 mt-1 flex items-center gap-2 flex-wrap">
                     Narrateur : {hadith.narrateur}
-                    <BadgeGeneration generation={hadith.narrateur_generation} withHonorific />
-                  </p>
-              )}
-              {hadith.recueils && (
-                  <p className="text-gray-600 dark:text-gray-400 mt-1 [unicode-bidi:plaintext]">
-                    Source : {hadith.recueils}
+                    <BadgeGeneration generation={hadith.narrateur_generation} role={hadith.narrateur_role} sexe={hadith.narrateur_sexe} withHonorific />
                   </p>
               )}
             </div>
@@ -174,6 +169,15 @@ const HadithModal: React.FC<{ hadith: Hadith; onClose: () => void }> = ({ hadith
               <div className="mt-6 bg-green-soft p-6 rounded-lg">
                 <p className="text-lg font-bold text-green-deep mb-3">Explication:</p>
                 <Markdown className="[unicode-bidi:plaintext]">{hadith.explication}</Markdown>
+              </div>
+          )}
+
+          {hadith.sources && hadith.sources.length > 0 && (
+              <div>
+                <p className="text-[11px] uppercase tracking-[0.16em] text-muted font-semibold mb-2">
+                  Source{hadith.sources.length > 1 ? 's' : ''}
+                </p>
+                <HadithSources sources={hadith.sources} />
               </div>
           )}
 

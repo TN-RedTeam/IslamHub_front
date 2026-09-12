@@ -164,3 +164,47 @@ alter table public.recueils alter column titre set not null;
 --   create function public.recueil_label(p_recueil_id bigint) ...;
 --   alter table public.hadith_sources drop column numero;
 --   alter table public.hadith_sources drop column chapitre;
+
+-- ─────────────────────────────────────────────────────────────────────────
+-- SUIVI — source groupée par auteur (nom du rapporteur une seule fois)
+-- ─────────────────────────────────────────────────────────────────────────
+-- recueils_for_hadith(hadith_id) groupe les ouvrages par savant :
+--   « {auteur} dans {t1}, {t2} et {t3}, {autre auteur} dans {t} ».
+-- get_hadith / search_hadiths / get_dossier l'appellent. recueil_label(bigint)
+-- (par ligne) est supprimée.
+
+-- ─────────────────────────────────────────────────────────────────────────
+-- SUIVI — annulation du retrait : numero/chapitre restaurés (optionnels)
+-- ─────────────────────────────────────────────────────────────────────────
+-- On remet numero et chapitre (nullable) et on restaure les valeurs depuis
+-- backup.hadith_sources_before_drop. recueils_for_hadith ajoute « (chapitre,
+-- n° X) » APRÈS chaque titre, uniquement si renseigné, tout en gardant le
+-- regroupement par auteur.
+--   alter table public.hadith_sources add column numero text, add column chapitre text;
+--   update ... from backup.hadith_sources_before_drop ...;
+
+-- ─────────────────────────────────────────────────────────────────────────
+-- SUIVI — source STRUCTURÉE (affichage propre multi-rapporteurs)
+-- ─────────────────────────────────────────────────────────────────────────
+-- recueils_json_for_hadith(hadith_id) renvoie un tableau JSON groupé par
+-- rapporteur : [ { savant, savant_slug, livres:[ {titre, reference} ] } ].
+-- get_hadith / search_hadiths renvoient ce tableau dans `sources` (en plus de
+-- la chaîne `recueils`). Le front le met en forme (composant HadithSources).
+
+-- ─────────────────────────────────────────────────────────────────────────
+-- SUIVI — ordre des rapporteurs par année de décès (maître → élève)
+-- ─────────────────────────────────────────────────────────────────────────
+-- Dates de décès (H) renseignées pour les grands rapporteurs ; recueils_for_hadith
+-- et recueils_json_for_hadith trient les rapporteurs par savants.deces croissant
+-- (année extraite via regexp), nulls last, puis recueil_id. Corriger l'ordre =
+-- corriger la date de décès du savant.
+
+-- ─────────────────────────────────────────────────────────────────────────
+-- SUIVI — type libre (défaut 'recueil')
+-- ─────────────────────────────────────────────────────────────────────────
+-- La contrainte stricte (recueil|sharh|hashiya) est retirée : `type` accepte
+-- toute valeur non vide (ex. « Juz' Hadithi »). Seuls 'sharh'/'hashiya' gardent
+-- l'affichage « commentaire de… ».
+--   alter table public.recueils drop constraint recueils_type_check;
+--   alter table public.recueils add constraint recueils_type_not_blank
+--     check (type is not null and btrim(type) <> '');

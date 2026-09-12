@@ -13,13 +13,28 @@ export interface BaseText {
   tag: string;
 }
 
+/** Un livre cité comme source (titre + référence chapitre/n° éventuelle). */
+export interface HadithSourceBook {
+  titre: string;
+  reference: string | null;   // ex. « Kitab Bad' al-Khalq, n° 3191 »
+}
+/** Source d'un hadith groupée par rapporteur (savant) → ses livres. */
+export interface HadithSource {
+  savant: string | null;
+  savant_slug: string | null; // → /savants/:slug
+  livres: HadithSourceBook[];
+}
+
 /** Hadith - Parole du Prophète (ﷺ) */
 export interface Hadith extends BaseText {
   rapporteur: string | null;
   narrateur: string | null;
   statut: string | null;
   narrateur_generation?: string | null; // génération du narrateur (Phase 12.6, option 1)
-  recueils?: string | null;              // libellé de source (livre + n°), via recueil_label
+  narrateur_role?: string | null;        // epouse_prophete | calife_rachidoun (badge distinct)
+  narrateur_sexe?: string | null;        // f | m (honorifique au bon genre)
+  recueils?: string | null;              // libellé de source condensé (repli)
+  sources?: HadithSource[];              // source structurée (groupée par rapporteur)
 }
 
 /** Verset du Coran */
@@ -146,8 +161,11 @@ export interface HadithDetail {
   rapporteur: string | null;
   narrateur: string | null;
   narrateur_generation?: string | null;
+  narrateur_role?: string | null;   // epouse_prophete | calife_rachidoun
+  narrateur_sexe?: string | null;   // f | m
   tag: string | null;
   recueils: string | null;
+  sources?: HadithSource[];   // source structurée (groupée par rapporteur)
 }
 
 /** Infos légères d'un savant (mini-bio au survol). */

@@ -76,14 +76,15 @@ Projet Supabase : `kxzfwtwbghuvnlueusvp`. Tout se fait dans **Supabase → SQL E
 ## 4. Tables annexes + liaisons
 
 **Référentiels** : `savants(id, nom, nom_arabe, naissance, deces, resume, domaines[], biographie, ecole_id, slug, generation, generation_a_verifier, resume_auto)`,
-`ecoles(id, nom, slug)`, `statuts(id, nom)`, `narrateurs(id, nom, generation)`,
+`ecoles(id, nom, slug)`, `statuts(id, nom)`, `narrateurs(id, nom, generation, role, sexe)`,
 `recueils(id, nom, titre, savant_id)`, `tags(id, nom, slug)`.
 *(Voir §10 pour le détail des colonnes techniques.)*
 
 **Liaisons hadith → plusieurs valeurs** :
 - `hadith_rapporteurs(hadith_id, savant_id)` — qui rapporte (relié aux `savants`).
 - `hadith_narrateurs(hadith_id, narrateur_id)` — le(s) narrateur(s) (Compagnons).
-- `hadith_sources(hadith_id, recueil_id)` — relie un hadith à ses ouvrages (recueils).
+- `hadith_sources(hadith_id, recueil_id, numero, chapitre)` — relie un hadith à ses
+  ouvrages (recueils) ; `numero` et `chapitre` sont **optionnels** (affichés seulement s'ils sont renseignés).
 - `hadith_tags(hadith_id, tag_id)` — tags normalisés.
 
 ### Recette : ajouter un hadith avec plusieurs rapporteurs / narrateurs / tags
@@ -515,6 +516,18 @@ Avant toute grosse modification : voir la section « backup » — un `pg_dump`
   français**, rempli **automatiquement** par un trigger. Utilisé par la fonction
   `search_paroles`. **Ne jamais l'écrire à la main.** (idem `hadiths.search_fr`)
 
+- **`narrateurs.role`** *(texte, optionnel)* — rôle distinctif d'un narrateur, qui
+  affiche un **badge à part** (au lieu du simple « Compagnon ») :
+  `'epouse_prophete'` → badge **« Mère des croyants »** (or plein),
+  `'calife_rachidoun'` → badge **« Calife bien-guidé »** (vert plein).
+  Déjà renseigné : les épouses (ʿAichah + ids 31–39) et les califes présents
+  (Omar, Ali). Ajoute Aboû Bakr / ʿUthmân avec `role='calife_rachidoun'` si tu
+  les crées.
+- **`narrateurs.sexe`** *(`f` | `m`, optionnel)* — décline l'**honorifique** au bon
+  genre : femme → `رضي الله عنها`, homme → `رضي الله عنه`. Mis à `f` pour les
+  épouses. (La valeur brute `f`/`m` n'est jamais affichée : elle ne sert qu'à
+  choisir l'honorifique.)
+
 ### Tables : `recueils`, `tags`, `tag`
 
 - **`recueils`** *(utile)* — un **ouvrage** (un livre = une ligne), relié à son
@@ -525,8 +538,11 @@ Avant toute grosse modification : voir la section « backup » — un `pg_dump`
   - **`savant_id`** *(FK → `savants`)* — l'**auteur** de l'ouvrage. Le nom de
     l'auteur vient du join, il n'est **pas** stocké dans `recueils`.
   - **`slug`** *(unique)* — id d'URL (future page d'ouvrage).
-  - **`type`** — `'recueil'` (original) · `'sharh'` (commentaire) · `'hashiya'`
-    (glose). Défaut `'recueil'`.
+  - **`type`** — nature de l'ouvrage, **valeur libre** (défaut `'recueil'`, jamais
+    vide) : ex. `'recueil'`, `'Juz'' Hadithi'`, etc. **Seules** les valeurs
+    `'sharh'` (commentaire) et `'hashiya'` (glose) déclenchent l'affichage spécial
+    « commentaire de {ouvrage} » ; toute autre valeur est traitée comme un ouvrage
+    normal.
   - **`commente_recueil_id`** *(FK → `recueils.id`, nullable)* — pour un
     `sharh`/`hashiya` : l'**ouvrage commenté**. L'auteur de l'original se déduit
     par `commente_recueil_id → recueils → savant_id`.
@@ -539,9 +555,9 @@ Avant toute grosse modification : voir la section « backup » — un `pg_dump`
   At-Tabarânî, Ibn Hajar, As-Sakhâwî, Ibn al-Jawzî, As-Souyoutî, Al-Qourtoubî) ;
   **Aboû l-Qâçim al-Ansârî** porte encore un **titre placeholder** (= son nom) à
   remplacer par le vrai ouvrage. Reliée aux hadiths via
-  `hadith_sources(hadith_id, recueil_id)` — un hadith pointe vers un ou plusieurs
-  ouvrages (le n° et le chapitre ont été retirés : la source affichée est
-  simplement « {auteur} dans {titre} »).
+  `hadith_sources(hadith_id, recueil_id, numero, chapitre)` — un hadith pointe vers
+  un ou plusieurs ouvrages ; `numero` et `chapitre` sont **optionnels** et
+  n'apparaissent dans la source que s'ils sont renseignés.
 
   ```sql
   -- Corriger / renseigner le titre d'un ouvrage
@@ -565,10 +581,22 @@ Avant toute grosse modification : voir la section « backup » — un `pg_dump`
   select :HID, r.id from public.recueils r where r.slug = 'sahih-al-bukhari';
   ```
 
-  > Le libellé de source est construit par la fonction `recueil_label(recueil_id)`
-  > (« {auteur} dans {titre} », + clause de commentaire pour un sharḥ), utilisée par
-  > `get_hadith`, `search_hadiths` et `get_dossier`. L'auteur vient du join
-  > `savant_id → savants`.
+  > La source est construite par `recueils_for_hadith(hadith_id)`, **groupée par
+  > auteur** : le rapporteur n'apparaît qu'une fois, ses ouvrages joints par « et »
+  > (ex. « Al-Bayhaqi dans Al-Asma' wa as-Sifat et Al-Da'awat al-Kabir »). Le
+  > chapitre et le n° (colonnes de `hadith_sources`) sont ajoutés entre parenthèses
+  > **seulement s'ils sont renseignés** (ex. « … (Kitab Bad' al-Khalq, n° 3191) »).
+  > Utilisée par `get_hadith`, `search_hadiths` et `get_dossier` ; l'auteur vient du
+  > join `savant_id → savants`. **Les rapporteurs sont ordonnés par année de décès
+  > croissante** (`savants.deces`, ex. « 256 H ») — donc le maître avant l'élève
+  > (Malik 179 → Ahmad 241 → Al-Bukhari 256 → Muslim 261). Pour changer l'ordre,
+  > corrige la date de décès du savant ; ceux sans date passent en dernier.
+
+  ```sql
+  -- (optionnel) préciser le n° et/ou le chapitre d'une source
+  update public.hadith_sources set numero = '3191', chapitre = 'Kitab Bad'' al-Khalq'
+  where hadith_id = :HID and recueil_id = (select id from public.recueils where slug = 'sahih-al-bukhari');
+  ```
 - **`tags`** *(pluriel — 87 lignes — utile)* — le **référentiel normalisé des
   mots-clés** (`id, nom, slug`), relié aux hadiths par `hadith_tags`. C'est la
   version « propre » et réutilisable des tags (une ligne par tag, avec slug).

@@ -4,6 +4,7 @@ import { m } from 'framer-motion';
 import { Loader2, ArrowLeft, Copy, Check, Share2 } from 'lucide-react';
 import { dataService } from '../services/DataService';
 import { BadgeGeneration } from '../components/BadgeGeneration';
+import { HadithSources } from '../components/HadithSources';
 import { Markdown } from '../components/Markdown';
 import { useSeo } from '../hooks/useSeo';
 import type { HadithDetail } from '../types';
@@ -89,10 +90,12 @@ export const HadithPage: React.FC = () => {
           {hadith.narrateur && (
             <p className="text-muted mt-2 text-sm flex items-center gap-2 flex-wrap">
               Narrateur : {hadith.narrateur}
-              <BadgeGeneration generation={hadith.narrateur_generation} withHonorific />
+              <BadgeGeneration generation={hadith.narrateur_generation} role={hadith.narrateur_role} sexe={hadith.narrateur_sexe} withHonorific />
             </p>
           )}
-          {source && <p className="text-muted mt-1.5 text-sm [unicode-bidi:plaintext]">{source}</p>}
+          {hadith.sources && hadith.sources.length > 0 && (
+            <p className="text-muted mt-1.5 text-sm">Rapporté par : <HadithSources sources={hadith.sources} compact /></p>
+          )}
           {reference && <p className="text-muted mt-1 text-sm">{reference}</p>}
         </div>
       </m.header>
@@ -135,6 +138,15 @@ export const HadithPage: React.FC = () => {
             </div>
           )}
         </div>
+
+        {hadith.sources && hadith.sources.length > 0 && (
+          <section>
+            <h2 className="text-[11px] uppercase tracking-[0.16em] text-muted font-semibold mb-2">
+              Source{hadith.sources.length > 1 ? 's' : ''}
+            </h2>
+            <HadithSources sources={hadith.sources} />
+          </section>
+        )}
       </main>
     </div>
   );
