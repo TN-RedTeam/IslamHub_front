@@ -565,9 +565,10 @@ Avant toute grosse modification : voir la section « backup » — un `pg_dump`
   select :HID, r.id from public.recueils r where r.slug = 'sahih-al-bukhari';
   ```
 
-  > Le libellé de source est construit par la fonction `recueil_label(recueil_id)`
-  > (« {auteur} dans {titre} », + clause de commentaire pour un sharḥ), utilisée par
-  > `get_hadith`, `search_hadiths` et `get_dossier`. L'auteur vient du join
+  > La source est construite par `recueils_for_hadith(hadith_id)`, **groupée par
+  > auteur** : le rapporteur n'apparaît qu'une fois, ses ouvrages joints par « et »
+  > (ex. « Al-Bayhaqi dans Al-Asma' wa as-Sifat et Al-Da'awat al-Kabir »). Utilisée
+  > par `get_hadith`, `search_hadiths` et `get_dossier` ; l'auteur vient du join
   > `savant_id → savants`.
 - **`tags`** *(pluriel — 87 lignes — utile)* — le **référentiel normalisé des
   mots-clés** (`id, nom, slug`), relié aux hadiths par `hadith_tags`. C'est la

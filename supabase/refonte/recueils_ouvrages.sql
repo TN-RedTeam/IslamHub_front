@@ -164,3 +164,11 @@ alter table public.recueils alter column titre set not null;
 --   create function public.recueil_label(p_recueil_id bigint) ...;
 --   alter table public.hadith_sources drop column numero;
 --   alter table public.hadith_sources drop column chapitre;
+
+-- ─────────────────────────────────────────────────────────────────────────
+-- SUIVI — source groupée par auteur (nom du rapporteur une seule fois)
+-- ─────────────────────────────────────────────────────────────────────────
+-- recueils_for_hadith(hadith_id) groupe les ouvrages par savant :
+--   « {auteur} dans {t1}, {t2} et {t3}, {autre auteur} dans {t} ».
+-- get_hadith / search_hadiths / get_dossier l'appellent. recueil_label(bigint)
+-- (par ligne) est supprimée.
