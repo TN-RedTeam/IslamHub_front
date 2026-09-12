@@ -7,7 +7,7 @@ import React from 'react';
  *   Les trois premiers sont les Salaf. sahabi en or, tabii/tabi_tabii en vert
  *   « Salaf », khalaf en contour sobre.
  * Rôle (narrateurs) — prioritaire sur la génération, badge distinct :
- *   epouse_prophete  → « Épouse du Prophète » (or plein), honorifique au féminin
+ *   epouse_prophete  → « Mère des croyants » (or plein), honorifique au féminin
  *   calife_rachidoun → « Calife bien-guidé »  (vert plein)
  *
  * Honorifiques : écrits en points de code Unicode (aucun glyphe arabe saisi),
@@ -42,7 +42,7 @@ const GEN: Record<Gen, Entry> = {
 };
 
 const ROLE: Record<Role, Entry> = {
-  epouse_prophete:  { label: 'Épouse du Prophète', cls: 'bg-gold text-white border-gold',   honor: 'sahabi' },
+  epouse_prophete:  { label: 'Mère des croyants', cls: 'bg-gold text-white border-gold',   honor: 'sahabi' },
   calife_rachidoun: { label: 'Calife bien-guidé',  cls: 'bg-green text-white border-green', honor: 'sahabi' },
 };
 

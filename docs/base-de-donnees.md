@@ -518,7 +518,7 @@ Avant toute grosse modification : voir la section « backup » — un `pg_dump`
 
 - **`narrateurs.role`** *(texte, optionnel)* — rôle distinctif d'un narrateur, qui
   affiche un **badge à part** (au lieu du simple « Compagnon ») :
-  `'epouse_prophete'` → badge **« Épouse du Prophète »** (or plein),
+  `'epouse_prophete'` → badge **« Mère des croyants »** (or plein),
   `'calife_rachidoun'` → badge **« Calife bien-guidé »** (vert plein).
   Déjà renseigné : les épouses (ʿAichah + ids 31–39) et les califes présents
   (Omar, Ali). Ajoute Aboû Bakr / ʿUthmân avec `role='calife_rachidoun'` si tu
