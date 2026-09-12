@@ -182,3 +182,11 @@ alter table public.recueils alter column titre set not null;
 -- regroupement par auteur.
 --   alter table public.hadith_sources add column numero text, add column chapitre text;
 --   update ... from backup.hadith_sources_before_drop ...;
+
+-- ─────────────────────────────────────────────────────────────────────────
+-- SUIVI — source STRUCTURÉE (affichage propre multi-rapporteurs)
+-- ─────────────────────────────────────────────────────────────────────────
+-- recueils_json_for_hadith(hadith_id) renvoie un tableau JSON groupé par
+-- rapporteur : [ { savant, savant_slug, livres:[ {titre, reference} ] } ].
+-- get_hadith / search_hadiths renvoient ce tableau dans `sources` (en plus de
+-- la chaîne `recueils`). Le front le met en forme (composant HadithSources).
