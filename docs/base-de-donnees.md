@@ -538,8 +538,11 @@ Avant toute grosse modification : voir la section « backup » — un `pg_dump`
   - **`savant_id`** *(FK → `savants`)* — l'**auteur** de l'ouvrage. Le nom de
     l'auteur vient du join, il n'est **pas** stocké dans `recueils`.
   - **`slug`** *(unique)* — id d'URL (future page d'ouvrage).
-  - **`type`** — `'recueil'` (original) · `'sharh'` (commentaire) · `'hashiya'`
-    (glose). Défaut `'recueil'`.
+  - **`type`** — nature de l'ouvrage, **valeur libre** (défaut `'recueil'`, jamais
+    vide) : ex. `'recueil'`, `'Juz'' Hadithi'`, etc. **Seules** les valeurs
+    `'sharh'` (commentaire) et `'hashiya'` (glose) déclenchent l'affichage spécial
+    « commentaire de {ouvrage} » ; toute autre valeur est traitée comme un ouvrage
+    normal.
   - **`commente_recueil_id`** *(FK → `recueils.id`, nullable)* — pour un
     `sharh`/`hashiya` : l'**ouvrage commenté**. L'auteur de l'original se déduit
     par `commente_recueil_id → recueils → savant_id`.

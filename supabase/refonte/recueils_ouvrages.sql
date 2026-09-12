@@ -198,3 +198,13 @@ alter table public.recueils alter column titre set not null;
 -- et recueils_json_for_hadith trient les rapporteurs par savants.deces croissant
 -- (année extraite via regexp), nulls last, puis recueil_id. Corriger l'ordre =
 -- corriger la date de décès du savant.
+
+-- ─────────────────────────────────────────────────────────────────────────
+-- SUIVI — type libre (défaut 'recueil')
+-- ─────────────────────────────────────────────────────────────────────────
+-- La contrainte stricte (recueil|sharh|hashiya) est retirée : `type` accepte
+-- toute valeur non vide (ex. « Juz' Hadithi »). Seuls 'sharh'/'hashiya' gardent
+-- l'affichage « commentaire de… ».
+--   alter table public.recueils drop constraint recueils_type_check;
+--   alter table public.recueils add constraint recueils_type_not_blank
+--     check (type is not null and btrim(type) <> '');
