@@ -27,6 +27,8 @@ Projet Supabase : `kxzfwtwbghuvnlueusvp`. Tout se fait dans **Supabase → SQL E
 **Versets équivoques** (mutashābih : objection / réponse) :
 `versets_equivoques`, `verset_preuves`, `verset_images`, `verset_lies`. *(§5 bis)*
 
+**Récits** (Histoires des Prophètes / Vies des vertueux) : `recits`.
+
 **Coran / exégèse** : `sourates`, `versets`, `exegeses`.
 
 > Tables héritées, **non utilisées** : `tag` (singulier, vide — remplacée par
@@ -386,6 +388,23 @@ update public.versets_equivoques set published = true where slug = 'la-main-sour
 > à la fiche se **saisit** (le verset équivoque dans `versets_equivoques`, un
 > verset d'appui dans `verset_preuves.contenu_libre`). Une **parole** se crée
 > **une seule fois** dans `paroles` (avec son scan) puis se pointe partout.
+
+---
+
+## 5 ter. Récits (Prophètes / vertueux)
+
+Rubrique **Récits** (`/recits`) : deux listes — **Histoires des Prophètes** et
+**Vies des vertueux** — chaque récit ouvrant sa fiche `/recits/:slug` (Markdown).
+
+`recits(slug, categorie, titre, contenu_md, image_url, ordre)` — RLS lecture
+publique. `categorie ∈ ('prophetes','vertueux')`. `contenu_md` = le texte en
+**Markdown** ; `image_url` optionnel (bucket `references`) ; `ordre` = tri dans
+la liste. RPC : `recits_all()` (index) et `get_recit(slug)` (fiche).
+
+```sql
+insert into public.recits (slug, categorie, titre, contenu_md, ordre) values
+  ('adam', 'prophetes', '⟨titre⟩', '⟨contenu en Markdown⟩', 0);
+```
 
 ---
 

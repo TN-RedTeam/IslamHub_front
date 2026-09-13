@@ -13,6 +13,8 @@ import type {
   Expose,
   Parole,
   ParoleDetail,
+  RecitCard,
+  RecitDetail,
   Multimedia,
   MultimediaCategory,
   FiqhChapitre,
@@ -244,6 +246,18 @@ class DataService {
       .maybeSingle();
     if (error) throw error;
     return (data ?? null) as Expose | null;
+  }
+
+  // ================= Récits (Prophètes / vertueux) =================
+  async getRecits(): Promise<RecitCard[]> {
+    const { data, error } = await supabase.rpc('recits_all');
+    if (error) throw error;
+    return (data ?? []) as RecitCard[];
+  }
+  async getRecit(slug: string): Promise<RecitDetail | null> {
+    const { data, error } = await supabase.rpc('get_recit', { p_slug: slug });
+    if (error) throw error;
+    return (data ?? null) as RecitDetail | null;
   }
 
   // ================= Paroles =================

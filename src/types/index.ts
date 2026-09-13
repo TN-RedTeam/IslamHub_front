@@ -102,6 +102,25 @@ export interface ParoleDetail {
 /** Alias historique — `Parole` est le nom canonique. */
 export type Savant = Parole;
 
+/** Catégorie d'un récit. */
+export type RecitCategorie = 'prophetes' | 'vertueux';
+/** Carte d'index d'un récit (table `recits`). */
+export interface RecitCard {
+  slug: string;
+  categorie: RecitCategorie;
+  titre: string;
+  image_url: string | null;
+  ordre: number;
+}
+/** Fiche récit complète (page /recits/:slug). */
+export interface RecitDetail {
+  slug: string;
+  categorie: RecitCategorie;
+  titre: string;
+  contenu_md: string | null;
+  image_url: string | null;
+}
+
 /** Fiche savant (table `savants`) pour la page /savants */
 export interface SavantInfo {
   id: number;
