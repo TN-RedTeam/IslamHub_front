@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Book, BookOpen, Heart, GraduationCap, Video, Moon, Sun, Loader2 } from 'lucide-react';
 import { dataService } from '../services/DataService';
 import { usePageTitle } from '../hooks/usePageTitle';
+import { slugify } from '../utils/slug';
 import { BISMILLAH } from '../constants/bismillah';
 import type { Hadith, Invocation, Coran } from '../types';
 
@@ -90,7 +91,7 @@ export const Home: React.FC = () => {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {/* Hadith */}
-            <Link to="/hadiths" className={`${cardBase} group`}>
+            <Link to={dailyHadith ? `/hadiths/${dailyHadith.id}/${slugify(dailyHadith.sujet)}` : '/hadiths'} className={`${cardBase} group`}>
               <div className="flex items-center gap-3">
                 <span className="w-10 h-10 rounded-card bg-green-soft text-green grid place-items-center shrink-0"><Book className="w-5 h-5" /></span>
                 <span><span className="block font-display font-semibold text-green-deep leading-tight">Hadith du jour</span>
@@ -105,7 +106,7 @@ export const Home: React.FC = () => {
             </Link>
 
             {/* Douaa */}
-            <Link to="/invocations" className={`${cardBase} group`}>
+            <Link to="/invocations" state={dailyDouaa ? { openItem: dailyDouaa } : undefined} className={`${cardBase} group`}>
               <div className="flex items-center gap-3">
                 <span className="w-10 h-10 rounded-card bg-green-soft text-green grid place-items-center shrink-0">{isNightDouaa(dailyDouaa) ? <Moon className="w-5 h-5" /> : <Sun className="w-5 h-5" />}</span>
                 <span><span className="block font-display font-semibold text-green-deep leading-tight">{isNightDouaa(dailyDouaa) ? 'Invocation de la nuit' : 'Invocation du jour'}</span>
@@ -119,7 +120,7 @@ export const Home: React.FC = () => {
             </Link>
 
             {/* Verset */}
-            <Link to="/coran" className={`${cardBase} group`}>
+            <Link to="/coran" state={dailyVerse ? { openItem: dailyVerse } : undefined} className={`${cardBase} group`}>
               <div className="flex items-center gap-3">
                 <span className="w-10 h-10 rounded-card bg-green-soft text-green grid place-items-center shrink-0"><BookOpen className="w-5 h-5" /></span>
                 <span><span className="block font-display font-semibold text-green-deep leading-tight">Verset à méditer</span>

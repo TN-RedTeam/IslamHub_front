@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { useLocation } from 'react-router-dom';
 import { m, AnimatePresence } from 'framer-motion';
 import { Search, Filter, X, Star, Loader, Tags, Hash } from 'lucide-react';
 import { dataService } from '../services/DataService';
@@ -158,6 +159,13 @@ export const Invocations: React.FC = () => {
 
     const meta = TYPES.find(t => t.id === activeType) ?? TYPES[0];
     const debounceRef = useRef<ReturnType<typeof setTimeout>>();
+    const location = useLocation();
+
+    // Ouvre directement l'invocation transmise depuis l'accueil (« Invocation du jour »).
+    useEffect(() => {
+        const it = (location.state as { openItem?: Item } | null)?.openItem;
+        if (it) { if (it.type_id) setActiveType(it.type_id); setSelected(it); }
+    }, [location.state]);
 
     // Charger les SUJETS du type actif (le menu déroulant filtre par sujet).
     useEffect(() => {
