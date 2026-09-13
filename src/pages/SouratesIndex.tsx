@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { m } from 'framer-motion';
-import { Loader2, BookOpen, ArrowLeft } from 'lucide-react';
+import { Loader2, BookOpen } from 'lucide-react';
 import { dataService } from '../services/DataService';
+import { CoranTabs } from '../components/CoranTabs';
 import { useSeo } from '../hooks/useSeo';
 import type { SourateInfo } from '../types';
 
 export const SouratesIndex: React.FC = () => {
-  useSeo({ title: 'Exégèse du Coran', description: "Exégèse (tafsir) des sourates du Coran : sens des versets selon les savants." });
+  useSeo({ title: 'Exégèse des sourates', description: "Exégèse (tafsir) des sourates du Coran : sens des versets selon les savants." });
   const [sourates, setSourates] = useState<SourateInfo[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -23,11 +24,9 @@ export const SouratesIndex: React.FC = () => {
         
         
         <div className="relative container mx-auto px-4 max-w-4xl text-center">
-          <Link to="/coran" className="inline-flex items-center gap-1.5 text-muted hover:text-green-deep text-sm mb-4">
-            <ArrowLeft className="h-4 w-4" /> Le Noble Coran
-          </Link>
-          <h1 className="text-4xl md:text-5xl font-bold text-green-deep font-display">Exégèse du Coran</h1>
-          <p className="text-muted mt-3 max-w-2xl mx-auto">Le sens des sourates et des versets, expliqué à la lumière des savants.</p>
+          <h1 className="text-4xl md:text-5xl font-bold text-green-deep font-display">Exégèse des sourates</h1>
+          <p className="text-muted mt-3 max-w-2xl mx-auto">Le tafsir des sourates choisies, expliqué à la lumière des savants.</p>
+          <div className="mt-5 flex justify-center"><CoranTabs /></div>
         </div>
       </m.header>
 
