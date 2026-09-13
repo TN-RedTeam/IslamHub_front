@@ -471,6 +471,39 @@ insert into public.mutashabih_exemples (mot_arabe, translitteration, sens_appare
 values ('⟨mot arabe⟩', '⟨translittération⟩', '⟨sens apparent⟩', '⟨sens visé⟩', 0);
 ```
 
+### Éditer les pages d'article — où se trouve quoi
+
+Deux pages sont bâties sur ce système : **« Comprendre les textes équivoques »**
+(`/croyance/versets-hadiths-equivoques/comprendre`, slug `comprendre-textes-equivoques`)
+et **« Le jugement rationnel »** (`/croyance/jugement-rationnel`, slug `jugement-rationnel`).
+Elles sont **mi-fichier, mi-base** :
+
+| Élément de la page | Où le modifier |
+|---|---|
+| Mise en page, styles, disposition | **fichier** `src/pages/croyance/ComprendreEquivoques.tsx` (ou `JugementRationnel.tsx`) |
+| Rendu sommaire + sections + preuves (partagé) | **fichier** `src/components/ExposeBody.tsx` (+ `ExposeCitationBloc.tsx`) |
+| Sur-titre (« À lire en premier ») + paragraphe d'intro | **fichier** (en dur dans la page) |
+| **Titre** de la page | BDD `exposes.titre` |
+| **Sommaire « Sur cette page » + les sections** (titres + prose) | BDD `exposes.contenu_md` — chaque **`## …`** = une section **et** une entrée du sommaire |
+| Bloc **« Texte fondateur »** (arabe / trad / phon / réf) | BDD `exposes.verset_arabe` / `verset_traduction` / `verset_phonetique` / `verset_ref` |
+| **Cartes de langue** (article équivoque) | BDD `mutashabih_exemples` |
+| **Preuves** rattachées | BDD `expose_citations` (`expose_slug = '<slug de la page>'`) |
+
+```sql
+-- Réécrire une section : édite le Markdown (les ## pilotent sommaire + sections)
+update public.exposes set contenu_md = '## 1. ⟨titre⟩\n\n⟨texte⟩\n\n## 2. …'
+where slug = 'comprendre-textes-equivoques';
+
+-- Remplir le « texte fondateur » (colle l'arabe toi-même)
+update public.exposes set verset_arabe='⟨arabe⟩', verset_traduction='⟨trad⟩', verset_phonetique='⟨phon⟩'
+where slug = 'comprendre-textes-equivoques';
+```
+
+> **Ajouter une page d'article** de ce type = créer une ligne `exposes` (+ ses
+> `expose_citations`) **et** une petite page React qui appelle `getExpose` +
+> `getExposeCitations` et rend `<ExposeBody>` (voir `JugementRationnel.tsx` comme
+> gabarit minimal).
+
 ---
 
 ## 5 quinquies. Thèmes transverses (recherche unifiée)
