@@ -402,14 +402,18 @@ export interface DossierData {
 // Versets équivoques (Phase 12.4)
 // ==========================================
 
-/** Carte d'index d'un verset équivoque. */
+/** Carte d'index d'un verset/hadith équivoque. */
 export interface VersetEquivoqueCard {
   id: number;
   slug: string;
+  type: 'verset' | 'hadith';
   theme: string;
   sourate: string;
   sourate_num: number | null;
   ayah: number | null;
+  rapporteur: string | null;   // source d'un hadith équivoque
+  recueil: string | null;
+  numero: string | null;
   verset_arabe: string;
   verset_traduction: string | null;
   sens_juste: string | null;
@@ -430,6 +434,7 @@ export interface VersetPreuve {
   sujet: string | null;
   degre: string | null;
   hadith_slug: string | null;
+  parole_slug?: string | null;
 }
 
 /** Scan de livre attaché à un verset. */
@@ -447,10 +452,14 @@ export interface VersetEquivoqueDetail {
   verset: {
     id: number;
     slug: string;
+    type: 'verset' | 'hadith';
     theme: string;
     sourate: string;
     sourate_num: number | null;
     ayah: number | null;
+    rapporteur: string | null;
+    recueil: string | null;
+    numero: string | null;
     verset_arabe: string;
     verset_traduction: string | null;
     verset_phonetique: string | null;

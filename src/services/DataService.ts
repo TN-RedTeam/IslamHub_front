@@ -196,6 +196,7 @@ class DataService {
     theme?: string | null,
     sourate?: string | null,
     params?: PaginationParams,
+    type?: string | null,
   ): Promise<PaginatedResponse<VersetEquivoqueCard>> {
     const page = params?.page ?? 0;
     const pageSize = params?.pageSize ?? 24;
@@ -206,6 +207,7 @@ class DataService {
       q: searchTerm.trim().slice(0, 300),
       theme_filter: (theme ?? '').trim(),
       sourate_filter: (sourate ?? '').trim(),
+      type_filter: (type ?? '').trim(),
       page_num: page,
       page_size: pageSize,
     });
