@@ -524,4 +524,19 @@ export interface Expose {
   slug: string;
   titre: string | null;
   contenu_md: string | null;
+  // Bloc « texte fondateur » optionnel (verset/hadith mis en avant en tête).
+  verset_arabe?: string | null;
+  verset_traduction?: string | null;
+  verset_phonetique?: string | null;
+  verset_ref?: string | null;
+}
+
+/** Carte « subtilité de la langue » (table `mutashabih_exemples`). */
+export interface MutashabihExemple {
+  id: number;
+  mot_arabe: string;
+  translitteration: string | null;
+  sens_apparent: string | null;
+  sens_vise: string | null;
+  ordre: number;
 }

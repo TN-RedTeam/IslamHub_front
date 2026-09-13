@@ -25,6 +25,7 @@ import { Attributs } from './pages/croyance/Attributs';
 import { PiliersDeLaFoi } from './pages/croyance/PiliersDeLaFoi';
 import { VersetsEquivoques } from './pages/croyance/VersetsEquivoques';
 import { VersetEquivoque } from './pages/croyance/VersetEquivoque';
+import { ComprendreEquivoques } from './pages/croyance/ComprendreEquivoques';
 import { NomsDAllah } from './pages/croyance/NomsDAllah';
 import { DossierThematique } from './pages/DossierThematique';
 import { NotFound } from './pages/NotFound';
@@ -87,6 +88,7 @@ function App() {
                 <Route path="/croyance/noms-et-attributs" element={<Navigate to="/croyance/attributs" replace />} />
                 <Route path="/croyance/piliers-de-la-foi" element={<PiliersDeLaFoi />} />
                 <Route path="/croyance/versets-hadiths-equivoques" element={<VersetsEquivoques />} />
+                <Route path="/croyance/versets-hadiths-equivoques/comprendre" element={<ComprendreEquivoques />} />
                 <Route path="/croyance/versets-hadiths-equivoques/:slug" element={<VersetEquivoque />} />
                 {/* Redirections de l'ancienne route */}
                 <Route path="/croyance/versets-equivoques" element={<Navigate to="/croyance/versets-hadiths-equivoques" replace />} />

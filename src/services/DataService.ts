@@ -11,6 +11,7 @@ import type {
   NomAllah,
   Attribut,
   Expose,
+  MutashabihExemple,
   Parole,
   ParoleDetail,
   RecitCard,
@@ -243,11 +244,17 @@ class DataService {
   async getExpose(slug: string): Promise<Expose | null> {
     const { data, error } = await supabase
       .from('exposes')
-      .select('slug,titre,contenu_md')
+      .select('slug,titre,contenu_md,verset_arabe,verset_traduction,verset_phonetique,verset_ref')
       .eq('slug', slug)
       .maybeSingle();
     if (error) throw error;
     return (data ?? null) as Expose | null;
+  }
+
+  async getMutashabihExemples(): Promise<MutashabihExemple[]> {
+    const { data, error } = await supabase.rpc('mutashabih_exemples_all');
+    if (error) throw error;
+    return (data ?? []) as MutashabihExemple[];
   }
 
   // ================= Récits (Prophètes / vertueux) =================
