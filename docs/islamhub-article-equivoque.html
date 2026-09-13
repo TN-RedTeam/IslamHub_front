@@ -1,0 +1,155 @@
+<title>Comprendre les textes équivoques</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Noto+Naskh+Arabic:wght@500;700&family=Scheherazade+New:wght@400;500;700&family=EB+Garamond:ital,wght@0,500;0,600;1,500&family=Newsreader:opsz,ital,wght@6..72,0,400;6..72,0,500;6..72,1,400&display=swap">
+<style>
+  :root{--ground:#f2ebdd;--surface:#fff;--ink:#1b2620;--muted:#6a746a;--line:#e5dccb;
+    --green:#1c5a43;--green-deep:#0f3d2e;--green-soft:#e6f0e9;--green-line:#cfe1d6;--gold:#b0872f;--gold-soft:#f2e6cb}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--ground);color:var(--ink);font-family:Newsreader,Georgia,serif;line-height:1.7}
+  .wrap{max-width:1060px;margin:0 auto;padding:24px 22px 60px}
+  .crumb{font-size:12.5px;color:var(--muted);margin:0 0 6px}
+  .eye{font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:600;margin:0 0 4px}
+  h1{font-family:"EB Garamond",serif;font-weight:600;font-size:clamp(28px,4.4vw,42px);color:var(--green-deep);margin:0}
+  .lede{color:var(--muted);font-size:15.5px;margin:8px 0 0;max-width:64ch}
+  .note{margin:14px 0 0;font-size:12.5px;color:var(--muted);background:var(--gold-soft);border-radius:8px;padding:8px 12px;display:inline-block}
+
+  /* verset fondateur */
+  .founder{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:28px;margin:20px 0 8px;text-align:center;
+    box-shadow:0 1px 2px rgba(27,38,32,.03),0 14px 34px -26px rgba(27,38,32,.3)}
+  .founder .k{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);font-weight:600;margin:0 0 14px}
+  .founder .ar{font-family:"Scheherazade New",serif;font-size:clamp(22px,3.6vw,30px);line-height:2.05;direction:rtl;color:var(--green-deep);margin:0}
+  .founder .tr{font-size:16px;color:var(--ink);margin:16px auto 0;max-width:60ch}
+  .founder .ph{font-size:13px;color:var(--muted);font-style:italic;margin:8px auto 0;max-width:62ch}
+  .founder .rf{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--gold);font-weight:600;margin:12px 0 0}
+
+  .cols{display:grid;grid-template-columns:1fr;gap:28px;margin-top:22px}
+  @media(min-width:880px){.cols{grid-template-columns:220px 1fr}}
+  .toc{align-self:start}
+  @media(min-width:880px){.toc{position:sticky;top:20px}}
+  .toc .t{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin:0 0 10px;font-weight:600}
+  .toc ol{list-style:none;margin:0;padding:0;counter-reset:s}
+  .toc li{counter-increment:s;margin:0 0 2px}
+  .toc a{display:flex;gap:9px;align-items:baseline;padding:7px 10px;border-radius:8px;text-decoration:none;color:var(--ink);font-size:14px}
+  .toc a:hover{background:var(--green-soft);color:var(--green-deep)}
+  .toc a::before{content:counter(s);font-family:"EB Garamond",serif;font-weight:600;color:var(--gold);font-size:13px}
+
+  section{scroll-margin-top:20px;margin-bottom:34px}
+  h2{font-family:"EB Garamond",serif;font-weight:600;font-size:23px;color:var(--green-deep);margin:0 0 12px;display:flex;align-items:center;gap:10px}
+  h2 .num{width:26px;height:26px;border-radius:50%;background:var(--green-soft);color:var(--green);display:grid;place-items:center;font-size:14px;flex:none}
+  p{font-size:16px;margin:0 0 12px}
+
+  .cite{border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:12px 0;background:#fdfbf6}
+  .cite .tag{display:inline-block;font-size:11px;font-weight:600;letter-spacing:.04em;padding:2px 9px;border-radius:999px;background:var(--green-soft);color:var(--green-deep);border:1px solid var(--green-line);margin-bottom:10px}
+  .cite .ar{font-family:"Scheherazade New",serif;font-size:22px;line-height:1.95;direction:rtl;text-align:right;color:var(--ink);margin:0}
+  .cite .sig{font-size:15px;font-weight:600;color:var(--green-deep);margin:8px 0 0;padding-left:12px;border-left:2px solid var(--gold)}
+  .cite .src{font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);margin:10px 0 0}
+  .cite.parole{background:#fbf9f3;border-color:var(--green-line)}
+  .cite.parole .tag{background:var(--gold-soft);color:#7a5a17;border-color:#e6d3a3}
+  .who{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+  .who .n{font-family:"EB Garamond",serif;font-weight:600;font-size:16px;color:var(--green-deep)}
+  .who .badge{font-size:10.5px;font-weight:600;padding:1px 8px;border-radius:999px;background:var(--gold-soft);color:#7a5a17;border:1px solid #e6d3a3}
+  .link{display:inline-flex;align-items:center;gap:7px;margin-top:10px;font-weight:600;color:var(--green);font-size:13.5px;text-decoration:none}
+
+  details{margin:8px 0 0;border-top:1px dashed var(--line);padding-top:10px}
+  summary{cursor:pointer;font-weight:600;color:var(--green);font-size:14px;list-style:none;display:flex;align-items:center;gap:7px}
+  summary::-webkit-details-marker{display:none}
+
+  .cta{background:linear-gradient(135deg,var(--green),var(--green-deep));border-radius:16px;padding:24px 26px;color:#fff;
+    display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap;margin-top:10px}
+  .cta .h{font-family:"EB Garamond",serif;font-weight:600;font-size:20px;margin:0}
+  .cta .p{color:#cfe6da;font-size:14px;margin:4px 0 0}
+  .cta a{background:#fff;color:var(--green-deep);text-decoration:none;font-weight:600;font-size:14.5px;padding:11px 20px;border-radius:10px;white-space:nowrap}
+  a:focus-visible,summary:focus-visible{outline:2px solid var(--green);outline-offset:2px}
+</style>
+
+<div class="wrap">
+  <p class="crumb">Accueil · Croyance · Versets et hadiths équivoques</p>
+  <p class="eye">À lire en premier</p>
+  <h1>Comprendre les textes équivoques</h1>
+  <p class="lede">Pourquoi tous les textes ne se prennent pas au sens apparent — la preuve, par le Coran lui-même,
+    la Sunna et les savants, qu'il existe des textes clairs et des textes équivoques.</p>
+  <p class="note">⚑ Contenu d'exemple — à rédiger/compléter par l'auteur ; preuves éditables en base.</p>
+
+  <!-- Verset fondateur -->
+  <div class="founder">
+    <p class="k">Le verset fondateur</p>
+    <p class="ar">هُوَ الَّذِي أَنْزَلَ عَلَيْكَ الْكِتَابَ مِنْهُ آيَاتٌ مُحْكَمَاتٌ هُنَّ أُمُّ الْكِتَابِ وَأُخَرُ مُتَشَابِهَاتٌ</p>
+    <p class="tr">« C'est Lui Qui a fait descendre sur toi le Livre qui comporte des versets <b>explicites</b> (mouḥkamah)
+      qui sont la base du Livre (qui constituent la majeure partie des versets du Qour'ân) et d'autres [versets qui sont]
+      <b>non explicites</b> (moutachābihah). »</p>
+    <p class="ph">(houwa l-ladhî ʼanzala ʿalayka l-kitâba minhou ʼâyâtoun mouḥkamâtoun hounna ʼoummou l-kitâbi wa ʼoukharou moutachābihāt)</p>
+    <p class="rf">Sourate Āl ʿImrān · 7</p>
+  </div>
+
+  <div class="cols">
+    <nav class="toc" aria-label="Sommaire">
+      <p class="t">Sur cette page</p>
+      <ol>
+        <li><a href="#s1">Le Coran distingue clair et équivoque</a></li>
+        <li><a href="#s2">Le sens apparent n'est pas toujours voulu</a></li>
+        <li><a href="#s3">La voie des Salaf et des Khalaf</a></li>
+        <li><a href="#s4">Répondre à l'objection du sens apparent</a></li>
+      </ol>
+    </nav>
+
+    <div class="content">
+      <section id="s1">
+        <h2><span class="num">1</span> Le Coran distingue lui-même clair et équivoque</h2>
+        <p>Dans le verset ci-dessus, Allah partage Son Livre en deux : les <b>muḥkam</b> (dont le sens est évident)
+          et les <b>mutashābih</b> (dont le sens apparent n'est pas celui qui est visé). C'est donc le Coran lui-même
+          qui établit qu'une partie des textes demande d'être ramenée à un sens conforme au reste. [À développer.]</p>
+      </section>
+
+      <section id="s2">
+        <h2><span class="num">2</span> Le sens apparent n'est pas toujours voulu</h2>
+        <p>Certains textes, pris au pied de la lettre, contrediraient une vérité claire — donc leur sens apparent
+          est nécessairement écarté. Le verset qui gouverne tout :</p>
+        <div class="cite">
+          <span class="tag">Coran</span>
+          <p class="ar">لَيْسَ كَمِثْلِهِ شَىْءٌ</p>
+          <p class="sig">« Rien n'est tel que Lui. »</p>
+          <p class="src">Ash-Shūrā · 42:11</p>
+        </div>
+        <p>Tout sens apparent qui ferait ressembler Allah aux créatures est donc faux d'emblée. [Ajouter d'autres
+          exemples : textes au sens figuré, etc.]</p>
+      </section>
+
+      <section id="s3">
+        <h2><span class="num">3</span> La voie des Salaf et des Khalaf</h2>
+        <p>Les premiers savants n'ont pas retenu le sens anthropomorphe : ils affirmaient le texte sans lui prêter
+          de modalité (bilā kayf), ou en précisaient le sens conforme. [À développer.]</p>
+        <div class="cite parole">
+          <span class="tag">Parole d'un savant</span>
+          <div class="who"><span class="n">Al-Imām ʿAlī</span><span class="badge">Compagnon</span></div>
+          <p class="ar">كَانَ اللهُ وَلَا مَكَان</p>
+          <p class="sig">« Allah existait et il n'y avait pas d'endroit. »</p>
+          <a class="link" href="#/paroles/imam-ali-kana-llahu-wa-la-makan">Voir la parole et le scan du livre →</a>
+        </div>
+        <details>
+          <summary>▸ Voir les autres paroles de savants</summary>
+          <div class="cite parole" style="border:0;background:transparent;padding:12px 0 0">
+            <div class="who"><span class="n">Al-Imām Mālik</span><span class="badge" style="background:var(--green-soft);color:var(--green-deep);border-color:var(--green-line)">Salaf</span></div>
+            <p style="margin:0">[Parole à insérer — texte + référence + scan.]</p>
+          </div>
+        </details>
+      </section>
+
+      <section id="s4">
+        <h2><span class="num">4</span> Répondre à l'objection : « il faudrait s'en tenir au sens apparent »</h2>
+        <p>C'est l'objection la plus fréquente. Or elle se retourne d'elle-même : <b>le Coran a déjà dit</b> qu'il
+          existe des versets équivoques (3:7), et <b>prendre systématiquement le sens apparent</b> reviendrait à
+          contredire « rien n'est tel que Lui » (42:11). Refuser toute interprétation, c'est donc contredire le
+          Livre. [Développer la réfutation, sourcée — c'est le cœur de l'article.]</p>
+      </section>
+
+      <div class="cta">
+        <div>
+          <p class="h">Passer aux textes, un par un</p>
+          <p class="p">L'istiwā', la yad, le wajh… chaque texte avec ses preuves.</p>
+        </div>
+        <a href="#/croyance/versets-hadiths-equivoques">Voir la collection →</a>
+      </div>
+    </div>
+  </div>
+</div>
