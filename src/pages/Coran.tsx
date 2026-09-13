@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { useLocation } from 'react-router-dom';
 import { m, AnimatePresence } from 'framer-motion';
 import {
   Search, Filter, X, Star, Loader,
@@ -233,6 +234,13 @@ export const Corans: React.FC = () => {
 
   const loadMoreRef = useRef<HTMLDivElement>(null);
   const debounceRef = useRef<ReturnType<typeof setTimeout>>();
+  const location = useLocation();
+
+  // Ouvre directement un verset transmis depuis l'accueil (« Verset à méditer »).
+  useEffect(() => {
+    const it = (location.state as { openItem?: Coran } | null)?.openItem;
+    if (it) setSelectedCoran(it);
+  }, [location.state]);
 
   // Précharge les SUJETS (le menu déroulant filtre par sujet ; les tags se
   // cherchent en texte libre dans la barre de recherche).
