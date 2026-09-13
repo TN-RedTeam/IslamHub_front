@@ -103,7 +103,7 @@ export const HadithPage: React.FC = () => {
       <main className="container mx-auto px-4 py-10 max-w-3xl space-y-6">
         <div className="flex flex-wrap gap-3">
           <button onClick={copyDebate} className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white dark:bg-gray-800 border border-line text-green hover:bg-green-soft transition-colors">
-            {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />} Copier (format débat)
+            {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />} Copier
           </button>
           <button onClick={share} className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white dark:bg-gray-800 border border-line text-green hover:bg-green-soft transition-colors">
             <Share2 className="h-4 w-4" /> Partager

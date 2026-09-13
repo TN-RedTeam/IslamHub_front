@@ -226,7 +226,7 @@ export const VersetEquivoque: React.FC = () => {
             {/* Actions */}
             <div className="flex flex-wrap gap-2.5 mt-7 pt-5 border-t border-line">
               <button onClick={copyDebate} className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-green text-white text-sm font-medium hover:bg-green-deep transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green">
-                {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />} Copier (format débat)
+                {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />} Copier
               </button>
               <button onClick={share} className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-green-line bg-surface text-green-deep text-sm hover:bg-green-soft transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green">
                 <Share2 className="w-4 h-4" /> Partager
