@@ -3,9 +3,11 @@ import { Loader2 } from 'lucide-react';
 import { dataService } from '../services/DataService';
 import { FemmesReader } from '../components/FemmesReader';
 import { PageHeader } from '../components/PageHeader';
+import { usePageTitle } from '../hooks/usePageTitle';
 import type { FemmesChapitre } from '../types';
 
 export const Femmes: React.FC = () => {
+  usePageTitle('La femme musulmane');
   const [chapitres, setChapitres] = useState<FemmesChapitre[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -20,9 +22,9 @@ export const Femmes: React.FC = () => {
     <div className="min-h-screen bg-ground">
       <PageHeader
         eyebrow="Fiqh"
-        title="Les femmes en Islam"
+        title="La femme musulmane"
         subtitle="Les règles et prescriptions spécifiques aux femmes"
-        crumbs={[{ label: 'Accueil', to: '/' }, { label: 'Les femmes en Islam' }]}
+        crumbs={[{ label: 'Accueil', to: '/' }, { label: 'La femme musulmane' }]}
       />
 
       <main className="container mx-auto px-4 py-12 max-w-6xl">
