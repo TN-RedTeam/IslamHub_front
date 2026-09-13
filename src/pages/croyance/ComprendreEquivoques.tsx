@@ -1,30 +1,10 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Loader2, ArrowRight, X, Check, ChevronRight } from 'lucide-react';
+import { Loader2, ArrowRight, X, Check } from 'lucide-react';
 import { dataService } from '../../services/DataService';
-import { Markdown } from '../../components/Markdown';
-import { ExposeCitationBloc } from '../../components/ExposeCitationBloc';
+import { ExposeBody } from '../../components/ExposeBody';
 import { usePageTitle } from '../../hooks/usePageTitle';
 import type { Expose, ExposeCitation, MutashabihExemple } from '../../types';
-
-/** Découpe la prose Markdown en sections au niveau des titres « ## ». */
-function splitSections(md: string): { title: string; body: string }[] {
-  const out: { title: string; body: string }[] = [];
-  let cur: { title: string; body: string } | null = null;
-  for (const line of md.split('\n')) {
-    const m = line.match(/^##\s+(.+)$/);
-    if (m) {
-      if (cur) out.push(cur);
-      cur = { title: m[1].replace(/^\s*\d+[.)]\s*/, '').trim(), body: '' };
-    } else if (cur) {
-      cur.body += line + '\n';
-    }
-  }
-  if (cur) out.push(cur);
-  return out;
-}
-
-const scrollToId = (id: string) => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
 /**
  * Article de fond « Comprendre les textes équivoques » (à lire en premier).
@@ -47,31 +27,9 @@ export const ComprendreEquivoques: React.FC = () => {
     ]).then(([e, ex, ci]) => { setExpose(e); setExemples(ex); setCitations(ci); }).finally(() => setLoading(false));
   }, []);
 
-  const sections = useMemo(() => splitSections(expose?.contenu_md ?? ''), [expose]);
-  const citForSection = (n: number) => citations.filter((c) => c.section === n);
-  const generalCit = citations.filter((c) => c.section == null);
-
   if (loading) {
     return <div className="min-h-screen bg-ground grid place-items-center"><Loader2 className="w-10 h-10 text-green animate-spin" /></div>;
   }
-
-  const renderCitations = (list: ExposeCitation[]) => {
-    const direct = list.filter((c) => !c.accordeon);
-    const folded = list.filter((c) => c.accordeon);
-    return (
-      <>
-        {direct.map((c) => <ExposeCitationBloc key={c.id} c={c} />)}
-        {folded.length > 0 && (
-          <details className="mt-3 border-t border-dashed border-line pt-3">
-            <summary className="cursor-pointer font-semibold text-green text-sm list-none flex items-center gap-1.5">
-              <ChevronRight className="w-4 h-4" /> Voir {folded.length} autre{folded.length > 1 ? 's' : ''} preuve{folded.length > 1 ? 's' : ''}
-            </summary>
-            {folded.map((c) => <ExposeCitationBloc key={c.id} c={c} />)}
-          </details>
-        )}
-      </>
-    );
-  };
 
   return (
     <div className="min-h-screen bg-ground">
@@ -104,50 +62,8 @@ export const ComprendreEquivoques: React.FC = () => {
           </div>
         )}
 
-        {/* Sommaire + contenu */}
-        <div className="grid grid-cols-1 min-[860px]:grid-cols-[210px_1fr] gap-7 mt-6">
-          {sections.length > 0 && (
-            <nav aria-label="Sommaire" className="self-start min-[860px]:sticky min-[860px]:top-5">
-              <p className="text-[11px] uppercase tracking-[0.16em] text-muted font-semibold mb-2.5">Sur cette page</p>
-              <ol className="list-none m-0 p-0">
-                {sections.map((s, i) => (
-                  <li key={i}>
-                    <a
-                      href={`#sec-${i + 1}`}
-                      onClick={(e) => { e.preventDefault(); scrollToId(`sec-${i + 1}`); }}
-                      className="flex items-baseline gap-2 px-2.5 py-1.5 rounded-lg text-sm text-ink hover:bg-green-soft hover:text-green-deep focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green"
-                    >
-                      <span className="font-display font-semibold text-gold text-[13px]">{i + 1}</span>{s.title}
-                    </a>
-                  </li>
-                ))}
-              </ol>
-            </nav>
-          )}
-
-          <div>
-            {sections.length === 0 && !expose?.contenu_md && (
-              <p className="text-muted italic">Article en cours de rédaction.</p>
-            )}
-
-            {sections.map((s, i) => (
-              <section key={i} id={`sec-${i + 1}`} className="mb-9" style={{ scrollMarginTop: 20 }}>
-                <h2 className="font-display font-semibold text-green-deep text-[22px] mb-3 flex items-center gap-2.5">
-                  <span className="w-[26px] h-[26px] rounded-full bg-green-soft text-green grid place-items-center text-sm shrink-0 font-display">{i + 1}</span>
-                  {s.title}
-                </h2>
-                <Markdown>{s.body}</Markdown>
-                {renderCitations(citForSection(i + 1))}
-              </section>
-            ))}
-
-            {generalCit.length > 0 && (
-              <section className="mb-9">
-                <h2 className="font-display font-semibold text-green-deep text-[22px] mb-3">Preuves</h2>
-                {renderCitations(generalCit)}
-              </section>
-            )}
-          </div>
+        <div className="mt-6">
+          <ExposeBody contenuMd={expose?.contenu_md ?? null} citations={citations} />
         </div>
 
         {/* Subtilité de la langue : cartes d'exemples */}

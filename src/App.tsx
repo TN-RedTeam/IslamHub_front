@@ -26,6 +26,7 @@ import { PiliersDeLaFoi } from './pages/croyance/PiliersDeLaFoi';
 import { VersetsEquivoques } from './pages/croyance/VersetsEquivoques';
 import { VersetEquivoque } from './pages/croyance/VersetEquivoque';
 import { ComprendreEquivoques } from './pages/croyance/ComprendreEquivoques';
+import { JugementRationnel } from './pages/croyance/JugementRationnel';
 import { NomsDAllah } from './pages/croyance/NomsDAllah';
 import { DossierThematique } from './pages/DossierThematique';
 import { NotFound } from './pages/NotFound';
@@ -94,6 +95,7 @@ function App() {
                 <Route path="/croyance/versets-equivoques" element={<Navigate to="/croyance/versets-hadiths-equivoques" replace />} />
                 <Route path="/croyance/versets-equivoques/:slug" element={<OldVersetRedirect />} />
                 <Route path="/croyance/noms-d-allah" element={<NomsDAllah />} />
+                <Route path="/croyance/jugement-rationnel" element={<JugementRationnel />} />
                 <Route path="/dossiers/:slug" element={<DossierThematique />} />
 
                 {/* Écoles (madhāhib) */}

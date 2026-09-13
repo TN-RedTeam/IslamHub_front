@@ -25,6 +25,12 @@ const CARDS: Card[] = [
     desc: 'Les six fondements : croire en Allah, en Ses anges, en Ses livres, en Ses prophètes, au Jour dernier et au destin.',
     icon: 'pillars',
   },
+  {
+    to: '/croyance/jugement-rationnel',
+    title: 'Le jugement rationnel',
+    desc: 'Le nécessaire, l\'impossible et le possible — et comment la raison saine mène à la connaissance du Créateur.',
+    icon: 'balance',
+  },
 ];
 
 export const Croyance: React.FC = () => {
