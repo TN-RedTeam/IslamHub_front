@@ -10,10 +10,8 @@ interface AuthState {
   email: string | null;
   isAdmin: boolean;
   loading: boolean;
-  /** Envoie un code de connexion à 6 chiffres par e-mail. */
-  requestCode: (email: string) => Promise<void>;
-  /** Vérifie le code reçu et ouvre la session. */
-  verifyCode: (email: string, code: string) => Promise<void>;
+  /** Connexion par e-mail + mot de passe (aucun e-mail envoyé). */
+  signIn: (email: string, password: string) => Promise<void>;
   signOut: () => Promise<void>;
 }
 
@@ -30,16 +28,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return () => sub.subscription.unsubscribe();
   }, []);
 
-  const requestCode = useCallback(async (email: string) => {
-    const { error } = await supabase.auth.signInWithOtp({
-      email: email.trim(),
-      options: { shouldCreateUser: true },
-    });
-    if (error) throw error;
-  }, []);
-
-  const verifyCode = useCallback(async (email: string, code: string) => {
-    const { error } = await supabase.auth.verifyOtp({ email: email.trim(), token: code.trim(), type: 'email' });
+  const signIn = useCallback(async (email: string, password: string) => {
+    const { error } = await supabase.auth.signInWithPassword({ email: email.trim(), password });
     if (error) throw error;
   }, []);
 
@@ -49,7 +39,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const isAdmin = (email ?? '').toLowerCase() === ADMIN_EMAIL.toLowerCase();
 
   return (
-    <AuthCtx.Provider value={{ session, email, isAdmin, loading, requestCode, verifyCode, signOut }}>
+    <AuthCtx.Provider value={{ session, email, isAdmin, loading, signIn, signOut }}>
       {children}
     </AuthCtx.Provider>
   );
