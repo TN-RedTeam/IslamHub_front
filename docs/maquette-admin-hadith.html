@@ -1,0 +1,198 @@
+<title>IslamHub — Admin · Nouveau hadith (maquette)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@500;600&family=Newsreader:opsz,wght@6..72,400;6..72,500&family=Scheherazade+New:wght@500&display=swap">
+<style>
+  :root{--ground:#f2ede3;--surface:#fff;--ink:#1b2620;--muted:#6a746a;--line:#e3d9c8;
+    --green:#1c5a43;--green-deep:#0f3d2e;--green-soft:#e6f0e9;--green-line:#cfe1d6;--gold:#b0872f;--gold-soft:#f2e6cb;--red:#b0413a}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--ground);color:var(--ink);font-family:Newsreader,Georgia,serif;line-height:1.5}
+  a{color:inherit;text-decoration:none}
+  /* top bar */
+  .bar{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:14px;height:58px;padding:0 20px;background:var(--green-deep);color:#f3ede0}
+  .bar .b{font-family:"EB Garamond",serif;font-weight:600;font-size:20px}.bar .b span{color:#e6c877}
+  .bar .tag{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#bcd3c6;border:1px solid #2e5c49;border-radius:999px;padding:3px 10px}
+  .bar .sp{margin-left:auto}.bar .who{font-size:13px;color:#cfe0d6}.bar .site{font-size:13px;background:#fff;color:var(--green-deep);border-radius:8px;padding:7px 13px;font-weight:600}
+  .layout{display:grid;grid-template-columns:230px 1fr;min-height:calc(100vh - 58px)}
+  /* sidebar */
+  .side{border-right:1px solid var(--line);background:#fbf8f1;padding:16px 12px}
+  .side .h{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin:6px 10px 8px;font-weight:600}
+  .side a{display:flex;align-items:center;gap:9px;padding:9px 11px;border-radius:9px;font-size:14.5px;color:var(--ink);margin-bottom:2px}
+  .side a:hover{background:var(--green-soft)}
+  .side a.on{background:var(--green);color:#fff}
+  .side a .c{margin-left:auto;font-size:12px;color:var(--muted)}.side a.on .c{color:#cfe0d6}
+  /* main */
+  main{padding:22px 26px 120px;max-width:920px}
+  .crumb{font-size:12.5px;color:var(--muted)}
+  h1{font-family:"EB Garamond",serif;font-weight:600;font-size:30px;color:var(--green-deep);margin:6px 0 2px}
+  .sub{color:var(--muted);font-size:14.5px;margin:0 0 18px}
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px 22px;margin-bottom:16px;box-shadow:0 1px 2px rgba(27,38,32,.03)}
+  .card > .sh{display:flex;align-items:center;gap:9px;margin:-2px 0 15px}
+  .card .sh .n{width:24px;height:24px;border-radius:7px;background:var(--green-soft);color:var(--green);display:grid;place-items:center;font-size:12px;font-family:"EB Garamond",serif;font-weight:600}
+  .card .sh h2{font-family:"EB Garamond",serif;font-weight:600;font-size:19px;color:var(--green-deep);margin:0}
+  .card .sh .opt{margin-left:auto;font-size:12px;color:var(--muted)}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .field{margin-bottom:14px}.field:last-child{margin-bottom:0}
+  label{display:block;font-size:13px;font-weight:600;color:#3c4238;margin:0 0 5px}
+  label .req{color:var(--red)} label .hint{font-weight:400;color:var(--muted)}
+  input,textarea,select{width:100%;font-family:inherit;font-size:15px;color:var(--ink);background:#fffdf9;border:1px solid var(--line);border-radius:9px;padding:10px 12px}
+  input:focus,textarea:focus,select:focus{outline:2px solid var(--green);outline-offset:0;border-color:var(--green)}
+  textarea{resize:vertical;min-height:64px}
+  .ar{direction:rtl;text-align:right;font-family:"Scheherazade New",serif;font-size:22px;line-height:2;min-height:86px}
+  .help{font-size:12px;color:var(--muted);margin-top:5px}
+  /* repeatable sources */
+  .srow{display:grid;grid-template-columns:1fr 90px 1fr 34px;gap:10px;align-items:end;margin-bottom:10px}
+  .srow .del{height:40px;border:1px solid var(--line);border-radius:9px;background:#fff;color:var(--red);cursor:pointer;font-size:16px}
+  .add{border:1px dashed var(--green-line);background:var(--green-soft);color:var(--green-deep);border-radius:9px;padding:9px 14px;font-weight:600;font-size:14px;cursor:pointer}
+  .miniadd{font-size:12.5px;color:var(--green);font-weight:600;cursor:pointer;background:none;border:0;padding:0;margin-top:6px}
+  /* tags + themes */
+  .chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:8px}
+  .chip{font-size:13px;background:var(--green-soft);color:var(--green-deep);border:1px solid var(--green-line);border-radius:999px;padding:4px 11px;display:inline-flex;gap:6px;align-items:center}
+  .chip b{cursor:pointer;color:var(--muted)}
+  .chip.derived{background:var(--gold-soft);color:#7a5a17;border-color:#e6d3a3}
+  .derived-box{margin-top:12px;padding:12px 14px;border:1px solid var(--line);border-radius:10px;background:#fdfbf6}
+  .derived-box .t{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);font-weight:600}
+  /* sticky save bar */
+  .savebar{position:fixed;bottom:0;left:230px;right:0;display:flex;align-items:center;gap:12px;padding:14px 26px;background:rgba(251,248,241,.94);backdrop-filter:blur(6px);border-top:1px solid var(--line)}
+  .savebar .st{font-size:13px;color:var(--muted)} .savebar .sp{margin-left:auto}
+  .btn{font-size:14.5px;font-weight:600;border-radius:10px;padding:11px 20px;cursor:pointer;border:1px solid transparent}
+  .btn.p{background:var(--green);color:#fff} .btn.s{background:#fff;border-color:var(--line);color:var(--green-deep)} .btn.g{background:none;color:var(--muted)}
+  @media(max-width:780px){.layout{grid-template-columns:1fr}.side{display:none}.grid2,.srow{grid-template-columns:1fr}.srow .del{width:44px}.savebar{left:0}}
+</style>
+
+<div class="bar">
+  <span class="b">Islam<span>Hub</span></span><span class="tag">Admin</span>
+  <span class="sp"></span><span class="who">karimromdhane7@gmail.com</span><a class="site">Voir le site ↗</a>
+</div>
+
+<div class="layout">
+  <nav class="side">
+    <p class="h">Contenus</p>
+    <a class="on">Hadiths <span class="c">125</span></a>
+    <a>Paroles de savants <span class="c">43</span></a>
+    <a>Versets par thème <span class="c">16</span></a>
+    <a>Versets/hadiths équivoques <span class="c">·</span></a>
+    <a>Invocations & Évocations</a>
+    <a>Récits</a>
+    <p class="h" style="margin-top:14px">Référentiels</p>
+    <a>Recueils (ouvrages)</a>
+    <a>Narrateurs</a>
+    <a>Savants</a>
+    <a>Thèmes & mapping tags</a>
+  </nav>
+
+  <main>
+    <p class="crumb">Admin · Hadiths · Nouveau</p>
+    <h1>Nouveau hadith</h1>
+    <p class="sub">Tout se saisit ici : le hadith, son authenticité, le narrateur, les sources et les thèmes — enregistrés d'un seul coup.</p>
+
+    <!-- 1. Texte -->
+    <section class="card">
+      <div class="sh"><span class="n">1</span><h2>Le texte du hadith</h2></div>
+      <div class="field"><label for="sujet">Sujet <span class="req">*</span> <span class="hint">— sert de titre et à générer l'URL</span></label><input id="sujet" placeholder="Ex. Allah existe sans endroit"></div>
+      <div class="field"><label for="ar">Texte arabe <span class="req">*</span></label><textarea id="ar" class="ar" placeholder="Colle ici le texte arabe (vocalisé)…" dir="rtl"></textarea><p class="help">Colle le texte arabe (vocalisé). L'unicité est vérifiée automatiquement (pas de doublon).</p></div>
+      <div class="grid2">
+        <div class="field"><label for="ph">Phonétique</label><input id="ph" placeholder="(Kāna l-Lāhou wa lam yakoun…)"></div>
+        <div class="field"><label for="fr">Traduction française</label><input id="fr" placeholder="« Dieu existe de toute éternité… »"></div>
+      </div>
+      <div class="field"><label for="ex">Explication <span class="hint">— Markdown accepté</span></label><textarea id="ex" placeholder="Explication, contexte, commentaire…"></textarea></div>
+    </section>
+
+    <!-- 2. Authenticité -->
+    <section class="card">
+      <div class="sh"><span class="n">2</span><h2>Authenticité & type</h2></div>
+      <div class="grid2">
+        <div class="field"><label for="deg">Degré d'authenticité</label><select id="deg"><option>Sahih</option><option>Hassan</option><option>Da'if</option><option value="">—</option></select></div>
+        <div class="field"><label for="typ">Type</label><select id="typ"><option value="">—</option><option>Marfou'</option><option>Qoudoussy</option><option>Mawqouf</option></select></div>
+      </div>
+      <div class="field"><label for="juge">Jugé authentique par <span class="hint">— noms libres, séparés par une virgule</span></label><input id="juge" placeholder="Al-Bukhari, Ibn Hibban"></div>
+    </section>
+
+    <!-- 3. Narrateur & rapporteur -->
+    <section class="card">
+      <div class="sh"><span class="n">3</span><h2>Narrateur & rapporteur</h2></div>
+      <div class="grid2">
+        <div class="field">
+          <label for="narr">Narrateur <span class="hint">— le Compagnon qui rapporte</span></label>
+          <select id="narr"><option>ʿAichah</option><option>Omar Ibn Al-Khattab</option><option>Imran ibn Husain</option><option value="__new">＋ Nouveau narrateur…</option></select>
+          <button class="miniadd" type="button">Le badge (Compagnon / Épouse du Prophète / Calife…) et l'honorifique viennent de sa fiche</button>
+        </div>
+        <div class="field"><label for="rap">Rapporteur <span class="hint">— champ texte (historique)</span></label><input id="rap" placeholder="Al-Bukhari"></div>
+      </div>
+      <div class="derived-box" style="display:none" id="newnarr">
+        <div class="grid2">
+          <div class="field"><label>Nom du narrateur</label><input placeholder="Ex. Anas ibn Malik"></div>
+          <div class="field"><label>Génération</label><select><option>sahabi</option><option>tabii</option><option>tabi_tabii</option><option>khalaf</option></select></div>
+          <div class="field"><label>Rôle (badge)</label><select><option value="">— aucun</option><option>epouse_prophete</option><option>calife_rachidoun</option></select></div>
+          <div class="field"><label>Sexe (honorifique)</label><select><option>m</option><option>f</option></select></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. Sources -->
+    <section class="card">
+      <div class="sh"><span class="n">4</span><h2>Sources</h2><span class="opt">un hadith → un ou plusieurs ouvrages</span></div>
+      <div id="sources">
+        <div class="srow">
+          <div><label>Ouvrage</label><select><option>Al-Bukhari — Sahih al-Bukhari</option><option>Muslim — Sahih Muslim</option><option>Ibn Hibban — Sahih Ibn Hibban</option><option value="__new">＋ Nouvel ouvrage…</option></select></div>
+          <div><label>N°</label><input placeholder="3191"></div>
+          <div><label>Chapitre <span class="hint">(optionnel)</span></label><input placeholder="Kitab Bad' al-Khalq"></div>
+          <button class="del" title="Retirer">✕</button>
+        </div>
+        <div class="srow">
+          <div><select><option>Ibn Hibban — Sahih Ibn Hibban</option></select></div>
+          <div><input placeholder="6146"></div>
+          <div><input placeholder="—"></div>
+          <button class="del" title="Retirer">✕</button>
+        </div>
+      </div>
+      <button class="add" id="addsrc" type="button">＋ Ajouter une source</button>
+      <p class="help">L'affichage regroupe par auteur et ordonne par année de décès (maître avant élève) — automatique.</p>
+    </section>
+
+    <!-- 5. Thèmes -->
+    <section class="card">
+      <div class="sh"><span class="n">5</span><h2>Thèmes & mots-clés</h2></div>
+      <div class="field">
+        <label for="tagin">Tags <span class="hint">— tape un mot puis Entrée ; les thèmes se déduisent automatiquement</span></label>
+        <input id="tagin" placeholder="Ex. exemption, croyance">
+        <div class="chips" id="tags">
+          <span class="chip">exemption <b>✕</b></span><span class="chip">croyance <b>✕</b></span>
+        </div>
+      </div>
+      <div class="derived-box">
+        <span class="t">Thèmes déduits (via le mapping)</span>
+        <div class="chips"><span class="chip derived">L'exemption d'Allah (tanzīh)</span><span class="chip derived">La foi et la croyance</span></div>
+        <button class="miniadd" type="button">＋ Ajouter un thème à la main</button>
+      </div>
+    </section>
+  </main>
+</div>
+
+<div class="savebar">
+  <span class="st">✓ Brouillon — rien n'est encore enregistré</span>
+  <span class="sp"></span>
+  <button class="btn g" type="button">Annuler</button>
+  <button class="btn s" type="button">Enregistrer & nouveau</button>
+  <button class="btn p" type="button">Enregistrer le hadith</button>
+</div>
+
+<script>
+  // Interactions minimales pour donner vie à la maquette.
+  document.getElementById('addsrc').onclick=function(){
+    var r=document.querySelector('#sources .srow').cloneNode(true);
+    r.querySelectorAll('input').forEach(function(i){i.value=''});
+    document.getElementById('sources').appendChild(r);
+  };
+  document.getElementById('sources').addEventListener('click',function(e){
+    if(e.target.classList.contains('del') && document.querySelectorAll('#sources .srow').length>1) e.target.closest('.srow').remove();
+  });
+  document.getElementById('tags').addEventListener('click',function(e){ if(e.target.tagName==='B') e.target.closest('.chip').remove(); });
+  document.getElementById('tagin').addEventListener('keydown',function(e){
+    if(e.key==='Enter' && this.value.trim()){e.preventDefault();
+      var s=document.createElement('span');s.className='chip';s.innerHTML=this.value.trim()+' <b>✕</b>';
+      document.getElementById('tags').appendChild(s);this.value='';}
+  });
+  document.getElementById('narr').addEventListener('change',function(){
+    document.getElementById('newnarr').style.display=this.value==='__new'?'block':'none';
+  });
+</script>

@@ -32,6 +32,12 @@ import { JugementRationnel } from './pages/croyance/JugementRationnel';
 import { NomsDAllah } from './pages/croyance/NomsDAllah';
 import { DossierThematique } from './pages/DossierThematique';
 import { NotFound } from './pages/NotFound';
+import { AuthProvider } from './context/AuthContext';
+import { AdminLogin } from './pages/admin/AdminLogin';
+import { AdminLayout } from './pages/admin/AdminLayout';
+import { AdminHome } from './pages/admin/AdminHome';
+import { AdminHadithForm } from './pages/admin/AdminHadithForm';
+import { AdminHadithsList } from './pages/admin/AdminHadithsList';
 
 // Import des écoles
 import {
@@ -47,18 +53,14 @@ function OldVersetRedirect() {
   return <Navigate to={`/croyance/versets-hadiths-equivoques/${slug}`} replace />;
 }
 
-function App() {
+/** Shell public : barre de nav + pied de page + toutes les pages du site. */
+function PublicShell() {
   return (
-    <ThemeProvider>
-      {/* LazyMotion fournit les animations aux composants `m.` de framer-motion.
-          Mode NON strict : les pages encore en `motion.` continuent de fonctionner. */}
-      <LazyMotion features={domAnimation}>
-        <Router>
-          <div className="min-h-screen bg-ground transition-colors duration-200 flex flex-col">
-            <Navigation />
-            <PwaUpdater />
-            <main className="flex-1">
-              <Routes>
+    <div className="min-h-screen bg-ground transition-colors duration-200 flex flex-col">
+      <Navigation />
+      <PwaUpdater />
+      <main className="flex-1">
+        <Routes>
                 {/* Pages principales */}
                 <Route path="/" element={<Home />} />
                 <Route path="/coran" element={<Corans />} />
@@ -114,12 +116,36 @@ function App() {
 
                 {/* 404 */}
                 <Route path="*" element={<NotFound />} />
-              </Routes>
-            </main>
-            <SiteFooter />
-          </div>
-        </Router>
-      </LazyMotion>
+        </Routes>
+      </main>
+      <SiteFooter />
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <ThemeProvider>
+      <AuthProvider>
+        {/* LazyMotion fournit les animations aux composants `m.` de framer-motion.
+            Mode NON strict : les pages encore en `motion.` continuent de fonctionner. */}
+        <LazyMotion features={domAnimation}>
+          <Router>
+            <Routes>
+              {/* Espace d'administration (hors shell public, auth requise) */}
+              <Route path="/admin/login" element={<AdminLogin />} />
+              <Route path="/admin" element={<AdminLayout />}>
+                <Route index element={<AdminHome />} />
+                <Route path="hadiths" element={<AdminHadithsList />} />
+                <Route path="hadiths/nouveau" element={<AdminHadithForm />} />
+                <Route path="hadiths/:id" element={<AdminHadithForm />} />
+              </Route>
+              {/* Site public */}
+              <Route path="/*" element={<PublicShell />} />
+            </Routes>
+          </Router>
+        </LazyMotion>
+      </AuthProvider>
     </ThemeProvider>
   );
 }
