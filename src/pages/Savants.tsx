@@ -4,6 +4,7 @@ import { Loader2, Search, Users } from 'lucide-react';
 import { dataService } from '../services/DataService';
 import { useSeo } from '../hooks/useSeo';
 import { BadgeGeneration } from '../components/BadgeGeneration';
+import { SavantsTabs } from '../components/SavantsTabs';
 import type { SavantInfo } from '../types';
 
 // Libellés d'affichage des domaines (valeur en base → étiquette FR).
@@ -20,8 +21,8 @@ const epoque = (s: SavantInfo) => {
 
 export const Savants: React.FC = () => {
   useSeo({
-    title: 'Annuaire des savants',
-    description: "Annuaire des savants de Ahlou s-Sounnah cités dans les hadiths, paroles et dossiers : école, époque, domaines, biographie.",
+    title: "Les Savants de l'Islam",
+    description: "Les savants de Ahlou s-Sounnah cités dans les hadiths, paroles et dossiers : école, époque, domaines, biographie.",
   });
 
   const [savants, setSavants] = useState<SavantInfo[]>([]);
@@ -81,10 +82,11 @@ export const Savants: React.FC = () => {
           <p className="text-xs font-semibold uppercase tracking-[0.16em] text-gold mb-1">
             Ahlou s-Sounnah wa l-Jamā‘ah · Références
           </p>
-          <h1 className="text-4xl md:text-5xl font-bold text-green-deep font-display">Annuaire des savants</h1>
+          <h1 className="text-4xl md:text-5xl font-bold text-green-deep font-display">Les Savants de l'Islam</h1>
           <p className="text-gray-600 dark:text-gray-400 mt-2 max-w-2xl">
             Les savants cités à travers les hadiths, les paroles et les dossiers. Chaque fiche donne le crédit et le contexte de celui dont on rapporte la parole.
           </p>
+          <SavantsTabs className="mt-5" />
         </header>
 
         {/* Barre d'outils sticky */}

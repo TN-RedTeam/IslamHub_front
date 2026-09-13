@@ -12,7 +12,7 @@ const navItems = [
   { to: '/croyance', label: 'Croyance' },
   { to: '/hadiths', label: 'Hadiths' },
   { to: '/ecoles', label: 'Écoles' },
-  { to: '/paroles', label: 'Paroles' },
+  { to: '/savants', label: 'Savants' },
   { to: '/invocations', label: 'Invocations & Évocations' },
   { to: '/multimedia', label: 'Multimédia' },
   { to: '/femmes', label: 'Femmes' },

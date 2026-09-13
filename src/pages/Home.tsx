@@ -52,7 +52,7 @@ export const Home: React.FC = () => {
 
   const ressources = [
     { label: 'Hadiths', value: stats.hadiths, icon: Book, path: '/hadiths' },
-    { label: 'Paroles', value: stats.paroles, icon: GraduationCap, path: '/paroles' },
+    { label: 'Paroles', value: stats.paroles, icon: GraduationCap, path: '/savants/paroles' },
     { label: 'Invocations & Évocations', value: stats.douaas + stats.dhikrs, icon: Heart, path: '/invocations' },
     { label: 'Vidéos', value: stats.videos, icon: Video, path: '/multimedia' },
     { label: 'Versets', value: stats.coran, icon: BookOpen, path: '/coran' },

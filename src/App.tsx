@@ -59,10 +59,13 @@ function App() {
                 {/* Redirections des anciennes URL pour ne pas casser les liens */}
                 <Route path="/douaas" element={<Navigate to="/invocations" replace />} />
                 <Route path="/dhikrs" element={<Navigate to="/invocations" replace />} />
-                <Route path="/paroles" element={<Paroles />} />
-                <Route path="/paroles/:slug" element={<ParolePage />} />
+                {/* Rubrique « Savants » : répertoire (défaut) + toutes les paroles */}
                 <Route path="/savants" element={<Savants />} />
+                <Route path="/savants/paroles" element={<Paroles />} />
                 <Route path="/savants/:slug" element={<SavantPage />} />
+                {/* Pages de parole dédiées + redirection de l'ancienne rubrique */}
+                <Route path="/paroles/:slug" element={<ParolePage />} />
+                <Route path="/paroles" element={<Navigate to="/savants/paroles" replace />} />
                 <Route path="/multimedia" element={<Multimedia />} />
                 <Route path="/femmes" element={<Femmes />} />
 

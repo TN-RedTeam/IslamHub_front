@@ -111,6 +111,11 @@ export const SavantPage: React.FC = () => {
                       <Markdown>{p.explication}</Markdown>
                     </div>
                   )}
+                  {p.slug && (
+                    <Link to={`/paroles/${p.slug}`} className="inline-flex items-center gap-1.5 mt-3 text-green text-sm font-medium hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green rounded">
+                      Voir la parole complète et les scans →
+                    </Link>
+                  )}
                 </article>
               ))}
             </div>

@@ -38,7 +38,7 @@ export const ParolePage: React.FC = () => {
       <div className="min-h-screen bg-ground grid place-items-center px-5">
         <div className="text-center">
           <h1 className="font-display text-2xl text-green-deep mb-2">Parole introuvable</h1>
-          <Link to="/paroles" className="text-green font-medium hover:underline">Toutes les paroles</Link>
+          <Link to="/savants/paroles" className="text-green font-medium hover:underline">Toutes les paroles</Link>
         </div>
       </div>
     );
@@ -54,7 +54,7 @@ export const ParolePage: React.FC = () => {
       <main className="max-w-3xl mx-auto px-5 py-7 pb-16">
         <nav aria-label="Fil d'Ariane" className="text-xs text-muted mb-1.5">
           <Link to="/" className="hover:text-green-deep">Accueil</Link> <span aria-hidden>·</span>{' '}
-          <Link to="/paroles" className="hover:text-green-deep">Paroles</Link>
+          <Link to="/savants/paroles" className="hover:text-green-deep">Paroles</Link>
           {p.savant && <> <span aria-hidden>·</span> {p.savant}</>}
         </nav>
 
@@ -134,7 +134,7 @@ export const ParolePage: React.FC = () => {
         )}
 
         <div className="mt-8">
-          <Link to="/paroles" className="inline-flex items-center gap-1.5 text-green font-medium hover:underline">
+          <Link to="/savants/paroles" className="inline-flex items-center gap-1.5 text-green font-medium hover:underline">
             <ArrowLeft className="w-4 h-4" /> Toutes les paroles
           </Link>
         </div>
