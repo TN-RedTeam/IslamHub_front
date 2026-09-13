@@ -33,6 +33,10 @@ Projet Supabase : `kxzfwtwbghuvnlueusvp`. Tout se fait dans **Supabase → SQL E
 **Exposés éditoriaux & citations réutilisables** : `exposes` (+ bloc « texte
 fondateur »), `expose_citations`, `mutashabih_exemples`. *(§5 quater)*
 
+**Thèmes transverses** (recherche unifiée Coran / Sunna / Paroles) :
+`themes`, `theme_tags` (mapping éditable), `coran_themes`, `hadith_themes`,
+`parole_themes`. *(§5 quinquies)*
+
 **Coran / exégèse** : `sourates`, `versets`, `exegeses`.
 
 > Tables héritées, **non utilisées** : `tag` (singulier, vide — remplacée par
@@ -466,6 +470,39 @@ values ('jugement-rationnel', 4, 'verset', '⟨verset arabe⟩', '⟨sens⟩', '
 insert into public.mutashabih_exemples (mot_arabe, translitteration, sens_apparent, sens_vise, ordre)
 values ('⟨mot arabe⟩', '⟨translittération⟩', '⟨sens apparent⟩', '⟨sens visé⟩', 0);
 ```
+
+---
+
+## 5 quinquies. Thèmes transverses (recherche unifiée)
+
+Rubrique **Thèmes** (`/themes`, `/themes/:slug`) : un thème regroupe **versets,
+hadiths et paroles** d'un même sujet. **Principe** : on ne thème pas les contenus
+un par un — on mappe leurs **tags** vers des **thèmes canoniques**, et chaque
+contenu **hérite** de ses thèmes par ses tags.
+
+- **`themes(slug, nom, famille, ordre)`** — le référentiel (familles :
+  `croyance` · `prophete` · `adoration` · `comportement`).
+- **`theme_tags(tag_token, theme_slug)`** — le **dictionnaire éditable** qui
+  pilote tout : un token de tag → un (ou plusieurs) thème(s). C'est **ici** qu'on
+  ajoute/corrige les rattachements (aucun mapping en dur dans le code).
+- **`coran_themes` / `hadith_themes` / `parole_themes`** — liaisons
+  (`<contenu>_id`, `theme_slug`), peuplées par script. RLS lecture publique partout.
+
+**Re-peuplement (idempotent, rejouable après édition de `theme_tags`)** — pour
+chaque contenu : éclate `tag` (CSV), normalise (minuscules + trim + espaces,
+**accents conservés**), matche **exactement** `theme_tags`, insère la liaison
+`on conflict do nothing`. Voir `supabase/refonte/themes_phase15.sql`.
+
+```sql
+-- Rattacher un tag à un thème (le contenu héritera au prochain re-peuplement)
+insert into public.theme_tags (tag_token, theme_slug) values ('miséricorde','bon-comportement')
+on conflict do nothing;
+```
+
+> Les cas ambigus / non mappés (noms propres, variantes d'orthographe, tags
+> composés) sont **listés pour validation** dans `docs/rapport-themes.md`, jamais
+> rattachés automatiquement. RPC : `themes_all()`, `get_theme(slug)` ;
+> `get_hadith`/`get_parole` renvoient les thèmes du contenu (puces).
 
 ---
 
