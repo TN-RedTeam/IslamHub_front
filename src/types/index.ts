@@ -102,6 +102,25 @@ export interface ParoleDetail {
 /** Alias historique — `Parole` est le nom canonique. */
 export type Savant = Parole;
 
+/** Catégorie d'un récit. */
+export type RecitCategorie = 'prophetes' | 'vertueux';
+/** Carte d'index d'un récit (table `recits`). */
+export interface RecitCard {
+  slug: string;
+  categorie: RecitCategorie;
+  titre: string;
+  image_url: string | null;
+  ordre: number;
+}
+/** Fiche récit complète (page /recits/:slug). */
+export interface RecitDetail {
+  slug: string;
+  categorie: RecitCategorie;
+  titre: string;
+  contenu_md: string | null;
+  image_url: string | null;
+}
+
 /** Fiche savant (table `savants`) pour la page /savants */
 export interface SavantInfo {
   id: number;
@@ -383,14 +402,18 @@ export interface DossierData {
 // Versets équivoques (Phase 12.4)
 // ==========================================
 
-/** Carte d'index d'un verset équivoque. */
+/** Carte d'index d'un verset/hadith équivoque. */
 export interface VersetEquivoqueCard {
   id: number;
   slug: string;
+  type: 'verset' | 'hadith';
   theme: string;
   sourate: string;
   sourate_num: number | null;
   ayah: number | null;
+  rapporteur: string | null;   // source d'un hadith équivoque
+  recueil: string | null;
+  numero: string | null;
   verset_arabe: string;
   verset_traduction: string | null;
   sens_juste: string | null;
@@ -411,6 +434,7 @@ export interface VersetPreuve {
   sujet: string | null;
   degre: string | null;
   hadith_slug: string | null;
+  parole_slug?: string | null;
 }
 
 /** Scan de livre attaché à un verset. */
@@ -428,10 +452,14 @@ export interface VersetEquivoqueDetail {
   verset: {
     id: number;
     slug: string;
+    type: 'verset' | 'hadith';
     theme: string;
     sourate: string;
     sourate_num: number | null;
     ayah: number | null;
+    rapporteur: string | null;
+    recueil: string | null;
+    numero: string | null;
     verset_arabe: string;
     verset_traduction: string | null;
     verset_phonetique: string | null;
@@ -496,4 +524,39 @@ export interface Expose {
   slug: string;
   titre: string | null;
   contenu_md: string | null;
+  // Bloc « texte fondateur » optionnel (verset/hadith mis en avant en tête).
+  verset_arabe?: string | null;
+  verset_traduction?: string | null;
+  verset_phonetique?: string | null;
+  verset_ref?: string | null;
+}
+
+/** Citation réutilisable rattachée à une page d'exposé (`expose_citations`). */
+export interface ExposeCitation {
+  id: number;
+  section: number | null;   // n° de section de la prose (null = bloc général)
+  type: 'verset' | 'hadith' | 'parole';
+  accordeon: boolean;
+  ordre: number;
+  arabe: string | null;
+  phonetique: string | null;
+  signification: string | null;
+  ref: string | null;
+  savant: string | null;
+  savant_slug: string | null;
+  generation: string | null;
+  parole_slug: string | null;
+  hadith_slug: string | null;
+  hadith_id: number | null;
+  sujet: string | null;
+}
+
+/** Carte « subtilité de la langue » (table `mutashabih_exemples`). */
+export interface MutashabihExemple {
+  id: number;
+  mot_arabe: string;
+  translitteration: string | null;
+  sens_apparent: string | null;
+  sens_vise: string | null;
+  ordre: number;
 }

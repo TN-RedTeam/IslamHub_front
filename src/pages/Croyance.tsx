@@ -25,6 +25,12 @@ const CARDS: Card[] = [
     desc: 'Les six fondements : croire en Allah, en Ses anges, en Ses livres, en Ses prophètes, au Jour dernier et au destin.',
     icon: 'pillars',
   },
+  {
+    to: '/croyance/jugement-rationnel',
+    title: 'Le jugement rationnel',
+    desc: 'Le nécessaire, l\'impossible et le possible — et comment la raison saine mène à la connaissance du Créateur.',
+    icon: 'balance',
+  },
 ];
 
 export const Croyance: React.FC = () => {
@@ -47,7 +53,7 @@ export const Croyance: React.FC = () => {
 
         {/* Au cœur de la croyance — Versets équivoques */}
         <Link
-          to="/croyance/versets-equivoques"
+          to="/croyance/versets-hadiths-equivoques"
           className="group grid grid-cols-1 sm:grid-cols-[150px_1fr] overflow-hidden rounded-panel border border-line bg-surface shadow-card hover:shadow-card-hover hover:-translate-y-0.5 hover:border-green transition-all motion-reduce:transition-none motion-reduce:hover:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green"
         >
           <div className="grid place-items-center p-6 text-white bg-[linear-gradient(135deg,#1c5a43,#0f3d2e)]" aria-hidden="true">
@@ -57,13 +63,13 @@ export const Croyance: React.FC = () => {
             <span className="inline-block text-[11px] font-semibold uppercase tracking-[0.1em] text-[#7a5a17] bg-gold-soft border border-[#e6d3a3] px-2.5 py-0.5 rounded-full mb-2.5">
               Au cœur de la croyance
             </span>
-            <h2 className="font-display font-semibold text-green-deep text-2xl mb-1.5">Versets équivoques</h2>
+            <h2 className="font-display font-semibold text-green-deep text-2xl mb-1.5">Versets et hadiths équivoques</h2>
             <p className="text-ink/85 text-[15px] max-w-[52ch]">
-              Le sens réel des versets sur les Attributs d'Allah — l'istiwāʾ, la «&nbsp;main&nbsp;», le «&nbsp;visage&nbsp;»… —
+              Le sens réel des versets et des hadiths sur les Attributs d'Allah — l'istiwāʾ, la «&nbsp;main&nbsp;», le «&nbsp;visage&nbsp;»… —
               avec les preuves, sans détour. On va à l'essentiel.
             </p>
             <span className="mt-3.5 inline-flex items-center gap-1.5 font-semibold text-green text-sm group-hover:gap-2.5 transition-all motion-reduce:transition-none">
-              Explorer les versets <ArrowRight className="w-4 h-4" />
+              Explorer <ArrowRight className="w-4 h-4" />
             </span>
           </div>
         </Link>

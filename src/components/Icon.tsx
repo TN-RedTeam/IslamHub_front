@@ -23,6 +23,8 @@ const PATHS: Record<string, React.ReactNode> = {
   diamant: <><path d="M6 3h12l3 6-9 12L3 9z" /><path d="M3 9h18M9 3 6 9l6 12M15 3l3 6-6 12" /></>,
   // Qalam (plume, les noms calligraphiés) — 99 Noms.
   qalam: <><path d="M5 19l1.2-4.2L16.5 4.5a2 2 0 0 1 2.8 2.8L9 17.6z" /><path d="M14.5 6.5l3 3" /><path d="M5 19l3.2-1.1" /></>,
+  // Balance (la raison qui pèse) — Le jugement rationnel.
+  balance: <><circle cx="12" cy="4" r="1" /><path d="M12 5v15M8 20h8M5 8h14" /><path d="M5 8l-2.5 5a2.5 2.5 0 0 0 5 0z" /><path d="M19 8l-2.5 5a2.5 2.5 0 0 0 5 0z" /></>,
 };
 
 export type IconName = keyof typeof PATHS;

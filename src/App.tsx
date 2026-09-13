@@ -1,4 +1,4 @@
-import { HashRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { HashRouter as Router, Routes, Route, Navigate, useParams } from 'react-router-dom';
 import { LazyMotion, domAnimation } from 'framer-motion';
 import { Navigation } from './components/Navigation';
 import { PwaUpdater } from './components/PwaUpdater';
@@ -15,6 +15,8 @@ import { Corans } from './pages/Coran';
 import { SouratesIndex } from './pages/SouratesIndex';
 import { SouratePage } from './pages/SouratePage';
 import { Multimedia } from './pages/Multimedia';
+import { Recits } from './pages/Recits';
+import { RecitPage } from './pages/RecitPage';
 import { Femmes } from './pages/Femmes';
 import { ThemeProvider } from './context/ThemeContext';
 import { Madhaheb } from './pages/Madhaheb';
@@ -23,6 +25,8 @@ import { Attributs } from './pages/croyance/Attributs';
 import { PiliersDeLaFoi } from './pages/croyance/PiliersDeLaFoi';
 import { VersetsEquivoques } from './pages/croyance/VersetsEquivoques';
 import { VersetEquivoque } from './pages/croyance/VersetEquivoque';
+import { ComprendreEquivoques } from './pages/croyance/ComprendreEquivoques';
+import { JugementRationnel } from './pages/croyance/JugementRationnel';
 import { NomsDAllah } from './pages/croyance/NomsDAllah';
 import { DossierThematique } from './pages/DossierThematique';
 import { NotFound } from './pages/NotFound';
@@ -34,6 +38,12 @@ import {
   Shafii,
   Hanbalite,
 } from './pages/ecoles';
+
+// Redirige l'ancienne fiche /croyance/versets-equivoques/:slug vers la nouvelle URL.
+function OldVersetRedirect() {
+  const { slug = '' } = useParams();
+  return <Navigate to={`/croyance/versets-hadiths-equivoques/${slug}`} replace />;
+}
 
 function App() {
   return (
@@ -59,11 +69,17 @@ function App() {
                 {/* Redirections des anciennes URL pour ne pas casser les liens */}
                 <Route path="/douaas" element={<Navigate to="/invocations" replace />} />
                 <Route path="/dhikrs" element={<Navigate to="/invocations" replace />} />
-                <Route path="/paroles" element={<Paroles />} />
-                <Route path="/paroles/:slug" element={<ParolePage />} />
+                {/* Rubrique « Savants » : répertoire (défaut) + toutes les paroles */}
                 <Route path="/savants" element={<Savants />} />
+                <Route path="/savants/paroles" element={<Paroles />} />
                 <Route path="/savants/:slug" element={<SavantPage />} />
+                {/* Pages de parole dédiées + redirection de l'ancienne rubrique */}
+                <Route path="/paroles/:slug" element={<ParolePage />} />
+                <Route path="/paroles" element={<Navigate to="/savants/paroles" replace />} />
                 <Route path="/multimedia" element={<Multimedia />} />
+                {/* Récits : Histoires des Prophètes + Vies des vertueux */}
+                <Route path="/recits" element={<Recits />} />
+                <Route path="/recits/:slug" element={<RecitPage />} />
                 <Route path="/femmes" element={<Femmes />} />
 
                 {/* Croyance (Aqida) */}
@@ -72,9 +88,14 @@ function App() {
                 {/* Redirection de l'ancienne URL */}
                 <Route path="/croyance/noms-et-attributs" element={<Navigate to="/croyance/attributs" replace />} />
                 <Route path="/croyance/piliers-de-la-foi" element={<PiliersDeLaFoi />} />
-                <Route path="/croyance/versets-equivoques" element={<VersetsEquivoques />} />
-                <Route path="/croyance/versets-equivoques/:slug" element={<VersetEquivoque />} />
+                <Route path="/croyance/versets-hadiths-equivoques" element={<VersetsEquivoques />} />
+                <Route path="/croyance/versets-hadiths-equivoques/comprendre" element={<ComprendreEquivoques />} />
+                <Route path="/croyance/versets-hadiths-equivoques/:slug" element={<VersetEquivoque />} />
+                {/* Redirections de l'ancienne route */}
+                <Route path="/croyance/versets-equivoques" element={<Navigate to="/croyance/versets-hadiths-equivoques" replace />} />
+                <Route path="/croyance/versets-equivoques/:slug" element={<OldVersetRedirect />} />
                 <Route path="/croyance/noms-d-allah" element={<NomsDAllah />} />
+                <Route path="/croyance/jugement-rationnel" element={<JugementRationnel />} />
                 <Route path="/dossiers/:slug" element={<DossierThematique />} />
 
                 {/* Écoles (madhāhib) */}

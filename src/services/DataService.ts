@@ -11,8 +11,12 @@ import type {
   NomAllah,
   Attribut,
   Expose,
+  ExposeCitation,
+  MutashabihExemple,
   Parole,
   ParoleDetail,
+  RecitCard,
+  RecitDetail,
   Multimedia,
   MultimediaCategory,
   FiqhChapitre,
@@ -194,6 +198,7 @@ class DataService {
     theme?: string | null,
     sourate?: string | null,
     params?: PaginationParams,
+    type?: string | null,
   ): Promise<PaginatedResponse<VersetEquivoqueCard>> {
     const page = params?.page ?? 0;
     const pageSize = params?.pageSize ?? 24;
@@ -204,6 +209,7 @@ class DataService {
       q: searchTerm.trim().slice(0, 300),
       theme_filter: (theme ?? '').trim(),
       sourate_filter: (sourate ?? '').trim(),
+      type_filter: (type ?? '').trim(),
       page_num: page,
       page_size: pageSize,
     });
@@ -239,11 +245,35 @@ class DataService {
   async getExpose(slug: string): Promise<Expose | null> {
     const { data, error } = await supabase
       .from('exposes')
-      .select('slug,titre,contenu_md')
+      .select('slug,titre,contenu_md,verset_arabe,verset_traduction,verset_phonetique,verset_ref')
       .eq('slug', slug)
       .maybeSingle();
     if (error) throw error;
     return (data ?? null) as Expose | null;
+  }
+
+  async getMutashabihExemples(): Promise<MutashabihExemple[]> {
+    const { data, error } = await supabase.rpc('mutashabih_exemples_all');
+    if (error) throw error;
+    return (data ?? []) as MutashabihExemple[];
+  }
+
+  async getExposeCitations(slug: string): Promise<ExposeCitation[]> {
+    const { data, error } = await supabase.rpc('get_expose_citations', { p_slug: slug });
+    if (error) throw error;
+    return (data ?? []) as ExposeCitation[];
+  }
+
+  // ================= Récits (Prophètes / vertueux) =================
+  async getRecits(): Promise<RecitCard[]> {
+    const { data, error } = await supabase.rpc('recits_all');
+    if (error) throw error;
+    return (data ?? []) as RecitCard[];
+  }
+  async getRecit(slug: string): Promise<RecitDetail | null> {
+    const { data, error } = await supabase.rpc('get_recit', { p_slug: slug });
+    if (error) throw error;
+    return (data ?? null) as RecitDetail | null;
   }
 
   // ================= Paroles =================

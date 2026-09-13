@@ -24,8 +24,14 @@ Projet Supabase : `kxzfwtwbghuvnlueusvp`. Tout se fait dans **Supabase → SQL E
 **Dossiers thématiques** (croyance / preuves / réponse) :
 `dossiers`, `dossier_preuves`, `dossier_images`, `dossiers_lies`. *(§5)*
 
-**Versets équivoques** (mutashābih : objection / réponse) :
-`versets_equivoques`, `verset_preuves`, `verset_images`, `verset_lies`. *(§5 bis)*
+**Versets et hadiths équivoques** (mutashābih : objection / réponse) :
+`versets_equivoques` (+ `type` verset|hadith), `verset_preuves`, `verset_images`,
+`verset_lies`. *(§5 bis)*
+
+**Récits** (Histoires des Prophètes / Vies des vertueux) : `recits`. *(§5 ter)*
+
+**Exposés éditoriaux & citations réutilisables** : `exposes` (+ bloc « texte
+fondateur »), `expose_citations`, `mutashabih_exemples`. *(§5 quater)*
 
 **Coran / exégèse** : `sourates`, `versets`, `exegeses`.
 
@@ -282,12 +288,17 @@ update public.dossiers set published = true where slug = 'le-sens-de-l-istiwa';
 
 ---
 
-## 5 bis. Versets équivoques (mutashābih) — même logique, une nuance
+## 5 bis. Versets et hadiths équivoques (mutashābih) — même logique, une nuance
 
-Rubrique **Croyance → Versets équivoques** : un verset dont le sens littéral
-prête à confusion, expliqué (objection → réponse). Structure **identique** aux
-dossiers (1 parent + tables enfant reliées par `verset_id`), avec **une seule
-différence** sur les preuves.
+Rubrique **Croyance → Versets et hadiths équivoques** (`/croyance/versets-hadiths-equivoques`) :
+un **verset OU un hadith** dont le sens littéral prête à confusion, expliqué
+(objection → réponse). Structure **identique** aux dossiers (1 parent + tables
+enfant reliées par `verset_id`), avec **une seule différence** sur les preuves.
+
+> **`versets_equivoques.type`** *(`verset` | `hadith`, défaut `verset`)* — pour un
+> `hadith` équivoque, la source vient de **`rapporteur` / `recueil` / `numero`**
+> (au lieu de `sourate`/`ayah`) et `verset_arabe`/`verset_traduction` portent le
+> texte du hadith. L'index filtre par type (Tout / Versets / Hadiths).
 
 ```
              versets_equivoques  (1 ligne = 1 fiche de verset)
@@ -386,6 +397,75 @@ update public.versets_equivoques set published = true where slug = 'la-main-sour
 > à la fiche se **saisit** (le verset équivoque dans `versets_equivoques`, un
 > verset d'appui dans `verset_preuves.contenu_libre`). Une **parole** se crée
 > **une seule fois** dans `paroles` (avec son scan) puis se pointe partout.
+
+---
+
+## 5 ter. Récits (Prophètes / vertueux)
+
+Rubrique **Récits** (`/recits`) : deux listes — **Histoires des Prophètes** et
+**Vies des vertueux** — chaque récit ouvrant sa fiche `/recits/:slug` (Markdown).
+
+`recits(slug, categorie, titre, contenu_md, image_url, ordre)` — RLS lecture
+publique. `categorie ∈ ('prophetes','vertueux')`. `contenu_md` = le texte en
+**Markdown** ; `image_url` optionnel (bucket `references`) ; `ordre` = tri dans
+la liste. RPC : `recits_all()` (index) et `get_recit(slug)` (fiche).
+
+```sql
+insert into public.recits (slug, categorie, titre, contenu_md, ordre) values
+  ('adam', 'prophetes', '⟨titre⟩', '⟨contenu en Markdown⟩', 0);
+```
+
+---
+
+## 5 quater. Exposés éditoriaux & citations réutilisables
+
+Les pages d'article (ex. **« Comprendre les textes équivoques »**, **« Le jugement
+rationnel »**) sont **pilotées en base** : prose Markdown + preuves.
+
+### `exposes` — la prose (Markdown) + un bloc « texte fondateur » optionnel
+`exposes(slug, titre, contenu_md, verset_arabe, verset_traduction, verset_phonetique, verset_ref)`.
+- **`contenu_md`** : la prose. Les titres **`## …`** deviennent des **sections**
+  (numérotées, avec sommaire ancré automatique).
+- **`verset_*`** *(optionnel)* : un **texte mis en avant en tête** (verset/hadith
+  fondateur). Colle l'arabe toi-même.
+
+```sql
+-- Verset fondateur d'un article
+update public.exposes set verset_arabe = '⟨arabe⟩', verset_traduction = '⟨trad⟩',
+  verset_phonetique = '⟨phon⟩', verset_ref = 'Sourate … : …'
+where slug = 'comprendre-textes-equivoques';
+```
+
+### `expose_citations` — les preuves (mécanisme réutilisable)
+Rattache des preuves à un exposé. **Même principe que `verset_preuves` / les
+preuves d'attribut** : `type` + référence.
+`expose_citations(expose_slug, section, type, ref_id, arabe, phonetique, signification, ref, accordeon, ordre)`.
+- **`type`** : `verset` (texte **en clair** dans `arabe`/`signification`/`ref`) ·
+  `hadith` (`ref_id` → `hadiths.id`) · `parole` (`ref_id` → `paroles.id`, la
+  parole pointe vers `/paroles/:slug` avec son scan).
+- **`section`** : n° du titre `##` sous lequel afficher la preuve (`null` = bloc
+  « Preuves » général). **`accordeon`** = `true` pour replier une preuve secondaire.
+
+```sql
+-- Une parole de savant comme preuve de la section 3 de l'article
+insert into public.expose_citations (expose_slug, section, type, ref_id, ordre)
+select 'comprendre-textes-equivoques', 3, 'parole', p.id, 0
+from public.paroles p where p.slug = '⟨slug-parole⟩';
+
+-- Un verset d'appui en clair
+insert into public.expose_citations (expose_slug, section, type, arabe, signification, ref)
+values ('jugement-rationnel', 4, 'verset', '⟨verset arabe⟩', '⟨sens⟩', 'Sourate … : …');
+```
+
+### `mutashabih_exemples` — cartes « subtilité de la langue »
+`mutashabih_exemples(mot_arabe, translitteration, sens_apparent, sens_vise, ordre)`
+— les cartes « sens apparent ✗ / sens visé ✓ » de l'article équivoque
+(`mot_arabe` en `font-arabic-name`). Colle l'arabe toi-même.
+
+```sql
+insert into public.mutashabih_exemples (mot_arabe, translitteration, sens_apparent, sens_vise, ordre)
+values ('⟨mot arabe⟩', '⟨translittération⟩', '⟨sens apparent⟩', '⟨sens visé⟩', 0);
+```
 
 ---
 

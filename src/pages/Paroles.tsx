@@ -1,12 +1,13 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { m, AnimatePresence } from 'framer-motion';
-import { Link, useNavigate, useSearchParams } from 'react-router-dom';
-import { Search, X, Star, ChevronRight, Loader, GraduationCap as SavantIcon, Users } from 'lucide-react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import { Search, X, Star, ChevronRight, Loader, GraduationCap as SavantIcon } from 'lucide-react';
 import { dataService } from '../services/DataService';
 import { FilterSelect } from '../components/FilterSelect';
 import { EcoleBadge } from '../components/EcoleBadge';
 import { SavantHover } from '../components/SavantHover';
 import { PageHeader } from '../components/PageHeader';
+import { SavantsTabs } from '../components/SavantsTabs';
 import type { Parole } from '../types';
 import { IconBadge } from '../components/Icon';
 
@@ -191,14 +192,11 @@ export const Paroles: React.FC = () => {
       <div className="min-h-screen bg-ground">
         <PageHeader
             eyebrow="Savants"
-            title="Paroles de savants"
-            subtitle="Explorez les paroles des savants de Ahlu s-Sounnah"
-            crumbs={[{ label: 'Accueil', to: '/' }, { label: 'Paroles' }]}
+            title="Toutes les paroles"
+            subtitle="Explorez les paroles des savants de Ahlu s-Sounnah par thème ou mot-clé"
+            crumbs={[{ label: 'Accueil', to: '/' }, { label: 'Savants', to: '/savants' }, { label: 'Toutes les paroles' }]}
         >
-          <Link to="/savants"
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-line text-green-deep hover:bg-green-soft font-medium transition-colors">
-            <Users className="h-5 w-5" /> Découvrir les savants
-          </Link>
+          <SavantsTabs />
         </PageHeader>
 
         <main className="container mx-auto px-4 py-12 relative z-10">

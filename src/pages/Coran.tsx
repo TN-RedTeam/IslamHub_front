@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { Link } from 'react-router-dom';
 import { m, AnimatePresence } from 'framer-motion';
 import {
   Search, Filter, X, Star, Loader,
-  Tags, Hash, Eye, List as ListIcon, Grid3x3, BookOpen
+  Tags, Hash, Eye, List as ListIcon, Grid3x3
 } from 'lucide-react';
 import { dataService } from '../services/DataService';
 import { FilterSelect } from '../components/FilterSelect';
 import { PageHeader } from '../components/PageHeader';
+import { CoranTabs } from '../components/CoranTabs';
 import type { Coran as CoranType } from '../types';
 import { usePageTitle } from '../hooks/usePageTitle';
 import { Icon, IconBadge } from '../components/Icon';
@@ -78,12 +78,6 @@ const CoranCard: React.FC<{
           <h3 className="text-xl font-bold text-green-deep font-display line-clamp-1">
             {coran.sujet}
           </h3>
-        </div>
-      )}
-
-      {coran.sourate && (
-        <div className="text-sm text-green italic">
-          Sourate: {coran.sourate}
         </div>
       )}
 
@@ -165,11 +159,6 @@ const CoranModal: React.FC<{
             <h2 className="text-2xl font-bold text-green-deep font-display">
               {coran.sujet}
             </h2>
-            {coran.sourate && (
-              <p className="text-green mt-1">
-                Sourate: {coran.sourate}
-              </p>
-            )}
           </div>
 
           <div className="bg-green-soft dark:bg-gray-700 p-6 rounded-lg">
@@ -225,7 +214,7 @@ const CoranModal: React.FC<{
 const ITEMS_PER_PAGE = 20;
 
 export const Corans: React.FC = () => {
-  usePageTitle('Coran');
+  usePageTitle('Versets par thème');
   const [corans, setCorans] = useState<Coran[]>([]);
   const [hasSearched, setHasSearched] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -368,23 +357,18 @@ export const Corans: React.FC = () => {
       {/* Header */}
       <PageHeader
         eyebrow="Coran"
-        title="Le Noble Coran"
-        subtitle="Explorez les versets du Livre Sacré"
-        crumbs={[{ label: 'Accueil', to: '/' }, { label: 'Coran' }]}
+        title="Versets par thème"
+        subtitle="Les arguments du Coran par sujet"
+        crumbs={[{ label: 'Accueil', to: '/' }, { label: 'Coran' }, { label: 'Versets par thème' }]}
       >
         <div className="flex items-center gap-3 flex-wrap">
+          <CoranTabs />
           {hasSearched && (
             <span className="inline-flex items-center gap-1.5 rounded-full bg-green-soft px-3 py-1 text-sm text-green-deep tabular-nums">
               <Eye className="h-4 w-4" />
               {totalCount} verset{totalCount > 1 ? 's' : ''}
             </span>
           )}
-          <Link
-            to="/coran/sourates"
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-line text-green-deep hover:bg-green-soft font-medium transition-colors"
-          >
-            <BookOpen className="h-5 w-5" /> Exégèse des sourates
-          </Link>
         </div>
       </PageHeader>
 
@@ -481,7 +465,7 @@ export const Corans: React.FC = () => {
               <input
                 type="text"
                 aria-label="Rechercher un verset"
-                placeholder="Rechercher par texte arabe, français, sourate, mot-clé..."
+                placeholder="Rechercher un thème, un verset, un mot-clé…"
                 className="w-full pl-12 pr-6 py-3 rounded-xl border border-line bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-green focus:border-transparent text-lg font-display"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}

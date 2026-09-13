@@ -1,21 +1,26 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { m, AnimatePresence } from 'framer-motion';
-import { Moon, Sun, Menu, X } from 'lucide-react';
+import { Moon, Sun, Menu, X, ChevronDown } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 import { InstallPWA } from './InstallPWA';
 import moment from 'moment-hijri';
 
-const navItems = [
+// Barre principale (entrées essentielles).
+const mainItems = [
   { to: '/', label: 'Accueil', exact: true },
   { to: '/coran', label: 'Coran' },
   { to: '/croyance', label: 'Croyance' },
   { to: '/hadiths', label: 'Hadiths' },
-  { to: '/ecoles', label: 'Écoles' },
-  { to: '/paroles', label: 'Paroles' },
+  { to: '/savants', label: 'Savants' },
   { to: '/invocations', label: 'Invocations & Évocations' },
+];
+// Regroupées sous le menu déroulant « Ressources ».
+const resItems = [
+  { to: '/ecoles', label: 'Écoles' },
+  { to: '/recits', label: 'Récits' },
   { to: '/multimedia', label: 'Multimédia' },
-  { to: '/femmes', label: 'Femmes' },
+  { to: '/femmes', label: 'La femme musulmane' },
 ];
 
 // Noms français (translittérés) des 12 mois du calendrier hégirien, dans l'ordre.
@@ -48,16 +53,16 @@ const BrandBadge: React.FC<{ px: number; radius: string; mark: number }> = ({ px
 export const Navigation: React.FC = () => {
   const { theme, toggleTheme } = useTheme();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [resOpen, setResOpen] = useState(false);
   const [hijriFr, setHijriFr] = useState('');
   const [greg, setGreg] = useState('');
   const location = useLocation();
+  const resRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const update = () => {
       const d = moment();
-      // Date hégirienne translittérée (chiffres latins + mois translittéré).
       setHijriFr(`${d.iDate()} ${HIJRI_MONTHS_FR[d.iMonth()]} ${d.iYear()}`);
-      // Date grégorienne (2ᵉ ligne, discrète).
       setGreg(new Date().toLocaleDateString('fr-FR', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' }));
     };
     update();
@@ -65,10 +70,27 @@ export const Navigation: React.FC = () => {
     return () => clearInterval(interval);
   }, []);
 
-  useEffect(() => { setIsMenuOpen(false); }, [location.pathname]);
+  // Ferme les menus au changement de page.
+  useEffect(() => { setIsMenuOpen(false); setResOpen(false); }, [location.pathname]);
+
+  // Ferme le déroulant « Ressources » au clic extérieur / touche Échap.
+  useEffect(() => {
+    if (!resOpen) return;
+    const onDown = (e: MouseEvent) => { if (resRef.current && !resRef.current.contains(e.target as Node)) setResOpen(false); };
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setResOpen(false); };
+    document.addEventListener('mousedown', onDown);
+    document.addEventListener('keydown', onKey);
+    return () => { document.removeEventListener('mousedown', onDown); document.removeEventListener('keydown', onKey); };
+  }, [resOpen]);
 
   const isActive = (to: string, exact?: boolean) =>
     exact ? location.pathname === to : location.pathname === to || location.pathname.startsWith(`${to}/`);
+  const resActive = resItems.some((i) => isActive(i.to));
+
+  const linkCls = (active: boolean) =>
+    `font-sans text-[13.5px] px-2.5 py-2 rounded-lg whitespace-nowrap transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green ${
+      active ? 'bg-green-soft text-green-deep font-medium' : 'text-ink hover:bg-green-soft hover:text-green-deep'
+    }`;
 
   return (
     <nav className="sticky top-0 z-50 bg-ivory/95 backdrop-blur border-b border-line">
@@ -82,26 +104,45 @@ export const Navigation: React.FC = () => {
             </span>
           </Link>
 
-          {/* Liens en ligne à partir de 1360px (9 entrées avec libellés complets,
-              dont « Invocations & Évocations ») ; en dessous, drawer hamburger. */}
-          <div className="hidden min-[1360px]:flex items-center gap-0.5 flex-1 min-w-0">
-            {navItems.map(({ to, label, exact }) => (
-              <Link
-                key={to}
-                to={to}
-                className={`font-sans text-[13.5px] px-2.5 py-2 rounded-lg whitespace-nowrap transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green ${
-                  isActive(to, exact)
-                    ? 'bg-green-soft text-green-deep font-medium'
-                    : 'text-ink hover:bg-green-soft hover:text-green-deep'
-                }`}
-              >
-                {label}
-              </Link>
+          {/* Liens en ligne à partir de 900px ; en dessous, drawer hamburger. */}
+          <div className="hidden min-[900px]:flex items-center gap-0.5 flex-1 min-w-0">
+            {mainItems.map(({ to, label, exact }) => (
+              <Link key={to} to={to} className={linkCls(isActive(to, exact))}>{label}</Link>
             ))}
+
+            {/* Menu déroulant « Ressources » */}
+            <div className="relative" ref={resRef}>
+              <button
+                type="button"
+                onClick={() => setResOpen((v) => !v)}
+                aria-haspopup="true"
+                aria-expanded={resOpen}
+                className={`${linkCls(resActive)} inline-flex items-center gap-1`}
+              >
+                Ressources
+                <ChevronDown className={`w-3.5 h-3.5 transition-transform motion-reduce:transition-none ${resOpen ? 'rotate-180' : ''}`} />
+              </button>
+              {resOpen && (
+                <div role="menu" className="absolute left-0 top-full mt-1.5 min-w-[210px] rounded-xl border border-line bg-ivory shadow-lg py-1.5 z-50">
+                  {resItems.map(({ to, label }) => (
+                    <Link
+                      key={to}
+                      to={to}
+                      role="menuitem"
+                      className={`block px-3.5 py-2 text-[13.5px] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green ${
+                        isActive(to) ? 'bg-green-soft text-green-deep font-medium' : 'text-ink hover:bg-green-soft hover:text-green-deep'
+                      }`}
+                    >
+                      {label}
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
 
           {/* Actions (droite) */}
-          <div className="flex items-center gap-2.5 shrink-0 ml-auto min-[1360px]:ml-0">
+          <div className="flex items-center gap-2.5 shrink-0 ml-auto min-[900px]:ml-0">
             {/* Chip date : badge marque + hijri translittéré (ligne 1) + grégorien (ligne 2) */}
             <div
               className="hidden min-[1360px]:flex items-center gap-2.5 px-3 py-1.5 rounded-full bg-surface border border-line"
@@ -128,14 +169,14 @@ export const Navigation: React.FC = () => {
               onClick={() => setIsMenuOpen((v) => !v)}
               aria-label={isMenuOpen ? 'Fermer le menu' : 'Ouvrir le menu'}
               aria-expanded={isMenuOpen}
-              className="min-[1360px]:hidden w-9 h-9 grid place-items-center rounded-lg border border-line bg-ivory text-muted hover:text-green-deep transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green"
+              className="min-[900px]:hidden w-9 h-9 grid place-items-center rounded-lg border border-line bg-ivory text-muted hover:text-green-deep transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green"
             >
               {isMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
           </div>
         </div>
 
-        {/* Menu replié (< 1360px) */}
+        {/* Menu replié (< 900px) */}
         <AnimatePresence>
           {isMenuOpen && (
             <m.div
@@ -143,22 +184,35 @@ export const Navigation: React.FC = () => {
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
               transition={{ duration: 0.2 }}
-              className="min-[1360px]:hidden overflow-hidden motion-reduce:transition-none"
+              className="min-[900px]:hidden overflow-hidden motion-reduce:transition-none"
             >
               <div className="py-3">
-                {navItems.map(({ to, label, exact }) => (
+                {mainItems.map(({ to, label, exact }) => (
                   <Link
                     key={to}
                     to={to}
                     className={`block px-4 py-2.5 rounded-lg mb-0.5 font-sans transition-colors ${
-                      isActive(to, exact)
-                        ? 'bg-green-soft text-green-deep font-medium'
-                        : 'text-ink hover:bg-green-soft hover:text-green-deep'
+                      isActive(to, exact) ? 'bg-green-soft text-green-deep font-medium' : 'text-ink hover:bg-green-soft hover:text-green-deep'
                     }`}
                   >
                     {label}
                   </Link>
                 ))}
+
+                {/* Sous-groupe « Ressources » */}
+                <p className="px-4 pt-3 pb-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-muted">Ressources</p>
+                {resItems.map(({ to, label }) => (
+                  <Link
+                    key={to}
+                    to={to}
+                    className={`block pl-6 pr-4 py-2.5 rounded-lg mb-0.5 font-sans transition-colors ${
+                      isActive(to) ? 'bg-green-soft text-green-deep font-medium' : 'text-ink hover:bg-green-soft hover:text-green-deep'
+                    }`}
+                  >
+                    {label}
+                  </Link>
+                ))}
+
                 <InstallPWA className="mt-2 flex w-full items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-green text-white hover:bg-green-deep transition-colors" />
               </div>
             </m.div>

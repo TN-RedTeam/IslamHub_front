@@ -115,7 +115,7 @@ export const VersetEquivoque: React.FC = () => {
       <div className="min-h-screen bg-ground grid place-items-center px-5">
         <div className="text-center">
           <h1 className="font-display text-2xl text-green-deep mb-2">Verset introuvable</h1>
-          <Link to="/croyance/versets-equivoques" className="text-green font-medium hover:underline">Tous les versets équivoques</Link>
+          <Link to="/croyance/versets-hadiths-equivoques" className="text-green font-medium hover:underline">Tous les versets équivoques</Link>
         </div>
       </div>
     );
@@ -135,17 +135,24 @@ export const VersetEquivoque: React.FC = () => {
         <nav aria-label="Fil d'Ariane" className="text-xs text-muted mb-1.5">
           <Link to="/" className="hover:text-green-deep">Accueil</Link> <span aria-hidden>·</span>{' '}
           <Link to="/croyance" className="hover:text-green-deep">Croyance</Link> <span aria-hidden>·</span>{' '}
-          <Link to="/croyance/versets-equivoques" className="hover:text-green-deep">Versets équivoques</Link>
+          <Link to="/croyance/versets-hadiths-equivoques" className="hover:text-green-deep">Versets et hadiths équivoques</Link>
         </nav>
         <p className="text-[11.5px] font-semibold uppercase tracking-[0.2em] text-gold mb-1">{v.theme}</p>
         <h1 className="font-display font-semibold text-green-deep leading-tight" style={{ fontSize: 'clamp(26px,4vw,38px)' }}>{title}</h1>
 
-        {/* Verset */}
+        {/* Verset ou hadith équivoque */}
         <div className="rounded-panel border border-line bg-surface p-6 sm:p-7 mt-4 text-center shadow-card">
+          <span className={`inline-block text-[10.5px] font-semibold uppercase tracking-wide px-2 py-0.5 rounded-full border mb-3 ${
+            v.type === 'hadith' ? 'bg-gold-soft text-[#7a5a17] border-[#e6d3a3]' : 'bg-green-soft text-green-deep border-green-line'
+          }`}>{v.type === 'hadith' ? 'Hadith' : 'Verset'}</span>
           <p className="font-arabic text-green-deep leading-[2]" dir="rtl" lang="ar" style={{ fontSize: 'clamp(26px,4.4vw,38px)' }}>{v.verset_arabe}</p>
           {v.verset_traduction && <p className="text-[17px] text-ink mt-3.5">{v.verset_traduction}</p>}
           {v.verset_phonetique && <p className="text-[13px] text-muted italic mt-1.5 [unicode-bidi:plaintext]">{v.verset_phonetique}</p>}
-          <p className="text-xs uppercase tracking-[0.06em] text-gold font-semibold mt-3">{v.sourate}{v.ayah != null ? ` · ${v.ayah}` : ''}</p>
+          <p className="text-xs uppercase tracking-[0.06em] text-gold font-semibold mt-3">
+            {v.type === 'hadith'
+              ? [v.rapporteur, v.recueil, v.numero ? `n° ${v.numero}` : ''].filter(Boolean).join(' · ')
+              : `${v.sourate}${v.ayah != null ? ` · ${v.ayah}` : ''}`}
+          </p>
         </div>
 
         {/* Sommaire + contenu */}
@@ -226,7 +233,7 @@ export const VersetEquivoque: React.FC = () => {
             {/* Actions */}
             <div className="flex flex-wrap gap-2.5 mt-7 pt-5 border-t border-line">
               <button onClick={copyDebate} className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-green text-white text-sm font-medium hover:bg-green-deep transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green">
-                {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />} Copier (format débat)
+                {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />} Copier
               </button>
               <button onClick={share} className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-green-line bg-surface text-green-deep text-sm hover:bg-green-soft transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green">
                 <Share2 className="w-4 h-4" /> Partager
@@ -241,7 +248,7 @@ export const VersetEquivoque: React.FC = () => {
               <div className="mt-7">
                 <p className="text-[11px] uppercase tracking-[0.16em] text-muted font-semibold mb-2">Voir aussi</p>
                 {data.lies.map((l) => (
-                  <Link key={l.slug} to={`/croyance/versets-equivoques/${l.slug}`} className="inline-block mr-2 mb-2 text-[13.5px] text-green-deep bg-green-soft border border-green-line px-3.5 py-1.5 rounded-full hover:border-green transition-colors">
+                  <Link key={l.slug} to={`/croyance/versets-hadiths-equivoques/${l.slug}`} className="inline-block mr-2 mb-2 text-[13.5px] text-green-deep bg-green-soft border border-green-line px-3.5 py-1.5 rounded-full hover:border-green transition-colors">
                     {l.theme} — {l.sourate}{l.ayah != null ? ` : ${l.ayah}` : ''}
                   </Link>
                 ))}
