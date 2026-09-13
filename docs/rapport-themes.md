@@ -127,3 +127,28 @@ la variante à `theme_tags` (ou corriger le tag du contenu).
 4. Les **sans-tag** (hadith 65/83/85/136 ; parole 44/53/56) : tu leur mets un tag, ou je les laisse hors thèmes pour l'instant ?
 
 > Je ne câble **pas** l'UI (15.5+) tant que tu n'as pas tranché.
+
+---
+
+## ✅ Décisions appliquées (validées par l'auteur)
+- **Variantes (a.2)** : 7 ajoutées à `theme_tags` (ta’wil, qour’an→tawil-equivoques ; qiyām→priere ; 'istighfar, repentir→dhikr-repentir ; ḥirz→hirz ; chatîment, tombe→tombe ; raisonnment→jugement-rationnel).
+- **Nouveaux tags (a.3)** : `tombe`→tombe, `mariage`→femme-couple-famille, `paradis-enfer`/`musulmans`→jour-dernier, `repentir`→dhikr-repentir.
+- **Cas ambigus (c)** : `prophètes`→prophetes ; `arafah`→tanzih ; `main`→peches-interdits (hadith 91, 92) ; **salat-ala-nabi** (hadith 100, 101, 113, 114) ; **visite-tombe-prophete** (coran 15, hadith 104) — rattachés directement.
+
+**Liaisons après application** : Coran **24** · Hadiths **138** · Paroles **71**.
+
+### Restent sans thème (12) — à traiter plus tard (tag à ajouter ou theming manuel)
+| src | id | sujet | raison |
+|---|---|---|---|
+| hadith | 50 | La Meilleure parole | tag `parole` (non tranché) |
+| hadith | 65 | Hadith Qoudoussy | sans tag |
+| hadith | 82 | évoquer le prophète en son absence | tag `prophète` (sing., non tranché) |
+| hadith | 83 | al-istighāthah et al-istiʿānah | sans tag |
+| hadith | 85 | Entrée en Islam | sans tag |
+| hadith | 136 | La demande de pardon ('istighfar) | sans tag |
+| hadith | 156 | Nul ne sait l'heure du jour dernier | tag `jugement` = jour-dernier ? (à confirmer) |
+| parole | 44 | La Récitation du Qour'ān en faveur du mort | sans tag |
+| parole | 53 | La Croyance enseignée par Ibnou ^Açakir | sans tag |
+| parole | 55 | Traité de croyance - Salahou d-Din… | tag = nom propre |
+| parole | 56 | Le Tawassoul est permis… | sans tag |
+| parole | 57 | L'Imâm … Al-Ach'ari | tag = nom propre |
