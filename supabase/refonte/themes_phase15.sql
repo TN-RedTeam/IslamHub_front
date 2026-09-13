@@ -20,3 +20,11 @@
 --
 -- Résultats 1er passage : coran 19 · hadiths 120 · paroles 67 liaisons.
 -- Cas non rattachés (variantes, ambigus, sans thème) → docs/rapport-themes.md (validation auteur).
+
+-- ─────────────────────────────────────────────────────────────────────────
+-- 15.5–15.8 — RPC pour l'UI
+-- ─────────────────────────────────────────────────────────────────────────
+-- themes_all()            → index groupé par famille + compteurs (n_coran/n_hadith/n_parole).
+-- get_theme(slug)         → vue unifiée { theme, coran[], hadiths[], paroles[] }.
+-- get_hadith / get_parole → renvoient désormais `themes` [{slug,nom}] (puces sur les fiches).
+-- Toutes en RLS lecture publique / grant anon.

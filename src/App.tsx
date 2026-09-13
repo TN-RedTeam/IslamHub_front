@@ -15,6 +15,8 @@ import { Corans } from './pages/Coran';
 import { SouratesIndex } from './pages/SouratesIndex';
 import { SouratePage } from './pages/SouratePage';
 import { Multimedia } from './pages/Multimedia';
+import { ThemesIndex } from './pages/ThemesIndex';
+import { ThemePage } from './pages/ThemePage';
 import { Recits } from './pages/Recits';
 import { RecitPage } from './pages/RecitPage';
 import { Femmes } from './pages/Femmes';
@@ -77,6 +79,9 @@ function App() {
                 <Route path="/paroles/:slug" element={<ParolePage />} />
                 <Route path="/paroles" element={<Navigate to="/savants/paroles" replace />} />
                 <Route path="/multimedia" element={<Multimedia />} />
+                {/* Thèmes transverses (Coran / Sunna / Paroles) */}
+                <Route path="/themes" element={<ThemesIndex />} />
+                <Route path="/themes/:slug" element={<ThemePage />} />
                 {/* Récits : Histoires des Prophètes + Vies des vertueux */}
                 <Route path="/recits" element={<Recits />} />
                 <Route path="/recits/:slug" element={<RecitPage />} />

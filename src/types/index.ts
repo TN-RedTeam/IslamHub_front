@@ -97,10 +97,40 @@ export interface ParoleDetail {
   savant_slug: string | null;    // → /savants/:slug
   generation: string | null;     // badge de génération
   images: ParoleImage[];         // 0..N scans du livre (table parole_images)
+  themes?: ThemeRef[];           // thèmes transverses (puces)
 }
 
 /** Alias historique — `Parole` est le nom canonique. */
 export type Savant = Parole;
+
+// ==========================================
+// Thèmes transverses (Phase 15)
+// ==========================================
+export type ThemeFamille = 'croyance' | 'prophete' | 'adoration' | 'comportement';
+/** Référence légère d'un thème (puces sur les fiches). */
+export interface ThemeRef { slug: string; nom: string; }
+/** Carte d'index d'un thème (avec compteurs). */
+export interface ThemeCard {
+  slug: string; nom: string; famille: ThemeFamille; ordre: number;
+  n_coran: number; n_hadith: number; n_parole: number;
+}
+export interface ThemeCoranItem { id: number; sujet: string | null; texte_arabe: string | null; texte_francais: string | null; sourate: string | null; }
+export interface ThemeHadithItem {
+  id: number; slug: string | null; sujet: string | null; texte_arabe: string | null; texte_francais: string | null;
+  degre_authenticite: string | null; narrateur: string | null;
+  narrateur_generation?: string | null; narrateur_role?: string | null; narrateur_sexe?: string | null;
+}
+export interface ThemeParoleItem {
+  id: number; slug: string | null; sujet: string | null; texte_arabe: string | null; texte_francais: string | null;
+  savant: string | null; savant_slug: string | null; generation: string | null; ecole: string | null;
+}
+/** Vue unifiée d'un thème (page /themes/:slug). */
+export interface ThemeDetail {
+  theme: { slug: string; nom: string; famille: ThemeFamille };
+  coran: ThemeCoranItem[];
+  hadiths: ThemeHadithItem[];
+  paroles: ThemeParoleItem[];
+}
 
 /** Catégorie d'un récit. */
 export type RecitCategorie = 'prophetes' | 'vertueux';
@@ -185,6 +215,7 @@ export interface HadithDetail {
   tag: string | null;
   recueils: string | null;
   sources?: HadithSource[];   // source structurée (groupée par rapporteur)
+  themes?: ThemeRef[];        // thèmes transverses (puces)
 }
 
 /** Infos légères d'un savant (mini-bio au survol). */
