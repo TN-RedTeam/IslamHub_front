@@ -1,0 +1,30 @@
+-- ============================================================================
+-- Phase 15 — Recherche thématique unifiée (thèmes transverses)
+-- 15.1 themes · 15.2 theme_tags · 15.3 liaisons + peuplement (idempotent)
+-- Backup : schéma `backup` (coran_tag / hadiths_tag / paroles_tag).
+-- ============================================================================
+-- themes(id, slug UNIQUE, nom, famille croyance|prophete|adoration|comportement, ordre)
+-- theme_tags(tag_token, theme_slug REFERENCES themes(slug)) PK composite — mapping éditable
+-- coran_themes(coran_id, theme_slug) / hadith_themes(hadith_id, theme_slug) /
+-- parole_themes(parole_id, theme_slug) — PK composite, FK cascade, RLS lecture publique.
+--
+-- Peuplement (rejouable) : pour chaque contenu, on éclate `tag` (CSV), on normalise
+-- (minuscules + trim + espaces réduits, ACCENTS CONSERVÉS) et on matche EXACTEMENT
+-- theme_tags ; insertion des liaisons ON CONFLICT DO NOTHING.
+--   insert into public.coran_themes (coran_id, theme_slug)
+--   select c.id, tt.theme_slug
+--   from public.coran c, unnest(string_to_array(coalesce(c.tag,''),',')) raw(tok)
+--   join public.theme_tags tt
+--     on regexp_replace(lower(btrim(tt.tag_token)),'\s+',' ','g') = regexp_replace(lower(btrim(raw.tok)),'\s+',' ','g')
+--   where btrim(raw.tok) <> '' on conflict do nothing;   -- (idem hadith_themes / parole_themes)
+--
+-- Résultats 1er passage : coran 19 · hadiths 120 · paroles 67 liaisons.
+-- Cas non rattachés (variantes, ambigus, sans thème) → docs/rapport-themes.md (validation auteur).
+
+-- ─────────────────────────────────────────────────────────────────────────
+-- 15.5–15.8 — RPC pour l'UI
+-- ─────────────────────────────────────────────────────────────────────────
+-- themes_all()            → index groupé par famille + compteurs (n_coran/n_hadith/n_parole).
+-- get_theme(slug)         → vue unifiée { theme, coran[], hadiths[], paroles[] }.
+-- get_hadith / get_parole → renvoient désormais `themes` [{slug,nom}] (puces sur les fiches).
+-- Toutes en RLS lecture publique / grant anon.

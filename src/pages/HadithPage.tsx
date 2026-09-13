@@ -5,6 +5,7 @@ import { Loader2, ArrowLeft, Copy, Check, Share2 } from 'lucide-react';
 import { dataService } from '../services/DataService';
 import { BadgeGeneration } from '../components/BadgeGeneration';
 import { HadithSources } from '../components/HadithSources';
+import { ThemeChips } from '../components/ThemeChips';
 import { Markdown } from '../components/Markdown';
 import { useSeo } from '../hooks/useSeo';
 import type { HadithDetail } from '../types';
@@ -97,6 +98,7 @@ export const HadithPage: React.FC = () => {
             <p className="text-muted mt-1.5 text-sm">Rapporté par : <HadithSources sources={hadith.sources} compact /></p>
           )}
           {reference && <p className="text-muted mt-1 text-sm">{reference}</p>}
+          <ThemeChips themes={hadith.themes} className="mt-3" />
         </div>
       </m.header>
 

@@ -1,0 +1,109 @@
+<title>Thème — vue unifiée</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@500;700&family=Scheherazade+New:wght@400;500;700&family=EB+Garamond:ital,wght@0,500;0,600;1,500&family=Newsreader:opsz,wght@6..72,400;6..72,500&display=swap">
+<style>
+  :root{--ground:#f2ebdd;--surface:#fff;--ink:#1b2620;--muted:#6a746a;--line:#e5dccb;
+    --green:#1c5a43;--green-deep:#0f3d2e;--green-soft:#e6f0e9;--green-line:#cfe1d6;--gold:#b0872f;--gold-soft:#f2e6cb}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--ground);color:var(--ink);font-family:Newsreader,Georgia,serif;line-height:1.65}
+  .wrap{max-width:960px;margin:0 auto;padding:26px 22px 60px}
+  .crumb{font-size:12.5px;color:var(--muted);margin:0 0 6px}
+  .eye{font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:600;margin:0 0 4px}
+  h1{font-family:"EB Garamond",serif;font-weight:600;font-size:clamp(28px,4.4vw,42px);color:var(--green-deep);margin:0}
+  .counts{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0 0}
+  .counts .c{font-size:12.5px;font-weight:600;color:var(--green-deep);background:var(--green-soft);border:1px solid var(--green-line);border-radius:999px;padding:5px 13px}
+  .note{margin:14px 0 0;font-size:12.5px;color:var(--muted);background:var(--gold-soft);border-radius:8px;padding:8px 12px;display:inline-block}
+
+  .search{display:flex;align-items:center;gap:10px;margin:18px 0 0;padding:12px 16px;background:var(--surface);border:1px solid var(--line);border-radius:12px;color:var(--muted)}
+
+  section{margin-top:30px}
+  .sh{display:flex;align-items:center;gap:11px;margin:0 0 14px;padding-bottom:10px;border-bottom:1px solid var(--line)}
+  .sh .ic{width:34px;height:34px;border-radius:9px;background:var(--green-soft);color:var(--green);display:grid;place-items:center;flex:none}
+  .sh h2{font-family:"EB Garamond",serif;font-weight:600;font-size:21px;color:var(--green-deep);margin:0}
+  .sh .n{margin-left:auto;font-size:12.5px;color:var(--muted)}
+
+  .grid{display:grid;grid-template-columns:1fr;gap:14px}
+  @media(min-width:640px){.grid{grid-template-columns:1fr 1fr}}
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px 18px;box-shadow:0 1px 2px rgba(27,38,32,.03)}
+  .card .ar{font-family:"Scheherazade New",serif;font-size:21px;line-height:1.9;direction:rtl;text-align:right;color:var(--ink);margin:0}
+  .card .tr{font-size:14px;color:var(--ink);opacity:.9;margin:8px 0 0}
+  .card .meta{font-size:12px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);margin:10px 0 0;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+  .badge{font-size:10.5px;font-weight:600;padding:1px 8px;border-radius:999px;background:var(--gold-soft);color:#7a5a17;border:1px solid #e6d3a3}
+  .card.parole{background:#fbf9f3;border-color:var(--green-line)}
+  .card .who{font-family:"EB Garamond",serif;font-weight:600;font-size:15px;color:var(--green-deep)}
+  .card .link{font-size:12.5px;font-weight:600;color:var(--green);text-decoration:none;margin-top:8px;display:inline-block}
+  .seeall{margin-top:12px;font-size:13.5px;font-weight:600;color:var(--green);text-decoration:none}
+</style>
+
+<div class="wrap">
+  <p class="crumb">Accueil · Thèmes · Le châtiment de la tombe</p>
+  <p class="eye">Thème</p>
+  <h1>Le châtiment de la tombe</h1>
+  <div class="counts"><span class="c">6 versets</span><span class="c">12 hadiths</span><span class="c">4 paroles de savants</span></div>
+  <p class="note">⚑ Exemple — contenu et rattachements à valider par l'auteur.</p>
+
+  <div class="search" aria-hidden="true">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+    Chercher un autre thème…
+  </div>
+
+  <!-- CORAN -->
+  <section>
+    <div class="sh">
+      <span class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 5C9.5 5 6 6 5 6.7v12C6 18 9.5 17 12 17s6 1 7 1.7v-12C18 6 14.5 5 12 5z"/><path d="M12 6.7v11"/></svg></span>
+      <h2>Dans le Coran</h2><span class="n">6 versets</span>
+    </div>
+    <div class="grid">
+      <div class="card">
+        <p class="ar">النَّارُ يُعْرَضُونَ عَلَيْهَا غُدُوًّا وَعَشِيًّا</p>
+        <p class="tr">« Le Feu, auquel ils sont exposés matin et soir. »</p>
+        <p class="meta">Ghāfir · 40:46</p>
+      </div>
+      <div class="card">
+        <p class="ar">وَلَنُذِيقَنَّهُم مِّنَ الْعَذَابِ الْأَدْنَىٰ دُونَ الْعَذَابِ الْأَكْبَرِ</p>
+        <p class="tr">« Nous leur ferons certes goûter au châtiment ici-bas avant le châtiment suprême. »</p>
+        <p class="meta">As-Sajda · 32:21</p>
+      </div>
+    </div>
+    <a class="seeall" href="#">Voir les 6 versets →</a>
+  </section>
+
+  <!-- SUNNA -->
+  <section>
+    <div class="sh">
+      <span class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 5h10a2 2 0 0 1 2 2v12H6a2 2 0 0 1-2-2z"/><path d="M16 7h4v10a2 2 0 0 1-2 2h-2"/></svg></span>
+      <h2>Dans la Sunna</h2><span class="n">12 hadiths</span>
+    </div>
+    <div class="grid">
+      <div class="card">
+        <p class="ar">اسْتَعِيذُوا بِاللهِ مِنْ عَذَابِ القَبْر</p>
+        <p class="tr">« Demandez à Allah la préservation du châtiment de la tombe. »</p>
+        <p class="meta"><span class="badge">Sahih</span> Abou Dāwoud · Al-Barā' Ibn ʿĀzib <span class="badge" style="background:var(--gold-soft)">Compagnon</span></p>
+      </div>
+      <div class="card">
+        <p class="ar">القَبْرُ رَوْضَةٌ مِنْ رِيَاضِ الجَنَّةِ أَوْ حُفْرَةٌ مِنْ حُفَرِ النَّارِ</p>
+        <p class="tr">« La tombe est l'un des jardins du Paradis ou l'un des antres de l'enfer. »</p>
+        <p class="meta"><span class="badge">Sahih</span> At-Tirmidhī</p>
+      </div>
+    </div>
+    <a class="seeall" href="#">Voir les 12 hadiths →</a>
+  </section>
+
+  <!-- SAVANTS -->
+  <section>
+    <div class="sh">
+      <span class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 19l1.2-4.2L16.5 4.5a2 2 0 0 1 2.8 2.8L9 17.6z"/><path d="M14.5 6.5l3 3"/></svg></span>
+      <h2>Paroles des savants</h2><span class="n">4 paroles</span>
+    </div>
+    <div class="grid">
+      <div class="card parole">
+        <p class="who">Al-Ḥāfiḍh Al-Bayhaqī <span class="badge">Khalaf</span></p>
+        <p class="tr" style="margin-top:8px">« Le châtiment de la tombe est une vérité, établie par des ḥadīth nombreux… » [extrait]</p>
+        <p class="meta">ʿAdhāb al-Qabr — réf. à compléter</p>
+        <a class="link" href="#/paroles/...">Voir la parole et le scan →</a>
+      </div>
+    </div>
+    <a class="seeall" href="#">Voir les 4 paroles →</a>
+  </section>
+</div>

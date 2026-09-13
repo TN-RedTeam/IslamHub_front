@@ -13,6 +13,8 @@ import type {
   Expose,
   ExposeCitation,
   MutashabihExemple,
+  ThemeCard,
+  ThemeDetail,
   Parole,
   ParoleDetail,
   RecitCard,
@@ -262,6 +264,18 @@ class DataService {
     const { data, error } = await supabase.rpc('get_expose_citations', { p_slug: slug });
     if (error) throw error;
     return (data ?? []) as ExposeCitation[];
+  }
+
+  // ================= Thèmes transverses (Phase 15) =================
+  async getThemes(): Promise<ThemeCard[]> {
+    const { data, error } = await supabase.rpc('themes_all');
+    if (error) throw error;
+    return (data ?? []) as ThemeCard[];
+  }
+  async getTheme(slug: string): Promise<ThemeDetail | null> {
+    const { data, error } = await supabase.rpc('get_theme', { p_slug: slug });
+    if (error) throw error;
+    return (data ?? null) as ThemeDetail | null;
   }
 
   // ================= Récits (Prophètes / vertueux) =================

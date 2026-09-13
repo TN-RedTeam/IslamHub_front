@@ -6,6 +6,7 @@ import { Markdown } from '../components/Markdown';
 import { Lightbox, type LightboxImage } from '../components/Lightbox';
 import { BadgeGeneration, honorificFor } from '../components/BadgeGeneration';
 import { EcoleBadge } from '../components/EcoleBadge';
+import { ThemeChips } from '../components/ThemeChips';
 import { useSeo } from '../hooks/useSeo';
 import type { ParoleDetail, ParoleImage } from '../types';
 
@@ -74,6 +75,8 @@ export const ParolePage: React.FC = () => {
           <BadgeGeneration generation={p.generation} />
           {p.ecole && <EcoleBadge ecole={p.ecole} />}
         </div>
+
+        <ThemeChips themes={p.themes} className="mt-3" />
 
         {/* Texte */}
         <div className="rounded-panel border border-line bg-surface p-6 sm:p-7 mt-5 shadow-card">
