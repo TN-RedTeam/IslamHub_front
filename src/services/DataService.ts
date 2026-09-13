@@ -11,6 +11,7 @@ import type {
   NomAllah,
   Attribut,
   Expose,
+  ExposeCitation,
   MutashabihExemple,
   Parole,
   ParoleDetail,
@@ -255,6 +256,12 @@ class DataService {
     const { data, error } = await supabase.rpc('mutashabih_exemples_all');
     if (error) throw error;
     return (data ?? []) as MutashabihExemple[];
+  }
+
+  async getExposeCitations(slug: string): Promise<ExposeCitation[]> {
+    const { data, error } = await supabase.rpc('get_expose_citations', { p_slug: slug });
+    if (error) throw error;
+    return (data ?? []) as ExposeCitation[];
   }
 
   // ================= Récits (Prophètes / vertueux) =================

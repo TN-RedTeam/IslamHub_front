@@ -531,6 +531,26 @@ export interface Expose {
   verset_ref?: string | null;
 }
 
+/** Citation réutilisable rattachée à une page d'exposé (`expose_citations`). */
+export interface ExposeCitation {
+  id: number;
+  section: number | null;   // n° de section de la prose (null = bloc général)
+  type: 'verset' | 'hadith' | 'parole';
+  accordeon: boolean;
+  ordre: number;
+  arabe: string | null;
+  phonetique: string | null;
+  signification: string | null;
+  ref: string | null;
+  savant: string | null;
+  savant_slug: string | null;
+  generation: string | null;
+  parole_slug: string | null;
+  hadith_slug: string | null;
+  hadith_id: number | null;
+  sujet: string | null;
+}
+
 /** Carte « subtilité de la langue » (table `mutashabih_exemples`). */
 export interface MutashabihExemple {
   id: number;
