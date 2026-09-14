@@ -71,3 +71,28 @@ $$;
 --   la sourate (slug généré à la création ; numero unique), puis remplacement
 --   complet des versets (delete cascade => exégèses) et ré-insertion des versets
 --   et de leurs exégèses (ordre recalculé). Éditeur imbriqué côté admin.
+
+-- ─────────────────────────────────────────────────────────────────────────
+-- Admin — Invocations & Évocations (table `invocations`)
+-- ─────────────────────────────────────────────────────────────────────────
+-- Migration : admin_invocations_rpcs.
+-- Table live unifiée (type_id 1=invocation/duʿāʾ, 2=évocation/dhikr) ;
+-- douaas/dhikrs = tables sources héritées, non éditées ici.
+-- RLS écriture admin sur invocations (lecture publique conservée).
+-- admin_get_invocation(id) → colonnes brutes.
+-- admin_save_invocation(p jsonb) SECURITY DEFINER, gardé is_admin() : upsert
+--   (id = identity BY DEFAULT). Pas de slug, pas de mapping thèmes.
+
+-- ─────────────────────────────────────────────────────────────────────────
+-- Admin — Savants (fiche complète)
+-- ─────────────────────────────────────────────────────────────────────────
+-- Migration : admin_savants_rpcs.
+-- Complète la création minimale (nom+slug) faite à la volée par admin_save_parole.
+-- RLS écriture admin sur savants (recréées, idempotent).
+-- admin_get_savant(id) → nom, nom_arabe, slug, ecole_id, generation, naissance,
+--   deces, resume, biographie, domaines (text[]).
+-- admin_save_savant(p jsonb) SECURITY DEFINER, gardé is_admin() : upsert
+--   (id = identity ALWAYS => jamais fourni). slug généré à la création ;
+--   generation contrainte (sahabi|salaf|tabii|tabi_tabii|khalaf) ; domaines
+--   converti depuis un tableau JSON ; resume_auto/generation_a_verifier=false
+--   (saisie manuelle par l'auteur).

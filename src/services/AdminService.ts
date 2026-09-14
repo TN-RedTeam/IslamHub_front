@@ -123,6 +123,38 @@ class AdminService {
     const { data, error } = await supabase.rpc('admin_list_sourates');
     if (error) throw error; return (data ?? []) as SourateRow[];
   }
+
+  // ---- Invocations & Évocations (table `invocations`) ----
+  async getInvocationForEdit(id: number): Promise<InvocationEditShape | null> {
+    const { data, error } = await supabase.rpc('admin_get_invocation', { p_id: id });
+    if (error) throw error; return (data ?? null) as InvocationEditShape | null;
+  }
+  async saveInvocation(payload: InvocationFormData): Promise<number> {
+    const { data, error } = await supabase.rpc('admin_save_invocation', { p: payload });
+    if (error) throw error; return data as number;
+  }
+  async listInvocations(): Promise<InvocationRow[]> {
+    const { data, error } = await supabase.from('invocations').select('id,type_id,sujet,tag').order('type_id').order('sujet');
+    if (error) throw error; return (data ?? []) as InvocationRow[];
+  }
+
+  // ---- Savants (fiche complète) ----
+  async getSavantForEdit(id: number): Promise<SavantEditShape | null> {
+    const { data, error } = await supabase.rpc('admin_get_savant', { p_id: id });
+    if (error) throw error; return (data ?? null) as SavantEditShape | null;
+  }
+  async saveSavant(payload: SavantFormData): Promise<number> {
+    const { data, error } = await supabase.rpc('admin_save_savant', { p: payload });
+    if (error) throw error; return data as number;
+  }
+  async listSavantsFull(): Promise<SavantFullRow[]> {
+    const { data, error } = await supabase.from('savants').select('id,nom,slug,generation,ecole_id').order('nom');
+    if (error) throw error; return (data ?? []) as SavantFullRow[];
+  }
+  async listEcoles(): Promise<EcoleRow[]> {
+    const { data, error } = await supabase.from('ecoles').select('id,nom').order('id');
+    if (error) throw error; return (data ?? []) as EcoleRow[];
+  }
 }
 
 export interface ParoleImageInput { image_url: string; alt: string; legende?: string | null; source_livre?: string | null; ordre?: number | null; }
@@ -196,6 +228,34 @@ export interface SourateEditShape {
              exegeses: { texte: string; source: string | null; ordre: number | null }[] }[];
 }
 export interface SourateRow { id: number; numero: number; nom: string; slug: string; nb_versets_saisis: number; }
+
+// ---- Invocations & Évocations ----
+export interface InvocationFormData {
+  id?: number | null;
+  type_id: number; sujet: string; texte_arabe: string; texte_francais: string;
+  phonetique: string; explication: string; commentaire: string; tag: string;
+}
+export interface InvocationEditShape {
+  id: number; type_id: number; sujet: string; texte_arabe: string;
+  texte_francais: string | null; phonetique: string | null; explication: string | null;
+  commentaire: string | null; tag: string | null;
+}
+export interface InvocationRow { id: number; type_id: number; sujet: string; tag: string | null; }
+
+// ---- Savants (fiche complète) ----
+export interface EcoleRow { id: number; nom: string; }
+export interface SavantFormData {
+  id?: number | null;
+  nom: string; nom_arabe: string; slug?: string | null; ecole_id: number | null;
+  generation: string; naissance: string; deces: string; resume: string; biographie: string;
+  domaines: string[];
+}
+export interface SavantEditShape {
+  id: number; nom: string; nom_arabe: string | null; slug: string | null; ecole_id: number | null;
+  generation: string | null; naissance: string | null; deces: string | null;
+  resume: string | null; biographie: string | null; domaines: string[] | null;
+}
+export interface SavantFullRow { id: number; nom: string; slug: string | null; generation: string | null; ecole_id: number | null; }
 
 export interface RecitRow { id: number; slug: string; categorie: RecitCategorie; titre: string; ordre: number; }
 export interface RecitFull { id?: number; slug: string; categorie: RecitCategorie; titre: string; contenu_md: string | null; image_url: string | null; ordre: number; }

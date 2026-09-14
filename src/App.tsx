@@ -48,6 +48,10 @@ import { AdminCoranForm } from './pages/admin/AdminCoranForm';
 import { AdminCoranList } from './pages/admin/AdminCoranList';
 import { AdminSourateForm } from './pages/admin/AdminSourateForm';
 import { AdminSouratesList } from './pages/admin/AdminSouratesList';
+import { AdminInvocationForm } from './pages/admin/AdminInvocationForm';
+import { AdminInvocationsList } from './pages/admin/AdminInvocationsList';
+import { AdminSavantForm } from './pages/admin/AdminSavantForm';
+import { AdminSavantsList } from './pages/admin/AdminSavantsList';
 
 // Import des écoles
 import {
@@ -164,6 +168,12 @@ function App() {
                 <Route path="sourates" element={<AdminSouratesList />} />
                 <Route path="sourates/nouveau" element={<AdminSourateForm />} />
                 <Route path="sourates/:id" element={<AdminSourateForm />} />
+                <Route path="invocations" element={<AdminInvocationsList />} />
+                <Route path="invocations/nouveau" element={<AdminInvocationForm />} />
+                <Route path="invocations/:id" element={<AdminInvocationForm />} />
+                <Route path="savants" element={<AdminSavantsList />} />
+                <Route path="savants/nouveau" element={<AdminSavantForm />} />
+                <Route path="savants/:id" element={<AdminSavantForm />} />
               </Route>
               {/* Site public */}
               <Route path="/*" element={<PublicShell />} />
