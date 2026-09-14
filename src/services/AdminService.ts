@@ -72,6 +72,29 @@ class AdminService {
     const { data, error } = await supabase.rpc('admin_save_parole', { p: payload });
     if (error) throw error; return data as number;
   }
+
+  // ---- Versets / hadiths équivoques ----
+  async getVersetForEdit(id: number): Promise<VersetEditShape | null> {
+    const { data, error } = await supabase.rpc('admin_get_verset_equivoque', { p_id: id });
+    if (error) throw error; return (data ?? null) as VersetEditShape | null;
+  }
+  async saveVerset(payload: VersetFormData): Promise<number> {
+    const { data, error } = await supabase.rpc('admin_save_verset_equivoque', { p: payload });
+    if (error) throw error; return data as number;
+  }
+  async listVersetRefs(): Promise<VersetRefs> {
+    const { data, error } = await supabase.rpc('admin_list_verset_refs');
+    if (error) throw error;
+    const d = (data ?? {}) as Partial<VersetRefs>;
+    return { hadiths: d.hadiths ?? [], paroles: d.paroles ?? [], versets: d.versets ?? [] };
+  }
+  async listVersets(): Promise<VersetListRow[]> {
+    const { data, error } = await supabase
+      .from('versets_equivoques')
+      .select('id,slug,type,theme,sourate,ayah,published')
+      .order('sourate_num', { nullsFirst: false }).order('ayah', { nullsFirst: false }).order('id');
+    if (error) throw error; return (data ?? []) as VersetListRow[];
+  }
 }
 
 export interface ParoleImageInput { image_url: string; alt: string; legende?: string | null; source_livre?: string | null; ordre?: number | null; }
@@ -88,6 +111,36 @@ export interface ParoleEditShape {
   phonetique: string | null; explication: string | null; source_livre: string | null; page: string | null;
   ecole: string | null; savant_id: number | null; tag: string | null;
   images: { image_url: string; alt: string | null; legende: string | null; source_livre: string | null; ordre: number | null }[];
+}
+
+export type VersetType = 'verset' | 'hadith';
+export type PreuveType = 'coran' | 'hadith' | 'parole';
+export interface RefOption { id: number; label: string; }
+export interface VersetRefs { hadiths: RefOption[]; paroles: RefOption[]; versets: RefOption[]; }
+export interface VersetPreuveInput { type: PreuveType; ref_id?: number | null; contenu_libre?: string | null; ordre?: number | null; }
+export interface VersetImageInput { image_url: string; alt: string; legende?: string | null; source_livre?: string | null; ordre?: number | null; }
+export interface VersetFormData {
+  id?: number | null;
+  slug?: string | null;
+  type: VersetType; theme: string; sourate: string; sourate_num: string; ayah: string;
+  verset_arabe: string; verset_traduction: string; verset_phonetique: string;
+  sens_juste: string; objection: string; reponse: string;
+  rapporteur: string; recueil: string; numero: string;
+  published: boolean;
+  preuves: VersetPreuveInput[];
+  images: VersetImageInput[];
+  lies: number[];
+}
+export interface VersetListRow { id: number; slug: string; type: VersetType; theme: string; sourate: string; ayah: number | null; published: boolean; }
+export interface VersetEditShape {
+  id: number; slug: string; type: VersetType; theme: string; sourate: string;
+  sourate_num: number | null; ayah: number | null;
+  verset_arabe: string; verset_traduction: string | null; verset_phonetique: string | null;
+  sens_juste: string | null; objection: string | null; reponse: string | null;
+  rapporteur: string | null; recueil: string | null; numero: string | null; published: boolean;
+  preuves: VersetPreuveInput[];
+  images: { image_url: string; alt: string | null; legende: string | null; source_livre: string | null; ordre: number | null }[];
+  lies: number[];
 }
 
 export interface RecitRow { id: number; slug: string; categorie: RecitCategorie; titre: string; ordre: number; }

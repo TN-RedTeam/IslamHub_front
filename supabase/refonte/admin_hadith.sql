@@ -29,3 +29,22 @@ $$;
 -- (+ slug), savant éventuellement nouveau, remplace parole_images (scans),
 -- re-déduit parole_themes depuis les tags. grant → authenticated.
 -- Datalist rapporteur (front) alimenté par hadith_rubriques().rapporteurs.
+
+-- ─────────────────────────────────────────────────────────────────────────
+-- Admin — Versets / hadiths équivoques (entité parent + 3 enfants)
+-- ─────────────────────────────────────────────────────────────────────────
+-- Migrations : admin_equivoques_rls, admin_equivoques_rpcs.
+-- RLS écriture admin (insert/update/delete, is_admin()) sur :
+--   versets_equivoques, verset_preuves, verset_images, verset_lies.
+--   (lecture : « Public read » existante conservée).
+-- admin_get_verset_equivoque(id) → colonnes brutes + preuves[]
+--   (type, ref_id, contenu_libre, ordre) + images[] + lies[] (verset_lie_id).
+-- admin_list_verset_refs() SECURITY DEFINER, gardé is_admin() : renvoie
+--   { hadiths, paroles, versets } (id + label) pour les sélecteurs de preuves
+--   et de liens (inclut les non-publiés).
+-- admin_save_verset_equivoque(p jsonb) SECURITY DEFINER, gardé is_admin() :
+--   upsert du parent (slug généré à la création, sourate='' tolérée pour un
+--   hadith équivoque), puis remplacement complet des preuves (coran→contenu
+--   libre ; hadith/parole→ref_id), des images (alt défaut « Scan du livre »)
+--   et des liens verset_lies (anti-auto-référence + on conflict do nothing).
+--   Retourne l'id. grant execute → authenticated seulement.
