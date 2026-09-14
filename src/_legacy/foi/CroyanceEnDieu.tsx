@@ -29,7 +29,7 @@ const CroyanceEnDieu: React.FC = () => {
       path: '/croyance/CroireEnDieu/DieuExisteSansEndroit',
       category: 'Unicité',
       description: 'Allah existe sans besoin d\'endroit ni de direction',
-      tags: 'Tawhid,Transcendance,Incomparable'
+      tags: 'Tawhid,Tanzih,Incomparable'
     },
     { 
       id: 3, 

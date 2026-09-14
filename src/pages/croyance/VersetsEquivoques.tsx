@@ -68,7 +68,7 @@ export const VersetsEquivoques: React.FC = () => {
         <h1 className="font-display font-semibold text-green-deep" style={{ fontSize: 'clamp(28px,4.4vw,42px)' }}>Versets et hadiths équivoques</h1>
         <p className="text-muted text-[15px] mt-2 max-w-[62ch]">
           Les versets <b className="text-ink">et les hadiths</b> dont le sens apparent prêterait à confusion sur Allah —
-          <b className="text-ink"> on va à l'essentiel</b> : le sens conforme à Sa transcendance, avec les preuves.
+          <b className="text-ink"> on va à l'essentiel</b> : le sens conforme et digne de Allah, avec les preuves.
         </p>
 
         {/* À lire en premier */}

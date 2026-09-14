@@ -72,7 +72,7 @@ export const ComprendreEquivoques: React.FC = () => {
             <h2 className="font-display font-semibold text-green-deep text-xl mb-1.5">La subtilité de la langue arabe</h2>
             <p className="text-[15px] text-muted mb-4 max-w-[64ch]">
               Un mot a souvent un sens propre et un sens figuré ; le contexte impose lequel retenir. Au sujet d'Allah,
-              c'est toujours le sens digne de Sa transcendance qui est visé.
+              c'est toujours le sens digne de Allah qui est visé.
             </p>
             <div className="grid gap-3 sm:grid-cols-2">
               {exemples.map((ex) => (

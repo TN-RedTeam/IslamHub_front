@@ -1,61 +1,318 @@
 <title>Versets équivoques — Introduction</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Noto+Naskh+Arabic:wght@500;700&family=Scheherazade+New:wght@400;500;700&family=EB+Garamond:ital,wght@0,500;0,600;1,500&family=Newsreader:opsz,wght@6..72,400;6..72,500&display=swap">
+<link rel="stylesheet"
+  href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Noto+Naskh+Arabic:wght@500;700&family=Scheherazade+New:wght@400;500;700&family=EB+Garamond:ital,wght@0,500;0,600;1,500&family=Newsreader:opsz,wght@6..72,400;6..72,500&display=swap">
 <style>
-  :root{--ground:#f2ebdd;--surface:#fff;--ink:#1b2620;--muted:#6a746a;--line:#e5dccb;
-    --green:#1c5a43;--green-deep:#0f3d2e;--green-soft:#e6f0e9;--green-line:#cfe1d6;--gold:#b0872f;--gold-soft:#f2e6cb}
-  *{box-sizing:border-box}
-  body{margin:0;background:var(--ground);color:var(--ink);font-family:Newsreader,Georgia,serif;line-height:1.65}
-  .wrap{max-width:900px;margin:0 auto;padding:26px 22px 60px}
-  .crumb{font-size:12.5px;color:var(--muted);margin:0 0 6px}
-  .eye{font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:600;margin:0 0 4px}
-  h1{font-family:"EB Garamond",serif;font-weight:600;font-size:clamp(28px,4.4vw,42px);color:var(--green-deep);margin:0}
-  .lede{color:var(--muted);font-size:15.5px;margin:8px 0 0;max-width:62ch}
-  .note{margin:14px 0 0;font-size:12.5px;color:var(--muted);background:var(--gold-soft);border-radius:8px;padding:8px 12px;display:inline-block}
+  :root {
+    --ground: #f2ebdd;
+    --surface: #fff;
+    --ink: #1b2620;
+    --muted: #6a746a;
+    --line: #e5dccb;
+    --green: #1c5a43;
+    --green-deep: #0f3d2e;
+    --green-soft: #e6f0e9;
+    --green-line: #cfe1d6;
+    --gold: #b0872f;
+    --gold-soft: #f2e6cb
+  }
 
-  details.intro{margin-top:20px;background:var(--surface);border:1px solid var(--line);border-radius:16px;overflow:hidden;
-    box-shadow:0 1px 2px rgba(27,38,32,.03)}
-  details.intro>summary{cursor:pointer;list-style:none;padding:18px 24px;display:flex;align-items:center;gap:10px;
-    font-family:"EB Garamond",serif;font-weight:600;font-size:19px;color:var(--green-deep);background:#faf7ef;border-bottom:1px solid transparent}
-  details.intro[open]>summary{border-bottom-color:var(--line)}
-  details.intro>summary::-webkit-details-marker{display:none}
-  details.intro>summary .chev{transition:transform .2s;color:var(--gold)}
-  details.intro[open]>summary .chev{transform:rotate(90deg)}
-  .in-body{padding:22px 24px 26px}
-  .sec{margin-bottom:26px}
-  .sec:last-child{margin-bottom:0}
-  .sec h3{font-family:"EB Garamond",serif;font-weight:600;font-size:18px;color:var(--green-deep);margin:0 0 8px;display:flex;align-items:baseline;gap:9px}
-  .sec h3 .n{font-size:13px;color:var(--gold);font-weight:600}
-  .sec p{margin:0 0 10px;font-size:15.5px}
-  .sec p:last-child{margin-bottom:0}
-  .verse-inline{font-family:"Scheherazade New",serif;font-size:19px;direction:rtl}
-  .reftag{font-size:12px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
+  * {
+    box-sizing: border-box
+  }
 
-  .astuce{background:var(--green-soft);border:1px solid var(--green-line);border-radius:12px;padding:14px 16px;margin:12px 0}
-  .astuce b{color:var(--green-deep)}
+  body {
+    margin: 0;
+    background: var(--ground);
+    color: var(--ink);
+    font-family: Newsreader, Georgia, serif;
+    line-height: 1.65
+  }
 
-  .grid{display:grid;grid-template-columns:1fr;gap:12px;margin-top:14px}
-  @media(min-width:620px){.grid{grid-template-columns:1fr 1fr}}
-  .ex{border:1px solid var(--line);border-radius:12px;padding:16px;background:#fdfbf6}
-  .ex .word{font-family:"Noto Naskh Arabic",serif;font-weight:500;font-size:30px;color:var(--green-deep);direction:rtl;text-align:center;line-height:1.4}
-  .ex .tr{text-align:center;font-size:12.5px;color:var(--muted);font-style:italic;margin:2px 0 12px}
-  .ex .row{display:flex;gap:9px;align-items:flex-start;font-size:14px;margin-top:7px}
-  .ex .row .ic{flex:none;margin-top:2px}
-  .ex .app{color:var(--muted)}
-  .ex .app .k{text-decoration:line-through;text-decoration-color:#c9a9a0}
-  .ex .real{color:var(--ink)}
-  .ex .real b{color:var(--green-deep)}
-  .x{color:#b06a5c} .v{color:var(--green)}
+  .wrap {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 26px 22px 60px
+  }
 
-  .rule-box{background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--gold);border-radius:0 12px 12px 0;padding:16px 20px}
-  .rule-box .ar{font-family:"Scheherazade New",serif;font-size:22px;direction:rtl;text-align:right;color:var(--green-deep);margin:0}
-  .rule-box .tr{font-size:15px;margin:8px 0 0}
+  .crumb {
+    font-size: 12.5px;
+    color: var(--muted);
+    margin: 0 0 6px
+  }
 
-  .searchbar{display:flex;gap:12px;flex-wrap:wrap;margin-top:22px;padding:14px;background:var(--surface);border:1px solid var(--line);border-radius:14px}
-  .searchbar .s{flex:1 1 240px;display:flex;align-items:center;gap:10px;border:1px solid var(--line);border-radius:10px;padding:11px 14px;color:var(--muted)}
-  .searchbar .sel{border:1px solid var(--line);border-radius:10px;padding:11px 14px;color:var(--muted);font-size:14px}
-  .count{font-size:13px;color:var(--muted);margin:16px 2px 0}
+  .eye {
+    font-size: 11.5px;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 600;
+    margin: 0 0 4px
+  }
+
+  h1 {
+    font-family: "EB Garamond", serif;
+    font-weight: 600;
+    font-size: clamp(28px, 4.4vw, 42px);
+    color: var(--green-deep);
+    margin: 0
+  }
+
+  .lede {
+    color: var(--muted);
+    font-size: 15.5px;
+    margin: 8px 0 0;
+    max-width: 62ch
+  }
+
+  .note {
+    margin: 14px 0 0;
+    font-size: 12.5px;
+    color: var(--muted);
+    background: var(--gold-soft);
+    border-radius: 8px;
+    padding: 8px 12px;
+    display: inline-block
+  }
+
+  details.intro {
+    margin-top: 20px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 1px 2px rgba(27, 38, 32, .03)
+  }
+
+  details.intro>summary {
+    cursor: pointer;
+    list-style: none;
+    padding: 18px 24px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: "EB Garamond", serif;
+    font-weight: 600;
+    font-size: 19px;
+    color: var(--green-deep);
+    background: #faf7ef;
+    border-bottom: 1px solid transparent
+  }
+
+  details.intro[open]>summary {
+    border-bottom-color: var(--line)
+  }
+
+  details.intro>summary::-webkit-details-marker {
+    display: none
+  }
+
+  details.intro>summary .chev {
+    transition: transform .2s;
+    color: var(--gold)
+  }
+
+  details.intro[open]>summary .chev {
+    transform: rotate(90deg)
+  }
+
+  .in-body {
+    padding: 22px 24px 26px
+  }
+
+  .sec {
+    margin-bottom: 26px
+  }
+
+  .sec:last-child {
+    margin-bottom: 0
+  }
+
+  .sec h3 {
+    font-family: "EB Garamond", serif;
+    font-weight: 600;
+    font-size: 18px;
+    color: var(--green-deep);
+    margin: 0 0 8px;
+    display: flex;
+    align-items: baseline;
+    gap: 9px
+  }
+
+  .sec h3 .n {
+    font-size: 13px;
+    color: var(--gold);
+    font-weight: 600
+  }
+
+  .sec p {
+    margin: 0 0 10px;
+    font-size: 15.5px
+  }
+
+  .sec p:last-child {
+    margin-bottom: 0
+  }
+
+  .verse-inline {
+    font-family: "Scheherazade New", serif;
+    font-size: 19px;
+    direction: rtl
+  }
+
+  .reftag {
+    font-size: 12px;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    color: var(--muted)
+  }
+
+  .astuce {
+    background: var(--green-soft);
+    border: 1px solid var(--green-line);
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin: 12px 0
+  }
+
+  .astuce b {
+    color: var(--green-deep)
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+    margin-top: 14px
+  }
+
+  @media(min-width:620px) {
+    .grid {
+      grid-template-columns: 1fr 1fr
+    }
+  }
+
+  .ex {
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 16px;
+    background: #fdfbf6
+  }
+
+  .ex .word {
+    font-family: "Noto Naskh Arabic", serif;
+    font-weight: 500;
+    font-size: 30px;
+    color: var(--green-deep);
+    direction: rtl;
+    text-align: center;
+    line-height: 1.4
+  }
+
+  .ex .tr {
+    text-align: center;
+    font-size: 12.5px;
+    color: var(--muted);
+    font-style: italic;
+    margin: 2px 0 12px
+  }
+
+  .ex .row {
+    display: flex;
+    gap: 9px;
+    align-items: flex-start;
+    font-size: 14px;
+    margin-top: 7px
+  }
+
+  .ex .row .ic {
+    flex: none;
+    margin-top: 2px
+  }
+
+  .ex .app {
+    color: var(--muted)
+  }
+
+  .ex .app .k {
+    text-decoration: line-through;
+    text-decoration-color: #c9a9a0
+  }
+
+  .ex .real {
+    color: var(--ink)
+  }
+
+  .ex .real b {
+    color: var(--green-deep)
+  }
+
+  .x {
+    color: #b06a5c
+  }
+
+  .v {
+    color: var(--green)
+  }
+
+  .rule-box {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--gold);
+    border-radius: 0 12px 12px 0;
+    padding: 16px 20px
+  }
+
+  .rule-box .ar {
+    font-family: "Scheherazade New", serif;
+    font-size: 22px;
+    direction: rtl;
+    text-align: right;
+    color: var(--green-deep);
+    margin: 0
+  }
+
+  .rule-box .tr {
+    font-size: 15px;
+    margin: 8px 0 0
+  }
+
+  .searchbar {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 22px;
+    padding: 14px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 14px
+  }
+
+  .searchbar .s {
+    flex: 1 1 240px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 11px 14px;
+    color: var(--muted)
+  }
+
+  .searchbar .sel {
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 11px 14px;
+    color: var(--muted);
+    font-size: 14px
+  }
+
+  .count {
+    font-size: 13px;
+    color: var(--muted);
+    margin: 16px 2px 0
+  }
 </style>
 
 <div class="wrap">
@@ -63,12 +320,14 @@
   <p class="eye">Croyance · Mutashābihāt</p>
   <h1>Versets équivoques</h1>
   <p class="lede">Les versets dont le sens apparent prêterait à confusion sur Allah — on va à l'essentiel :
-    le sens conforme à Sa transcendance, avec les preuves.</p>
+    le sens conforme et digne de Allah, avec les preuves.</p>
   <p class="note">⚑ Contenu d'exemple — sens et formulations à valider/compléter par l'auteur.</p>
 
   <details class="intro" open>
     <summary>
-      <svg class="chev" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 6l6 6-6 6"/></svg>
+      <svg class="chev" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+        <path d="M9 6l6 6-6 6" />
+      </svg>
       Comprendre les versets équivoques
     </summary>
     <div class="in-body">
@@ -78,7 +337,8 @@
         <p>Le Coran contient deux sortes de versets : les <b>muḥkam</b> (clairs, au sens évident) et les
           <b>mutashābih</b> (équivoques, dont le sens apparent n'est pas celui qui est visé). Les versets qui
           semblent attribuer à Allah une main, un visage, une direction… sont <b>mutashābih</b> : leur sens
-          apparent est à écarter, car il contredirait la transcendance d'Allah.</p>
+          apparent est à écarter, car il contredirait de qui est digne de Allah.
+        </p>
         <p class="reftag">Fondement : sourate Āl ʿImrān, verset 7.</p>
       </div>
 
@@ -89,47 +349,63 @@
         <div class="astuce">💡 <b>Même en français :</b> « le <b>bras</b> de l'État », « avoir le <b>bras</b> long »,
           « la <b>main</b>-d'œuvre » — personne ne pense à un membre. Le mot garde sa forme, mais le sens est autre.
           Il en va de même pour les mots employés au sujet d'Allah.</p>
-        <div class="grid">
-          <div class="ex">
-            <div class="word">يَد</div><div class="tr">yad</div>
-            <div class="row"><span class="ic x">✗</span><span class="app">Sens apparent : <span class="k">un membre, une main</span></span></div>
-            <div class="row"><span class="ic v">✓</span><span class="real">Sens visé : <b>la puissance, la générosité</b></span></div>
-          </div>
-          <div class="ex">
-            <div class="word">وَجْه</div><div class="tr">wajh</div>
-            <div class="row"><span class="ic x">✗</span><span class="app">Sens apparent : <span class="k">un visage, une face</span></span></div>
-            <div class="row"><span class="ic v">✓</span><span class="real">Sens visé : <b>l'Essence, ce qui est recherché par l'acte</b></span></div>
-          </div>
-          <div class="ex">
-            <div class="word">اسْتَوَى</div><div class="tr">istawā</div>
-            <div class="row"><span class="ic x">✗</span><span class="app">Sens apparent : <span class="k">s'installer physiquement</span></span></div>
-            <div class="row"><span class="ic v">✓</span><span class="real">Sens visé : <b>un établissement digne de Lui, sans lieu</b></span></div>
-          </div>
-          <div class="ex">
-            <div class="word">عَيْن</div><div class="tr">ʿayn</div>
-            <div class="row"><span class="ic x">✗</span><span class="app">Sens apparent : <span class="k">un œil, un organe</span></span></div>
-            <div class="row"><span class="ic v">✓</span><span class="real">Sens visé : <b>la protection, le soin</b></span></div>
+          <div class="grid">
+            <div class="ex">
+              <div class="word">يَد</div>
+              <div class="tr">yad</div>
+              <div class="row"><span class="ic x">✗</span><span class="app">Sens apparent : <span class="k">un membre,
+                    une main</span></span></div>
+              <div class="row"><span class="ic v">✓</span><span class="real">Sens visé : <b>la puissance, la
+                    générosité</b></span></div>
+            </div>
+            <div class="ex">
+              <div class="word">وَجْه</div>
+              <div class="tr">wajh</div>
+              <div class="row"><span class="ic x">✗</span><span class="app">Sens apparent : <span class="k">un visage,
+                    une face</span></span></div>
+              <div class="row"><span class="ic v">✓</span><span class="real">Sens visé : <b>l'Essence, ce qui est
+                    recherché par l'acte</b></span></div>
+            </div>
+            <div class="ex">
+              <div class="word">اسْتَوَى</div>
+              <div class="tr">istawā</div>
+              <div class="row"><span class="ic x">✗</span><span class="app">Sens apparent : <span class="k">s'installer
+                    physiquement</span></span></div>
+              <div class="row"><span class="ic v">✓</span><span class="real">Sens visé : <b>un établissement digne de
+                    Lui, sans lieu</b></span></div>
+            </div>
+            <div class="ex">
+              <div class="word">عَيْن</div>
+              <div class="tr">ʿayn</div>
+              <div class="row"><span class="ic x">✗</span><span class="app">Sens apparent : <span class="k">un œil, un
+                    organe</span></span></div>
+              <div class="row"><span class="ic v">✓</span><span class="real">Sens visé : <b>la protection, le
+                    soin</b></span></div>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div class="sec">
-        <h3><span class="n">3.</span> La règle qui gouverne tout</h3>
-        <p>Un verset clair encadre la lecture de tous les autres :</p>
-        <div class="rule-box">
-          <p class="ar">لَيْسَ كَمِثْلِهِ شَىْءٌ</p>
-          <p class="tr">« Rien n'est tel que Lui. » — <span class="reftag">Ash-Shūrā, 42:11</span></p>
+        <div class="sec">
+          <h3><span class="n">3.</span> La règle qui gouverne tout</h3>
+          <p>Un verset clair encadre la lecture de tous les autres :</p>
+          <div class="rule-box">
+            <p class="ar">لَيْسَ كَمِثْلِهِ شَىْءٌ</p>
+            <p class="tr">« Rien n'est tel que Lui. » — <span class="reftag">Ash-Shūrā, 42:11</span></p>
+          </div>
+          <p style="margin-top:12px">On affirme donc ce qu'Allah S'est attribué <b>sans lui prêter de modalité</b>
+            (bilā kayf) et sans ressemblance avec les créatures. C'est cette clé qu'on applique, verset par verset,
+            ci-dessous.</p>
         </div>
-        <p style="margin-top:12px">On affirme donc ce qu'Allah S'est attribué <b>sans lui prêter de modalité</b>
-          (bilā kayf) et sans ressemblance avec les créatures. C'est cette clé qu'on applique, verset par verset, ci-dessous.</p>
-      </div>
 
-    </div>
+      </div>
   </details>
 
   <!-- La collection suit (contexte) -->
   <div class="searchbar" aria-hidden="true">
-    <div class="s"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg> Rechercher un verset, un thème…</div>
+    <div class="s"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="11" cy="11" r="7" />
+        <path d="m21 21-4.3-4.3" />
+      </svg> Rechercher un verset, un thème…</div>
     <div class="sel">Tous les thèmes ▾</div>
     <div class="sel">Toutes les sourates ▾</div>
   </div>
