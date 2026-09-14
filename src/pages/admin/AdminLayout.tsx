@@ -7,7 +7,7 @@ const ENTITIES: { to: string; label: string; soon?: boolean }[] = [
   { to: '/admin/hadiths', label: 'Hadiths' },
   { to: '/admin/paroles', label: 'Paroles de savants' },
   { to: '/admin/equivoques', label: 'Versets/hadiths équivoques', soon: true },
-  { to: '/admin/recits', label: 'Récits', soon: true },
+  { to: '/admin/recits', label: 'Récits' },
 ];
 
 /** Shell de l'espace admin : garde d'accès (admin only) + barre latérale. */

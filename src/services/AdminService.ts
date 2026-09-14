@@ -1,5 +1,6 @@
 import { supabase } from './supabase';
-import type { ThemeRef } from '../types';
+import { slugify } from '../utils/slug';
+import type { ThemeRef, RecitCategorie } from '../types';
 
 export interface NarrateurRow { id: number; nom: string; generation: string | null; role: string | null; sexe: string | null; }
 export interface RecueilRow { id: number; titre: string; savant_id: number | null; auteur: string | null; }
@@ -88,6 +89,30 @@ export interface ParoleEditShape {
   ecole: string | null; savant_id: number | null; tag: string | null;
   images: { image_url: string; alt: string | null; legende: string | null; source_livre: string | null; ordre: number | null }[];
 }
+
+export interface RecitRow { id: number; slug: string; categorie: RecitCategorie; titre: string; ordre: number; }
+export interface RecitFull { id?: number; slug: string; categorie: RecitCategorie; titre: string; contenu_md: string | null; image_url: string | null; ordre: number; }
+
+class AdminRecits {
+  async list(): Promise<RecitRow[]> {
+    const { data, error } = await supabase.from('recits').select('id,slug,categorie,titre,ordre').order('categorie').order('ordre');
+    if (error) throw error; return (data ?? []) as RecitRow[];
+  }
+  async get(id: number): Promise<RecitFull | null> {
+    const { data, error } = await supabase.from('recits').select('id,slug,categorie,titre,contenu_md,image_url,ordre').eq('id', id).maybeSingle();
+    if (error) throw error; return (data ?? null) as RecitFull | null;
+  }
+  async save(r: RecitFull): Promise<number> {
+    const slug = (r.slug?.trim() || slugify(r.titre) || 'recit');
+    const row = { slug, categorie: r.categorie, titre: r.titre.trim(), contenu_md: r.contenu_md || null, image_url: r.image_url || null, ordre: r.ordre ?? 0 };
+    if (r.id) {
+      const { error } = await supabase.from('recits').update(row).eq('id', r.id); if (error) throw error; return r.id;
+    }
+    const { data, error } = await supabase.from('recits').insert(row).select('id').single();
+    if (error) throw error; return (data as { id: number }).id;
+  }
+}
+export const adminRecits = new AdminRecits();
 
 export const adminService = new AdminService();
 export default adminService;
