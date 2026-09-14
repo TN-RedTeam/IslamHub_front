@@ -6,6 +6,8 @@ import { useAuth } from '../../context/AuthContext';
 const ENTITIES: { to: string; label: string; soon?: boolean }[] = [
   { to: '/admin/hadiths', label: 'Hadiths' },
   { to: '/admin/paroles', label: 'Paroles de savants' },
+  { to: '/admin/coran', label: 'Coran (thématique)' },
+  { to: '/admin/sourates', label: 'Coran — exégèse' },
   { to: '/admin/equivoques', label: 'Versets/hadiths équivoques' },
   { to: '/admin/recits', label: 'Récits' },
 ];

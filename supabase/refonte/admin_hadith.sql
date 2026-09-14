@@ -48,3 +48,26 @@ $$;
 --   libre ; hadith/parole→ref_id), des images (alt défaut « Scan du livre »)
 --   et des liens verset_lies (anti-auto-référence + on conflict do nothing).
 --   Retourne l'id. grant execute → authenticated seulement.
+
+-- ─────────────────────────────────────────────────────────────────────────
+-- Admin — Coran thématique (table `coran` + coran_themes)
+-- ─────────────────────────────────────────────────────────────────────────
+-- Migration : admin_coran_rpcs.
+-- RLS écriture admin sur coran, coran_themes (lecture publique conservée).
+-- admin_get_coran(id) → colonnes brutes + tag.
+-- admin_save_coran(p jsonb) SECURITY DEFINER, gardé is_admin() : upsert du
+--   verset thématique (le trigger set_arabe_hash renseigne arabe_hash ; l'index
+--   uniq_coran_arabe_hash détecte les doublons), puis re-déduit coran_themes
+--   depuis les tags (mapping theme_tags). grant → authenticated.
+
+-- ─────────────────────────────────────────────────────────────────────────
+-- Admin — Coran, exégèse (sourates -> versets -> exégèses)
+-- ─────────────────────────────────────────────────────────────────────────
+-- Migration : admin_sourates_rpcs.
+-- RLS écriture admin sur sourates, versets, exegeses (lecture publique conservée).
+-- admin_get_sourate(id) → sourate + versets[] (chacun avec ses exegeses[]).
+-- admin_list_sourates() → liste (numero, nom, slug, nb de versets saisis).
+-- admin_save_sourate(p jsonb) SECURITY DEFINER, gardé is_admin() : upsert de
+--   la sourate (slug généré à la création ; numero unique), puis remplacement
+--   complet des versets (delete cascade => exégèses) et ré-insertion des versets
+--   et de leurs exégèses (ordre recalculé). Éditeur imbriqué côté admin.

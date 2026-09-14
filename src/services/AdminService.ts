@@ -95,6 +95,34 @@ class AdminService {
       .order('sourate_num', { nullsFirst: false }).order('ayah', { nullsFirst: false }).order('id');
     if (error) throw error; return (data ?? []) as VersetListRow[];
   }
+
+  // ---- Coran thématique (table `coran`) ----
+  async getCoranForEdit(id: number): Promise<CoranEditShape | null> {
+    const { data, error } = await supabase.rpc('admin_get_coran', { p_id: id });
+    if (error) throw error; return (data ?? null) as CoranEditShape | null;
+  }
+  async saveCoran(payload: CoranFormData): Promise<number> {
+    const { data, error } = await supabase.rpc('admin_save_coran', { p: payload });
+    if (error) throw error; return data as number;
+  }
+  async listCorans(): Promise<CoranRow[]> {
+    const { data, error } = await supabase.from('coran').select('id,sujet,sourate').order('sujet');
+    if (error) throw error; return (data ?? []) as CoranRow[];
+  }
+
+  // ---- Exégèse : sourates -> versets -> exégèses ----
+  async getSourateForEdit(id: number): Promise<SourateEditShape | null> {
+    const { data, error } = await supabase.rpc('admin_get_sourate', { p_id: id });
+    if (error) throw error; return (data ?? null) as SourateEditShape | null;
+  }
+  async saveSourate(payload: SourateFormData): Promise<number> {
+    const { data, error } = await supabase.rpc('admin_save_sourate', { p: payload });
+    if (error) throw error; return data as number;
+  }
+  async listSourates(): Promise<SourateRow[]> {
+    const { data, error } = await supabase.rpc('admin_list_sourates');
+    if (error) throw error; return (data ?? []) as SourateRow[];
+  }
 }
 
 export interface ParoleImageInput { image_url: string; alt: string; legende?: string | null; source_livre?: string | null; ordre?: number | null; }
@@ -142,6 +170,32 @@ export interface VersetEditShape {
   images: { image_url: string; alt: string | null; legende: string | null; source_livre: string | null; ordre: number | null }[];
   lies: number[];
 }
+
+// ---- Coran thématique ----
+export interface CoranFormData {
+  id?: number | null;
+  sujet: string; sourate: string; texte_arabe: string; texte_francais: string; phonetique: string; explication: string; tag: string;
+}
+export interface CoranEditShape {
+  id: number; sujet: string; sourate: string | null; texte_arabe: string;
+  texte_francais: string | null; phonetique: string | null; explication: string | null; tag: string | null;
+}
+export interface CoranRow { id: number; sujet: string; sourate: string | null; }
+
+// ---- Exégèse (sourates -> versets -> exégèses) ----
+export interface ExegeseInput { texte: string; source?: string | null; ordre?: number | null; }
+export interface VersetInput { numero: string; texte_arabe: string; texte_francais: string; phonetique: string; exegeses: ExegeseInput[]; }
+export interface SourateFormData {
+  id?: number | null;
+  numero: string; nom: string; nom_arabe: string; slug?: string | null; revelation: string; nb_versets: string;
+  versets: VersetInput[];
+}
+export interface SourateEditShape {
+  id: number; numero: number; nom: string; nom_arabe: string | null; slug: string; revelation: string | null; nb_versets: number | null;
+  versets: { numero: number; texte_arabe: string | null; texte_francais: string | null; phonetique: string | null;
+             exegeses: { texte: string; source: string | null; ordre: number | null }[] }[];
+}
+export interface SourateRow { id: number; numero: number; nom: string; slug: string; nb_versets_saisis: number; }
 
 export interface RecitRow { id: number; slug: string; categorie: RecitCategorie; titre: string; ordre: number; }
 export interface RecitFull { id?: number; slug: string; categorie: RecitCategorie; titre: string; contenu_md: string | null; image_url: string | null; ordre: number; }
