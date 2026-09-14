@@ -195,6 +195,34 @@ class AdminService {
     const d = (data ?? {}) as Partial<ExposeRefs>;
     return { hadiths: d.hadiths ?? [], paroles: d.paroles ?? [] };
   }
+
+  // ---- Fiqh ----
+  async getFiqhForEdit(id: number): Promise<FiqhEditShape | null> {
+    const { data, error } = await supabase.rpc('admin_get_fiqh', { p_id: id });
+    if (error) throw error; return (data ?? null) as FiqhEditShape | null;
+  }
+  async saveFiqh(payload: FiqhFormData): Promise<number> {
+    const { data, error } = await supabase.rpc('admin_save_fiqh', { p: payload });
+    if (error) throw error; return data as number;
+  }
+  async listFiqh(): Promise<FiqhRow[]> {
+    const { data, error } = await supabase.from('fiqh').select('id,ecole,chapitre,sujet,ordre').order('ecole').order('ordre');
+    if (error) throw error; return (data ?? []) as FiqhRow[];
+  }
+
+  // ---- Femmes ----
+  async getFemmeForEdit(id: number): Promise<FemmeEditShape | null> {
+    const { data, error } = await supabase.rpc('admin_get_femme', { p_id: id });
+    if (error) throw error; return (data ?? null) as FemmeEditShape | null;
+  }
+  async saveFemme(payload: FemmeFormData): Promise<number> {
+    const { data, error } = await supabase.rpc('admin_save_femme', { p: payload });
+    if (error) throw error; return data as number;
+  }
+  async listFemmes(): Promise<FemmeRow[]> {
+    const { data, error } = await supabase.from('femmes').select('id,chapitre,matn,ordre').order('ordre');
+    if (error) throw error; return (data ?? []) as FemmeRow[];
+  }
 }
 
 export interface ParoleImageInput { image_url: string; alt: string; legende?: string | null; source_livre?: string | null; ordre?: number | null; }
@@ -335,6 +363,27 @@ export interface ExposeEditShape {
                phonetique: string | null; signification: string | null; ref: string | null; accordeon: boolean; ordre: number | null }[];
 }
 export interface ExposeListRow { slug: string; titre: string | null; }
+
+// ---- Fiqh ----
+export interface FiqhFormData {
+  id?: number | null;
+  ecole: string; chapitre: string; sujet: string; type: string; texte: string; texte_arabe: string; source: string; tag: string; ordre: string;
+}
+export interface FiqhEditShape {
+  id: number; ecole: string; chapitre: string; sujet: string | null; type: string | null;
+  texte: string | null; texte_arabe: string | null; source: string | null; tag: string; ordre: number;
+}
+export interface FiqhRow { id: number; ecole: string; chapitre: string; sujet: string | null; ordre: number; }
+
+// ---- Femmes ----
+export interface FemmeFormData {
+  id?: number | null;
+  chapitre: string; matn: string; commentaire: string; texte_arabe: string; source: string; ordre: string;
+}
+export interface FemmeEditShape {
+  id: number; chapitre: string; matn: string | null; commentaire: string | null; texte_arabe: string | null; source: string | null; ordre: number;
+}
+export interface FemmeRow { id: number; chapitre: string; matn: string | null; ordre: number; }
 
 export interface RecitRow { id: number; slug: string; categorie: RecitCategorie; titre: string; ordre: number; }
 export interface RecitFull { id?: number; slug: string; categorie: RecitCategorie; titre: string; contenu_md: string | null; image_url: string | null; ordre: number; }

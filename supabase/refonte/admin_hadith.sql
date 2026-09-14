@@ -120,3 +120,15 @@ $$;
 -- admin_list_exposes() / admin_list_expose_refs() (hadiths/paroles), SECURITY DEFINER.
 -- admin_save_expose(p jsonb) SECURITY DEFINER, gardé is_admin() : upsert par slug
 --   (on conflict) + remplacement complet des citations. Retourne le slug.
+
+-- ─────────────────────────────────────────────────────────────────────────
+-- Admin — Fiqh & La femme musulmane (tables plates par chapitre)
+-- ─────────────────────────────────────────────────────────────────────────
+-- Migration : admin_fiqh_femmes_rpcs.
+-- RLS écriture admin sur fiqh, femmes (lecture publique conservée).
+-- Édition par ligne (le regroupement par chapitre se fait à la lecture via
+-- fiqh_by_ecole / femmes_all). id = identity ALWAYS => jamais fourni.
+-- admin_get_fiqh(id)/admin_save_fiqh(p) : ecole (Hanafi|Malikite|Shafii|Hanbalite)
+--   + chapitre obligatoires ; sujet, type, texte (md), texte_arabe, source, tag, ordre.
+-- admin_get_femme(id)/admin_save_femme(p) : chapitre obligatoire ; matn, commentaire,
+--   texte_arabe, source, ordre. SECURITY DEFINER, gardés is_admin().

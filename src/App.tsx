@@ -56,6 +56,10 @@ import { AdminDossierForm } from './pages/admin/AdminDossierForm';
 import { AdminDossiersList } from './pages/admin/AdminDossiersList';
 import { AdminExposeForm } from './pages/admin/AdminExposeForm';
 import { AdminExposesList } from './pages/admin/AdminExposesList';
+import { AdminFiqhForm } from './pages/admin/AdminFiqhForm';
+import { AdminFiqhList } from './pages/admin/AdminFiqhList';
+import { AdminFemmeForm } from './pages/admin/AdminFemmeForm';
+import { AdminFemmesList } from './pages/admin/AdminFemmesList';
 
 // Import des écoles
 import {
@@ -184,6 +188,12 @@ function App() {
                 <Route path="exposes" element={<AdminExposesList />} />
                 <Route path="exposes/nouveau" element={<AdminExposeForm />} />
                 <Route path="exposes/:slug" element={<AdminExposeForm />} />
+                <Route path="fiqh" element={<AdminFiqhList />} />
+                <Route path="fiqh/nouveau" element={<AdminFiqhForm />} />
+                <Route path="fiqh/:id" element={<AdminFiqhForm />} />
+                <Route path="femmes" element={<AdminFemmesList />} />
+                <Route path="femmes/nouveau" element={<AdminFemmeForm />} />
+                <Route path="femmes/:id" element={<AdminFemmeForm />} />
               </Route>
               {/* Site public */}
               <Route path="/*" element={<PublicShell />} />
