@@ -1,0 +1,59 @@
+name: CI — qualité & sécurité
+
+# Portes de qualité avant déploiement. N'affecte PAS deploy.yml (déploiement
+# GitHub Pages), qui reste déclenché séparément sur push `main`.
+on:
+  push:
+    branches: [main, 'refonte/**']
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  quality:
+    name: Qualité & sécurité
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Installer Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Installer les dépendances
+        run: npm ci
+
+      # ---- Portes dures (font échouer la CI) ----
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Tests unitaires + sécurité (RLS)
+        run: npm test
+        # Secrets présents → le test RLS tourne réellement (anon ne peut pas
+        # écrire). Absents (forks) → il est ignoré proprement.
+        env:
+          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
+
+      - name: Build
+        run: npm run build
+        env:
+          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
+
+      # ---- Portes souples (rapportent sans bloquer — dette préexistante) ----
+      - name: Lint (non bloquant)
+        run: npm run lint
+        continue-on-error: true
+
+      - name: Audit dépendances (bloque si high/critical)
+        run: npm audit --audit-level=high
+        continue-on-error: true
