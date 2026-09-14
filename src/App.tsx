@@ -52,6 +52,10 @@ import { AdminInvocationForm } from './pages/admin/AdminInvocationForm';
 import { AdminInvocationsList } from './pages/admin/AdminInvocationsList';
 import { AdminSavantForm } from './pages/admin/AdminSavantForm';
 import { AdminSavantsList } from './pages/admin/AdminSavantsList';
+import { AdminDossierForm } from './pages/admin/AdminDossierForm';
+import { AdminDossiersList } from './pages/admin/AdminDossiersList';
+import { AdminExposeForm } from './pages/admin/AdminExposeForm';
+import { AdminExposesList } from './pages/admin/AdminExposesList';
 
 // Import des écoles
 import {
@@ -174,6 +178,12 @@ function App() {
                 <Route path="savants" element={<AdminSavantsList />} />
                 <Route path="savants/nouveau" element={<AdminSavantForm />} />
                 <Route path="savants/:id" element={<AdminSavantForm />} />
+                <Route path="dossiers" element={<AdminDossiersList />} />
+                <Route path="dossiers/nouveau" element={<AdminDossierForm />} />
+                <Route path="dossiers/:id" element={<AdminDossierForm />} />
+                <Route path="exposes" element={<AdminExposesList />} />
+                <Route path="exposes/nouveau" element={<AdminExposeForm />} />
+                <Route path="exposes/:slug" element={<AdminExposeForm />} />
               </Route>
               {/* Site public */}
               <Route path="/*" element={<PublicShell />} />

@@ -11,6 +11,8 @@ const ENTITIES: { to: string; label: string; soon?: boolean }[] = [
   { to: '/admin/sourates', label: 'Coran — exégèse' },
   { to: '/admin/invocations', label: 'Invocations & Évocations' },
   { to: '/admin/equivoques', label: 'Versets/hadiths équivoques' },
+  { to: '/admin/dossiers', label: 'Dossiers thématiques' },
+  { to: '/admin/exposes', label: 'Exposés' },
   { to: '/admin/recits', label: 'Récits' },
 ];
 

@@ -155,6 +155,46 @@ class AdminService {
     const { data, error } = await supabase.from('ecoles').select('id,nom').order('id');
     if (error) throw error; return (data ?? []) as EcoleRow[];
   }
+
+  // ---- Dossiers thématiques ----
+  async getDossierForEdit(id: number): Promise<DossierEditShape | null> {
+    const { data, error } = await supabase.rpc('admin_get_dossier', { p_id: id });
+    if (error) throw error; return (data ?? null) as DossierEditShape | null;
+  }
+  async saveDossier(payload: DossierFormData): Promise<number> {
+    const { data, error } = await supabase.rpc('admin_save_dossier', { p: payload });
+    if (error) throw error; return data as number;
+  }
+  async listDossiers(): Promise<DossierListRow[]> {
+    const { data, error } = await supabase.rpc('admin_list_dossiers');
+    if (error) throw error; return (data ?? []) as DossierListRow[];
+  }
+  async listDossierRefs(): Promise<DossierRefs> {
+    const { data, error } = await supabase.rpc('admin_list_dossier_refs');
+    if (error) throw error;
+    const d = (data ?? {}) as Partial<DossierRefs>;
+    return { hadiths: d.hadiths ?? [], paroles: d.paroles ?? [], versets: d.versets ?? [] };
+  }
+
+  // ---- Exposés ----
+  async getExposeForEdit(slug: string): Promise<ExposeEditShape | null> {
+    const { data, error } = await supabase.rpc('admin_get_expose', { p_slug: slug });
+    if (error) throw error; return (data ?? null) as ExposeEditShape | null;
+  }
+  async saveExpose(payload: ExposeFormData): Promise<string> {
+    const { data, error } = await supabase.rpc('admin_save_expose', { p: payload });
+    if (error) throw error; return data as string;
+  }
+  async listExposes(): Promise<ExposeListRow[]> {
+    const { data, error } = await supabase.rpc('admin_list_exposes');
+    if (error) throw error; return (data ?? []) as ExposeListRow[];
+  }
+  async listExposeRefs(): Promise<ExposeRefs> {
+    const { data, error } = await supabase.rpc('admin_list_expose_refs');
+    if (error) throw error;
+    const d = (data ?? {}) as Partial<ExposeRefs>;
+    return { hadiths: d.hadiths ?? [], paroles: d.paroles ?? [] };
+  }
 }
 
 export interface ParoleImageInput { image_url: string; alt: string; legende?: string | null; source_livre?: string | null; ordre?: number | null; }
@@ -256,6 +296,45 @@ export interface SavantEditShape {
   resume: string | null; biographie: string | null; domaines: string[] | null;
 }
 export interface SavantFullRow { id: number; nom: string; slug: string | null; generation: string | null; ecole_id: number | null; }
+
+// ---- Dossiers thématiques ----
+export type DossierPreuveType = 'hadith' | 'parole' | 'verset';
+export interface DossierRefs { hadiths: RefOption[]; paroles: RefOption[]; versets: RefOption[]; }
+export interface DossierPreuveInput { type: DossierPreuveType; ref_id: number | null; ordre?: number | null; }
+export interface DossierImageInput { image_url: string; alt: string; legende?: string | null; source_livre?: string | null; ordre?: number | null; }
+export interface DossierFormData {
+  id?: number | null; slug?: string | null; h1: string; meta_title: string; meta_description: string;
+  croyance_texte: string; objection_texte: string; reponse_texte: string; published: boolean;
+  preuves: DossierPreuveInput[]; images: DossierImageInput[]; lies: number[];
+}
+export interface DossierEditShape {
+  id: number; slug: string; h1: string; meta_title: string | null; meta_description: string | null;
+  croyance_texte: string | null; objection_texte: string | null; reponse_texte: string | null; published: boolean;
+  preuves: DossierPreuveInput[];
+  images: { image_url: string; alt: string | null; legende: string | null; source_livre: string | null; ordre: number | null }[];
+  lies: number[];
+}
+export interface DossierListRow { id: number; slug: string; h1: string; published: boolean; }
+
+// ---- Exposés ----
+export type CitationType = 'verset' | 'hadith' | 'parole';
+export interface ExposeRefs { hadiths: RefOption[]; paroles: RefOption[]; }
+export interface ExposeCitationInput {
+  section: string; type: CitationType; ref_id: number | null;
+  arabe: string; phonetique: string; signification: string; ref: string; accordeon: boolean; ordre?: number | null;
+}
+export interface ExposeFormData {
+  slug?: string | null; titre: string; contenu_md: string;
+  verset_arabe: string; verset_traduction: string; verset_phonetique: string; verset_ref: string;
+  citations: ExposeCitationInput[];
+}
+export interface ExposeEditShape {
+  slug: string; titre: string | null; contenu_md: string | null;
+  verset_arabe: string | null; verset_traduction: string | null; verset_phonetique: string | null; verset_ref: string | null;
+  citations: { section: number | null; type: CitationType; ref_id: number | null; arabe: string | null;
+               phonetique: string | null; signification: string | null; ref: string | null; accordeon: boolean; ordre: number | null }[];
+}
+export interface ExposeListRow { slug: string; titre: string | null; }
 
 export interface RecitRow { id: number; slug: string; categorie: RecitCategorie; titre: string; ordre: number; }
 export interface RecitFull { id?: number; slug: string; categorie: RecitCategorie; titre: string; contenu_md: string | null; image_url: string | null; ordre: number; }

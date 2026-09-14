@@ -96,3 +96,27 @@ $$;
 --   generation contrainte (sahabi|salaf|tabii|tabi_tabii|khalaf) ; domaines
 --   converti depuis un tableau JSON ; resume_auto/generation_a_verifier=false
 --   (saisie manuelle par l'auteur).
+
+-- ─────────────────────────────────────────────────────────────────────────
+-- Admin — Dossiers thématiques (parent + preuves/images/liens)
+-- ─────────────────────────────────────────────────────────────────────────
+-- Migration : admin_dossiers_rpcs.
+-- RLS écriture admin sur dossiers, dossier_preuves, dossier_images, dossiers_lies.
+-- admin_get_dossier(id) → colonnes (h1, meta, croyance/objection/réponse, published)
+--   + preuves[] (type hadith|parole|verset, ref_id, ordre) + images[] + lies[].
+-- admin_list_dossiers() / admin_list_dossier_refs() (hadiths/paroles/versets=coran),
+--   SECURITY DEFINER gardés is_admin().
+-- admin_save_dossier(p jsonb) SECURITY DEFINER, gardé is_admin() : upsert (slug
+--   généré à la création) + remplacement complet preuves/images/liens.
+
+-- ─────────────────────────────────────────────────────────────────────────
+-- Admin — Exposés (page Markdown clé=slug + citations)
+-- ─────────────────────────────────────────────────────────────────────────
+-- Migration : admin_exposes_rpcs.
+-- RLS écriture admin sur exposes, expose_citations.
+-- admin_get_expose(slug) → page (titre, contenu_md, verset d'en-tête) + citations[]
+--   (section, type verset|hadith|parole, ref_id, arabe/phonetique/signification/ref,
+--    accordeon, ordre).
+-- admin_list_exposes() / admin_list_expose_refs() (hadiths/paroles), SECURITY DEFINER.
+-- admin_save_expose(p jsonb) SECURITY DEFINER, gardé is_admin() : upsert par slug
+--   (on conflict) + remplacement complet des citations. Retourne le slug.
