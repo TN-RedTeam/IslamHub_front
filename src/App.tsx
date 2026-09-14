@@ -38,6 +38,28 @@ import { AdminLayout } from './pages/admin/AdminLayout';
 import { AdminHome } from './pages/admin/AdminHome';
 import { AdminHadithForm } from './pages/admin/AdminHadithForm';
 import { AdminHadithsList } from './pages/admin/AdminHadithsList';
+import { AdminParoleForm } from './pages/admin/AdminParoleForm';
+import { AdminParolesList } from './pages/admin/AdminParolesList';
+import { AdminRecitForm } from './pages/admin/AdminRecitForm';
+import { AdminRecitsList } from './pages/admin/AdminRecitsList';
+import { AdminEquivoqueForm } from './pages/admin/AdminEquivoqueForm';
+import { AdminEquivoquesList } from './pages/admin/AdminEquivoquesList';
+import { AdminCoranForm } from './pages/admin/AdminCoranForm';
+import { AdminCoranList } from './pages/admin/AdminCoranList';
+import { AdminSourateForm } from './pages/admin/AdminSourateForm';
+import { AdminSouratesList } from './pages/admin/AdminSouratesList';
+import { AdminInvocationForm } from './pages/admin/AdminInvocationForm';
+import { AdminInvocationsList } from './pages/admin/AdminInvocationsList';
+import { AdminSavantForm } from './pages/admin/AdminSavantForm';
+import { AdminSavantsList } from './pages/admin/AdminSavantsList';
+import { AdminDossierForm } from './pages/admin/AdminDossierForm';
+import { AdminDossiersList } from './pages/admin/AdminDossiersList';
+import { AdminExposeForm } from './pages/admin/AdminExposeForm';
+import { AdminExposesList } from './pages/admin/AdminExposesList';
+import { AdminFiqhForm } from './pages/admin/AdminFiqhForm';
+import { AdminFiqhList } from './pages/admin/AdminFiqhList';
+import { AdminFemmeForm } from './pages/admin/AdminFemmeForm';
+import { AdminFemmesList } from './pages/admin/AdminFemmesList';
 
 // Import des écoles
 import {
@@ -139,6 +161,39 @@ function App() {
                 <Route path="hadiths" element={<AdminHadithsList />} />
                 <Route path="hadiths/nouveau" element={<AdminHadithForm />} />
                 <Route path="hadiths/:id" element={<AdminHadithForm />} />
+                <Route path="paroles" element={<AdminParolesList />} />
+                <Route path="paroles/nouveau" element={<AdminParoleForm />} />
+                <Route path="paroles/:id" element={<AdminParoleForm />} />
+                <Route path="recits" element={<AdminRecitsList />} />
+                <Route path="recits/nouveau" element={<AdminRecitForm />} />
+                <Route path="recits/:id" element={<AdminRecitForm />} />
+                <Route path="equivoques" element={<AdminEquivoquesList />} />
+                <Route path="equivoques/nouveau" element={<AdminEquivoqueForm />} />
+                <Route path="equivoques/:id" element={<AdminEquivoqueForm />} />
+                <Route path="coran" element={<AdminCoranList />} />
+                <Route path="coran/nouveau" element={<AdminCoranForm />} />
+                <Route path="coran/:id" element={<AdminCoranForm />} />
+                <Route path="sourates" element={<AdminSouratesList />} />
+                <Route path="sourates/nouveau" element={<AdminSourateForm />} />
+                <Route path="sourates/:id" element={<AdminSourateForm />} />
+                <Route path="invocations" element={<AdminInvocationsList />} />
+                <Route path="invocations/nouveau" element={<AdminInvocationForm />} />
+                <Route path="invocations/:id" element={<AdminInvocationForm />} />
+                <Route path="savants" element={<AdminSavantsList />} />
+                <Route path="savants/nouveau" element={<AdminSavantForm />} />
+                <Route path="savants/:id" element={<AdminSavantForm />} />
+                <Route path="dossiers" element={<AdminDossiersList />} />
+                <Route path="dossiers/nouveau" element={<AdminDossierForm />} />
+                <Route path="dossiers/:id" element={<AdminDossierForm />} />
+                <Route path="exposes" element={<AdminExposesList />} />
+                <Route path="exposes/nouveau" element={<AdminExposeForm />} />
+                <Route path="exposes/:slug" element={<AdminExposeForm />} />
+                <Route path="fiqh" element={<AdminFiqhList />} />
+                <Route path="fiqh/nouveau" element={<AdminFiqhForm />} />
+                <Route path="fiqh/:id" element={<AdminFiqhForm />} />
+                <Route path="femmes" element={<AdminFemmesList />} />
+                <Route path="femmes/nouveau" element={<AdminFemmeForm />} />
+                <Route path="femmes/:id" element={<AdminFemmeForm />} />
               </Route>
               {/* Site public */}
               <Route path="/*" element={<PublicShell />} />

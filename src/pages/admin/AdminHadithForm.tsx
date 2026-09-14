@@ -24,6 +24,7 @@ export const AdminHadithForm: React.FC = () => {
   const [narrateurs, setNarrateurs] = useState<NarrateurRow[]>([]);
   const [recueils, setRecueils] = useState<RecueilRow[]>([]);
   const [savants, setSavants] = useState<SavantRow[]>([]);
+  const [rapporteurs, setRapporteurs] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -43,8 +44,8 @@ export const AdminHadithForm: React.FC = () => {
   const [derived, setDerived] = useState<ThemeRef[]>([]);
 
   useEffect(() => {
-    Promise.all([adminService.listNarrateurs(), adminService.listRecueils(), adminService.listSavants()])
-      .then(([n, r, s]) => { setNarrateurs(n); setRecueils(r); setSavants(s); })
+    Promise.all([adminService.listNarrateurs(), adminService.listRecueils(), adminService.listSavants(), adminService.listRapporteurs()])
+      .then(([n, r, s, rap]) => { setNarrateurs(n); setRecueils(r); setSavants(s); setRapporteurs(rap); })
       .catch(() => setError("Impossible de charger les référentiels."))
       .finally(() => setLoading(false));
   }, []);
@@ -151,7 +152,11 @@ export const AdminHadithForm: React.FC = () => {
               <option value={NEW}>＋ Nouveau narrateur…</option>
             </select>
           </div>
-          <div><label className={label}>Rapporteur <span className="text-muted font-normal">(texte)</span></label><input className={field} value={f.rapporteur} onChange={set('rapporteur')} placeholder="Al-Bukhari" /></div>
+          <div>
+            <label className={label}>Rapporteur <span className="text-muted font-normal">(liste + saisie libre)</span></label>
+            <input className={field} list="rapporteurs-list" value={f.rapporteur} onChange={set('rapporteur')} placeholder="Al-Bukhari" />
+            <datalist id="rapporteurs-list">{rapporteurs.map((r) => <option key={r} value={r} />)}</datalist>
+          </div>
         </div>
         {narr === NEW && (
           <div className="mt-3.5 grid sm:grid-cols-2 gap-3.5 rounded-lg border border-dashed border-green-line bg-green-soft/40 p-3.5">

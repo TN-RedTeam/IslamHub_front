@@ -5,9 +5,17 @@ import { useAuth } from '../../context/AuthContext';
 
 const ENTITIES: { to: string; label: string; soon?: boolean }[] = [
   { to: '/admin/hadiths', label: 'Hadiths' },
-  { to: '/admin/paroles', label: 'Paroles de savants', soon: true },
-  { to: '/admin/equivoques', label: 'Versets/hadiths équivoques', soon: true },
-  { to: '/admin/recits', label: 'Récits', soon: true },
+  { to: '/admin/paroles', label: 'Paroles de savants' },
+  { to: '/admin/savants', label: 'Savants (fiches)' },
+  { to: '/admin/coran', label: 'Coran (thématique)' },
+  { to: '/admin/sourates', label: 'Coran — exégèse' },
+  { to: '/admin/invocations', label: 'Invocations & Évocations' },
+  { to: '/admin/equivoques', label: 'Versets/hadiths équivoques' },
+  { to: '/admin/dossiers', label: 'Dossiers thématiques' },
+  { to: '/admin/exposes', label: 'Exposés' },
+  { to: '/admin/fiqh', label: 'Fiqh' },
+  { to: '/admin/femmes', label: 'La femme musulmane' },
+  { to: '/admin/recits', label: 'Récits' },
 ];
 
 /** Shell de l'espace admin : garde d'accès (admin only) + barre latérale. */

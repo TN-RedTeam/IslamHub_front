@@ -19,3 +19,116 @@ $$;
 --     éventuellement nouveau, remplace les hadith_sources (recueil existant ou
 --     nouveau) et re-déduit les hadith_themes depuis les tags. Retourne l'id.
 --   grant execute admin_save_hadith → authenticated seulement.
+
+-- ─────────────────────────────────────────────────────────────────────────
+-- Admin — Paroles (même patron que Hadith)
+-- ─────────────────────────────────────────────────────────────────────────
+-- RLS écriture admin sur paroles, parole_images, parole_themes, savants.
+-- admin_get_parole(id) → colonnes brutes + images + savant_id + tag.
+-- admin_save_parole(p jsonb) SECURITY DEFINER, gardé is_admin() : parole
+-- (+ slug), savant éventuellement nouveau, remplace parole_images (scans),
+-- re-déduit parole_themes depuis les tags. grant → authenticated.
+-- Datalist rapporteur (front) alimenté par hadith_rubriques().rapporteurs.
+
+-- ─────────────────────────────────────────────────────────────────────────
+-- Admin — Versets / hadiths équivoques (entité parent + 3 enfants)
+-- ─────────────────────────────────────────────────────────────────────────
+-- Migrations : admin_equivoques_rls, admin_equivoques_rpcs.
+-- RLS écriture admin (insert/update/delete, is_admin()) sur :
+--   versets_equivoques, verset_preuves, verset_images, verset_lies.
+--   (lecture : « Public read » existante conservée).
+-- admin_get_verset_equivoque(id) → colonnes brutes + preuves[]
+--   (type, ref_id, contenu_libre, ordre) + images[] + lies[] (verset_lie_id).
+-- admin_list_verset_refs() SECURITY DEFINER, gardé is_admin() : renvoie
+--   { hadiths, paroles, versets } (id + label) pour les sélecteurs de preuves
+--   et de liens (inclut les non-publiés).
+-- admin_save_verset_equivoque(p jsonb) SECURITY DEFINER, gardé is_admin() :
+--   upsert du parent (slug généré à la création, sourate='' tolérée pour un
+--   hadith équivoque), puis remplacement complet des preuves (coran→contenu
+--   libre ; hadith/parole→ref_id), des images (alt défaut « Scan du livre »)
+--   et des liens verset_lies (anti-auto-référence + on conflict do nothing).
+--   Retourne l'id. grant execute → authenticated seulement.
+
+-- ─────────────────────────────────────────────────────────────────────────
+-- Admin — Coran thématique (table `coran` + coran_themes)
+-- ─────────────────────────────────────────────────────────────────────────
+-- Migration : admin_coran_rpcs.
+-- RLS écriture admin sur coran, coran_themes (lecture publique conservée).
+-- admin_get_coran(id) → colonnes brutes + tag.
+-- admin_save_coran(p jsonb) SECURITY DEFINER, gardé is_admin() : upsert du
+--   verset thématique (le trigger set_arabe_hash renseigne arabe_hash ; l'index
+--   uniq_coran_arabe_hash détecte les doublons), puis re-déduit coran_themes
+--   depuis les tags (mapping theme_tags). grant → authenticated.
+
+-- ─────────────────────────────────────────────────────────────────────────
+-- Admin — Coran, exégèse (sourates -> versets -> exégèses)
+-- ─────────────────────────────────────────────────────────────────────────
+-- Migration : admin_sourates_rpcs.
+-- RLS écriture admin sur sourates, versets, exegeses (lecture publique conservée).
+-- admin_get_sourate(id) → sourate + versets[] (chacun avec ses exegeses[]).
+-- admin_list_sourates() → liste (numero, nom, slug, nb de versets saisis).
+-- admin_save_sourate(p jsonb) SECURITY DEFINER, gardé is_admin() : upsert de
+--   la sourate (slug généré à la création ; numero unique), puis remplacement
+--   complet des versets (delete cascade => exégèses) et ré-insertion des versets
+--   et de leurs exégèses (ordre recalculé). Éditeur imbriqué côté admin.
+
+-- ─────────────────────────────────────────────────────────────────────────
+-- Admin — Invocations & Évocations (table `invocations`)
+-- ─────────────────────────────────────────────────────────────────────────
+-- Migration : admin_invocations_rpcs.
+-- Table live unifiée (type_id 1=invocation/duʿāʾ, 2=évocation/dhikr) ;
+-- douaas/dhikrs = tables sources héritées, non éditées ici.
+-- RLS écriture admin sur invocations (lecture publique conservée).
+-- admin_get_invocation(id) → colonnes brutes.
+-- admin_save_invocation(p jsonb) SECURITY DEFINER, gardé is_admin() : upsert
+--   (id = identity BY DEFAULT). Pas de slug, pas de mapping thèmes.
+
+-- ─────────────────────────────────────────────────────────────────────────
+-- Admin — Savants (fiche complète)
+-- ─────────────────────────────────────────────────────────────────────────
+-- Migration : admin_savants_rpcs.
+-- Complète la création minimale (nom+slug) faite à la volée par admin_save_parole.
+-- RLS écriture admin sur savants (recréées, idempotent).
+-- admin_get_savant(id) → nom, nom_arabe, slug, ecole_id, generation, naissance,
+--   deces, resume, biographie, domaines (text[]).
+-- admin_save_savant(p jsonb) SECURITY DEFINER, gardé is_admin() : upsert
+--   (id = identity ALWAYS => jamais fourni). slug généré à la création ;
+--   generation contrainte (sahabi|salaf|tabii|tabi_tabii|khalaf) ; domaines
+--   converti depuis un tableau JSON ; resume_auto/generation_a_verifier=false
+--   (saisie manuelle par l'auteur).
+
+-- ─────────────────────────────────────────────────────────────────────────
+-- Admin — Dossiers thématiques (parent + preuves/images/liens)
+-- ─────────────────────────────────────────────────────────────────────────
+-- Migration : admin_dossiers_rpcs.
+-- RLS écriture admin sur dossiers, dossier_preuves, dossier_images, dossiers_lies.
+-- admin_get_dossier(id) → colonnes (h1, meta, croyance/objection/réponse, published)
+--   + preuves[] (type hadith|parole|verset, ref_id, ordre) + images[] + lies[].
+-- admin_list_dossiers() / admin_list_dossier_refs() (hadiths/paroles/versets=coran),
+--   SECURITY DEFINER gardés is_admin().
+-- admin_save_dossier(p jsonb) SECURITY DEFINER, gardé is_admin() : upsert (slug
+--   généré à la création) + remplacement complet preuves/images/liens.
+
+-- ─────────────────────────────────────────────────────────────────────────
+-- Admin — Exposés (page Markdown clé=slug + citations)
+-- ─────────────────────────────────────────────────────────────────────────
+-- Migration : admin_exposes_rpcs.
+-- RLS écriture admin sur exposes, expose_citations.
+-- admin_get_expose(slug) → page (titre, contenu_md, verset d'en-tête) + citations[]
+--   (section, type verset|hadith|parole, ref_id, arabe/phonetique/signification/ref,
+--    accordeon, ordre).
+-- admin_list_exposes() / admin_list_expose_refs() (hadiths/paroles), SECURITY DEFINER.
+-- admin_save_expose(p jsonb) SECURITY DEFINER, gardé is_admin() : upsert par slug
+--   (on conflict) + remplacement complet des citations. Retourne le slug.
+
+-- ─────────────────────────────────────────────────────────────────────────
+-- Admin — Fiqh & La femme musulmane (tables plates par chapitre)
+-- ─────────────────────────────────────────────────────────────────────────
+-- Migration : admin_fiqh_femmes_rpcs.
+-- RLS écriture admin sur fiqh, femmes (lecture publique conservée).
+-- Édition par ligne (le regroupement par chapitre se fait à la lecture via
+-- fiqh_by_ecole / femmes_all). id = identity ALWAYS => jamais fourni.
+-- admin_get_fiqh(id)/admin_save_fiqh(p) : ecole (Hanafi|Malikite|Shafii|Hanbalite)
+--   + chapitre obligatoires ; sujet, type, texte (md), texte_arabe, source, tag, ordre.
+-- admin_get_femme(id)/admin_save_femme(p) : chapitre obligatoire ; matn, commentaire,
+--   texte_arabe, source, ordre. SECURITY DEFINER, gardés is_admin().
