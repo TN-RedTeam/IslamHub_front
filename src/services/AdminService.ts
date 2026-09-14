@@ -56,6 +56,37 @@ class AdminService {
     const { data, error } = await supabase.rpc('admin_save_hadith', { p: payload });
     if (error) throw error; return data as number;
   }
+  async listRapporteurs(): Promise<string[]> {
+    const { data, error } = await supabase.rpc('hadith_rubriques');
+    if (error) throw error;
+    return ((data as { rapporteurs?: string[] } | null)?.rapporteurs ?? []) as string[];
+  }
+
+  // ---- Paroles ----
+  async getParoleForEdit(id: number): Promise<ParoleEditShape | null> {
+    const { data, error } = await supabase.rpc('admin_get_parole', { p_id: id });
+    if (error) throw error; return (data ?? null) as ParoleEditShape | null;
+  }
+  async saveParole(payload: ParoleFormData): Promise<number> {
+    const { data, error } = await supabase.rpc('admin_save_parole', { p: payload });
+    if (error) throw error; return data as number;
+  }
+}
+
+export interface ParoleImageInput { image_url: string; alt: string; legende?: string | null; source_livre?: string | null; ordre?: number | null; }
+export interface ParoleFormData {
+  id?: number | null;
+  sujet: string; texte_arabe: string; texte_francais: string; phonetique: string; explication: string;
+  source_livre: string; page: string; ecole: string; tag: string;
+  savant_id?: number | null;
+  new_savant?: { nom: string } | null;
+  images: ParoleImageInput[];
+}
+export interface ParoleEditShape {
+  id: number; sujet: string | null; texte_arabe: string | null; texte_francais: string | null;
+  phonetique: string | null; explication: string | null; source_livre: string | null; page: string | null;
+  ecole: string | null; savant_id: number | null; tag: string | null;
+  images: { image_url: string; alt: string | null; legende: string | null; source_livre: string | null; ordre: number | null }[];
 }
 
 export const adminService = new AdminService();

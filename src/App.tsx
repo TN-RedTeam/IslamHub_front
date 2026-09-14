@@ -38,6 +38,8 @@ import { AdminLayout } from './pages/admin/AdminLayout';
 import { AdminHome } from './pages/admin/AdminHome';
 import { AdminHadithForm } from './pages/admin/AdminHadithForm';
 import { AdminHadithsList } from './pages/admin/AdminHadithsList';
+import { AdminParoleForm } from './pages/admin/AdminParoleForm';
+import { AdminParolesList } from './pages/admin/AdminParolesList';
 
 // Import des écoles
 import {
@@ -139,6 +141,9 @@ function App() {
                 <Route path="hadiths" element={<AdminHadithsList />} />
                 <Route path="hadiths/nouveau" element={<AdminHadithForm />} />
                 <Route path="hadiths/:id" element={<AdminHadithForm />} />
+                <Route path="paroles" element={<AdminParolesList />} />
+                <Route path="paroles/nouveau" element={<AdminParoleForm />} />
+                <Route path="paroles/:id" element={<AdminParoleForm />} />
               </Route>
               {/* Site public */}
               <Route path="/*" element={<PublicShell />} />

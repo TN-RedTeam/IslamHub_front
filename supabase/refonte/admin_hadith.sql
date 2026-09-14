@@ -19,3 +19,13 @@ $$;
 --     éventuellement nouveau, remplace les hadith_sources (recueil existant ou
 --     nouveau) et re-déduit les hadith_themes depuis les tags. Retourne l'id.
 --   grant execute admin_save_hadith → authenticated seulement.
+
+-- ─────────────────────────────────────────────────────────────────────────
+-- Admin — Paroles (même patron que Hadith)
+-- ─────────────────────────────────────────────────────────────────────────
+-- RLS écriture admin sur paroles, parole_images, parole_themes, savants.
+-- admin_get_parole(id) → colonnes brutes + images + savant_id + tag.
+-- admin_save_parole(p jsonb) SECURITY DEFINER, gardé is_admin() : parole
+-- (+ slug), savant éventuellement nouveau, remplace parole_images (scans),
+-- re-déduit parole_themes depuis les tags. grant → authenticated.
+-- Datalist rapporteur (front) alimenté par hadith_rubriques().rapporteurs.
