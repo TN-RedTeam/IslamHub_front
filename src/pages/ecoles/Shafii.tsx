@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { m, AnimatePresence } from 'framer-motion';
-import { Link } from 'react-router-dom';
-import { GraduationCap, BookOpen, Users, Star, ChevronRight, Scale, Globe, Shield, Heart, ChevronDown, ChevronUp, Calendar, Scroll } from 'lucide-react';
+import { GraduationCap, BookOpen, Users, Star, Scale, Globe, Shield, Heart, ChevronDown, ChevronUp, Calendar, Scroll } from 'lucide-react';
 import { EcoleFiqhSection } from '../../components/EcoleFiqhSection';
 import { RelatedSchools } from '../../components/RelatedSchools';
 import { PageHeader } from '../../components/PageHeader';
