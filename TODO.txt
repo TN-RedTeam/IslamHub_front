@@ -1,4 +1,1 @@
-# ajout calendrier Islam dans le header
-
-# Revoir les pages hadiths
-   supprimer page part1
+certaines paroles de savants rapporte ou commente d'autres paroles de savants. comment les attribuer a quel savant dans la base paroles
