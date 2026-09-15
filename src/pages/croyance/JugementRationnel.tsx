@@ -42,7 +42,7 @@ export const JugementRationnel: React.FC = () => {
           {expose?.titre || 'Le jugement rationnel'}
         </h1>
         <p className="text-muted text-[15px] mt-2 max-w-[64ch]">
-          Le nécessaire, l'impossible et le possible — et comment la raison saine mène à la connaissance du Créateur.
+          L'obligatoire, l'impossible et le possible — et comment la raison saine mène à la connaissance du Créateur.
         </p>
 
         <div className="mt-6">
