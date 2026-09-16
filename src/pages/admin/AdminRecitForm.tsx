@@ -57,6 +57,7 @@ export const AdminRecitForm: React.FC = () => {
             <select className={field} value={f.categorie} onChange={(e) => setF({ ...f, categorie: e.target.value as RecitCategorie })}>
               <option value="prophetes">Histoires des Prophètes</option>
               <option value="vertueux">Vies des vertueux</option>
+              <option value="histoires du passe">Histoires du passé</option>
             </select></div>
           <div><label className={label}>Ordre</label><input className={field} type="number" value={f.ordre} onChange={(e) => setF({ ...f, ordre: e.target.value })} /></div>
         </div>

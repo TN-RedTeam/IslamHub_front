@@ -1,0 +1,18 @@
+# En-têtes de sécurité HTTP.
+#
+# ATTENTION : GitHub Pages IGNORE ce fichier (il ne permet pas d'en-têtes HTTP
+# personnalisés). Il s'applique UNIQUEMENT sur un hébergeur qui les supporte —
+# Netlify, Cloudflare Pages, etc. Sur GitHub Pages, la sécurité repose sur les
+# balises <meta> de index.html (CSP, Referrer-Policy, X-Content-Type-Options).
+#
+# Pour de vrais en-têtes sur GitHub Pages : placer le site derrière Cloudflare
+# (gratuit) et y définir ces en-têtes via une Transform Rule.
+
+/*
+  X-Frame-Options: DENY
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), interest-cohort=()
+  Cross-Origin-Opener-Policy: same-origin
+  Content-Security-Policy: default-src 'self'; script-src 'self' https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https://*.supabase.co https://fonts.googleapis.com https://fonts.gstatic.com; img-src 'self' data: https:; frame-src https://www.youtube.com https://www.youtube-nocookie.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'

@@ -6,8 +6,9 @@ import { PageHeader } from '../components/PageHeader';
 import type { RecitCard, RecitCategorie } from '../types';
 
 const SECTIONS: { categorie: RecitCategorie; titre: string; sous_titre: string }[] = [
-  { categorie: 'prophetes', titre: 'Histoires des Prophètes', sous_titre: 'Qiṣaṣ al-anbiyāʾ' },
-  { categorie: 'vertueux',  titre: 'Vies des vertueux',       sous_titre: 'Awliyāʾ et pieux prédécesseurs' },
+  { categorie: 'prophetes',           titre: 'Histoires des Prophètes', sous_titre: 'Qiṣaṣ al-anbiyāʾ' },
+  { categorie: 'vertueux',            titre: 'Vies des vertueux',       sous_titre: 'Awliyāʾ et pieux prédécesseurs' },
+  { categorie: 'histoires du passe',  titre: 'Histoires du passé',      sous_titre: 'Récits et leçons d’autrefois' },
 ];
 
 const Carte: React.FC<{ r: RecitCard }> = ({ r }) => (
@@ -38,7 +39,7 @@ export const Recits: React.FC = () => {
   }, []);
 
   const parCategorie = useMemo(() => {
-    const map: Record<RecitCategorie, RecitCard[]> = { prophetes: [], vertueux: [] };
+    const map: Record<RecitCategorie, RecitCard[]> = { prophetes: [], vertueux: [], 'histoires du passe': [] };
     for (const r of recits) (map[r.categorie] ??= []).push(r);
     return map;
   }, [recits]);
@@ -48,7 +49,7 @@ export const Recits: React.FC = () => {
       <PageHeader
         eyebrow="Récits"
         title="Récits"
-        subtitle="Les histoires des Prophètes et les vies des vertueux, pour l'exemple et le rappel."
+        subtitle="Les histoires des Prophètes, les vies des vertueux et les leçons du passé, pour l'exemple et le rappel."
         crumbs={[{ label: 'Accueil', to: '/' }, { label: 'Récits' }]}
       />
 

@@ -6,7 +6,7 @@ import { Markdown } from '../components/Markdown';
 import { useSeo } from '../hooks/useSeo';
 import type { RecitDetail } from '../types';
 
-const CAT_LABEL: Record<string, string> = { prophetes: 'Histoires des Prophètes', vertueux: 'Vies des vertueux' };
+const CAT_LABEL: Record<string, string> = { prophetes: 'Histoires des Prophètes', vertueux: 'Vies des vertueux', 'histoires du passe': 'Histoires du passé' };
 
 export const RecitPage: React.FC = () => {
   const { slug = '' } = useParams();
