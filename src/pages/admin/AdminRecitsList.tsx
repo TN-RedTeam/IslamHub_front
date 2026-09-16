@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Loader2, Plus } from 'lucide-react';
 import { adminRecits, type RecitRow } from '../../services/AdminService';
 
-const CAT: Record<string, string> = { prophetes: 'Histoires des Prophètes', vertueux: 'Vies des vertueux' };
+const CAT: Record<string, string> = { prophetes: 'Histoires des Prophètes', vertueux: 'Vies des vertueux', 'histoires du passe': 'Histoires du passé' };
 
 export const AdminRecitsList: React.FC = () => {
   const [items, setItems] = useState<RecitRow[]>([]);

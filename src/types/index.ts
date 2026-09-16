@@ -133,7 +133,7 @@ export interface ThemeDetail {
 }
 
 /** Catégorie d'un récit. */
-export type RecitCategorie = 'prophetes' | 'vertueux';
+export type RecitCategorie = 'prophetes' | 'vertueux' | 'histoires du passe';
 /** Carte d'index d'un récit (table `recits`). */
 export interface RecitCard {
   slug: string;
