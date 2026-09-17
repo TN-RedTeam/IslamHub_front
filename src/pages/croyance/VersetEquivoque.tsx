@@ -165,8 +165,8 @@ export const VersetEquivoque: React.FC = () => {
         </div>
 
         {/* Sommaire + contenu */}
-        <div className="grid grid-cols-1 min-[860px]:grid-cols-[210px_1fr] gap-7 mt-5">
-          {sections.length > 0 && (
+        <div className={blocs.length > 0 ? 'mt-5' : 'grid grid-cols-1 min-[860px]:grid-cols-[210px_1fr] gap-7 mt-5'}>
+          {blocs.length === 0 && sections.length > 0 && (
             <nav aria-label="Sommaire" className="self-start min-[860px]:sticky min-[860px]:top-5">
               <p className="text-[11px] uppercase tracking-[0.16em] text-muted font-semibold mb-2.5">Sur cette page</p>
               <ol className="list-none m-0 p-0">
@@ -182,6 +182,24 @@ export const VersetEquivoque: React.FC = () => {
           )}
 
           <div>
+            {blocs.length > 0 ? (
+              <>
+                <ArticleBlocs blocs={blocs} showToc />
+                {images.length > 0 && (
+                  <div className="mt-6 flex flex-wrap gap-3">
+                    {images.map((img) => (
+                      <button key={img.id} onClick={() => setBox(img)} className="flex items-center gap-3 bg-green-soft border border-dashed border-green-line rounded-lg p-3 text-left hover:border-green transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green">
+                        <span className="w-[52px] h-16 rounded bg-surface border border-line grid place-items-center text-muted shrink-0 overflow-hidden">
+                          <img src={img.image_url} alt="" className="w-full h-full object-cover" loading="lazy" />
+                        </span>
+                        <span className="text-[13px] text-muted"><b className="text-ink block">{img.legende || 'Scan du livre'}</b>{img.source_livre}</span>
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </>
+            ) : (
+              <>
             {v.sens_juste && (
               <section className="mb-8"><H2 id="sens">Le sens juste</H2><Markdown>{v.sens_juste}</Markdown></section>
             )}
@@ -238,9 +256,7 @@ export const VersetEquivoque: React.FC = () => {
             {v.reponse && (
               <section className="mb-8"><H2 id="reponse">La réponse</H2><Markdown>{v.reponse}</Markdown></section>
             )}
-
-            {blocs.length > 0 && (
-              <section className="mb-8"><ArticleBlocs blocs={blocs} showToc={false} /></section>
+              </>
             )}
 
             {/* Actions */}

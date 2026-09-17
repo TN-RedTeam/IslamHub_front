@@ -223,3 +223,16 @@ $$;
 --   « Al-Bukhari »). admin_snip = extrait centré sur l'occurrence.
 -- UI : page /admin/recherche (surlignage, lien vers le formulaire d'édition) +
 --   entrée « Recherche & correction » dans le menu admin.
+
+-- ─────────────────────────────────────────────────────────────────────────
+-- Phase 3.5/3.6 — bascule des équivoques vers les blocs (un seul moteur)
+-- ─────────────────────────────────────────────────────────────────────────
+-- Migration : phase3_migrate_equivoques_to_blocs (idempotent, non destructif).
+-- Génère contenu_blocs depuis le triptyque existant (sens_juste → texte ;
+-- verset_preuves coran(contenu_libre) → texte, hadith/parole(ref) → preuve ;
+-- objection → texte ; reponse → texte) pour les équivoques SANS blocs.
+-- Colonnes conservées (rien supprimé).
+-- Rendu public : la fiche équivoque privilégie les blocs quand ils existent
+-- (triptyque + sommaire legacy masqués), sinon repli sur l'ancien rendu.
+-- Admin : note indiquant que la section 3 (ancien format) est ignorée dès
+-- qu'un article composable (section 8) existe.

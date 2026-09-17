@@ -171,8 +171,8 @@ export const AdminEquivoqueForm: React.FC = () => {
 
       {/* 3. L'analyse */}
       <section className="rounded-card border border-line bg-surface p-5 mb-4">
-        <h2 className="font-display font-semibold text-green-deep text-lg mb-1">3 · L’analyse <span className="text-muted font-normal text-sm">(Markdown)</span></h2>
-        <p className="text-xs text-muted mb-4">Les sections vides ne s’affichent pas sur le site.</p>
+        <h2 className="font-display font-semibold text-green-deep text-lg mb-1">3 · L’analyse <span className="text-muted font-normal text-sm">(ancien format — Markdown)</span></h2>
+        <p className="text-xs text-muted mb-4">Champs historiques (sens juste / objection / réponse). <b>Dès qu’un article composable existe (section 8), c’est lui qui s’affiche</b> et ces champs sont ignorés. Compose plutôt en blocs ci-dessous.</p>
         <div className="mb-3.5"><label className={label}>Le sens juste</label><textarea className={`${field} min-h-[90px]`} value={f.sens_juste} onChange={set('sens_juste')} placeholder="Le sens correct, sourcé…" /></div>
         <div className="mb-3.5"><label className={label}>L’interprétation erronée (objection)</label><textarea className={`${field} min-h-[70px]`} value={f.objection} onChange={set('objection')} placeholder="L’objection type, formulée de manière impersonnelle…" /></div>
         <div><label className={label}>La réponse</label><textarea className={`${field} min-h-[90px]`} value={f.reponse} onChange={set('reponse')} placeholder="La réfutation sourcée…" /></div>
