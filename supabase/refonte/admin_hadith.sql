@@ -147,3 +147,17 @@ $$;
 --   depuis hadiths/paroles/coran (+ source_rubrique).
 -- admin_get_blocs / admin_save_blocs (SECURITY DEFINER, remplacement complet).
 -- Sélecteur de preuves réutilise admin_list_dossier_refs (hadiths/paroles/coran).
+
+-- ─────────────────────────────────────────────────────────────────────────
+-- Phase 4.6 — Suppression admin avec garde-fou de dépendances
+-- ─────────────────────────────────────────────────────────────────────────
+-- Migration : phase4_admin_delete.
+-- admin_entry_dependencies(kind,id) : où une source citable (hadith/parole/
+--   verset=coran) est référencée comme preuve (contenu_blocs, verset_preuves,
+--   dossier_preuves, expose_citations, attribut_citations).
+-- admin_delete_entry({kind,id,force}) SECURITY DEFINER, is_admin() :
+--   refuse si référencée (sauf force → retire aussi les références) ; supprime
+--   les blocs d'article dont l'entrée est parent ; refuse un savant ayant des
+--   paroles ; s'appuie sur les FK ON DELETE CASCADE pour les enfants.
+-- UI : DeleteEntryButton (confirmation « supprimer », liste des dépendances,
+--   option forcer) câblé dans les 12 formulaires admin (mode édition).

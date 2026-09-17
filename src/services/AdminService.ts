@@ -233,6 +233,17 @@ class AdminService {
     const { data, error } = await supabase.rpc('admin_save_blocs', { p: { parent_type: parentType, parent_id: String(parentId), blocs } });
     if (error) throw error; return data as number;
   }
+
+  // ---- Suppression admin (Phase 4.6) ----
+  async entryDependencies(kind: DeletableKind, id: string | number): Promise<EntryDeps> {
+    const { data, error } = await supabase.rpc('admin_entry_dependencies', { p_kind: kind, p_id: String(id) });
+    if (error) throw error;
+    return (data ?? { total: 0, refs: {} }) as EntryDeps;
+  }
+  async deleteEntry(kind: DeletableKind, id: string | number, force = false): Promise<void> {
+    const { error } = await supabase.rpc('admin_delete_entry', { p: { kind, id: String(id), force } });
+    if (error) throw error;
+  }
 }
 
 export interface ParoleImageInput { image_url: string; alt: string; legende?: string | null; source_livre?: string | null; ordre?: number | null; }
@@ -373,6 +384,15 @@ export interface ExposeEditShape {
                phonetique: string | null; signification: string | null; ref: string | null; accordeon: boolean; ordre: number | null }[];
 }
 export interface ExposeListRow { slug: string; titre: string | null; }
+
+// ---- Suppression admin (Phase 4.6) ----
+export type DeletableKind =
+  | 'hadith' | 'parole' | 'coran' | 'verset' | 'equivoque' | 'dossier' | 'expose'
+  | 'recit' | 'invocation' | 'fiqh' | 'femme' | 'sourate' | 'savant';
+export interface EntryDeps {
+  total: number;
+  refs: { articles?: number; equivoques?: number; dossiers?: number; exposes?: number; attributs?: number };
+}
 
 // ---- Contenu composable (blocs, Phase 3) ----
 export type BlocType = 'texte' | 'commentaire' | 'preuve';
