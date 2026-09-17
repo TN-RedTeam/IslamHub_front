@@ -3,6 +3,8 @@ import { useParams, Link } from 'react-router-dom';
 import { Loader2, Copy, Check, Share2, Star, ChevronRight, BookOpen } from 'lucide-react';
 import { dataService } from '../../services/DataService';
 import { Markdown } from '../../components/Markdown';
+import { ArticleBlocs } from '../../components/ArticleBlocs';
+import type { Bloc } from '../../types';
 import { Lightbox, type LightboxImage } from '../../components/Lightbox';
 import { BadgeGeneration } from '../../components/BadgeGeneration';
 import { useSeo } from '../../hooks/useSeo';
@@ -28,6 +30,7 @@ const Proof: React.FC<{ p: VersetPreuve }> = ({ p }) => (
 export const VersetEquivoque: React.FC = () => {
   const { slug = '' } = useParams();
   const [data, setData] = useState<VersetEquivoqueDetail | null>(null);
+  const [blocs, setBlocs] = useState<Bloc[]>([]);
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
   const [copied, setCopied] = useState(false);
@@ -42,8 +45,14 @@ export const VersetEquivoque: React.FC = () => {
   useEffect(() => {
     let alive = true;
     setLoading(true); setNotFound(false);
+    setBlocs([]);
     dataService.getVersetEquivoque(slug)
-      .then((d) => { if (!alive) return; if (!d || !d.verset) setNotFound(true); else setData(d); setLoading(false); })
+      .then((d) => {
+        if (!alive) return;
+        if (!d || !d.verset) { setNotFound(true); }
+        else { setData(d); dataService.getBlocs('equivoque', d.verset.id).then((bl) => { if (alive) setBlocs(bl); }).catch(() => {}); }
+        setLoading(false);
+      })
       .catch(() => { if (alive) { setNotFound(true); setLoading(false); } });
     return () => { alive = false; };
   }, [slug]);
@@ -156,8 +165,8 @@ export const VersetEquivoque: React.FC = () => {
         </div>
 
         {/* Sommaire + contenu */}
-        <div className="grid grid-cols-1 min-[860px]:grid-cols-[210px_1fr] gap-7 mt-5">
-          {sections.length > 0 && (
+        <div className={blocs.length > 0 ? 'mt-5' : 'grid grid-cols-1 min-[860px]:grid-cols-[210px_1fr] gap-7 mt-5'}>
+          {blocs.length === 0 && sections.length > 0 && (
             <nav aria-label="Sommaire" className="self-start min-[860px]:sticky min-[860px]:top-5">
               <p className="text-[11px] uppercase tracking-[0.16em] text-muted font-semibold mb-2.5">Sur cette page</p>
               <ol className="list-none m-0 p-0">
@@ -173,6 +182,24 @@ export const VersetEquivoque: React.FC = () => {
           )}
 
           <div>
+            {blocs.length > 0 ? (
+              <>
+                <ArticleBlocs blocs={blocs} showToc />
+                {images.length > 0 && (
+                  <div className="mt-6 flex flex-wrap gap-3">
+                    {images.map((img) => (
+                      <button key={img.id} onClick={() => setBox(img)} className="flex items-center gap-3 bg-green-soft border border-dashed border-green-line rounded-lg p-3 text-left hover:border-green transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green">
+                        <span className="w-[52px] h-16 rounded bg-surface border border-line grid place-items-center text-muted shrink-0 overflow-hidden">
+                          <img src={img.image_url} alt="" className="w-full h-full object-cover" loading="lazy" />
+                        </span>
+                        <span className="text-[13px] text-muted"><b className="text-ink block">{img.legende || 'Scan du livre'}</b>{img.source_livre}</span>
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </>
+            ) : (
+              <>
             {v.sens_juste && (
               <section className="mb-8"><H2 id="sens">Le sens juste</H2><Markdown>{v.sens_juste}</Markdown></section>
             )}
@@ -228,6 +255,8 @@ export const VersetEquivoque: React.FC = () => {
 
             {v.reponse && (
               <section className="mb-8"><H2 id="reponse">La réponse</H2><Markdown>{v.reponse}</Markdown></section>
+            )}
+              </>
             )}
 
             {/* Actions */}

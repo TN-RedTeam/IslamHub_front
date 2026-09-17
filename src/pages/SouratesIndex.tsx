@@ -24,6 +24,7 @@ export const SouratesIndex: React.FC = () => {
         
         
         <div className="relative container mx-auto px-4 max-w-4xl text-center">
+          <nav aria-label="Fil d'Ariane" className="text-xs text-muted mb-2"><Link to="/" className="hover:text-green-deep">Accueil</Link> <span aria-hidden>·</span> <Link to="/coran" className="hover:text-green-deep">Coran</Link> <span aria-hidden>·</span> Sourates</nav>
           <h1 className="text-4xl md:text-5xl font-bold text-green-deep font-display">Exégèse des sourates</h1>
           <p className="text-muted mt-3 max-w-2xl mx-auto">Le tafsir des sourates choisies, expliqué à la lumière des savants.</p>
           <div className="mt-5 flex justify-center"><CoranTabs /></div>

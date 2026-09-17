@@ -50,7 +50,8 @@ export const AdminLayout: React.FC = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-[230px_1fr]">
         <nav className="hidden md:block border-r border-line bg-[#fbf8f1] p-3">
-          <p className="text-[10.5px] uppercase tracking-[0.16em] text-muted font-semibold px-2 py-2">Contenus</p>
+          <NavLink to="/admin/recherche" className={linkCls}>Recherche &amp; correction</NavLink>
+          <p className="text-[10.5px] uppercase tracking-[0.16em] text-muted font-semibold px-2 py-2 mt-2">Contenus</p>
           {ENTITIES.map((e) => (
             <NavLink key={e.to} to={e.to} className={linkCls}>
               {e.label}{e.soon && <span className="text-[10px] text-muted">bientôt</span>}

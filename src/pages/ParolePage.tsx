@@ -7,6 +7,7 @@ import { Lightbox, type LightboxImage } from '../components/Lightbox';
 import { BadgeGeneration, honorificFor } from '../components/BadgeGeneration';
 import { EcoleBadge } from '../components/EcoleBadge';
 import { ThemeChips } from '../components/ThemeChips';
+import { RelatedByTheme } from '../components/RelatedByTheme';
 import { useSeo } from '../hooks/useSeo';
 import type { ParoleDetail, ParoleImage } from '../types';
 
@@ -76,6 +77,21 @@ export const ParolePage: React.FC = () => {
           {p.ecole && <EcoleBadge ecole={p.ecole} />}
         </div>
 
+        {(p.rapporteur || p.commente) && (
+          <div className="mt-2 text-sm text-muted flex flex-col gap-0.5">
+            {p.rapporteur && (
+              <span>Rapporté par{' '}
+                <Link to={`/savants/${p.rapporteur.slug}`} className="text-green-deep font-medium hover:underline">{p.rapporteur.nom}</Link>
+              </span>
+            )}
+            {p.commente && (
+              <span>Commente une parole&nbsp;:{' '}
+                <Link to={`/paroles/${p.commente.slug}`} className="text-green font-medium hover:underline">{p.commente.sujet} →</Link>
+              </span>
+            )}
+          </div>
+        )}
+
         <ThemeChips themes={p.themes} className="mt-3" />
 
         {/* Texte */}
@@ -135,6 +151,8 @@ export const ParolePage: React.FC = () => {
             </div>
           </section>
         )}
+
+        <RelatedByTheme kind="parole" id={p.id} className="mt-8" />
 
         <div className="mt-8">
           <Link to="/savants/paroles" className="inline-flex items-center gap-1.5 text-green font-medium hover:underline">

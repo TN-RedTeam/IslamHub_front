@@ -1,6 +1,8 @@
 import React, { useEffect, useMemo, useState } from 'react';
+import { DeleteEntryButton } from '../../components/admin/DeleteEntryButton';
 import { useNavigate, useParams, Link } from 'react-router-dom';
 import { Loader2, Plus, Trash2, Check, AlertTriangle, ArrowUp, ArrowDown } from 'lucide-react';
+import { BlocEditor } from '../../components/admin/BlocEditor';
 import {
   adminService,
   type VersetFormData, type VersetType, type PreuveType,
@@ -169,8 +171,8 @@ export const AdminEquivoqueForm: React.FC = () => {
 
       {/* 3. L'analyse */}
       <section className="rounded-card border border-line bg-surface p-5 mb-4">
-        <h2 className="font-display font-semibold text-green-deep text-lg mb-1">3 · L’analyse <span className="text-muted font-normal text-sm">(Markdown)</span></h2>
-        <p className="text-xs text-muted mb-4">Les sections vides ne s’affichent pas sur le site.</p>
+        <h2 className="font-display font-semibold text-green-deep text-lg mb-1">3 · L’analyse <span className="text-muted font-normal text-sm">(ancien format — Markdown)</span></h2>
+        <p className="text-xs text-muted mb-4">Champs historiques (sens juste / objection / réponse). <b>Dès qu’un article composable existe (section 8), c’est lui qui s’affiche</b> et ces champs sont ignorés. Compose plutôt en blocs ci-dessous.</p>
         <div className="mb-3.5"><label className={label}>Le sens juste</label><textarea className={`${field} min-h-[90px]`} value={f.sens_juste} onChange={set('sens_juste')} placeholder="Le sens correct, sourcé…" /></div>
         <div className="mb-3.5"><label className={label}>L’interprétation erronée (objection)</label><textarea className={`${field} min-h-[70px]`} value={f.objection} onChange={set('objection')} placeholder="L’objection type, formulée de manière impersonnelle…" /></div>
         <div><label className={label}>La réponse</label><textarea className={`${field} min-h-[90px]`} value={f.reponse} onChange={set('reponse')} placeholder="La réfutation sourcée…" /></div>
@@ -263,10 +265,20 @@ export const AdminEquivoqueForm: React.FC = () => {
         </label>
       </section>
 
+      {/* 8. Contenu composable (blocs) — disponible une fois l'entrée créée */}
+      <section className="rounded-card border border-line bg-surface p-5 mb-4">
+        <h2 className="font-display font-semibold text-green-deep text-lg mb-1">8 · Article composable <span className="text-muted font-normal text-sm">(blocs)</span></h2>
+        <p className="text-xs text-muted mb-4">Compose l’article en blocs Texte / Commentaire / Preuve. Les preuves référencent une source existante (jamais recopiée).</p>
+        {editId
+          ? <BlocEditor parentType="equivoque" parentId={editId} />
+          : <p className="text-sm text-muted italic">Enregistre d’abord l’entrée, puis reviens ici pour composer l’article.</p>}
+      </section>
+
       <div className="fixed bottom-0 left-0 md:left-[230px] right-0 flex items-center gap-3 px-6 py-3.5 bg-ivory/95 backdrop-blur border-t border-line">
         {ok && <span className="inline-flex items-center gap-1.5 text-green-deep text-sm font-medium"><Check className="w-4 h-4" /> Enregistré</span>}
         {error && <span className="inline-flex items-center gap-1.5 text-red-600 text-sm"><AlertTriangle className="w-4 h-4" /> {error}</span>}
         <div className="ml-auto flex items-center gap-2.5">
+          {editId && <DeleteEntryButton kind="equivoque" id={editId} label={f.theme} redirectTo="/admin/equivoques" />}
           <Link to="/admin/equivoques" className="text-muted text-sm px-3 py-2">Annuler</Link>
           {!editId && <button disabled={busy || !canSave} onClick={() => save(true)} className="rounded-lg border border-line bg-surface text-green-deep font-semibold px-4 py-2.5 disabled:opacity-50">Enregistrer & nouveau</button>}
           <button disabled={busy || !canSave} onClick={() => save(false)} className="inline-flex items-center gap-2 rounded-lg bg-green text-white font-semibold px-5 py-2.5 hover:bg-green-deep transition-colors disabled:opacity-50">

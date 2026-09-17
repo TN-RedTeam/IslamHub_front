@@ -96,6 +96,8 @@ export interface ParoleDetail {
   savant: string | null;
   savant_slug: string | null;    // → /savants/:slug
   generation: string | null;     // badge de génération
+  rapporteur?: { nom: string; slug: string } | null;   // autre savant qui la rapporte
+  commente?: { sujet: string; slug: string } | null;   // parole commentée par celle-ci
   images: ParoleImage[];         // 0..N scans du livre (table parole_images)
   themes?: ThemeRef[];           // thèmes transverses (puces)
 }
@@ -141,6 +143,7 @@ export interface RecitCard {
   titre: string;
   image_url: string | null;
   ordre: number;
+  nb_enfants?: number;   // nombre de récits enfants (épisodes) — Phase 5
 }
 /** Fiche récit complète (page /recits/:slug). */
 export interface RecitDetail {
@@ -149,6 +152,7 @@ export interface RecitDetail {
   titre: string;
   contenu_md: string | null;
   image_url: string | null;
+  enfants?: { slug: string; titre: string }[];   // « Ses récits » (Phase 5)
 }
 
 /** Fiche savant (table `savants`) pour la page /savants */
@@ -590,4 +594,58 @@ export interface MutashabihExemple {
   sens_apparent: string | null;
   sens_vise: string | null;
   ordre: number;
+}
+
+// ————— Phase 3 : contenu composable (blocs) —————
+export type BlocType = 'texte' | 'commentaire' | 'preuve';
+export type BlocCitationType = 'verset' | 'hadith' | 'parole';
+
+/** Source résolue d'un bloc preuve (lue en direct depuis hadiths/paroles/coran). */
+export interface BlocRef {
+  id: number;
+  slug?: string | null;
+  sujet?: string | null;
+  sourate?: string | null;
+  savant?: string | null;
+  savant_slug?: string | null;
+  ecole?: string | null;
+  recueils?: string | null;
+  degre_authenticite?: string | null;
+  texte_arabe?: string | null;
+  texte_francais?: string | null;
+  'phonétique'?: string | null;
+  explication?: string | null;
+}
+
+/** Bloc rendu (lecture publique via get_blocs). */
+export interface Bloc {
+  id: number;
+  type: BlocType;
+  ordre: number;
+  texte_md: string | null;
+  citation_type: BlocCitationType | null;
+  commentaire_md: string | null;
+  source_rubrique: string | null;
+  ref: BlocRef | null;
+}
+
+/** Contenu lié par thème partagé (Phase 4.7). */
+export interface RelatedItem {
+  kind: 'hadith' | 'parole' | 'verset';
+  id: number;
+  slug: string | null;
+  sujet: string | null;
+  savant: string | null;
+  sourate: string | null;
+}
+
+// ————— Recherche globale (Phase 4.4) —————
+export interface SearchHit {
+  id: number; slug?: string | null; sujet: string | null; extrait?: string | null;
+  savant?: string | null; sourate?: string | null; type_id?: number;
+}
+export interface SearchThemeHit { slug: string; nom: string; famille: string; }
+export interface SearchResults {
+  hadiths: SearchHit[]; paroles: SearchHit[]; invocations: SearchHit[];
+  versets: SearchHit[]; themes: SearchThemeHit[];
 }

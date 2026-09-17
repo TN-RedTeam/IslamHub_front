@@ -31,6 +31,7 @@ export const Madhaheb: React.FC = () => {
       <main className="max-w-5xl mx-auto px-5 py-10">
         <header className="text-center mb-8">
           <p className="text-xs font-semibold uppercase tracking-[0.22em] text-gold mb-2">Fiqh</p>
+          <nav aria-label="Fil d'Ariane" className="text-xs text-muted mb-2"><Link to="/" className="hover:text-green-deep">Accueil</Link> <span aria-hidden>·</span> Écoles</nav>
           <h1 className="font-display font-semibold text-green-deep" style={{ fontSize: 'clamp(26px,4vw,38px)' }}>Écoles</h1>
           <p className="text-muted mt-1">Les écoles juridiques (madhāhib)</p>
           <div className="w-16 h-0.5 bg-gold rounded mx-auto mt-4 mb-5" />

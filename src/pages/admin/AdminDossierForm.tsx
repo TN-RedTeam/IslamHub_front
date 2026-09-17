@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
+import { DeleteEntryButton } from '../../components/admin/DeleteEntryButton';
 import { useNavigate, useParams, Link } from 'react-router-dom';
 import { Loader2, Plus, Trash2, Check, AlertTriangle, ArrowUp, ArrowDown } from 'lucide-react';
 import {
@@ -194,6 +195,7 @@ export const AdminDossierForm: React.FC = () => {
         {ok && <span className="inline-flex items-center gap-1.5 text-green-deep text-sm font-medium"><Check className="w-4 h-4" /> Enregistré</span>}
         {error && <span className="inline-flex items-center gap-1.5 text-red-600 text-sm"><AlertTriangle className="w-4 h-4" /> {error}</span>}
         <div className="ml-auto flex items-center gap-2.5">
+          {editId && <DeleteEntryButton kind="dossier" id={editId} label={f.h1} redirectTo="/admin/dossiers" />}
           <Link to="/admin/dossiers" className="text-muted text-sm px-3 py-2">Annuler</Link>
           <button disabled={busy || !canSave} onClick={save} className="inline-flex items-center gap-2 rounded-lg bg-green text-white font-semibold px-5 py-2.5 hover:bg-green-deep transition-colors disabled:opacity-50">
             {busy && <Loader2 className="w-4 h-4 animate-spin" />} Enregistrer

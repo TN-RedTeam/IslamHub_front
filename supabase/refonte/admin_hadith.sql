@@ -132,3 +132,107 @@ $$;
 --   + chapitre obligatoires ; sujet, type, texte (md), texte_arabe, source, tag, ordre.
 -- admin_get_femme(id)/admin_save_femme(p) : chapitre obligatoire ; matn, commentaire,
 --   texte_arabe, source, ordre. SECURITY DEFINER, gardés is_admin().
+
+-- ─────────────────────────────────────────────────────────────────────────
+-- Phase 3.2 — Contenu composable (table contenu_blocs)
+-- ─────────────────────────────────────────────────────────────────────────
+-- Migration : phase3_contenu_blocs.
+-- Un article = suite de blocs ordonnés (texte | commentaire | preuve).
+-- parent_id TEXT (polymorphe : id bigint-as-text ou slug d'exposé) — pas de FK.
+-- Règle clé : un bloc preuve NE COPIE PAS le texte ; il pointe (citation_type,
+--   citation_id) et le rendu lit la source en direct → correction unique
+--   répercutée partout.
+-- RLS : lecture publique ; écriture admin (is_admin()).
+-- get_blocs(parent_type,parent_id) [public] : blocs ordonnés, preuves résolues
+--   depuis hadiths/paroles/coran (+ source_rubrique).
+-- admin_get_blocs / admin_save_blocs (SECURITY DEFINER, remplacement complet).
+-- Sélecteur de preuves réutilise admin_list_dossier_refs (hadiths/paroles/coran).
+
+-- ─────────────────────────────────────────────────────────────────────────
+-- Phase 4.6 — Suppression admin avec garde-fou de dépendances
+-- ─────────────────────────────────────────────────────────────────────────
+-- Migration : phase4_admin_delete.
+-- admin_entry_dependencies(kind,id) : où une source citable (hadith/parole/
+--   verset=coran) est référencée comme preuve (contenu_blocs, verset_preuves,
+--   dossier_preuves, expose_citations, attribut_citations).
+-- admin_delete_entry({kind,id,force}) SECURITY DEFINER, is_admin() :
+--   refuse si référencée (sauf force → retire aussi les références) ; supprime
+--   les blocs d'article dont l'entrée est parent ; refuse un savant ayant des
+--   paroles ; s'appuie sur les FK ON DELETE CASCADE pour les enfants.
+-- UI : DeleteEntryButton (confirmation « supprimer », liste des dépendances,
+--   option forcer) câblé dans les 12 formulaires admin (mode édition).
+
+-- ─────────────────────────────────────────────────────────────────────────
+-- Phase 4.1 — Paroles qui rapportent / commentent
+-- ─────────────────────────────────────────────────────────────────────────
+-- Migrations : phase4_paroles_rapporteur_commente, phase4_paroles_rpcs_update.
+-- paroles.rapporteur_savant_id (FK savants) + commente_parole_id (self-FK),
+-- nullable, ON DELETE SET NULL. savant_id reste l'AUTEUR des mots.
+-- get_parole expose rapporteur {nom,slug} + commente {sujet,slug} ;
+-- admin_get_parole/admin_save_parole gèrent les deux liens.
+
+-- ─────────────────────────────────────────────────────────────────────────
+-- Phase 4.7 — « Dossiers liés » automatiques par thème partagé
+-- ─────────────────────────────────────────────────────────────────────────
+-- Migration : phase4_related_by_theme.
+-- related_by_theme(kind,id,limit) [public] : autres contenus (hadith/parole/
+--   verset) partageant au moins un thème avec l'entrée, dédupliqués. UI :
+--   composant RelatedByTheme sur les fiches Hadith et Parole (« Sur le même
+--   thème »). Plus aucune sélection manuelle.
+
+-- ─────────────────────────────────────────────────────────────────────────
+-- Phase 4.4 — Recherche globale unifiée
+-- ─────────────────────────────────────────────────────────────────────────
+-- Migration : phase4_search_all.
+-- search_all(q, limit) [public] : FTS français (to_tsvector/websearch_to_tsquery
+--   + ts_rank) avec repli unaccent+ilike (translittération), sur hadiths,
+--   paroles, invocations, versets (coran) et thèmes. Résultats groupés.
+-- UI : page /recherche (débouncée, ?q= dans l'URL) + icône loupe dans la nav.
+-- (Exposés exclus : pas de route publique générique → à traiter en 4.5.)
+
+-- ─────────────────────────────────────────────────────────────────────────
+-- Phase 5.1 — Récits hiérarchisés (modèle)
+-- ─────────────────────────────────────────────────────────────────────────
+-- Migration : phase5_recits_hierarchie.
+-- recits.parent_recit_id (self-FK, ON DELETE SET NULL) + index (parent, ordre).
+-- Additif : aucun rattachement appliqué. Proposition dans
+-- docs/proposition-phase5-recits.md (à valider par l'auteur avant peuplement).
+--
+-- Phase 4.5 — audit admin→public : docs/rapport-audit-4.5.md
+--   (istawā non publié = placeholder ; exposés = pas de route générique).
+
+-- ─────────────────────────────────────────────────────────────────────────
+-- Phase 5 (Option A) — récits hiérarchisés : peuplement + RPCs
+-- ─────────────────────────────────────────────────────────────────────────
+-- Migration : phase5_recits_rpcs (+ data : 6 bio-parents créés, épisodes
+-- rattachés : Ibrāhīm←9,13 ; Mūsā←11 ; ʿĪsā←10 ; Sulaymān←7 ; Yūnus←8 ;
+-- Muḥammad ﷺ←14).
+-- recits_all : n'expose que les parents (parent_recit_id IS NULL) + nb_enfants.
+-- get_recit : ajoute enfants[] (« Ses récits »). Admin : sélecteur de récit
+-- parent (créer un parent = laisser vide ; rattacher = choisir le parent).
+
+-- ─────────────────────────────────────────────────────────────────────────
+-- Admin — Recherche d'occurrences → correction directe
+-- ─────────────────────────────────────────────────────────────────────────
+-- Migration : admin_search_occurrences.
+-- admin_search_occurrences(q, limit) SECURITY DEFINER, is_admin() : balaie les
+--   textes de TOUTES les rubriques (hadiths, paroles, coran, invocations,
+--   équivoques, dossiers, exposés, récits, fiqh, femmes, savants, blocs
+--   d'article) en insensible casse+accents, renvoie {kind, ref, label, extrait,
+--   path admin}. Sert à homogénéiser les graphies (« Al-Boukhari » vs
+--   « Al-Bukhari »). admin_snip = extrait centré sur l'occurrence.
+-- UI : page /admin/recherche (surlignage, lien vers le formulaire d'édition) +
+--   entrée « Recherche & correction » dans le menu admin.
+
+-- ─────────────────────────────────────────────────────────────────────────
+-- Phase 3.5/3.6 — bascule des équivoques vers les blocs (un seul moteur)
+-- ─────────────────────────────────────────────────────────────────────────
+-- Migration : phase3_migrate_equivoques_to_blocs (idempotent, non destructif).
+-- Génère contenu_blocs depuis le triptyque existant (sens_juste → texte ;
+-- verset_preuves coran(contenu_libre) → texte, hadith/parole(ref) → preuve ;
+-- objection → texte ; reponse → texte) pour les équivoques SANS blocs.
+-- Colonnes conservées (rien supprimé).
+-- Rendu public : la fiche équivoque privilégie les blocs quand ils existent
+-- (triptyque + sommaire legacy masqués), sinon repli sur l'ancien rendu.
+-- Admin : note indiquant que la section 3 (ancien format) est ignorée dès
+-- qu'un article composable (section 8) existe.

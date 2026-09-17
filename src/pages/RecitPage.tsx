@@ -60,8 +60,24 @@ export const RecitPage: React.FC = () => {
 
         {r.contenu_md ? (
           <div className="mt-6"><Markdown>{r.contenu_md}</Markdown></div>
-        ) : (
+        ) : (!r.enfants || r.enfants.length === 0) ? (
           <p className="mt-6 text-muted italic">Récit en cours de rédaction.</p>
+        ) : null}
+
+        {r.enfants && r.enfants.length > 0 && (
+          <section className="mt-8">
+            <h2 className="font-display font-semibold text-green-deep text-xl mb-3">Ses récits</h2>
+            <ul className="divide-y divide-line rounded-card border border-line bg-surface overflow-hidden">
+              {r.enfants.map((e) => (
+                <li key={e.slug}>
+                  <Link to={`/recits/${e.slug}`} className="flex items-center gap-3 px-4 py-3 hover:bg-green-soft transition-colors">
+                    <span className="text-ink font-medium">{e.titre}</span>
+                    <span className="ml-auto text-muted text-sm">Lire →</span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </section>
         )}
 
         <div className="mt-8">

@@ -223,7 +223,36 @@ class AdminService {
     const { data, error } = await supabase.from('femmes').select('id,chapitre,matn,ordre').order('ordre');
     if (error) throw error; return (data ?? []) as FemmeRow[];
   }
+
+  // ---- Contenu composable (blocs, Phase 3) ----
+  async getBlocsForEdit(parentType: string, parentId: string | number): Promise<BlocInput[]> {
+    const { data, error } = await supabase.rpc('admin_get_blocs', { p_parent_type: parentType, p_parent_id: String(parentId) });
+    if (error) throw error; return (data ?? []) as BlocInput[];
+  }
+  async saveBlocs(parentType: string, parentId: string | number, blocs: BlocInput[]): Promise<number> {
+    const { data, error } = await supabase.rpc('admin_save_blocs', { p: { parent_type: parentType, parent_id: String(parentId), blocs } });
+    if (error) throw error; return data as number;
+  }
+
+  // ---- Suppression admin (Phase 4.6) ----
+  async entryDependencies(kind: DeletableKind, id: string | number): Promise<EntryDeps> {
+    const { data, error } = await supabase.rpc('admin_entry_dependencies', { p_kind: kind, p_id: String(id) });
+    if (error) throw error;
+    return (data ?? { total: 0, refs: {} }) as EntryDeps;
+  }
+  async deleteEntry(kind: DeletableKind, id: string | number, force = false): Promise<void> {
+    const { error } = await supabase.rpc('admin_delete_entry', { p: { kind, id: String(id), force } });
+    if (error) throw error;
+  }
+
+  // ---- Recherche d'occurrences → correction (tout mot, toutes rubriques) ----
+  async searchOccurrences(q: string, limit = 150): Promise<OccurrenceHit[]> {
+    const { data, error } = await supabase.rpc('admin_search_occurrences', { q, p_limit: limit });
+    if (error) throw error; return (data ?? []) as OccurrenceHit[];
+  }
 }
+
+export interface OccurrenceHit { kind: string; ref: string; label: string | null; extrait: string | null; path: string; }
 
 export interface ParoleImageInput { image_url: string; alt: string; legende?: string | null; source_livre?: string | null; ordre?: number | null; }
 export interface ParoleFormData {
@@ -232,12 +261,15 @@ export interface ParoleFormData {
   source_livre: string; page: string; ecole: string; tag: string;
   savant_id?: number | null;
   new_savant?: { nom: string } | null;
+  rapporteur_savant_id?: number | null;
+  commente_parole_id?: number | null;
   images: ParoleImageInput[];
 }
 export interface ParoleEditShape {
   id: number; sujet: string | null; texte_arabe: string | null; texte_francais: string | null;
   phonetique: string | null; explication: string | null; source_livre: string | null; page: string | null;
   ecole: string | null; savant_id: number | null; tag: string | null;
+  rapporteur_savant_id: number | null; commente_parole_id: number | null;
   images: { image_url: string; alt: string | null; legende: string | null; source_livre: string | null; ordre: number | null }[];
 }
 
@@ -364,6 +396,27 @@ export interface ExposeEditShape {
 }
 export interface ExposeListRow { slug: string; titre: string | null; }
 
+// ---- Suppression admin (Phase 4.6) ----
+export type DeletableKind =
+  | 'hadith' | 'parole' | 'coran' | 'verset' | 'equivoque' | 'dossier' | 'expose'
+  | 'recit' | 'invocation' | 'fiqh' | 'femme' | 'sourate' | 'savant';
+export interface EntryDeps {
+  total: number;
+  refs: { articles?: number; equivoques?: number; dossiers?: number; exposes?: number; attributs?: number };
+}
+
+// ---- Contenu composable (blocs, Phase 3) ----
+export type BlocType = 'texte' | 'commentaire' | 'preuve';
+export type BlocCitationType = 'verset' | 'hadith' | 'parole';
+export interface BlocInput {
+  type: BlocType;
+  ordre?: number;
+  texte_md?: string | null;
+  citation_type?: BlocCitationType | null;
+  citation_id?: number | null;
+  commentaire_md?: string | null;
+}
+
 // ---- Fiqh ----
 export interface FiqhFormData {
   id?: number | null;
@@ -385,21 +438,21 @@ export interface FemmeEditShape {
 }
 export interface FemmeRow { id: number; chapitre: string; matn: string | null; ordre: number; }
 
-export interface RecitRow { id: number; slug: string; categorie: RecitCategorie; titre: string; ordre: number; }
-export interface RecitFull { id?: number; slug: string; categorie: RecitCategorie; titre: string; contenu_md: string | null; image_url: string | null; ordre: number; }
+export interface RecitRow { id: number; slug: string; categorie: RecitCategorie; titre: string; ordre: number; parent_recit_id: number | null; }
+export interface RecitFull { id?: number; slug: string; categorie: RecitCategorie; titre: string; contenu_md: string | null; image_url: string | null; ordre: number; parent_recit_id?: number | null; }
 
 class AdminRecits {
   async list(): Promise<RecitRow[]> {
-    const { data, error } = await supabase.from('recits').select('id,slug,categorie,titre,ordre').order('categorie').order('ordre');
+    const { data, error } = await supabase.from('recits').select('id,slug,categorie,titre,ordre,parent_recit_id').order('categorie').order('ordre');
     if (error) throw error; return (data ?? []) as RecitRow[];
   }
   async get(id: number): Promise<RecitFull | null> {
-    const { data, error } = await supabase.from('recits').select('id,slug,categorie,titre,contenu_md,image_url,ordre').eq('id', id).maybeSingle();
+    const { data, error } = await supabase.from('recits').select('id,slug,categorie,titre,contenu_md,image_url,ordre,parent_recit_id').eq('id', id).maybeSingle();
     if (error) throw error; return (data ?? null) as RecitFull | null;
   }
   async save(r: RecitFull): Promise<number> {
     const slug = (r.slug?.trim() || slugify(r.titre) || 'recit');
-    const row = { slug, categorie: r.categorie, titre: r.titre.trim(), contenu_md: r.contenu_md || null, image_url: r.image_url || null, ordre: r.ordre ?? 0 };
+    const row = { slug, categorie: r.categorie, titre: r.titre.trim(), contenu_md: r.contenu_md || null, image_url: r.image_url || null, ordre: r.ordre ?? 0, parent_recit_id: r.parent_recit_id ?? null };
     if (r.id) {
       const { error } = await supabase.from('recits').update(row).eq('id', r.id); if (error) throw error; return r.id;
     }

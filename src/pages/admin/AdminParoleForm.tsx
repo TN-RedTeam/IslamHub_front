@@ -1,7 +1,8 @@
 import React, { useEffect, useMemo, useState } from 'react';
+import { DeleteEntryButton } from '../../components/admin/DeleteEntryButton';
 import { useNavigate, useParams, Link } from 'react-router-dom';
 import { Loader2, Plus, Trash2, Check, AlertTriangle } from 'lucide-react';
-import { adminService, type SavantRow, type ParoleFormData, type ParoleImageInput } from '../../services/AdminService';
+import { adminService, type SavantRow, type ParoleFormData, type ParoleImageInput, type RefOption } from '../../services/AdminService';
 import type { ThemeRef } from '../../types';
 
 const NEW = '__new';
@@ -25,11 +26,15 @@ export const AdminParoleForm: React.FC = () => {
   const set = (k: keyof typeof f) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => setF((p) => ({ ...p, [k]: e.target.value }));
   const [savant, setSavant] = useState('');           // savant_id (string) ou NEW
   const [newSavant, setNewSavant] = useState('');
+  const [rapporteur, setRapporteur] = useState('');   // rapporteur_savant_id (string)
+  const [commente, setCommente] = useState('');       // commente_parole_id (string)
+  const [paroles, setParoles] = useState<RefOption[]>([]);
   const [images, setImages] = useState<Img[]>([]);
   const [derived, setDerived] = useState<ThemeRef[]>([]);
 
   useEffect(() => {
     adminService.listSavants().then(setSavants).catch(() => setError('Impossible de charger les savants.')).finally(() => setLoading(false));
+    adminService.listDossierRefs().then((r) => setParoles(r.paroles)).catch(() => {});
   }, []);
 
   useEffect(() => {
@@ -38,6 +43,8 @@ export const AdminParoleForm: React.FC = () => {
       if (!p) return;
       setF({ sujet: p.sujet ?? '', texte_arabe: p.texte_arabe ?? '', texte_francais: p.texte_francais ?? '', phonetique: p.phonetique ?? '', explication: p.explication ?? '', source_livre: p.source_livre ?? '', page: p.page ?? '', ecole: p.ecole ?? '', tag: p.tag ?? '' });
       setSavant(p.savant_id ? String(p.savant_id) : '');
+      setRapporteur(p.rapporteur_savant_id ? String(p.rapporteur_savant_id) : '');
+      setCommente(p.commente_parole_id ? String(p.commente_parole_id) : '');
       setImages(p.images.map((im) => ({ ...emptyImg(), image_url: im.image_url ?? '', alt: im.alt ?? '', legende: im.legende ?? '', source_livre: im.source_livre ?? '' })));
     }).catch(() => setError('Parole introuvable.'));
   }, [editId]);
@@ -53,6 +60,8 @@ export const AdminParoleForm: React.FC = () => {
     id: editId, ...f,
     savant_id: savant && savant !== NEW ? Number(savant) : null,
     new_savant: savant === NEW && newSavant.trim() ? { nom: newSavant.trim() } : null,
+    rapporteur_savant_id: rapporteur ? Number(rapporteur) : null,
+    commente_parole_id: commente ? Number(commente) : null,
     images: images.filter((im) => im.image_url.trim()).map<ParoleImageInput>((im, i) => ({
       image_url: im.image_url.trim(), alt: im.alt.trim() || 'Scan du livre', legende: im.legende || null, source_livre: im.source_livre || null, ordre: i,
     })),
@@ -63,7 +72,7 @@ export const AdminParoleForm: React.FC = () => {
     try {
       const newId = await adminService.saveParole(buildPayload());
       setOk(true);
-      if (andNew) { setF({ sujet: '', texte_arabe: '', texte_francais: '', phonetique: '', explication: '', source_livre: '', page: '', ecole: '', tag: '' }); setSavant(''); setNewSavant(''); setImages([]); setTimeout(() => setOk(false), 2500); }
+      if (andNew) { setF({ sujet: '', texte_arabe: '', texte_francais: '', phonetique: '', explication: '', source_livre: '', page: '', ecole: '', tag: '' }); setSavant(''); setNewSavant(''); setRapporteur(''); setCommente(''); setImages([]); setTimeout(() => setOk(false), 2500); }
       else { navigate(`/admin/paroles/${newId}`, { replace: true }); setTimeout(() => setOk(false), 2500); }
     } catch (e) {
       const msg = (e as Error).message || 'Erreur à l’enregistrement.';
@@ -111,6 +120,18 @@ export const AdminParoleForm: React.FC = () => {
           <div><label className={label}>Livre source</label><input className={field} value={f.source_livre} onChange={set('source_livre')} placeholder="Ex. Al-Asmāʾ wa ṣ-Ṣifāt" /></div>
           <div><label className={label}>Page</label><input className={field} value={f.page} onChange={set('page')} placeholder="88" /></div>
         </div>
+        <div className="grid sm:grid-cols-2 gap-3.5 mt-3.5">
+          <div><label className={label}>Rapportée par <span className="text-muted font-normal">(si un autre savant la rapporte)</span></label>
+            <select className={field} value={rapporteur} onChange={(e) => setRapporteur(e.target.value)}>
+              <option value="">— (personne)</option>
+              {savants.map((s) => <option key={s.id} value={s.id}>{s.nom}</option>)}
+            </select></div>
+          <div><label className={label}>Commente une parole <span className="text-muted font-normal">(optionnel)</span></label>
+            <select className={field} value={commente} onChange={(e) => setCommente(e.target.value)}>
+              <option value="">— (aucune)</option>
+              {paroles.filter((o) => o.id !== editId).map((o) => <option key={o.id} value={o.id}>{o.label}</option>)}
+            </select></div>
+        </div>
       </section>
 
       {/* 3. Scans */}
@@ -148,6 +169,7 @@ export const AdminParoleForm: React.FC = () => {
         {ok && <span className="inline-flex items-center gap-1.5 text-green-deep text-sm font-medium"><Check className="w-4 h-4" /> Enregistré</span>}
         {error && <span className="inline-flex items-center gap-1.5 text-red-600 text-sm"><AlertTriangle className="w-4 h-4" /> {error}</span>}
         <div className="ml-auto flex items-center gap-2.5">
+          {editId && <DeleteEntryButton kind="parole" id={editId} label={f.sujet} redirectTo="/admin/paroles" />}
           <Link to="/admin/paroles" className="text-muted text-sm px-3 py-2">Annuler</Link>
           {!editId && <button disabled={busy || !canSave} onClick={() => save(true)} className="rounded-lg border border-line bg-surface text-green-deep font-semibold px-4 py-2.5 disabled:opacity-50">Enregistrer & nouveau</button>}
           <button disabled={busy || !canSave} onClick={() => save(false)} className="inline-flex items-center gap-2 rounded-lg bg-green text-white font-semibold px-5 py-2.5 hover:bg-green-deep transition-colors disabled:opacity-50">
