@@ -161,3 +161,12 @@ $$;
 --   paroles ; s'appuie sur les FK ON DELETE CASCADE pour les enfants.
 -- UI : DeleteEntryButton (confirmation « supprimer », liste des dépendances,
 --   option forcer) câblé dans les 12 formulaires admin (mode édition).
+
+-- ─────────────────────────────────────────────────────────────────────────
+-- Phase 4.1 — Paroles qui rapportent / commentent
+-- ─────────────────────────────────────────────────────────────────────────
+-- Migrations : phase4_paroles_rapporteur_commente, phase4_paroles_rpcs_update.
+-- paroles.rapporteur_savant_id (FK savants) + commente_parole_id (self-FK),
+-- nullable, ON DELETE SET NULL. savant_id reste l'AUTEUR des mots.
+-- get_parole expose rapporteur {nom,slug} + commente {sujet,slug} ;
+-- admin_get_parole/admin_save_parole gèrent les deux liens.

@@ -96,6 +96,8 @@ export interface ParoleDetail {
   savant: string | null;
   savant_slug: string | null;    // → /savants/:slug
   generation: string | null;     // badge de génération
+  rapporteur?: { nom: string; slug: string } | null;   // autre savant qui la rapporte
+  commente?: { sujet: string; slug: string } | null;   // parole commentée par celle-ci
   images: ParoleImage[];         // 0..N scans du livre (table parole_images)
   themes?: ThemeRef[];           // thèmes transverses (puces)
 }
