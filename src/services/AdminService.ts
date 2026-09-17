@@ -223,6 +223,16 @@ class AdminService {
     const { data, error } = await supabase.from('femmes').select('id,chapitre,matn,ordre').order('ordre');
     if (error) throw error; return (data ?? []) as FemmeRow[];
   }
+
+  // ---- Contenu composable (blocs, Phase 3) ----
+  async getBlocsForEdit(parentType: string, parentId: string | number): Promise<BlocInput[]> {
+    const { data, error } = await supabase.rpc('admin_get_blocs', { p_parent_type: parentType, p_parent_id: String(parentId) });
+    if (error) throw error; return (data ?? []) as BlocInput[];
+  }
+  async saveBlocs(parentType: string, parentId: string | number, blocs: BlocInput[]): Promise<number> {
+    const { data, error } = await supabase.rpc('admin_save_blocs', { p: { parent_type: parentType, parent_id: String(parentId), blocs } });
+    if (error) throw error; return data as number;
+  }
 }
 
 export interface ParoleImageInput { image_url: string; alt: string; legende?: string | null; source_livre?: string | null; ordre?: number | null; }
@@ -363,6 +373,18 @@ export interface ExposeEditShape {
                phonetique: string | null; signification: string | null; ref: string | null; accordeon: boolean; ordre: number | null }[];
 }
 export interface ExposeListRow { slug: string; titre: string | null; }
+
+// ---- Contenu composable (blocs, Phase 3) ----
+export type BlocType = 'texte' | 'commentaire' | 'preuve';
+export type BlocCitationType = 'verset' | 'hadith' | 'parole';
+export interface BlocInput {
+  type: BlocType;
+  ordre?: number;
+  texte_md?: string | null;
+  citation_type?: BlocCitationType | null;
+  citation_id?: number | null;
+  commentaire_md?: string | null;
+}
 
 // ---- Fiqh ----
 export interface FiqhFormData {

@@ -132,3 +132,18 @@ $$;
 --   + chapitre obligatoires ; sujet, type, texte (md), texte_arabe, source, tag, ordre.
 -- admin_get_femme(id)/admin_save_femme(p) : chapitre obligatoire ; matn, commentaire,
 --   texte_arabe, source, ordre. SECURITY DEFINER, gardés is_admin().
+
+-- ─────────────────────────────────────────────────────────────────────────
+-- Phase 3.2 — Contenu composable (table contenu_blocs)
+-- ─────────────────────────────────────────────────────────────────────────
+-- Migration : phase3_contenu_blocs.
+-- Un article = suite de blocs ordonnés (texte | commentaire | preuve).
+-- parent_id TEXT (polymorphe : id bigint-as-text ou slug d'exposé) — pas de FK.
+-- Règle clé : un bloc preuve NE COPIE PAS le texte ; il pointe (citation_type,
+--   citation_id) et le rendu lit la source en direct → correction unique
+--   répercutée partout.
+-- RLS : lecture publique ; écriture admin (is_admin()).
+-- get_blocs(parent_type,parent_id) [public] : blocs ordonnés, preuves résolues
+--   depuis hadiths/paroles/coran (+ source_rubrique).
+-- admin_get_blocs / admin_save_blocs (SECURITY DEFINER, remplacement complet).
+-- Sélecteur de preuves réutilise admin_list_dossier_refs (hadiths/paroles/coran).

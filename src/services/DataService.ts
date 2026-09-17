@@ -32,6 +32,7 @@ import type {
   DossierData,
   PaginatedResponse,
   PaginationParams,
+  Bloc,
 } from '../types';
 
 // ============================================================
@@ -288,6 +289,14 @@ class DataService {
     const { data, error } = await supabase.rpc('get_recit', { p_slug: slug });
     if (error) throw error;
     return (data ?? null) as RecitDetail | null;
+  }
+
+  // ================= Contenu composable (blocs, Phase 3) =================
+  /** Blocs ordonnés d'un article ; les preuves sont résolues depuis leur source. */
+  async getBlocs(parentType: string, parentId: string | number): Promise<Bloc[]> {
+    const { data, error } = await supabase.rpc('get_blocs', { p_parent_type: parentType, p_parent_id: String(parentId) });
+    if (error) throw error;
+    return (data ?? []) as Bloc[];
   }
 
   // ================= Paroles =================

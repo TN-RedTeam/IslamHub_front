@@ -591,3 +591,36 @@ export interface MutashabihExemple {
   sens_vise: string | null;
   ordre: number;
 }
+
+// ————— Phase 3 : contenu composable (blocs) —————
+export type BlocType = 'texte' | 'commentaire' | 'preuve';
+export type BlocCitationType = 'verset' | 'hadith' | 'parole';
+
+/** Source résolue d'un bloc preuve (lue en direct depuis hadiths/paroles/coran). */
+export interface BlocRef {
+  id: number;
+  slug?: string | null;
+  sujet?: string | null;
+  sourate?: string | null;
+  savant?: string | null;
+  savant_slug?: string | null;
+  ecole?: string | null;
+  recueils?: string | null;
+  degre_authenticite?: string | null;
+  texte_arabe?: string | null;
+  texte_francais?: string | null;
+  'phonétique'?: string | null;
+  explication?: string | null;
+}
+
+/** Bloc rendu (lecture publique via get_blocs). */
+export interface Bloc {
+  id: number;
+  type: BlocType;
+  ordre: number;
+  texte_md: string | null;
+  citation_type: BlocCitationType | null;
+  commentaire_md: string | null;
+  source_rubrique: string | null;
+  ref: BlocRef | null;
+}
