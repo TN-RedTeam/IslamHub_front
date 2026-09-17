@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useNavigate, useParams, Link } from 'react-router-dom';
 import { Loader2, Plus, Trash2, Check, AlertTriangle, ArrowUp, ArrowDown } from 'lucide-react';
+import { BlocEditor } from '../../components/admin/BlocEditor';
 import {
   adminService,
   type VersetFormData, type VersetType, type PreuveType,
@@ -261,6 +262,15 @@ export const AdminEquivoqueForm: React.FC = () => {
           <input type="checkbox" checked={f.published} onChange={(e) => setF((p) => ({ ...p, published: e.target.checked }))} className="w-4 h-4 accent-green" />
           <span className="text-[15px] text-ink font-medium">Publié <span className="text-muted font-normal">— visible sur le site public</span></span>
         </label>
+      </section>
+
+      {/* 8. Contenu composable (blocs) — disponible une fois l'entrée créée */}
+      <section className="rounded-card border border-line bg-surface p-5 mb-4">
+        <h2 className="font-display font-semibold text-green-deep text-lg mb-1">8 · Article composable <span className="text-muted font-normal text-sm">(blocs)</span></h2>
+        <p className="text-xs text-muted mb-4">Compose l’article en blocs Texte / Commentaire / Preuve. Les preuves référencent une source existante (jamais recopiée).</p>
+        {editId
+          ? <BlocEditor parentType="equivoque" parentId={editId} />
+          : <p className="text-sm text-muted italic">Enregistre d’abord l’entrée, puis reviens ici pour composer l’article.</p>}
       </section>
 
       <div className="fixed bottom-0 left-0 md:left-[230px] right-0 flex items-center gap-3 px-6 py-3.5 bg-ivory/95 backdrop-blur border-t border-line">

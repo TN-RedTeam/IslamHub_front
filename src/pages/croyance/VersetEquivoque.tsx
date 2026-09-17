@@ -3,6 +3,8 @@ import { useParams, Link } from 'react-router-dom';
 import { Loader2, Copy, Check, Share2, Star, ChevronRight, BookOpen } from 'lucide-react';
 import { dataService } from '../../services/DataService';
 import { Markdown } from '../../components/Markdown';
+import { ArticleBlocs } from '../../components/ArticleBlocs';
+import type { Bloc } from '../../types';
 import { Lightbox, type LightboxImage } from '../../components/Lightbox';
 import { BadgeGeneration } from '../../components/BadgeGeneration';
 import { useSeo } from '../../hooks/useSeo';
@@ -28,6 +30,7 @@ const Proof: React.FC<{ p: VersetPreuve }> = ({ p }) => (
 export const VersetEquivoque: React.FC = () => {
   const { slug = '' } = useParams();
   const [data, setData] = useState<VersetEquivoqueDetail | null>(null);
+  const [blocs, setBlocs] = useState<Bloc[]>([]);
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
   const [copied, setCopied] = useState(false);
@@ -42,8 +45,14 @@ export const VersetEquivoque: React.FC = () => {
   useEffect(() => {
     let alive = true;
     setLoading(true); setNotFound(false);
+    setBlocs([]);
     dataService.getVersetEquivoque(slug)
-      .then((d) => { if (!alive) return; if (!d || !d.verset) setNotFound(true); else setData(d); setLoading(false); })
+      .then((d) => {
+        if (!alive) return;
+        if (!d || !d.verset) { setNotFound(true); }
+        else { setData(d); dataService.getBlocs('equivoque', d.verset.id).then((bl) => { if (alive) setBlocs(bl); }).catch(() => {}); }
+        setLoading(false);
+      })
       .catch(() => { if (alive) { setNotFound(true); setLoading(false); } });
     return () => { alive = false; };
   }, [slug]);
@@ -228,6 +237,10 @@ export const VersetEquivoque: React.FC = () => {
 
             {v.reponse && (
               <section className="mb-8"><H2 id="reponse">La réponse</H2><Markdown>{v.reponse}</Markdown></section>
+            )}
+
+            {blocs.length > 0 && (
+              <section className="mb-8"><ArticleBlocs blocs={blocs} showToc={false} /></section>
             )}
 
             {/* Actions */}
