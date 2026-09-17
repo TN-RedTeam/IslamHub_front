@@ -170,3 +170,12 @@ $$;
 -- nullable, ON DELETE SET NULL. savant_id reste l'AUTEUR des mots.
 -- get_parole expose rapporteur {nom,slug} + commente {sujet,slug} ;
 -- admin_get_parole/admin_save_parole gèrent les deux liens.
+
+-- ─────────────────────────────────────────────────────────────────────────
+-- Phase 4.7 — « Dossiers liés » automatiques par thème partagé
+-- ─────────────────────────────────────────────────────────────────────────
+-- Migration : phase4_related_by_theme.
+-- related_by_theme(kind,id,limit) [public] : autres contenus (hadith/parole/
+--   verset) partageant au moins un thème avec l'entrée, dédupliqués. UI :
+--   composant RelatedByTheme sur les fiches Hadith et Parole (« Sur le même
+--   thème »). Plus aucune sélection manuelle.

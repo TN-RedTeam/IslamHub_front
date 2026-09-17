@@ -6,6 +6,7 @@ import { dataService } from '../services/DataService';
 import { BadgeGeneration } from '../components/BadgeGeneration';
 import { HadithSources } from '../components/HadithSources';
 import { ThemeChips } from '../components/ThemeChips';
+import { RelatedByTheme } from '../components/RelatedByTheme';
 import { Markdown } from '../components/Markdown';
 import { useSeo } from '../hooks/useSeo';
 import type { HadithDetail } from '../types';
@@ -149,6 +150,8 @@ export const HadithPage: React.FC = () => {
             <HadithSources sources={hadith.sources} />
           </section>
         )}
+
+        <RelatedByTheme kind="hadith" id={hadith.id} className="mt-2" />
       </main>
     </div>
   );

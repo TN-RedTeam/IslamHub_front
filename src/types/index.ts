@@ -626,3 +626,13 @@ export interface Bloc {
   source_rubrique: string | null;
   ref: BlocRef | null;
 }
+
+/** Contenu lié par thème partagé (Phase 4.7). */
+export interface RelatedItem {
+  kind: 'hadith' | 'parole' | 'verset';
+  id: number;
+  slug: string | null;
+  sujet: string | null;
+  savant: string | null;
+  sourate: string | null;
+}

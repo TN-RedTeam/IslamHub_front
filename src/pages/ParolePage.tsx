@@ -7,6 +7,7 @@ import { Lightbox, type LightboxImage } from '../components/Lightbox';
 import { BadgeGeneration, honorificFor } from '../components/BadgeGeneration';
 import { EcoleBadge } from '../components/EcoleBadge';
 import { ThemeChips } from '../components/ThemeChips';
+import { RelatedByTheme } from '../components/RelatedByTheme';
 import { useSeo } from '../hooks/useSeo';
 import type { ParoleDetail, ParoleImage } from '../types';
 
@@ -150,6 +151,8 @@ export const ParolePage: React.FC = () => {
             </div>
           </section>
         )}
+
+        <RelatedByTheme kind="parole" id={p.id} className="mt-8" />
 
         <div className="mt-8">
           <Link to="/savants/paroles" className="inline-flex items-center gap-1.5 text-green font-medium hover:underline">

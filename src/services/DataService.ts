@@ -33,6 +33,7 @@ import type {
   PaginatedResponse,
   PaginationParams,
   Bloc,
+  RelatedItem,
 } from '../types';
 
 // ============================================================
@@ -297,6 +298,13 @@ class DataService {
     const { data, error } = await supabase.rpc('get_blocs', { p_parent_type: parentType, p_parent_id: String(parentId) });
     if (error) throw error;
     return (data ?? []) as Bloc[];
+  }
+
+  /** Contenus liés par thème partagé (Phase 4.7). */
+  async getRelatedByTheme(kind: 'hadith' | 'parole' | 'verset', id: number, limit = 8): Promise<RelatedItem[]> {
+    const { data, error } = await supabase.rpc('related_by_theme', { p_kind: kind, p_id: id, p_limit: limit });
+    if (error) throw error;
+    return (data ?? []) as RelatedItem[];
   }
 
   // ================= Paroles =================
