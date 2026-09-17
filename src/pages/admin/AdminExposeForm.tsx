@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
+import { BlocEditor } from '../../components/admin/BlocEditor';
 import { DeleteEntryButton } from '../../components/admin/DeleteEntryButton';
 import { useNavigate, useParams, Link } from 'react-router-dom';
 import { Loader2, Plus, Trash2, Check, AlertTriangle, ArrowUp, ArrowDown } from 'lucide-react';
@@ -147,6 +148,15 @@ export const AdminExposeForm: React.FC = () => {
           </div>
         ))}
         <button type="button" onClick={() => setCits((a) => [...a, emptyCit()])} className="mt-1 inline-flex items-center gap-1.5 rounded-lg border border-dashed border-green-line bg-green-soft text-green-deep font-semibold px-3.5 py-2 text-sm"><Plus className="w-4 h-4" /> Ajouter une citation</button>
+      </section>
+
+      {/* 5. Article composable (blocs) — disponible une fois l'exposé créé */}
+      <section className="rounded-card border border-line bg-surface p-5 mb-4">
+        <h2 className="font-display font-semibold text-green-deep text-lg mb-1">5 · Article composable <span className="text-muted font-normal text-sm">(blocs)</span></h2>
+        <p className="text-xs text-muted mb-4">Alternative aux sections 3 & 4 : compose l’exposé en blocs Texte / Commentaire / Preuve. <b>Dès qu’un bloc existe, c’est cet article qui s’affiche</b> (le contenu Markdown et les citations ci-dessus sont alors ignorés).</p>
+        {editSlug
+          ? <BlocEditor parentType="expose" parentId={editSlug} />
+          : <p className="text-sm text-muted italic">Enregistre d’abord l’exposé, puis reviens ici pour composer l’article.</p>}
       </section>
 
       <div className="fixed bottom-0 left-0 md:left-[230px] right-0 flex items-center gap-3 px-6 py-3.5 bg-ivory/95 backdrop-blur border-t border-line">
