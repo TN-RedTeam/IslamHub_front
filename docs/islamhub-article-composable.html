@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Article composable — IslamHub</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,500;0,600;1,500&family=Newsreader:opsz,ital,wght@6..72,0,400;6..72,0,500;6..72,1,400&family=Scheherazade+New:wght@400;500;700&display=swap">
+<style>
+  :root{
+    --bg:#f2ebdd; --paper:#fbf7ec; --ink:#173d2c; --ink-soft:#3c5145; --muted:#6f6753;
+    --line:#e5dcc6; --gold:#b0872f; --gold-soft:#f3e8cd; --green:#1c5a43; --green-deep:#0f3d2e;
+    --proof-edge:#c6a24a; --note-edge:#3f6c96; --note-bg:#eef2f6;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#0a2017; --paper:#0f2b1f; --ink:#e9dfc6; --ink-soft:#c3cfbf; --muted:#93a595;
+      --line:#20402f; --gold:#d3ac5c; --gold-soft:#1c3527; --green:#8fce9f; --green-deep:#cfe6d3;
+      --proof-edge:#c6a24a; --note-edge:#5f8fbf; --note-bg:#12303f;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#0a2017; --paper:#0f2b1f; --ink:#e9dfc6; --ink-soft:#c3cfbf; --muted:#93a595;
+    --line:#20402f; --gold:#d3ac5c; --gold-soft:#1c3527; --green:#8fce9f; --green-deep:#cfe6d3;
+    --proof-edge:#c6a24a; --note-edge:#5f8fbf; --note-bg:#12303f;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{background:var(--bg);color:var(--ink);font-family:Newsreader,Georgia,serif;line-height:1.7;
+    -webkit-font-smoothing:antialiased}
+  .ar{font-family:"Scheherazade New",serif;direction:rtl}
+
+  .bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;display:flex;justify-content:space-between;
+    align-items:center;gap:10px;padding:10px 18px;background:color-mix(in srgb,var(--bg) 88%, transparent);
+    backdrop-filter:blur(8px);border-bottom:1px solid var(--line);font-family:ui-sans-serif,system-ui,sans-serif;font-size:12.5px}
+  .bar .tag{color:var(--muted)} .bar b{color:var(--green)}
+  .tgl{appearance:none;border:1px solid var(--line);background:var(--paper);color:var(--ink);
+    font:inherit;padding:5px 12px;border-radius:999px;cursor:pointer}
+
+  .shell{max-width:1080px;margin:0 auto;padding:26px 22px 80px;display:grid;grid-template-columns:1fr;gap:30px}
+  @media(min-width:900px){.shell{grid-template-columns:220px 1fr;align-items:start}}
+
+  /* Sommaire ancré */
+  .toc{font-family:ui-sans-serif,system-ui,sans-serif}
+  @media(min-width:900px){.toc{position:sticky;top:78px}}
+  .toc .lbl{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);font-weight:700;margin:0 0 10px}
+  .toc a{display:block;color:var(--ink-soft);text-decoration:none;font-size:13.5px;padding:5px 0 5px 12px;
+    border-left:2px solid var(--line);line-height:1.4}
+  .toc a:hover{color:var(--green);border-left-color:var(--gold)}
+
+  article{max-width:66ch}
+  .crumb{font-family:ui-sans-serif,system-ui,sans-serif;font-size:12.5px;color:var(--muted);margin:0 0 6px}
+  .crumb a{color:var(--muted);text-decoration:none}.crumb a:hover{color:var(--green)}
+  .eyebrow{font-family:ui-sans-serif,system-ui,sans-serif;font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;
+    color:var(--gold);font-weight:700;margin:0 0 4px}
+  h1{font-family:"EB Garamond",serif;font-weight:600;font-size:clamp(30px,5vw,44px);color:var(--green-deep);
+    margin:0 0 6px;line-height:1.1;text-wrap:balance}
+  .lede{color:var(--ink-soft);font-size:17px;margin:10px 0 0;font-style:italic}
+
+  h2{font-family:"EB Garamond",serif;font-weight:600;font-size:clamp(21px,3.2vw,27px);color:var(--green-deep);
+    margin:38px 0 12px;scroll-margin-top:80px;text-wrap:balance}
+  p{margin:0 0 15px}
+  .back{display:inline-flex;align-items:center;gap:6px;margin-top:40px;font-family:ui-sans-serif,system-ui,sans-serif;
+    font-size:13px;color:var(--green);text-decoration:none;font-weight:600}
+
+  /* ——— BLOC PREUVE (référence à un contenu existant) ——— */
+  .proof{margin:20px 0;border:1px solid var(--line);border-left:3px solid var(--proof-edge);border-radius:0 12px 12px 0;
+    background:var(--paper);padding:16px 20px;box-shadow:0 1px 2px rgba(20,40,30,.04)}
+  .proof .kind{display:flex;align-items:center;gap:8px;font-family:ui-sans-serif,system-ui,sans-serif;
+    font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+  .proof .kind .b{color:var(--gold);font-weight:700}
+  .proof .kind .ref{margin-left:auto;color:var(--muted);letter-spacing:.04em}
+  .proof .arabe{font-family:"Scheherazade New",serif;direction:rtl;text-align:right;
+    font-size:clamp(22px,4.4vw,27px);line-height:2;color:var(--ink)}
+  .proof .sig{margin:8px 0 0;color:var(--ink)}
+  .proof .sig .q{color:var(--ink-soft)}
+  .proof .who{font-family:"EB Garamond",serif;font-weight:600;color:var(--green-deep);font-size:16px}
+  .badge{font-family:ui-sans-serif,system-ui,sans-serif;font-size:10px;font-weight:700;padding:1px 8px;border-radius:999px;
+    background:var(--gold-soft);color:var(--gold);border:1px solid color-mix(in srgb,var(--gold) 40%,transparent)}
+  .scan{display:inline-flex;align-items:center;gap:6px;margin-top:10px;font-family:ui-sans-serif,system-ui,sans-serif;
+    font-size:12.5px;font-weight:600;color:var(--green);text-decoration:none}
+  /* commentaire attaché à une preuve */
+  .proof .note{margin:12px -20px -16px;padding:11px 20px;border-top:1px dashed var(--line);
+    background:color-mix(in srgb,var(--gold-soft) 45%, transparent);border-radius:0 0 12px 0}
+  .proof .note .lbl{font-family:ui-sans-serif,system-ui,sans-serif;font-size:10.5px;letter-spacing:.1em;
+    text-transform:uppercase;color:var(--gold);font-weight:700;margin-right:6px}
+  .proof .note p{margin:6px 0 0;font-style:italic;color:var(--ink-soft);font-size:15px}
+
+  /* ——— BLOC COMMENTAIRE libre (encadré) ——— */
+  .callout{margin:22px 0;border:1px solid var(--line);border-left:3px solid var(--note-edge);border-radius:0 12px 12px 0;
+    background:var(--note-bg);padding:15px 20px}
+  .callout .lbl{font-family:ui-sans-serif,system-ui,sans-serif;font-size:10.5px;letter-spacing:.12em;
+    text-transform:uppercase;color:var(--note-edge);font-weight:700;margin:0 0 6px}
+  .callout p{margin:0;color:var(--ink-soft)}
+
+  /* ——— Triptyque rationnel ——— */
+  .trip{display:grid;grid-template-columns:1fr;gap:12px;margin:20px 0}
+  @media(min-width:640px){.trip{grid-template-columns:repeat(3,1fr)}}
+  .trip .c{border:1px solid var(--line);border-top:3px solid var(--green);border-radius:0 0 10px 10px;
+    background:var(--paper);padding:14px 16px}
+  .trip .c h4{font-family:"EB Garamond",serif;font-size:16px;color:var(--green-deep);margin:0 0 3px}
+  .trip .c .ar2{font-family:"Scheherazade New",serif;direction:rtl;color:var(--gold);font-size:17px;margin-bottom:6px}
+  .trip .c p{font-size:14px;margin:0;color:var(--ink-soft)}
+
+  /* légende explicative de la maquette */
+  .legend{max-width:66ch;margin:30px 0 0;padding:14px 18px;border:1px dashed var(--line);border-radius:12px;
+    background:var(--paper);font-family:ui-sans-serif,system-ui,sans-serif;font-size:12.5px;color:var(--muted)}
+  .legend b{color:var(--ink)}
+  .chip{display:inline-block;width:11px;height:11px;border-radius:3px;vertical-align:middle;margin-right:5px}
+</style>
+</head>
+<body>
+
+<div class="bar">
+  <span class="tag"><b>Maquette</b> · rendu d'un article composé par blocs</span>
+  <button class="tgl" id="tgl">Basculer clair / sombre</button>
+</div>
+
+<div class="shell">
+
+  <!-- SOMMAIRE ANCRÉ -->
+  <nav class="toc" aria-label="Sommaire">
+    <p class="lbl">Sommaire</p>
+    <a href="#s1">L'Islam et la raison saine</a>
+    <a href="#s2">Les causes d'une connaissance fiable</a>
+    <a href="#s3">Le jugement selon la raison</a>
+    <a href="#s4">Les preuves rationnelles</a>
+  </nav>
+
+  <!-- ARTICLE -->
+  <article>
+    <p class="crumb"><a href="#">Accueil</a> › <a href="#">Croyance</a> › Le jugement rationnel</p>
+    <p class="eyebrow">Croyance · Exposé</p>
+    <h1>Le jugement rationnel</h1>
+    <p class="lede">La louange est à Dieu, le Créateur du monde, Celui Qui existe sans début, sans fin, sans endroit et sans comment — absolument rien ne Lui ressemble, et Il est Celui Qui entend et Qui voit.</p>
+
+    <!-- bloc texte -->
+    <h2 id="s1">L'Islam est la seule religion conforme à la raison saine</h2>
+    <p>L'Islam dit que Dieu est le seul Créateur, Qui fait parvenir toute chose du néant à l'existence, et qu'Il n'a aucune ressemblance avec les créatures. Les autres conceptions prétendent que Dieu habite le ciel, ou qu'Il serait un corps — or celui qui habite un lieu ou qui est un corps est localisé, et ce qui a besoin d'être localisé n'est pas Dieu.</p>
+
+    <!-- bloc preuve inséré EN PLEIN MILIEU, avec commentaire -->
+    <div class="proof">
+      <div class="kind"><span class="b">Preuve</span> · Coran <span class="ref">réutilisée depuis la rubrique Coran</span></div>
+      <p class="arabe">وَمَا كَانَ الْمُؤْمِنُونَ لِيَنفِرُوا كَافَّةً فَلَوْلَا نَفَرَ مِن كُلِّ فِرْقَةٍ مِّنْهُمْ طَائِفَةٌ لِّيَتَفَقَّهُوا فِي الدِّينِ</p>
+      <p class="sig"><span class="q">ce qui signifie :</span> « … qu'un groupe d'entre eux se consacre à approfondir la science de la religion, afin d'avertir leur peuple à leur retour. » <span class="badge">at-Tawba · 122</span></p>
+      <div class="note"><span class="lbl">Commentaire</span><p>Ce verset fonde l'obligation communautaire de connaître la croyance <em>avec ses preuves</em> — d'où l'importance des preuves rationnelles développées plus bas.</p></div>
+    </div>
+
+    <p>Parmi les obligations communautaires : connaître les points de croyance avec leurs preuves textuelles, mais aussi les <strong>preuves rationnelles</strong>, de manière à pouvoir répondre à ceux qui contestent la religion sans la connaître.</p>
+
+    <!-- bloc commentaire libre -->
+    <div class="callout">
+      <p class="lbl">Note de l'auteur</p>
+      <p>L'axe de la croyance ne repose pas sur l'illusion, mais sur ce qu'implique la raison saine — laquelle témoigne de la véracité de la Loi de l'Islam, qui n'apporte que ce qui est rationnellement possible.</p>
+    </div>
+
+    <!-- bloc texte + preuve = parole d'un savant (avec scan) -->
+    <h2 id="s2">Les causes d'une connaissance fiable et catégorique</h2>
+    <p>Les gens de la vérité ont établi que la connaissance certaine repose sur trois causes : les sens sains, la nouvelle véridique et la raison.</p>
+
+    <div class="proof">
+      <div class="kind"><span class="b">Preuve</span> · Parole de savant <span class="ref">réutilisée depuis la rubrique Savants</span></div>
+      <p class="who">L'imam an-Nasafī <span class="badge">m. 710 H</span></p>
+      <p class="sig" style="margin-top:6px">« La réalité des choses est confirmée, ainsi que la connaissance que l'on en a ; et les causes de connaissance que les créatures possèdent sont au nombre de trois : les sens sains, la nouvelle véridique et la raison. »</p>
+      <a class="scan" href="#">▣ Voir la parole et le scan →</a>
+    </div>
+
+    <!-- bloc texte + triptyque -->
+    <h2 id="s3">Le jugement selon la raison se divise en trois</h2>
+    <p>Un jugement, c'est confirmer ou nier une chose au sujet d'une autre. Ce qui est jugé selon la raison se répartit en trois catégories :</p>
+
+    <div class="trip">
+      <div class="c"><div class="ar2">الواجب</div><h4>L'obligatoire</h4><p>Ce qui n'admet que la confirmation. Ex. : Dieu est exempt de début. Le seul dont l'existence est obligatoire, c'est Dieu.</p></div>
+      <div class="c"><div class="ar2">المستحيل</div><h4>L'impossible</h4><p>Ce qui n'admet que la négation. Ex. : l'existence d'un associé à Dieu ; ou qu'un corps soit en mouvement et immobile à la fois.</p></div>
+      <div class="c"><div class="ar2">الجائز</div><h4>Le possible</h4><p>Ce qui admet l'existence comme l'inexistence. Ex. : un corps peut être en mouvement ou immobile, de telle forme ou d'une autre. C'est l'ensemble des créatures.</p></div>
+    </div>
+
+    <h2 id="s4">Les preuves rationnelles que l'univers est créé</h2>
+    <p>L'univers est une preuve de l'existence d'Allah, car il n'est pas valable selon la raison qu'un acte existe sans auteur — de même qu'un texte n'existe pas sans qui l'a écrit, ni une construction sans constructeur.</p>
+
+    <div class="proof">
+      <div class="kind"><span class="b">Preuve</span> · Coran <span class="ref">réutilisée depuis la rubrique Coran</span></div>
+      <p class="arabe">إِنَّ فِي خَلْقِ السَّمَاوَاتِ وَالْأَرْضِ وَاخْتِلَافِ اللَّيْلِ وَالنَّهَارِ لَآيَاتٍ لِأُولِي الْأَلْبَابِ</p>
+      <p class="sig"><span class="q">ce qui signifie :</span> « Certes, dans la création des cieux et de la terre et dans l'alternance de la nuit et du jour, il y a des preuves pour ceux qui sont dotés de raison. » <span class="badge">Āl ʿImrān · 190</span></p>
+    </div>
+
+    <a class="back" href="#">← Retour à « Croyance »</a>
+
+    <!-- légende de lecture (n'existe pas sur le vrai site) -->
+    <div class="legend">
+      <p style="margin:0 0 8px"><b>Comment lire cette maquette</b> — un article = une suite de blocs que tu ordonnes librement :</p>
+      <p style="margin:0 0 4px"><span class="chip" style="background:var(--proof-edge)"></span><b>Preuve</b> (liseré or) : une référence à un verset / hadith / parole <b>existant</b> — tu le choisis dans l'admin, le texte et le scan viennent de la source. Tu peux le poser n'importe où dans le texte, et lui attacher un commentaire.</p>
+      <p style="margin:0"><span class="chip" style="background:var(--note-edge)"></span><b>Commentaire</b> (liseré bleu) : un encadré de note libre, inséré où tu veux.</p>
+    </div>
+  </article>
+</div>
+
+<script>
+  var root=document.documentElement, cur='light';
+  // suit le thème système au départ
+  if(matchMedia('(prefers-color-scheme: dark)').matches) cur='dark';
+  document.getElementById('tgl').onclick=function(){ cur = cur==='dark'?'light':'dark'; root.setAttribute('data-theme',cur); };
+</script>
+</body>
+</html>
