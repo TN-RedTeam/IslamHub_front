@@ -189,3 +189,14 @@ $$;
 --   paroles, invocations, versets (coran) et thèmes. Résultats groupés.
 -- UI : page /recherche (débouncée, ?q= dans l'URL) + icône loupe dans la nav.
 -- (Exposés exclus : pas de route publique générique → à traiter en 4.5.)
+
+-- ─────────────────────────────────────────────────────────────────────────
+-- Phase 5.1 — Récits hiérarchisés (modèle)
+-- ─────────────────────────────────────────────────────────────────────────
+-- Migration : phase5_recits_hierarchie.
+-- recits.parent_recit_id (self-FK, ON DELETE SET NULL) + index (parent, ordre).
+-- Additif : aucun rattachement appliqué. Proposition dans
+-- docs/proposition-phase5-recits.md (à valider par l'auteur avant peuplement).
+--
+-- Phase 4.5 — audit admin→public : docs/rapport-audit-4.5.md
+--   (istawā non publié = placeholder ; exposés = pas de route générique).
