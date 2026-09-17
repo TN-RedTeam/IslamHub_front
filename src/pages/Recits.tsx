@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Loader2, BookMarked, ScrollText } from 'lucide-react';
 import { dataService } from '../services/DataService';
 import { PageHeader } from '../components/PageHeader';
+import { compteur } from '../utils/compteur';
 import type { RecitCard, RecitCategorie } from '../types';
 
 const SECTIONS: { categorie: RecitCategorie; titre: string; sous_titre: string }[] = [
@@ -23,6 +24,7 @@ const Carte: React.FC<{ r: RecitCard }> = ({ r }) => (
     )}
     <div className="p-5 flex-1 flex flex-col">
       <h3 className="font-display font-bold text-lg text-green-deep group-hover:text-green">{r.titre}</h3>
+      {r.nb_enfants ? <span className="mt-1 text-xs text-muted">{compteur(r.nb_enfants, 'recit')}</span> : null}
       <span className="mt-auto pt-3 text-sm font-semibold text-green inline-flex items-center gap-1.5 group-hover:gap-2.5 transition-all motion-reduce:transition-none">
         Lire le récit →
       </span>

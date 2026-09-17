@@ -200,3 +200,13 @@ $$;
 --
 -- Phase 4.5 — audit admin→public : docs/rapport-audit-4.5.md
 --   (istawā non publié = placeholder ; exposés = pas de route générique).
+
+-- ─────────────────────────────────────────────────────────────────────────
+-- Phase 5 (Option A) — récits hiérarchisés : peuplement + RPCs
+-- ─────────────────────────────────────────────────────────────────────────
+-- Migration : phase5_recits_rpcs (+ data : 6 bio-parents créés, épisodes
+-- rattachés : Ibrāhīm←9,13 ; Mūsā←11 ; ʿĪsā←10 ; Sulaymān←7 ; Yūnus←8 ;
+-- Muḥammad ﷺ←14).
+-- recits_all : n'expose que les parents (parent_recit_id IS NULL) + nb_enfants.
+-- get_recit : ajoute enfants[] (« Ses récits »). Admin : sélecteur de récit
+-- parent (créer un parent = laisser vide ; rattacher = choisir le parent).

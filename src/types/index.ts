@@ -143,6 +143,7 @@ export interface RecitCard {
   titre: string;
   image_url: string | null;
   ordre: number;
+  nb_enfants?: number;   // nombre de récits enfants (épisodes) — Phase 5
 }
 /** Fiche récit complète (page /recits/:slug). */
 export interface RecitDetail {
@@ -151,6 +152,7 @@ export interface RecitDetail {
   titre: string;
   contenu_md: string | null;
   image_url: string | null;
+  enfants?: { slug: string; titre: string }[];   // « Ses récits » (Phase 5)
 }
 
 /** Fiche savant (table `savants`) pour la page /savants */

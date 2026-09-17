@@ -430,21 +430,21 @@ export interface FemmeEditShape {
 }
 export interface FemmeRow { id: number; chapitre: string; matn: string | null; ordre: number; }
 
-export interface RecitRow { id: number; slug: string; categorie: RecitCategorie; titre: string; ordre: number; }
-export interface RecitFull { id?: number; slug: string; categorie: RecitCategorie; titre: string; contenu_md: string | null; image_url: string | null; ordre: number; }
+export interface RecitRow { id: number; slug: string; categorie: RecitCategorie; titre: string; ordre: number; parent_recit_id: number | null; }
+export interface RecitFull { id?: number; slug: string; categorie: RecitCategorie; titre: string; contenu_md: string | null; image_url: string | null; ordre: number; parent_recit_id?: number | null; }
 
 class AdminRecits {
   async list(): Promise<RecitRow[]> {
-    const { data, error } = await supabase.from('recits').select('id,slug,categorie,titre,ordre').order('categorie').order('ordre');
+    const { data, error } = await supabase.from('recits').select('id,slug,categorie,titre,ordre,parent_recit_id').order('categorie').order('ordre');
     if (error) throw error; return (data ?? []) as RecitRow[];
   }
   async get(id: number): Promise<RecitFull | null> {
-    const { data, error } = await supabase.from('recits').select('id,slug,categorie,titre,contenu_md,image_url,ordre').eq('id', id).maybeSingle();
+    const { data, error } = await supabase.from('recits').select('id,slug,categorie,titre,contenu_md,image_url,ordre,parent_recit_id').eq('id', id).maybeSingle();
     if (error) throw error; return (data ?? null) as RecitFull | null;
   }
   async save(r: RecitFull): Promise<number> {
     const slug = (r.slug?.trim() || slugify(r.titre) || 'recit');
-    const row = { slug, categorie: r.categorie, titre: r.titre.trim(), contenu_md: r.contenu_md || null, image_url: r.image_url || null, ordre: r.ordre ?? 0 };
+    const row = { slug, categorie: r.categorie, titre: r.titre.trim(), contenu_md: r.contenu_md || null, image_url: r.image_url || null, ordre: r.ordre ?? 0, parent_recit_id: r.parent_recit_id ?? null };
     if (r.id) {
       const { error } = await supabase.from('recits').update(row).eq('id', r.id); if (error) throw error; return r.id;
     }

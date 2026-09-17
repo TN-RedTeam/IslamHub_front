@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { DeleteEntryButton } from '../../components/admin/DeleteEntryButton';
 import { useNavigate, useParams, Link } from 'react-router-dom';
 import { Loader2, Check, AlertTriangle } from 'lucide-react';
-import { adminRecits } from '../../services/AdminService';
+import { adminRecits, type RecitRow } from '../../services/AdminService';
 import { slugify } from '../../utils/slug';
 import type { RecitCategorie } from '../../types';
 
@@ -21,12 +21,20 @@ export const AdminRecitForm: React.FC = () => {
 
   const [f, setF] = useState<{ titre: string; categorie: RecitCategorie; slug: string; contenu_md: string; image_url: string; ordre: string }>(
     { titre: '', categorie: 'prophetes', slug: '', contenu_md: '', image_url: '', ordre: '0' });
+  const [parent, setParent] = useState('');          // parent_recit_id (string) ou '' = récit principal
+  const [parents, setParents] = useState<RecitRow[]>([]);
+
+  useEffect(() => {
+    // Parents possibles = récits principaux (sans parent).
+    adminRecits.list().then((rows) => setParents(rows.filter((r) => r.parent_recit_id == null))).catch(() => {});
+  }, []);
 
   useEffect(() => {
     if (!editId) return;
     adminRecits.get(editId).then((r) => {
       if (!r) { setError('Récit introuvable.'); return; }
       setF({ titre: r.titre, categorie: r.categorie, slug: r.slug, contenu_md: r.contenu_md ?? '', image_url: r.image_url ?? '', ordre: String(r.ordre ?? 0) });
+      setParent(r.parent_recit_id != null ? String(r.parent_recit_id) : '');
       setSlugTouched(true);
     }).catch(() => setError('Récit introuvable.')).finally(() => setLoading(false));
   }, [editId]);
@@ -36,7 +44,7 @@ export const AdminRecitForm: React.FC = () => {
   const save = async () => {
     setBusy(true); setError(null); setOk(false);
     try {
-      const newId = await adminRecits.save({ id: editId ?? undefined, titre: f.titre, categorie: f.categorie, slug: autoSlug, contenu_md: f.contenu_md, image_url: f.image_url, ordre: Number(f.ordre) || 0 });
+      const newId = await adminRecits.save({ id: editId ?? undefined, titre: f.titre, categorie: f.categorie, slug: autoSlug, contenu_md: f.contenu_md, image_url: f.image_url, ordre: Number(f.ordre) || 0, parent_recit_id: parent ? Number(parent) : null });
       setOk(true); navigate(`/admin/recits/${newId}`, { replace: true }); setTimeout(() => setOk(false), 2500);
     } catch (e) {
       const msg = (e as Error).message || 'Erreur.';
@@ -60,8 +68,13 @@ export const AdminRecitForm: React.FC = () => {
               <option value="vertueux">Vies des vertueux</option>
               <option value="histoires du passe">Histoires du passé</option>
             </select></div>
-          <div><label className={label}>Ordre</label><input className={field} type="number" value={f.ordre} onChange={(e) => setF({ ...f, ordre: e.target.value })} /></div>
+          <div><label className={label}>Ordre <span className="text-muted font-normal">(chez le parent)</span></label><input className={field} type="number" value={f.ordre} onChange={(e) => setF({ ...f, ordre: e.target.value })} /></div>
         </div>
+        <div><label className={label}>Récit parent <span className="text-muted font-normal">— laisser vide pour un récit principal ; sinon c'est un épisode rattaché</span></label>
+          <select className={field} value={parent} onChange={(e) => setParent(e.target.value)}>
+            <option value="">— (récit principal)</option>
+            {parents.filter((r) => r.categorie === f.categorie && r.id !== editId).map((r) => <option key={r.id} value={r.id}>{r.titre}</option>)}
+          </select></div>
         <div><label className={label}>Slug (URL) <span className="text-muted font-normal">— généré depuis le titre</span></label>
           <input className={field} value={autoSlug} onChange={(e) => { setSlugTouched(true); setF({ ...f, slug: e.target.value }); }} placeholder="adam" /></div>
         <div><label className={label}>Image (URL, optionnel)</label><input className={field} value={f.image_url} onChange={(e) => setF({ ...f, image_url: e.target.value })} placeholder="https://…/references/….webp" /></div>
