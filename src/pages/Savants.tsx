@@ -82,6 +82,7 @@ export const Savants: React.FC = () => {
           <p className="text-xs font-semibold uppercase tracking-[0.16em] text-gold mb-1">
             Ahlou s-Sounnah wa l-Jamā‘ah · Références
           </p>
+          <nav aria-label="Fil d'Ariane" className="text-xs text-muted mb-2"><Link to="/" className="hover:text-green-deep">Accueil</Link> <span aria-hidden>·</span> Savants</nav>
           <h1 className="text-4xl md:text-5xl font-bold text-green-deep font-display">Les Savants de l'Islam</h1>
           <p className="text-gray-600 dark:text-gray-400 mt-2 max-w-2xl">
             Les savants cités à travers les hadiths, les paroles et les dossiers. Chaque fiche donne le crédit et le contexte de celui dont on rapporte la parole.
