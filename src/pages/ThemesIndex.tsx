@@ -4,6 +4,7 @@ import { Loader2, Search, ArrowRight } from 'lucide-react';
 import { dataService } from '../services/DataService';
 import { PageHeader } from '../components/PageHeader';
 import { useSeo } from '../hooks/useSeo';
+import { compteurs } from '../utils/compteur';
 import type { ThemeCard, ThemeFamille } from '../types';
 
 const FAMILLES: { key: ThemeFamille; label: string }[] = [
@@ -67,10 +68,11 @@ export const ThemesIndex: React.FC = () => {
                 <div className="grid gap-3.5 grid-cols-[repeat(auto-fill,minmax(240px,1fr))]">
                   {items.map((t) => {
                     const total = t.n_coran + t.n_hadith + t.n_parole;
-                    const parts: string[] = [];
-                    if (t.n_coran) parts.push(`${t.n_coran} v.`);
-                    if (t.n_hadith) parts.push(`${t.n_hadith} h.`);
-                    if (t.n_parole) parts.push(`${t.n_parole} p.`);
+                    const detail = compteurs([
+                      { n: t.n_coran, type: 'verset' },
+                      { n: t.n_hadith, type: 'hadith' },
+                      { n: t.n_parole, type: 'parole' },
+                    ]);
                     return (
                       <Link
                         key={t.slug}
@@ -78,7 +80,7 @@ export const ThemesIndex: React.FC = () => {
                         className="group flex flex-col gap-2 rounded-card border border-line bg-surface p-5 shadow-card hover:shadow-card-hover hover:-translate-y-0.5 hover:border-green transition-all motion-reduce:transition-none motion-reduce:hover:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green"
                       >
                         <h3 className="font-display font-semibold text-green-deep text-lg leading-tight group-hover:text-green">{t.nom}</h3>
-                        <span className="text-xs text-muted">{parts.join(' · ')}</span>
+                        <span className="text-xs text-muted">{detail}</span>
                         <span className="mt-auto pt-1.5 inline-flex items-center gap-1.5 text-[13px] font-semibold text-green group-hover:gap-2.5 transition-all motion-reduce:transition-none">
                           {total} contenu{total > 1 ? 's' : ''} <ArrowRight className="w-4 h-4" />
                         </span>

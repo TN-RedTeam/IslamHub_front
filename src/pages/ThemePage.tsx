@@ -5,6 +5,7 @@ import { dataService } from '../services/DataService';
 import { BadgeGeneration } from '../components/BadgeGeneration';
 import { EcoleBadge } from '../components/EcoleBadge';
 import { useSeo } from '../hooks/useSeo';
+import { compteur } from '../utils/compteur';
 import type { ThemeDetail, ThemeCoranItem, ThemeHadithItem, ThemeParoleItem } from '../types';
 
 const PREVIEW = 4;
@@ -98,9 +99,9 @@ export const ThemePage: React.FC = () => {
 
   const { coran, hadiths, paroles } = data;
   const counts: string[] = [];
-  if (coran.length) counts.push(`${coran.length} verset${coran.length > 1 ? 's' : ''}`);
-  if (hadiths.length) counts.push(`${hadiths.length} hadith${hadiths.length > 1 ? 's' : ''}`);
-  if (paroles.length) counts.push(`${paroles.length} parole${paroles.length > 1 ? 's' : ''} de savants`);
+  if (coran.length) counts.push(compteur(coran.length, 'verset'));
+  if (hadiths.length) counts.push(compteur(hadiths.length, 'hadith'));
+  if (paroles.length) counts.push(`${compteur(paroles.length, 'parole')} de savants`);
 
   return (
     <div className="min-h-screen bg-ground">
