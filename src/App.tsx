@@ -37,6 +37,7 @@ import { AuthProvider } from './context/AuthContext';
 import { AdminLogin } from './pages/admin/AdminLogin';
 import { AdminLayout } from './pages/admin/AdminLayout';
 import { AdminHome } from './pages/admin/AdminHome';
+import { AdminRecherche } from './pages/admin/AdminRecherche';
 import { AdminHadithForm } from './pages/admin/AdminHadithForm';
 import { AdminHadithsList } from './pages/admin/AdminHadithsList';
 import { AdminParoleForm } from './pages/admin/AdminParoleForm';
@@ -160,6 +161,7 @@ function App() {
               <Route path="/admin/login" element={<AdminLogin />} />
               <Route path="/admin" element={<AdminLayout />}>
                 <Route index element={<AdminHome />} />
+                <Route path="recherche" element={<AdminRecherche />} />
                 <Route path="hadiths" element={<AdminHadithsList />} />
                 <Route path="hadiths/nouveau" element={<AdminHadithForm />} />
                 <Route path="hadiths/:id" element={<AdminHadithForm />} />

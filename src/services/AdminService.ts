@@ -244,7 +244,15 @@ class AdminService {
     const { error } = await supabase.rpc('admin_delete_entry', { p: { kind, id: String(id), force } });
     if (error) throw error;
   }
+
+  // ---- Recherche d'occurrences → correction (tout mot, toutes rubriques) ----
+  async searchOccurrences(q: string, limit = 150): Promise<OccurrenceHit[]> {
+    const { data, error } = await supabase.rpc('admin_search_occurrences', { q, p_limit: limit });
+    if (error) throw error; return (data ?? []) as OccurrenceHit[];
+  }
 }
+
+export interface OccurrenceHit { kind: string; ref: string; label: string | null; extrait: string | null; path: string; }
 
 export interface ParoleImageInput { image_url: string; alt: string; legende?: string | null; source_livre?: string | null; ordre?: number | null; }
 export interface ParoleFormData {

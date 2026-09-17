@@ -210,3 +210,16 @@ $$;
 -- recits_all : n'expose que les parents (parent_recit_id IS NULL) + nb_enfants.
 -- get_recit : ajoute enfants[] (« Ses récits »). Admin : sélecteur de récit
 -- parent (créer un parent = laisser vide ; rattacher = choisir le parent).
+
+-- ─────────────────────────────────────────────────────────────────────────
+-- Admin — Recherche d'occurrences → correction directe
+-- ─────────────────────────────────────────────────────────────────────────
+-- Migration : admin_search_occurrences.
+-- admin_search_occurrences(q, limit) SECURITY DEFINER, is_admin() : balaie les
+--   textes de TOUTES les rubriques (hadiths, paroles, coran, invocations,
+--   équivoques, dossiers, exposés, récits, fiqh, femmes, savants, blocs
+--   d'article) en insensible casse+accents, renvoie {kind, ref, label, extrait,
+--   path admin}. Sert à homogénéiser les graphies (« Al-Boukhari » vs
+--   « Al-Bukhari »). admin_snip = extrait centré sur l'occurrence.
+-- UI : page /admin/recherche (surlignage, lien vers le formulaire d'édition) +
+--   entrée « Recherche & correction » dans le menu admin.
