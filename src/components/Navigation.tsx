@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { m, AnimatePresence } from 'framer-motion';
-import { Moon, Sun, Menu, X, ChevronDown } from 'lucide-react';
+import { Moon, Sun, Menu, X, ChevronDown, Search } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 import { InstallPWA } from './InstallPWA';
 import moment from 'moment-hijri';
@@ -157,6 +157,14 @@ export const Navigation: React.FC = () => {
             </div>
 
             <div className="hidden min-[1360px]:block"><InstallPWA /></div>
+
+            <Link
+              to="/recherche"
+              aria-label="Rechercher sur le site"
+              className="w-9 h-9 grid place-items-center rounded-lg border border-line bg-ivory text-muted hover:text-green-deep hover:border-green transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green"
+            >
+              <Search className="w-5 h-5" />
+            </Link>
 
             <button
               onClick={toggleTheme}

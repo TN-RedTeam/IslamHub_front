@@ -636,3 +636,14 @@ export interface RelatedItem {
   savant: string | null;
   sourate: string | null;
 }
+
+// ————— Recherche globale (Phase 4.4) —————
+export interface SearchHit {
+  id: number; slug?: string | null; sujet: string | null; extrait?: string | null;
+  savant?: string | null; sourate?: string | null; type_id?: number;
+}
+export interface SearchThemeHit { slug: string; nom: string; famille: string; }
+export interface SearchResults {
+  hadiths: SearchHit[]; paroles: SearchHit[]; invocations: SearchHit[];
+  versets: SearchHit[]; themes: SearchThemeHit[];
+}

@@ -179,3 +179,13 @@ $$;
 --   verset) partageant au moins un thème avec l'entrée, dédupliqués. UI :
 --   composant RelatedByTheme sur les fiches Hadith et Parole (« Sur le même
 --   thème »). Plus aucune sélection manuelle.
+
+-- ─────────────────────────────────────────────────────────────────────────
+-- Phase 4.4 — Recherche globale unifiée
+-- ─────────────────────────────────────────────────────────────────────────
+-- Migration : phase4_search_all.
+-- search_all(q, limit) [public] : FTS français (to_tsvector/websearch_to_tsquery
+--   + ts_rank) avec repli unaccent+ilike (translittération), sur hadiths,
+--   paroles, invocations, versets (coran) et thèmes. Résultats groupés.
+-- UI : page /recherche (débouncée, ?q= dans l'URL) + icône loupe dans la nav.
+-- (Exposés exclus : pas de route publique générique → à traiter en 4.5.)

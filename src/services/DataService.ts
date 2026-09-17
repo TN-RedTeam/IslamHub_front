@@ -34,6 +34,7 @@ import type {
   PaginationParams,
   Bloc,
   RelatedItem,
+  SearchResults,
 } from '../types';
 
 // ============================================================
@@ -305,6 +306,14 @@ class DataService {
     const { data, error } = await supabase.rpc('related_by_theme', { p_kind: kind, p_id: id, p_limit: limit });
     if (error) throw error;
     return (data ?? []) as RelatedItem[];
+  }
+
+  /** Recherche globale unifiée (Phase 4.4). */
+  async searchAll(q: string, limit = 8): Promise<SearchResults> {
+    const { data, error } = await supabase.rpc('search_all', { q, p_limit: limit });
+    if (error) throw error;
+    const d = (data ?? {}) as Partial<SearchResults>;
+    return { hadiths: d.hadiths ?? [], paroles: d.paroles ?? [], invocations: d.invocations ?? [], versets: d.versets ?? [], themes: d.themes ?? [] };
   }
 
   // ================= Paroles =================
