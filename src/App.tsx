@@ -18,6 +18,7 @@ import { Multimedia } from './pages/Multimedia';
 import { ThemesIndex } from './pages/ThemesIndex';
 import { ThemePage } from './pages/ThemePage';
 import { Recherche } from './pages/Recherche';
+import { ExposePage } from './pages/ExposePage';
 import { Recits } from './pages/Recits';
 import { RecitPage } from './pages/RecitPage';
 import { Femmes } from './pages/Femmes';
@@ -91,6 +92,7 @@ function PublicShell() {
                 <Route path="/coran/sourates" element={<SouratesIndex />} />
                 <Route path="/coran/sourates/:slug" element={<SouratePage />} />
                 <Route path="/recherche" element={<Recherche />} />
+                <Route path="/exposes/:slug" element={<ExposePage />} />
                 <Route path="/hadiths" element={<Hadiths />} />
                 <Route path="/hadiths/:id/:slug" element={<HadithPage />} />
                 {/* Rubrique unifiée Invocations & Évocations (ex-douaas + ex-dhikrs) */}
