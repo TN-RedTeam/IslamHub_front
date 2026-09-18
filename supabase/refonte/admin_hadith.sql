@@ -419,3 +419,7 @@ $$;
 --   désormais un hadith pour tout hadith équivoque sans hadith_id (symétrie avec
 --   admin_save_hadith.is_equivoque). Résultat : quel que soit le point d'entrée
 --   (Hadiths ou Équivoques), le hadith équivoque apparaît dans les deux rubriques.
+
+-- Data : tag des 5 hadiths équivoques standardisé — ajout de « équivoque » et
+--   « interprétation » (fusion non destructive, tags existants conservés),
+--   thèmes re-déduits.
