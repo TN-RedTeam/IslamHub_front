@@ -369,3 +369,15 @@ $$;
 --   Prophète ﷺ » (en premier, cartes à accent or, badges Calife bien-guidé /
 --   Mère des croyants / Compagnon) puis « Les Savants ». Les fiches sans
 --   biographie restent accessibles.
+
+-- ─────────────────────────────────────────────────────────────────────────
+-- Admin — champ « Rôle honorifique » sur la fiche savant
+-- ─────────────────────────────────────────────────────────────────────────
+-- Migrations admin_savant_role + savants_is_compagnon_role :
+--   • admin_get_savant renvoie role ; admin_save_savant accepte role (validé
+--     dans calife_rachidoun | epouse_prophete, sinon null).
+--   • is_compagnon (savants_all / savant_by_slug) devient vrai dès qu'un role est
+--     posé — un Compagnon non-narrateur apparaît ainsi pour sa biographie en
+--     mettant génération « Compagnon » et/ou un rôle.
+-- Front : formulaire savant, section « Repères », sélecteur Rôle honorifique
+--   (— aucun / Calife bien-guidé / Mère des croyants).
