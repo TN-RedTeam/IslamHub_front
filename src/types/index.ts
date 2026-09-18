@@ -98,6 +98,7 @@ export interface ParoleDetail {
   generation: string | null;     // badge de génération
   rapporteur?: { nom: string; slug: string } | null;   // autre savant qui la rapporte
   commente?: { sujet: string; slug: string } | null;   // parole commentée par celle-ci
+  commente_livre?: string | null; // livre commenté par cette parole (texte libre)
   images: ParoleImage[];         // 0..N scans du livre (table parole_images)
   themes?: ThemeRef[];           // thèmes transverses (puces)
 }
@@ -222,6 +223,7 @@ export interface HadithDetail {
   recueils: string | null;
   sources?: HadithSource[];   // source structurée (groupée par rapporteur)
   themes?: ThemeRef[];        // thèmes transverses (puces)
+  equivoque?: { slug: string; id: number } | null; // fiche « équivoque » liée (si publiée)
 }
 
 /** Infos légères d'un savant (mini-bio au survol). */

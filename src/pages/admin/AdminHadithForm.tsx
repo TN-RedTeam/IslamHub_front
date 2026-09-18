@@ -108,6 +108,8 @@ export const AdminHadithForm: React.FC = () => {
   const [newNarr, setNewNarr] = useState({ nom: '', generation: 'sahabi', role: '', sexe: 'm' });
   const [sources, setSources] = useState<Src[]>([emptySrc()]);
   const [derived, setDerived] = useState<ThemeRef[]>([]);
+  const [isEquivoque, setIsEquivoque] = useState(false);
+  const [equivoqueId, setEquivoqueId] = useState<number | null>(null);
 
   useEffect(() => {
     Promise.all([adminService.listNarrateurs(), adminService.listRecueils(), adminService.listSavants()])
@@ -127,6 +129,8 @@ export const AdminHadithForm: React.FC = () => {
       });
       setRapporteurIds(h.rapporteur_ids ?? []);
       setNarrateurIds(h.narrateur_ids ?? []);
+      setIsEquivoque(!!h.is_equivoque);
+      setEquivoqueId(h.equivoque_id ?? null);
       setSources(h.sources.length ? h.sources.map((s) => ({ ...emptySrc(), recueil_id: String(s.recueil_id), numero: s.numero ?? '', chapitre: s.chapitre ?? '' })) : [emptySrc()]);
     }).catch(() => setError("Hadith introuvable."));
   }, [editId]);
@@ -148,6 +152,7 @@ export const AdminHadithForm: React.FC = () => {
     ...f,
     rapporteur_ids: rapporteurIds,
     narrateur_ids: narrateurIds,
+    is_equivoque: isEquivoque,
     new_narrateur: addingNarr && newNarr.nom.trim() ? newNarr : null,
     sources: sources.map<HadithSourceInput>((s) => s.recueil_id === NEW
       ? { new_recueil: { titre: s.new_titre.trim(), savant_id: s.new_savant ? Number(s.new_savant) : null }, numero: s.numero || null, chapitre: s.chapitre || null }
@@ -163,6 +168,7 @@ export const AdminHadithForm: React.FC = () => {
       if (andNew) {
         setF({ sujet: '', texte_arabe: '', texte_francais: '', phonetique: '', explication: '', degre_authenticite: 'Sahih', type_hadith: '', juge_par: '', tag: '' });
         setRapporteurIds([]); setNarrateurIds([]); setAddingNarr(false); setNewNarr({ nom: '', generation: 'sahabi', role: '', sexe: 'm' });
+        setIsEquivoque(false); setEquivoqueId(null);
         setSources([emptySrc()]); setTimeout(() => setOk(false), 2500);
       } else {
         navigate(`/admin/hadiths/${newId}`, { replace: true });
@@ -285,6 +291,24 @@ export const AdminHadithForm: React.FC = () => {
             <div className="flex flex-wrap gap-1.5 mt-2">{derived.map((t) => <span key={t.slug} className="text-xs bg-gold-soft text-[#7a5a17] border border-[#e6d3a3] rounded-full px-2.5 py-0.5">{t.nom}</span>)}</div>
           )}
         </div>
+      </section>
+
+      {/* 6. Texte équivoque */}
+      <section className="rounded-card border border-line bg-surface p-5 mb-4">
+        <h2 className="font-display font-semibold text-green-deep text-lg mb-1">6 · Texte équivoque</h2>
+        <p className="text-xs text-muted mb-3.5">Coche si ce hadith prête à confusion sur Allah&nbsp;: il apparaîtra <b>aussi</b> dans « Versets et hadiths équivoques », où tu saisis les arguments (sens juste, objection, réponse, blocs). Ces arguments seront alors visibles depuis la fiche du hadith.</p>
+        <label className="flex items-center gap-2.5 cursor-pointer">
+          <input type="checkbox" checked={isEquivoque} onChange={(e) => setIsEquivoque(e.target.checked)} className="w-4 h-4 accent-green" />
+          <span className="text-[15px] text-ink font-medium">Ce hadith est équivoque</span>
+        </label>
+        {isEquivoque && editId && equivoqueId && (
+          <Link to={`/admin/equivoques/${equivoqueId}`} className="mt-3 inline-flex items-center gap-1.5 rounded-lg border border-green-line bg-green-soft text-green-deep font-semibold px-3.5 py-2 text-sm hover:border-green transition-colors">
+            Ajouter / éditer les arguments dans Équivoques →
+          </Link>
+        )}
+        {isEquivoque && editId && !equivoqueId && (
+          <p className="text-xs text-muted mt-3">Enregistre pour créer la fiche équivoque liée, puis reviens ici pour saisir les arguments.</p>
+        )}
       </section>
 
       {/* Barre d'enregistrement */}

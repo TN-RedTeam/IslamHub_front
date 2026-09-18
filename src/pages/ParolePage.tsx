@@ -77,7 +77,7 @@ export const ParolePage: React.FC = () => {
           {p.ecole && <EcoleBadge ecole={p.ecole} />}
         </div>
 
-        {(p.rapporteur || p.commente) && (
+        {(p.rapporteur || p.commente || p.commente_livre) && (
           <div className="mt-2 text-sm text-muted flex flex-col gap-0.5">
             {p.rapporteur && (
               <span>Rapporté par{' '}
@@ -88,6 +88,9 @@ export const ParolePage: React.FC = () => {
               <span>Commente une parole&nbsp;:{' '}
                 <Link to={`/paroles/${p.commente.slug}`} className="text-green font-medium hover:underline">{p.commente.sujet} →</Link>
               </span>
+            )}
+            {p.commente_livre && (
+              <span>Commente le livre&nbsp;: <span className="text-green-deep font-medium">{p.commente_livre}</span></span>
             )}
           </div>
         )}
