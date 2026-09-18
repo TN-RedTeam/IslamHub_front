@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { createPortal } from 'react-dom';
 import { useNavigate } from 'react-router-dom';
 import { Trash2, AlertTriangle, Loader2, X } from 'lucide-react';
 import { adminService, type DeletableKind, type EntryDeps } from '../../services/AdminService';
@@ -56,8 +57,8 @@ export const DeleteEntryButton: React.FC<{
     );
   }
 
-  return (
-    <div className="fixed inset-0 z-50 grid place-items-center bg-black/40 px-4" role="dialog" aria-modal="true" aria-label="Confirmer la suppression">
+  return createPortal(
+    <div className="fixed inset-0 z-[100] grid place-items-center bg-black/40 px-4" role="dialog" aria-modal="true" aria-label="Confirmer la suppression">
       <div className="w-full max-w-md rounded-card border border-line bg-surface shadow-card-hover p-5">
         <div className="flex items-start gap-2.5 mb-3">
           <span className="w-9 h-9 rounded-full bg-red-50 text-red-600 grid place-items-center shrink-0"><AlertTriangle className="w-5 h-5" /></span>
@@ -96,7 +97,8 @@ export const DeleteEntryButton: React.FC<{
           </button>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 };
 
