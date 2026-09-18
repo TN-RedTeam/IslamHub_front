@@ -18,6 +18,7 @@ const mainItems = [
 // Regroupées sous le menu déroulant « Ressources ».
 const resItems = [
   { to: '/themes', label: 'Thèmes' },
+  { to: '/dossiers', label: 'Dossiers thématiques' },
   { to: '/ecoles', label: 'Écoles' },
   { to: '/recits', label: 'Récits' },
   { to: '/multimedia', label: 'Multimédia' },

@@ -35,6 +35,7 @@ import type {
   Bloc,
   RelatedItem,
   SearchResults,
+  DossierListItem,
 } from '../types';
 
 // ============================================================
@@ -409,6 +410,12 @@ class DataService {
   }
 
   // ================= Dossiers thématiques =================
+  /** Liste des dossiers thématiques publiés (index + page Croyance). */
+  async getDossiers(): Promise<DossierListItem[]> {
+    const { data, error } = await supabase.rpc('dossiers_all');
+    if (error) throw error;
+    return (data ?? []) as DossierListItem[];
+  }
   async getDossier(slug: string): Promise<DossierData | null> {
     const { data, error } = await supabase.rpc('get_dossier', { dossier_slug: slug });
     if (error) throw error;
