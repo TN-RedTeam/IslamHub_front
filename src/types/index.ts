@@ -649,3 +649,6 @@ export interface SearchResults {
   hadiths: SearchHit[]; paroles: SearchHit[]; invocations: SearchHit[];
   versets: SearchHit[]; themes: SearchThemeHit[];
 }
+
+/** Élément d'index d'un dossier thématique (liste publique). */
+export interface DossierListItem { slug: string; h1: string; meta_description: string | null; }

@@ -236,3 +236,13 @@ $$;
 -- (triptyque + sommaire legacy masqués), sinon repli sur l'ancien rendu.
 -- Admin : note indiquant que la section 3 (ancien format) est ignorée dès
 -- qu'un article composable (section 8) existe.
+
+-- ─────────────────────────────────────────────────────────────────────────
+-- Nettoyage istiwā + bascule des dossiers vers les blocs
+-- ─────────────────────────────────────────────────────────────────────────
+-- Suppression de l'équivoque placeholder « istiwa-sur-le-trone » (démo non
+--   publiée, doublon du dossier « le-sens-de-l-istiwa ») via admin_delete_entry.
+-- Migration migrate_dossiers_to_blocs (idempotente, non destructive) : triptyque
+--   dossier (croyance / preuves / objection / réponse) → contenu_blocs.
+-- Page /dossiers/:slug : privilégie les blocs quand ils existent (repli legacy).
+-- Admin dossier : éditeur de blocs (section 7).

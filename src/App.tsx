@@ -33,6 +33,7 @@ import { ComprendreEquivoques } from './pages/croyance/ComprendreEquivoques';
 import { JugementRationnel } from './pages/croyance/JugementRationnel';
 import { NomsDAllah } from './pages/croyance/NomsDAllah';
 import { DossierThematique } from './pages/DossierThematique';
+import { DossiersIndex } from './pages/DossiersIndex';
 import { NotFound } from './pages/NotFound';
 import { AuthProvider } from './context/AuthContext';
 import { AdminLogin } from './pages/admin/AdminLogin';
@@ -130,6 +131,7 @@ function PublicShell() {
                 <Route path="/croyance/versets-equivoques/:slug" element={<OldVersetRedirect />} />
                 <Route path="/croyance/noms-d-allah" element={<NomsDAllah />} />
                 <Route path="/croyance/jugement-rationnel" element={<JugementRationnel />} />
+                <Route path="/dossiers" element={<DossiersIndex />} />
                 <Route path="/dossiers/:slug" element={<DossierThematique />} />
 
                 {/* Écoles (madhāhib) */}

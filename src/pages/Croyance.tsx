@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Layers } from 'lucide-react';
 import { Icon, type IconName } from '../components/Icon';
 import { usePageTitle } from '../hooks/usePageTitle';
+import { dataService } from '../services/DataService';
+import type { DossierListItem } from '../types';
 
 interface Card { to: string; title: string; desc: string; icon: IconName; }
 
@@ -35,6 +37,8 @@ const CARDS: Card[] = [
 
 export const Croyance: React.FC = () => {
   usePageTitle('Croyance');
+  const [dossiers, setDossiers] = useState<DossierListItem[]>([]);
+  useEffect(() => { dataService.getDossiers().then(setDossiers).catch(() => setDossiers([])); }, []);
 
   return (
     <div className="min-h-screen bg-ground">
@@ -93,6 +97,29 @@ export const Croyance: React.FC = () => {
             </Link>
           ))}
         </div>
+
+        {/* Dossiers thématiques (dynamique) */}
+        {dossiers.length > 0 && (
+          <section className="mt-10">
+            <h2 className="font-display font-semibold text-green-deep text-2xl mb-1.5">Dossiers thématiques</h2>
+            <p className="text-muted text-[14.5px] mb-4 max-w-[62ch]">Des questions de croyance approfondies, exposées avec leurs preuves.</p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {dossiers.map((d) => (
+                <Link
+                  key={d.slug}
+                  to={`/dossiers/${d.slug}`}
+                  className="group flex flex-col gap-2 rounded-card border border-line bg-surface p-5 shadow-card hover:shadow-card-hover hover:-translate-y-0.5 hover:border-green transition-all motion-reduce:transition-none motion-reduce:hover:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green"
+                >
+                  <span className="w-11 h-11 rounded-[11px] bg-green-soft text-green grid place-items-center"><Layers className="w-[22px] h-[22px]" /></span>
+                  <h3 className="font-display font-semibold text-green-deep text-xl">{d.h1}</h3>
+                  {d.meta_description && <p className="text-[14.5px] text-ink/80 line-clamp-2">{d.meta_description}</p>}
+                  <span className="mt-auto pt-1.5 inline-flex items-center gap-1.5 font-semibold text-green text-[13.5px] group-hover:gap-2.5 transition-all motion-reduce:transition-none">Ouvrir <ArrowRight className="w-4 h-4" /></span>
+                </Link>
+              ))}
+            </div>
+            <p className="mt-3.5"><Link to="/dossiers" className="text-green font-semibold text-sm hover:underline">Tous les dossiers →</Link></p>
+          </section>
+        )}
 
         {/* Ornement de fin : parenthèses coraniques ornées (Amiri), discret et doré. */}
         <div className="flex items-center justify-center gap-3 mt-10 text-gold" aria-hidden="true">
