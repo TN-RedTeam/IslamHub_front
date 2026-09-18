@@ -3,11 +3,12 @@ import { DeleteEntryButton } from '../../components/admin/DeleteEntryButton';
 import { useNavigate, useParams, Link } from 'react-router-dom';
 import { Loader2, Check, AlertTriangle } from 'lucide-react';
 import { adminService, type CoranFormData } from '../../services/AdminService';
+import { AR_TEMPLATE, caretBetween } from '../../utils/arabicTemplate';
 import type { ThemeRef } from '../../types';
 
 const label = 'block text-[13px] font-semibold text-ink mb-1.5';
 const field = 'w-full rounded-lg border border-line bg-surface px-3 py-2.5 text-[15px] text-ink focus:outline-none focus:ring-2 focus:ring-green';
-const blank = { sujet: '', sourate: '', texte_arabe: '', texte_francais: '', phonetique: '', explication: '', tag: '' };
+const blank = { sujet: '', sourate: '', texte_arabe: AR_TEMPLATE.coran, texte_francais: '', phonetique: '', explication: '', tag: '' };
 
 export const AdminCoranForm: React.FC = () => {
   const { id } = useParams();
@@ -67,7 +68,7 @@ export const AdminCoranForm: React.FC = () => {
         <h2 className="font-display font-semibold text-green-deep text-lg mb-4">1 · Le verset</h2>
         <div className="mb-3.5"><label className={label}>Sujet <span className="text-red-600">*</span></label><input className={field} value={f.sujet} onChange={set('sujet')} placeholder="Ex. L’unicité d’Allah" /></div>
         <div className="mb-3.5"><label className={label}>Texte arabe <span className="text-red-600">*</span></label>
-          <textarea dir="rtl" lang="ar" className={`${field} font-arabic text-2xl leading-loose text-right min-h-[90px]`} value={f.texte_arabe} onChange={set('texte_arabe')} placeholder="Colle ici le verset (vocalisé)…" /></div>
+          <textarea dir="rtl" lang="ar" className={`${field} font-arabic text-2xl leading-loose text-right min-h-[90px]`} value={f.texte_arabe} onChange={set('texte_arabe')} onFocus={caretBetween(AR_TEMPLATE.coran)} placeholder="Colle ici le verset (vocalisé)…" /></div>
         <div className="grid sm:grid-cols-2 gap-3.5">
           <div><label className={label}>Phonétique</label><input className={field} value={f.phonetique} onChange={set('phonetique')} /></div>
           <div><label className={label}>Traduction française</label><input className={field} value={f.texte_francais} onChange={set('texte_francais')} /></div>

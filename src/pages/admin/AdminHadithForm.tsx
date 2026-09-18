@@ -3,6 +3,7 @@ import { DeleteEntryButton } from '../../components/admin/DeleteEntryButton';
 import { useNavigate, useParams, Link } from 'react-router-dom';
 import { Loader2, Plus, Trash2, Check, AlertTriangle, X } from 'lucide-react';
 import { adminService, type NarrateurRow, type RecueilRow, type SavantRow, type HadithFormData, type HadithSourceInput } from '../../services/AdminService';
+import { AR_TEMPLATE, caretBetween } from '../../utils/arabicTemplate';
 import type { ThemeRef } from '../../types';
 
 const DEGRES = ['Sahih', 'Hassan', "Da'if"];
@@ -95,7 +96,7 @@ export const AdminHadithForm: React.FC = () => {
 
   // Champs
   const [f, setF] = useState({
-    sujet: '', texte_arabe: '', texte_francais: '', phonetique: '', explication: '',
+    sujet: '', texte_arabe: AR_TEMPLATE.hadith, texte_francais: '', phonetique: '', explication: '',
     degre_authenticite: 'Sahih', type_hadith: '', juge_par: '', tag: '',
   });
   const set = (k: keyof typeof f) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) =>
@@ -166,7 +167,7 @@ export const AdminHadithForm: React.FC = () => {
       const newId = await adminService.saveHadith(buildPayload());
       setOk(true);
       if (andNew) {
-        setF({ sujet: '', texte_arabe: '', texte_francais: '', phonetique: '', explication: '', degre_authenticite: 'Sahih', type_hadith: '', juge_par: '', tag: '' });
+        setF({ sujet: '', texte_arabe: AR_TEMPLATE.hadith, texte_francais: '', phonetique: '', explication: '', degre_authenticite: 'Sahih', type_hadith: '', juge_par: '', tag: '' });
         setRapporteurIds([]); setNarrateurIds([]); setAddingNarr(false); setNewNarr({ nom: '', generation: 'sahabi', role: '', sexe: 'm' });
         setIsEquivoque(false); setEquivoqueId(null);
         setSources([emptySrc()]); setTimeout(() => setOk(false), 2500);
@@ -193,7 +194,7 @@ export const AdminHadithForm: React.FC = () => {
         <h2 className="font-display font-semibold text-green-deep text-lg mb-4">1 · Le texte</h2>
         <div className="mb-3.5"><label className={label}>Sujet <span className="text-red-600">*</span></label><input className={field} value={f.sujet} onChange={set('sujet')} placeholder="Ex. Allah existe sans endroit" /></div>
         <div className="mb-3.5"><label className={label}>Texte arabe <span className="text-red-600">*</span></label>
-          <textarea dir="rtl" lang="ar" className={`${field} font-arabic text-2xl leading-loose text-right min-h-[90px]`} value={f.texte_arabe} onChange={set('texte_arabe')} placeholder="Colle ici le texte arabe (vocalisé)…" />
+          <textarea dir="rtl" lang="ar" className={`${field} font-arabic text-2xl leading-loose text-right min-h-[90px]`} value={f.texte_arabe} onChange={set('texte_arabe')} onFocus={caretBetween(AR_TEMPLATE.hadith)} placeholder="Colle ici le texte arabe (vocalisé)…" />
           <p className="text-xs text-muted mt-1">Unicité vérifiée automatiquement (pas de doublon).</p>
         </div>
         <div className="grid sm:grid-cols-2 gap-3.5">

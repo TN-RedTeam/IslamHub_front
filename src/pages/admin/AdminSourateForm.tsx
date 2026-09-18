@@ -3,6 +3,7 @@ import { DeleteEntryButton } from '../../components/admin/DeleteEntryButton';
 import { useNavigate, useParams, Link } from 'react-router-dom';
 import { Loader2, Plus, Trash2, Check, AlertTriangle, ArrowUp, ArrowDown } from 'lucide-react';
 import { adminService, type SourateFormData, type VersetInput, type ExegeseInput } from '../../services/AdminService';
+import { AR_TEMPLATE, caretBetween } from '../../utils/arabicTemplate';
 import { slugify } from '../../utils/slug';
 
 const label = 'block text-[13px] font-semibold text-ink mb-1.5';
@@ -12,7 +13,7 @@ const rid = () => Math.random().toString(36).slice(2);
 type Exeg = { key: string; texte: string; source: string };
 type Verset = { key: string; numero: string; texte_arabe: string; texte_francais: string; phonetique: string; exegeses: Exeg[] };
 const emptyExeg = (): Exeg => ({ key: rid(), texte: '', source: '' });
-const emptyVerset = (numero = ''): Verset => ({ key: rid(), numero, texte_arabe: '', texte_francais: '', phonetique: '', exegeses: [] });
+const emptyVerset = (numero = ''): Verset => ({ key: rid(), numero, texte_arabe: AR_TEMPLATE.coran, texte_francais: '', phonetique: '', exegeses: [] });
 const blank = { numero: '', nom: '', nom_arabe: '', slug: '', revelation: '', nb_versets: '' };
 
 const move = <T,>(a: T[], i: number, dir: -1 | 1): T[] => {
@@ -131,7 +132,7 @@ export const AdminSourateForm: React.FC = () => {
             </div>
             <div className="grid sm:grid-cols-[90px_1fr] gap-2.5">
               <div><label className={label}>N° <span className="text-red-600">*</span></label><input className={field} type="number" value={v.numero} onChange={(e) => patchVerset(vi, { numero: e.target.value })} /></div>
-              <div><label className={label}>Texte arabe</label><textarea dir="rtl" lang="ar" className={`${field} font-arabic text-xl leading-loose text-right min-h-[64px]`} value={v.texte_arabe} onChange={(e) => patchVerset(vi, { texte_arabe: e.target.value })} /></div>
+              <div><label className={label}>Texte arabe</label><textarea dir="rtl" lang="ar" className={`${field} font-arabic text-xl leading-loose text-right min-h-[64px]`} value={v.texte_arabe} onChange={(e) => patchVerset(vi, { texte_arabe: e.target.value })} onFocus={caretBetween(AR_TEMPLATE.coran)} /></div>
             </div>
             <div className="grid sm:grid-cols-2 gap-2.5 mt-2.5">
               <div><label className={label}>Traduction</label><input className={field} value={v.texte_francais} onChange={(e) => patchVerset(vi, { texte_francais: e.target.value })} /></div>
