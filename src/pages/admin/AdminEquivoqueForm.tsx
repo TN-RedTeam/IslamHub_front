@@ -3,6 +3,7 @@ import { DeleteEntryButton } from '../../components/admin/DeleteEntryButton';
 import { useNavigate, useParams, Link } from 'react-router-dom';
 import { Loader2, Plus, Trash2, Check, AlertTriangle, ArrowUp, ArrowDown } from 'lucide-react';
 import { BlocEditor } from '../../components/admin/BlocEditor';
+import { TagPicker } from '../../components/admin/TagPicker';
 import {
   adminService,
   type VersetFormData, type VersetType, type PreuveType,
@@ -22,8 +23,12 @@ const blankForm = {
   type: 'verset' as VersetType, theme: '', sourate: '', sourate_num: '', ayah: '',
   verset_arabe: '', verset_traduction: '', verset_phonetique: '',
   sens_juste: '', objection: '', reponse: '',
-  rapporteur: '', recueil: '', numero: '', slug: '', published: false,
+  recueil: '', numero: '', slug: '', published: false,
 };
+
+// Le champ texte `rapporteur` stocke un ou plusieurs noms séparés par une virgule.
+const splitRapporteurs = (s: string | null | undefined) =>
+  (s ?? '').split(',').map((x) => x.trim()).filter(Boolean);
 
 export const AdminEquivoqueForm: React.FC = () => {
   const { id } = useParams();
@@ -42,6 +47,8 @@ export const AdminEquivoqueForm: React.FC = () => {
   const [images, setImages] = useState<Img[]>([]);
   const [lies, setLies] = useState<number[]>([]);
   const [lieToAdd, setLieToAdd] = useState('');
+  const [rapporteurs, setRapporteurs] = useState<string[]>([]);
+  const [savantNames, setSavantNames] = useState<string[]>([]);
 
   useEffect(() => {
     adminService.listVersetRefs()
@@ -49,6 +56,11 @@ export const AdminEquivoqueForm: React.FC = () => {
       .catch(() => setError('Impossible de charger les listes (hadiths / paroles).'))
       .finally(() => { if (!editId) setLoading(false); });
   }, [editId]);
+
+  // Noms de savants → suggestions pour le sélecteur de rapporteurs (graphies homogènes).
+  useEffect(() => {
+    adminService.listSavants().then((s) => setSavantNames(s.map((x) => x.nom))).catch(() => {});
+  }, []);
 
   useEffect(() => {
     if (!editId) return;
@@ -60,8 +72,9 @@ export const AdminEquivoqueForm: React.FC = () => {
         ayah: v.ayah != null ? String(v.ayah) : '',
         verset_arabe: v.verset_arabe ?? '', verset_traduction: v.verset_traduction ?? '', verset_phonetique: v.verset_phonetique ?? '',
         sens_juste: v.sens_juste ?? '', objection: v.objection ?? '', reponse: v.reponse ?? '',
-        rapporteur: v.rapporteur ?? '', recueil: v.recueil ?? '', numero: v.numero ?? '', slug: v.slug ?? '', published: !!v.published,
+        recueil: v.recueil ?? '', numero: v.numero ?? '', slug: v.slug ?? '', published: !!v.published,
       });
+      setRapporteurs(splitRapporteurs(v.rapporteur));
       setPreuves(v.preuves.map((p) => ({ key: rid(), type: p.type, ref_id: p.ref_id != null ? String(p.ref_id) : '', contenu_libre: p.contenu_libre ?? '' })));
       setImages(v.images.map((im) => ({ ...emptyImg(), image_url: im.image_url ?? '', alt: im.alt ?? '', legende: im.legende ?? '', source_livre: im.source_livre ?? '' })));
       setLies(v.lies ?? []);
@@ -89,7 +102,7 @@ export const AdminEquivoqueForm: React.FC = () => {
     ayah: isHadith ? '' : f.ayah,
     verset_arabe: f.verset_arabe, verset_traduction: f.verset_traduction, verset_phonetique: f.verset_phonetique,
     sens_juste: f.sens_juste, objection: f.objection, reponse: f.reponse,
-    rapporteur: isHadith ? f.rapporteur : '', recueil: isHadith ? f.recueil : '', numero: isHadith ? f.numero : '',
+    rapporteur: isHadith ? rapporteurs.join(', ') : '', recueil: isHadith ? f.recueil : '', numero: isHadith ? f.numero : '',
     published: f.published,
     preuves: preuves
       .filter((p) => (p.type === 'coran' ? p.contenu_libre.trim() : p.ref_id))
@@ -111,7 +124,7 @@ export const AdminEquivoqueForm: React.FC = () => {
       const newId = await adminService.saveVerset(buildPayload());
       setOk(true);
       if (andNew) {
-        setF(blankForm); setPreuves([]); setImages([]); setLies([]); setLieToAdd('');
+        setF(blankForm); setPreuves([]); setImages([]); setLies([]); setLieToAdd(''); setRapporteurs([]);
         window.scrollTo({ top: 0 }); setTimeout(() => setOk(false), 2500);
       } else { navigate(`/admin/equivoques/${newId}`, { replace: true }); setTimeout(() => setOk(false), 2500); }
     } catch (e) {
@@ -156,7 +169,7 @@ export const AdminEquivoqueForm: React.FC = () => {
 
         {isHadith ? (
           <div className="grid sm:grid-cols-3 gap-3.5 mt-3.5">
-            <div><label className={label}>Rapporteur</label><input className={field} value={f.rapporteur} onChange={set('rapporteur')} placeholder="Al-Bukhārī…" /></div>
+            <div><label className={label}>Rapporteur(s)</label><TagPicker suggestions={savantNames} value={rapporteurs} onChange={setRapporteurs} placeholder="Al-Bukhārī…" /></div>
             <div><label className={label}>Recueil</label><input className={field} value={f.recueil} onChange={set('recueil')} placeholder="Ṣaḥīḥ al-Bukhārī" /></div>
             <div><label className={label}>Numéro</label><input className={field} value={f.numero} onChange={set('numero')} placeholder="7405" /></div>
           </div>
