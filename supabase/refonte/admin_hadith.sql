@@ -303,3 +303,21 @@ $$;
 --   « or normalize_ar(texte_arabe) ilike '%'||normalize_ar(q)||'%' ».
 --   Toutes les barres de recherche admin retrouvent désormais un texte arabe
 --   quelle que soit sa vocalisation (harakât, hamza). Aucun changement front.
+
+-- ─────────────────────────────────────────────────────────────────────────
+-- Compagnons (narrateurs) → présents aussi dans la table savants
+-- ─────────────────────────────────────────────────────────────────────────
+-- Besoin : les compagnons présents uniquement dans `narrateurs` doivent
+--   exister comme fiches `savants` (liste admin, sélection comme rapporteur…).
+-- Migration : narrateurs_sync_to_savants.
+--   • Fonction sync_narrateur_to_savant() + trigger trg_sync_narrateur_to_savant
+--     AFTER INSERT OR UPDATE OF nom, generation ON narrateurs :
+--     crée la fiche savant (generation 'sahabi', domaines {Compagnon}, slug
+--     unique dérivé du nom) si absente ; répercute un renommage (si le nouveau
+--     nom est libre). NON destructif : aucune suppression automatique.
+--   • Backfill des compagnons existants absents de savants (40 fiches créées).
+-- Affichage : la liste admin (lecture directe de la table) les montre aussitôt ;
+--   la page publique savants_all() ne liste que les savants AVEC biographie, donc
+--   ces fiches n'apparaissent en public qu'une fois une bio saisie.
+-- NB data : `narrateurs` contient un doublon interne (Abou Saʿid al-Khudri, ids
+--   8 et 14, graphies différentes) — à fusionner manuellement si souhaité.
