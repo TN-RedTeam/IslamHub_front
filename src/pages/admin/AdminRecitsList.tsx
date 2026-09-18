@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Loader2, Plus } from 'lucide-react';
 import { adminRecits, type RecitRow } from '../../services/AdminService';
+import { CountBadge } from '../../components/admin/AdminListUI';
 
 const CAT: Record<string, string> = { prophetes: 'Histoires des Prophètes', vertueux: 'Vies des vertueux', 'histoires du passe': 'Histoires du passé' };
 
@@ -14,6 +15,7 @@ export const AdminRecitsList: React.FC = () => {
     <div className="max-w-4xl px-6 py-8">
       <div className="flex items-center gap-3 flex-wrap mb-5">
         <h1 className="font-display font-semibold text-green-deep text-3xl">Récits</h1>
+        <CountBadge n={loading ? null : items.length} />
         <Link to="/admin/recits/nouveau" className="ml-auto inline-flex items-center gap-1.5 rounded-lg bg-green text-white font-semibold px-4 py-2 hover:bg-green-deep transition-colors"><Plus className="w-4 h-4" /> Nouveau récit</Link>
       </div>
       {loading ? <div className="flex justify-center py-16"><Loader2 className="w-8 h-8 text-green animate-spin" /></div>
