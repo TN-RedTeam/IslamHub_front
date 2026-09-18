@@ -4,9 +4,10 @@ import { m } from 'framer-motion';
 import { Loader, Copy, Check, Share2, Star, BookOpen, ArrowLeft, Quote } from 'lucide-react';
 import { dataService } from '../services/DataService';
 import { Markdown } from '../components/Markdown';
+import { ArticleBlocs } from '../components/ArticleBlocs';
 import { useSeo } from '../hooks/useSeo';
 import { SavantHover } from '../components/SavantHover';
-import type { DossierData, DossierPreuve } from '../types';
+import type { DossierData, DossierPreuve, Bloc } from '../types';
 import { IconBadge } from '../components/Icon';
 
 const FAV_KEY = 'islamhub:favoris:dossiers';
@@ -38,6 +39,7 @@ const TYPE_LABEL: Record<DossierPreuve['type'], string> = {
 export const DossierThematique: React.FC = () => {
   const { slug = '' } = useParams();
   const [data, setData] = useState<DossierData | null>(null);
+  const [blocs, setBlocs] = useState<Bloc[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
@@ -50,9 +52,13 @@ export const DossierThematique: React.FC = () => {
 
   useEffect(() => {
     let alive = true;
-    setIsLoading(true); setError(null);
+    setIsLoading(true); setError(null); setBlocs([]);
     dataService.getDossier(slug)
-      .then((d) => { if (alive) { setData(d); setIsLoading(false); } })
+      .then((d) => {
+        if (!alive) return;
+        setData(d); setIsLoading(false);
+        if (d?.dossier?.id != null) dataService.getBlocs('dossier', d.dossier.id).then((bl) => { if (alive) setBlocs(bl); }).catch(() => {});
+      })
       .catch(() => { if (alive) { setError('Erreur lors du chargement du dossier.'); setIsLoading(false); } });
     return () => { alive = false; };
   }, [slug]);
@@ -162,6 +168,9 @@ export const DossierThematique: React.FC = () => {
           </button>
         </div>
 
+        {blocs.length > 0 ? (
+          <ArticleBlocs blocs={blocs} showToc />
+        ) : (<>
         {/* ① La croyance */}
         {dossier.croyance_texte && (
           <section className="bg-green-soft border border-line rounded-card p-6">
@@ -221,6 +230,7 @@ export const DossierThematique: React.FC = () => {
             <Markdown>{dossier.reponse_texte}</Markdown>
           </section>
         )}
+        </>)}
 
         {/* Images de pages de livres */}
         {images.length > 0 && (

@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
+import { BlocEditor } from '../../components/admin/BlocEditor';
 import { DeleteEntryButton } from '../../components/admin/DeleteEntryButton';
 import { useNavigate, useParams, Link } from 'react-router-dom';
 import { Loader2, Plus, Trash2, Check, AlertTriangle, ArrowUp, ArrowDown } from 'lucide-react';
@@ -189,6 +190,15 @@ export const AdminDossierForm: React.FC = () => {
           <input type="checkbox" checked={f.published} onChange={(e) => setF((p) => ({ ...p, published: e.target.checked }))} className="w-4 h-4 accent-green" />
           <span className="text-[15px] text-ink font-medium">Publié <span className="text-muted font-normal">— visible sur le site public</span></span>
         </label>
+      </section>
+
+      {/* 7. Article composable (blocs) — disponible une fois le dossier créé */}
+      <section className="rounded-card border border-line bg-surface p-5 mb-4">
+        <h2 className="font-display font-semibold text-green-deep text-lg mb-1">7 · Article composable <span className="text-muted font-normal text-sm">(blocs)</span></h2>
+        <p className="text-xs text-muted mb-4">Alternative aux sections 2-4 : compose le dossier en blocs. <b>Dès qu’un bloc existe, c’est cet article qui s’affiche</b> (croyance / preuves / objection / réponse ci-dessus sont alors ignorés).</p>
+        {editId
+          ? <BlocEditor parentType="dossier" parentId={editId} />
+          : <p className="text-sm text-muted italic">Enregistre d’abord le dossier, puis reviens ici pour composer l’article.</p>}
       </section>
 
       <div className="fixed bottom-0 left-0 md:left-[230px] right-0 flex items-center gap-3 px-6 py-3.5 bg-ivory/95 backdrop-blur border-t border-line">
