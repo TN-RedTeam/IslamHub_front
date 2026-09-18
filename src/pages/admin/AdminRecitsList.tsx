@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Loader2, Plus } from 'lucide-react';
 import { adminRecits, type RecitRow } from '../../services/AdminService';
-import { CountBadge } from '../../components/admin/AdminListUI';
+import { CountBadge, IdTag } from '../../components/admin/AdminListUI';
 
 const CAT: Record<string, string> = { prophetes: 'Histoires des Prophètes', vertueux: 'Vies des vertueux', 'histoires du passe': 'Histoires du passé' };
 
@@ -25,6 +25,7 @@ export const AdminRecitsList: React.FC = () => {
             {items.map((r) => (
               <li key={r.id}>
                 <Link to={`/admin/recits/${r.id}`} className="flex items-center gap-3 px-4 py-3 hover:bg-green-soft transition-colors">
+                  <IdTag id={r.id} />
                   <span className="text-ink font-medium">{r.titre}</span>
                   <span className="text-[11px] px-2 py-0.5 rounded-full bg-green-soft text-green-deep border border-green-line">{CAT[r.categorie] ?? r.categorie}</span>
                   <span className="ml-auto text-muted text-sm">Modifier →</span>

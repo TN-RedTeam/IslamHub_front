@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Loader2, Search, Plus } from 'lucide-react';
 import { dataService } from '../../services/DataService';
-import { CountBadge, Pagination } from '../../components/admin/AdminListUI';
+import { CountBadge, Pagination, IdTag } from '../../components/admin/AdminListUI';
 import type { Parole } from '../../types';
 
 const PAGE_SIZE = 50;
@@ -51,6 +51,7 @@ export const AdminParolesList: React.FC = () => {
             {items.map((p) => (
               <li key={p.id}>
                 <Link to={`/admin/paroles/${p.id}`} className="flex items-center gap-3 px-4 py-3 hover:bg-green-soft transition-colors">
+                  <IdTag id={p.id} />
                   <span className="text-ink font-medium">{p.sujet || `Parole #${p.id}`}</span>
                   {p.savant && <span className="text-sm text-muted">— {p.savant}</span>}
                   <span className="ml-auto text-muted text-sm">Modifier →</span>

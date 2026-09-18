@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Loader2, Plus, Search } from 'lucide-react';
 import { adminService, type FiqhRow } from '../../services/AdminService';
-import { CountBadge } from '../../components/admin/AdminListUI';
+import { CountBadge, IdTag } from '../../components/admin/AdminListUI';
 
 const ECOLES = ['Hanafi', 'Malikite', 'Shafii', 'Hanbalite'];
 
@@ -48,6 +48,7 @@ export const AdminFiqhList: React.FC = () => {
             {filtered.map((r) => (
               <li key={r.id}>
                 <Link to={`/admin/fiqh/${r.id}`} className="flex items-center gap-3 px-4 py-3 hover:bg-green-soft transition-colors">
+                  <IdTag id={r.id} />
                   <span className="text-[10.5px] font-semibold uppercase tracking-wide px-2 py-0.5 rounded-full bg-green-soft text-green-deep border border-green-line shrink-0">{r.ecole}</span>
                   <span className="min-w-0">
                     <span className="text-ink font-medium block truncate">{r.sujet || r.chapitre}</span>

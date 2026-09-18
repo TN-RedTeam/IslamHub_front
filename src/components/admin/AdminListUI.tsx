@@ -6,6 +6,20 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
  * indique combien d'entrées existent dans la rubrique. `n = null` pendant
  * le chargement (affiche « … »).
  */
+/**
+ * Pastille d'identifiant affichée en tête de chaque ligne de liste admin.
+ * Uniquement côté admin : permet de repérer/retrouver une entrée par son id
+ * (ex. pour saisir directement /admin/hadiths/94).
+ */
+export const IdTag: React.FC<{ id: string | number }> = ({ id }) => (
+  <span
+    className="shrink-0 text-[11px] font-mono text-muted bg-ground border border-line rounded px-1.5 py-0.5 tabular-nums"
+    title="Identifiant (admin)"
+  >
+    #{id}
+  </span>
+);
+
 export const CountBadge: React.FC<{ n: number | null }> = ({ n }) => (
   <span
     className="inline-flex items-center justify-center min-w-[2rem] rounded-full bg-green-soft text-green-deep border border-green-line px-2.5 py-0.5 text-[13px] font-semibold tabular-nums"

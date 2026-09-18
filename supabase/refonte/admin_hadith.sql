@@ -278,3 +278,18 @@ $$;
 --   multiples avec recherche (puces retirables). Rapporteurs = savants ;
 --   narrateurs = Compagnons + création d'un nouveau narrateur. AdminService :
 --   HadithFormData / HadithEditShape portent rapporteur_ids[] / narrateur_ids[].
+
+-- ─────────────────────────────────────────────────────────────────────────
+-- Admin — recherche d'occurrences insensible aux diacritiques arabes
+-- ─────────────────────────────────────────────────────────────────────────
+-- Symptôme : un texte arabe rejeté comme doublon à la saisie (arabe_hash)
+--   restait introuvable dans « Recherche & correction ». Deux causes dans
+--   admin_search_occurrences : (1) texte_arabe (et colonnes arabes) absents du
+--   champ de recherche des hadiths ; (2) matching via unaccent() (latin) qui ne
+--   retire pas les harakât — une graphie vocalisée différemment ne matche pas.
+-- Migration : admin_search_occurrences_arabic.
+--   Ajout d'un second motif pat_ar = '%'||normalize_ar(q)||'%' et, pour chaque
+--   rubrique, d'un OR normalize_ar(<colonnes arabes>) like pat_ar (même
+--   normalisation que arabe_hash : hamza unifiée, harakât/tatwil/guillemets
+--   retirés, espaces compactés). Les colonnes arabes sont aussi ajoutées aux
+--   extraits. Le motif latin existant est conservé (recherche FR inchangée).
