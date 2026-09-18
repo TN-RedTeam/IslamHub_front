@@ -353,3 +353,19 @@ $$;
 --   ( or (q ~ '^[0-9]+$' and id = q::bigint) ). Côté front, les listes admin à
 --   filtrage client (coran, équivoques, invocations, savants, dossiers, fiqh,
 --   femmes) matchent aussi l'id exact (avec un éventuel « # » en tête).
+
+-- ─────────────────────────────────────────────────────────────────────────
+-- Page publique Savants : Compagnons distingués et hiérarchisés
+-- ─────────────────────────────────────────────────────────────────────────
+-- Migration savants_public_compagnons :
+--   • savants.role (nullable) : rôle honorifique porté par la fiche (cas sans
+--     narrateur lié, ex. Abou Bakr → calife_rachidoun). Sinon rôle déduit du
+--     narrateur lié.
+--   • savants_all() inclut désormais les Compagnons (même sans biographie) et
+--     expose is_compagnon, role, rang (0 califes bien-guidés, 1 mères des
+--     croyants, 2 autres Compagnons, 3 savants).
+--   • savant_by_slug() renvoie aussi is_compagnon + role.
+-- Front : /savants affiche deux sections distinctes — « Les Compagnons du
+--   Prophète ﷺ » (en premier, cartes à accent or, badges Calife bien-guidé /
+--   Mère des croyants / Compagnon) puis « Les Savants ». Les fiches sans
+--   biographie restent accessibles.

@@ -18,6 +18,10 @@ const epoque = (s: SavantInfo) => {
   const n = parseInt((s.naissance ?? '').replace(/\D/g, ''), 10);
   return Number.isFinite(n) ? n : Number.MAX_SAFE_INTEGER;
 };
+// Rang honorifique : califes bien-guidés, puis mères des croyants, puis autres
+// Compagnons, puis les savants (non-compagnons).
+const rang = (s: SavantInfo) =>
+  s.role === 'calife_rachidoun' ? 0 : s.role === 'epouse_prophete' ? 1 : s.is_compagnon ? 2 : 3;
 
 export const Savants: React.FC = () => {
   useSeo({
@@ -42,7 +46,7 @@ export const Savants: React.FC = () => {
     [savants],
   );
   const domainesDispo = useMemo(
-    () => Array.from(new Set(savants.flatMap((s) => s.domaines ?? []))).sort(),
+    () => Array.from(new Set(savants.flatMap((s) => s.domaines ?? []))).filter((d) => d !== 'Compagnon').sort(),
     [savants],
   );
 
@@ -53,10 +57,14 @@ export const Savants: React.FC = () => {
       return next;
     });
 
-  const list = useMemo(() => {
+  // Filtrage, puis séparation Compagnons / Savants (les Compagnons en premier,
+  // classés par rang honorifique).
+  const { compagnons, autres, total } = useMemo(() => {
     const term = norm(q.trim());
     const raw = q.trim();
     const sel = [...domaines];
+    const sortCmp = (a: SavantInfo, b: SavantInfo) =>
+      sort === 'epoque' ? epoque(a) - epoque(b) : a.nom.localeCompare(b.nom, 'fr');
     const out = savants.filter((s) => {
       if (term) {
         const hay = norm(`${s.nom} ${s.nom_arabe ?? ''}`);
@@ -71,9 +79,68 @@ export const Savants: React.FC = () => {
       if (sel.length && !sel.every((d) => (s.domaines ?? []).includes(d))) return false;
       return true;
     });
-    out.sort((a, b) => (sort === 'epoque' ? epoque(a) - epoque(b) : a.nom.localeCompare(b.nom, 'fr')));
-    return out;
+    const comp = out.filter((s) => s.is_compagnon).sort((a, b) => rang(a) - rang(b) || sortCmp(a, b));
+    const sav = out.filter((s) => !s.is_compagnon).sort(sortCmp);
+    return { compagnons: comp, autres: sav, total: comp.length + sav.length };
   }, [savants, q, ecole, gen, sort, domaines]);
+
+  const renderCard = (s: SavantInfo) => {
+    const dates = [s.naissance, s.deces].filter(Boolean).join(' – ');
+    const mono = (s.nom_arabe?.trim()?.charAt(0)) || s.nom.charAt(0);
+    const doms = (s.domaines ?? []).filter((d) => d !== 'Compagnon');
+    return (
+      <Link
+        key={s.id}
+        to={`/savants/${s.slug}`}
+        className="group flex flex-col gap-3 rounded-card border border-line bg-white dark:bg-gray-800 p-5 shadow-sm hover:shadow-lg hover:border-green dark:hover:border-green hover:-translate-y-0.5 transition-all motion-reduce:transition-none motion-reduce:hover:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green"
+      >
+        <div className="flex items-start gap-3.5">
+          <span
+            aria-hidden="true"
+            className={`shrink-0 w-[52px] h-[52px] rounded-full grid place-items-center font-display text-2xl font-bold text-white ring-2 ring-inset ${
+              s.is_compagnon ? 'bg-gold ring-[#7a5a17]/30' : 'bg-green ring-gold/40'
+            }`}
+          >
+            {mono}
+          </span>
+          <span className="min-w-0">
+            <span className="block font-display text-xl font-bold leading-tight text-green-deep group-hover:text-green">{s.nom}</span>
+            {s.nom_arabe && (
+              <span dir="rtl" lang="ar" className="block font-arabic-name font-medium text-base text-ink [unicode-bidi:plaintext]">{s.nom_arabe}</span>
+            )}
+          </span>
+        </div>
+
+        <BadgeGeneration generation={s.generation} role={s.role} sexe={s.role === 'epouse_prophete' ? 'f' : undefined} />
+
+        {(dates || s.ecole) && (
+          <div className="flex items-center gap-2 flex-wrap text-xs text-gray-500 dark:text-gray-400 tabular-nums">
+            {dates && <span>{dates}</span>}
+            {dates && s.ecole && <span aria-hidden="true">·</span>}
+            {s.ecole && (
+              <span className="inline-flex items-center gap-1.5 font-semibold text-gold">
+                <span className="w-1.5 h-1.5 rounded-full bg-gold" /> {s.ecole}
+              </span>
+            )}
+          </div>
+        )}
+
+        {s.resume && <p className="text-sm text-gray-700 dark:text-gray-300 line-clamp-2">{s.resume}</p>}
+
+        {doms.length > 0 && (
+          <div className="flex flex-wrap gap-1.5">
+            {doms.map((d) => (
+              <span key={d} className="text-[11px] font-semibold tracking-wide text-green bg-green-soft px-2 py-0.5 rounded">{labelDom(d)}</span>
+            ))}
+          </div>
+        )}
+
+        <span className="mt-auto pt-1 text-sm font-semibold text-green inline-flex items-center gap-1.5 group-hover:gap-2.5 transition-all motion-reduce:transition-none">
+          {s.resume || !s.is_compagnon ? 'Lire la biographie' : 'Voir la fiche'} →
+        </span>
+      </Link>
+    );
+  };
 
   return (
     <div className="min-h-screen bg-ground">
@@ -162,76 +229,50 @@ export const Savants: React.FC = () => {
         )}
 
         <p className="text-sm text-gray-500 dark:text-gray-400 font-medium my-4">
-          <span className="text-green font-bold">{list.length}</span> savant{list.length > 1 ? 's' : ''}
+          <span className="text-green font-bold">{total}</span> référence{total > 1 ? 's' : ''}
         </p>
 
         {loading ? (
           <div className="flex justify-center py-16"><Loader2 className="h-8 w-8 text-green animate-spin" /></div>
-        ) : list.length === 0 ? (
+        ) : total === 0 ? (
           <div className="text-center py-16 text-gray-500 dark:text-gray-400">
             <Users className="h-10 w-10 mx-auto mb-3 opacity-60" />
-            <p>Aucun savant ne correspond à ces critères.</p>
+            <p>Aucune référence ne correspond à ces critères.</p>
           </div>
         ) : (
-          <div className="grid grid-cols-[repeat(auto-fill,minmax(260px,1fr))] gap-4">
-            {list.map((s) => {
-              const dates = [s.naissance, s.deces].filter(Boolean).join(' – ');
-              const mono = (s.nom_arabe?.trim()?.charAt(0)) || s.nom.charAt(0);
-              return (
-                <Link
-                  key={s.id}
-                  to={`/savants/${s.slug}`}
-                  className="group flex flex-col gap-3 rounded-card border border-line bg-white dark:bg-gray-800 p-5 shadow-sm hover:shadow-lg hover:border-green dark:hover:border-green hover:-translate-y-0.5 transition-all motion-reduce:transition-none motion-reduce:hover:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green"
-                >
-                  <div className="flex items-start gap-3.5">
-                    <span
-                      aria-hidden="true"
-                      className="shrink-0 w-[52px] h-[52px] rounded-full grid place-items-center font-display text-2xl font-bold text-white bg-green ring-2 ring-inset ring-gold/40"
-                    >
-                      {mono}
-                    </span>
-                    <span className="min-w-0">
-                      <span className="block font-display text-xl font-bold leading-tight text-green-deep group-hover:text-green">{s.nom}</span>
-                      {s.nom_arabe && (
-                        <span dir="rtl" lang="ar" className="block font-arabic-name font-medium text-base text-ink [unicode-bidi:plaintext]">{s.nom_arabe}</span>
-                      )}
-                    </span>
-                  </div>
+          <div className="space-y-10">
+            {compagnons.length > 0 && (
+              <section aria-labelledby="sec-compagnons">
+                <div className="flex items-center gap-2.5 mb-1">
+                  <h2 id="sec-compagnons" className="font-display text-2xl font-bold text-green-deep">
+                    Les Compagnons du Prophète&nbsp;{'ﷺ'}
+                  </h2>
+                  <span className="text-xs font-semibold text-[#7a5a17] bg-gold-soft border border-[#e6d3a3] rounded-full px-2.5 py-0.5 tabular-nums">{compagnons.length}</span>
+                </div>
+                <p className="text-sm text-muted mb-4 max-w-2xl">
+                  Ceux qui ont vu le Prophète&nbsp;{'ﷺ'} en étant croyants&nbsp;: les meilleurs de cette communauté, dont on rapporte les hadiths.
+                  <span className="font-arabic-name text-ink ms-1.5" lang="ar" dir="rtl">{'رضي الله عنهم'}</span>
+                </p>
+                <div className="grid grid-cols-[repeat(auto-fill,minmax(260px,1fr))] gap-4">
+                  {compagnons.map(renderCard)}
+                </div>
+              </section>
+            )}
 
-                  {(dates || s.ecole) && (
-                    <div className="flex items-center gap-2 flex-wrap text-xs text-gray-500 dark:text-gray-400 tabular-nums">
-                      {dates && <span>{dates}</span>}
-                      {dates && s.ecole && <span aria-hidden="true">·</span>}
-                      {s.ecole && (
-                        <span className="inline-flex items-center gap-1.5 font-semibold text-gold">
-                          <span className="w-1.5 h-1.5 rounded-full bg-gold" /> {s.ecole}
-                        </span>
-                      )}
-                      <BadgeGeneration generation={s.generation} />
-                    </div>
-                  )}
-                  {!dates && !s.ecole && s.generation && (
-                    <div><BadgeGeneration generation={s.generation} /></div>
-                  )}
-
-                  {s.resume && (
-                    <p className="text-sm text-gray-700 dark:text-gray-300 line-clamp-2">{s.resume}</p>
-                  )}
-
-                  {(s.domaines?.length ?? 0) > 0 && (
-                    <div className="flex flex-wrap gap-1.5">
-                      {s.domaines.map((d) => (
-                        <span key={d} className="text-[11px] font-semibold tracking-wide text-green bg-green-soft px-2 py-0.5 rounded">{labelDom(d)}</span>
-                      ))}
-                    </div>
-                  )}
-
-                  <span className="mt-auto pt-1 text-sm font-semibold text-green inline-flex items-center gap-1.5 group-hover:gap-2.5 transition-all motion-reduce:transition-none">
-                    Lire la biographie →
-                  </span>
-                </Link>
-              );
-            })}
+            {autres.length > 0 && (
+              <section aria-labelledby="sec-savants">
+                <div className="flex items-center gap-2.5 mb-1">
+                  <h2 id="sec-savants" className="font-display text-2xl font-bold text-green-deep">Les Savants</h2>
+                  <span className="text-xs font-semibold text-green-deep bg-green-soft border border-green-line rounded-full px-2.5 py-0.5 tabular-nums">{autres.length}</span>
+                </div>
+                <p className="text-sm text-muted mb-4 max-w-2xl">
+                  Les savants de Ahlou s-Sounnah qui ont transmis, jugé et expliqué la religion après les Compagnons.
+                </p>
+                <div className="grid grid-cols-[repeat(auto-fill,minmax(260px,1fr))] gap-4">
+                  {autres.map(renderCard)}
+                </div>
+              </section>
+            )}
           </div>
         )}
       </div>
