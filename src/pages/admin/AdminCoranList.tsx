@@ -14,7 +14,7 @@ export const AdminCoranList: React.FC = () => {
   const filtered = useMemo(() => {
     const s = q.trim().toLowerCase();
     if (!s) return items;
-    return items.filter((c) => `${c.sujet} ${c.sourate ?? ''}`.toLowerCase().includes(s));
+    return items.filter((c) => String(c.id) === s.replace(/^#/, '') || `${c.sujet} ${c.sourate ?? ''}`.toLowerCase().includes(s));
   }, [items, q]);
 
   return (

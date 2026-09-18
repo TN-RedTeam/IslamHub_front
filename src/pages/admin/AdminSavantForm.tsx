@@ -16,7 +16,12 @@ const GENERATIONS: { v: string; l: string }[] = [
   { v: 'tabi_tabii', l: 'Successeur des successeurs' },
   { v: 'khalaf', l: 'Khalaf (postérieur)' },
 ];
-const blank = { nom: '', nom_arabe: '', slug: '', ecole_id: '', generation: '', naissance: '', deces: '', resume: '', biographie: '', domaines: '' };
+const ROLES: { v: string; l: string }[] = [
+  { v: '', l: '— aucun' },
+  { v: 'calife_rachidoun', l: 'Calife bien-guidé' },
+  { v: 'epouse_prophete', l: 'Mère des croyants' },
+];
+const blank = { nom: '', nom_arabe: '', slug: '', ecole_id: '', generation: '', naissance: '', deces: '', resume: '', biographie: '', domaines: '', role: '' };
 
 export const AdminSavantForm: React.FC = () => {
   const { id } = useParams();
@@ -43,7 +48,7 @@ export const AdminSavantForm: React.FC = () => {
       setF({
         nom: s.nom ?? '', nom_arabe: s.nom_arabe ?? '', slug: s.slug ?? '', ecole_id: s.ecole_id != null ? String(s.ecole_id) : '',
         generation: s.generation ?? '', naissance: s.naissance ?? '', deces: s.deces ?? '', resume: s.resume ?? '', biographie: s.biographie ?? '',
-        domaines: (s.domaines ?? []).join(', '),
+        domaines: (s.domaines ?? []).join(', '), role: s.role ?? '',
       });
     }).catch(() => setError('Savant introuvable.')).finally(() => setLoading(false));
   }, [editId]);
@@ -55,7 +60,7 @@ export const AdminSavantForm: React.FC = () => {
     id: editId, nom: f.nom.trim(), nom_arabe: f.nom_arabe, slug: autoSlug,
     ecole_id: f.ecole_id ? Number(f.ecole_id) : null, generation: f.generation,
     naissance: f.naissance, deces: f.deces, resume: f.resume, biographie: f.biographie,
-    domaines: f.domaines.split(',').map((d) => d.trim()).filter(Boolean),
+    domaines: f.domaines.split(',').map((d) => d.trim()).filter(Boolean), role: f.role,
   });
 
   const save = async () => {
@@ -91,7 +96,7 @@ export const AdminSavantForm: React.FC = () => {
       {/* 2. Repères */}
       <section className="rounded-card border border-line bg-surface p-5 mb-4">
         <h2 className="font-display font-semibold text-green-deep text-lg mb-4">2 · Repères</h2>
-        <div className="grid sm:grid-cols-2 gap-3.5">
+        <div className="grid sm:grid-cols-3 gap-3.5">
           <div><label className={label}>École (madhhab)</label>
             <select className={field} value={f.ecole_id} onChange={set('ecole_id')}>
               <option value="">—</option>
@@ -101,6 +106,12 @@ export const AdminSavantForm: React.FC = () => {
             <select className={field} value={f.generation} onChange={set('generation')}>
               {GENERATIONS.map((g) => <option key={g.v} value={g.v}>{g.l}</option>)}
             </select></div>
+          <div><label className={label}>Rôle honorifique <span className="text-muted font-normal">(Compagnons)</span></label>
+            <select className={field} value={f.role} onChange={set('role')}>
+              {ROLES.map((r) => <option key={r.v} value={r.v}>{r.l}</option>)}
+            </select>
+            <p className="text-xs text-muted mt-1">Classe la fiche dans « Compagnons » sur le site. Choisis la génération <b>Compagnon</b> pour qu'elle y apparaisse même sans rôle.</p>
+          </div>
         </div>
         <div className="grid sm:grid-cols-2 gap-3.5 mt-3.5">
           <div><label className={label}>Naissance</label><input className={field} value={f.naissance} onChange={set('naissance')} placeholder="150 H / 767" /></div>

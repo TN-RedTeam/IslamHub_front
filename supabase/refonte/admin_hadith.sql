@@ -321,3 +321,63 @@ $$;
 --   ces fiches n'apparaissent en public qu'une fois une bio saisie.
 -- NB data : `narrateurs` contient un doublon interne (Abou Saʿid al-Khudri, ids
 --   8 et 14, graphies différentes) — à fusionner manuellement si souhaité.
+
+-- ─────────────────────────────────────────────────────────────────────────
+-- Fusion du doublon narrateur « Abou Saʿid al-Khudri »
+-- ─────────────────────────────────────────────────────────────────────────
+-- Deux graphies du même Compagnon existaient : narrateur 8 « Abou Sa^id
+--   Al-Khoudriyy » (+ savant 75) et narrateur 14 « Abou Saʿid al-Khudri »
+--   (+ savant 76). Conservé : 14 / 76.
+-- Opération (data, ponctuelle) :
+--   update hadith_narrateurs set narrateur_id=14 where narrateur_id=8; (3 liens,
+--     aucun chevauchement) → le trigger de synchro régénère hadiths.narrateur.
+--   delete narrateurs id=8 ; delete savants id=75 (aucune référence).
+-- Résultat : narrateur 14 porte 5 liens (hadiths 18,29,46,98,110), plus aucune
+--   occurrence de l'ancienne graphie.
+
+-- ─────────────────────────────────────────────────────────────────────────
+-- Compagnons ↔ savants : lien explicite, dédoublonnage, recherche par id
+-- ─────────────────────────────────────────────────────────────────────────
+-- Migration narrateur_savant_link_and_dedup (+ fix_narrateur_savant_normalization) :
+--   • narrateurs.savant_id (FK → savants, ON DELETE SET NULL) : lien explicite.
+--   • Trigger BEFORE réécrit : rapproche par NOM NORMALISÉ (unaccent PUIS retrait
+--     des séparateurs — l'ordre inverse supprimait les lettres accentuées et
+--     cassait le rapprochement), en préférant une fiche historique (non
+--     « Compagnon ») ; ne crée une fiche que si aucune ne correspond ; propage un
+--     renommage uniquement vers une fiche Compagnon ; pose narrateurs.savant_id.
+--   • Doublons de graphie fusionnés : Ibn ʿUmar (fiches 68 puis 106 → 50) et
+--     ʿAli (81 → 26 « Imam ^Aliyy », lien narrateur posé à la main car nom trop
+--     différent). Résultat : 0 doublon par nom normalisé.
+-- Migration search_by_id_hadiths_paroles : search_hadiths / search_paroles
+--   acceptent une requête purement numérique = recherche par id
+--   ( or (q ~ '^[0-9]+$' and id = q::bigint) ). Côté front, les listes admin à
+--   filtrage client (coran, équivoques, invocations, savants, dossiers, fiqh,
+--   femmes) matchent aussi l'id exact (avec un éventuel « # » en tête).
+
+-- ─────────────────────────────────────────────────────────────────────────
+-- Page publique Savants : Compagnons distingués et hiérarchisés
+-- ─────────────────────────────────────────────────────────────────────────
+-- Migration savants_public_compagnons :
+--   • savants.role (nullable) : rôle honorifique porté par la fiche (cas sans
+--     narrateur lié, ex. Abou Bakr → calife_rachidoun). Sinon rôle déduit du
+--     narrateur lié.
+--   • savants_all() inclut désormais les Compagnons (même sans biographie) et
+--     expose is_compagnon, role, rang (0 califes bien-guidés, 1 mères des
+--     croyants, 2 autres Compagnons, 3 savants).
+--   • savant_by_slug() renvoie aussi is_compagnon + role.
+-- Front : /savants affiche deux sections distinctes — « Les Compagnons du
+--   Prophète ﷺ » (en premier, cartes à accent or, badges Calife bien-guidé /
+--   Mère des croyants / Compagnon) puis « Les Savants ». Les fiches sans
+--   biographie restent accessibles.
+
+-- ─────────────────────────────────────────────────────────────────────────
+-- Admin — champ « Rôle honorifique » sur la fiche savant
+-- ─────────────────────────────────────────────────────────────────────────
+-- Migrations admin_savant_role + savants_is_compagnon_role :
+--   • admin_get_savant renvoie role ; admin_save_savant accepte role (validé
+--     dans calife_rachidoun | epouse_prophete, sinon null).
+--   • is_compagnon (savants_all / savant_by_slug) devient vrai dès qu'un role est
+--     posé — un Compagnon non-narrateur apparaît ainsi pour sa biographie en
+--     mettant génération « Compagnon » et/ou un rôle.
+-- Front : formulaire savant, section « Repères », sélecteur Rôle honorifique
+--   (— aucun / Calife bien-guidé / Mère des croyants).

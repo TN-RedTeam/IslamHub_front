@@ -51,6 +51,8 @@ export const SavantPage: React.FC = () => {
   }
 
   const { savant, paroles, hadiths_juges } = data;
+  // Genre honorifique : les mères des croyants → féminin.
+  const sexe = savant.role === 'epouse_prophete' ? 'f' : undefined;
 
   return (
     <div className="min-h-screen bg-ground">
@@ -65,8 +67,8 @@ export const SavantPage: React.FC = () => {
           </Link>
           <div className="flex items-baseline gap-3 flex-wrap">
             <h1 className="text-4xl md:text-5xl font-bold text-green-deep font-display">{savant.nom}</h1>
-            {honorificFor(savant.generation) && (
-              <span className="font-arabic-name font-medium text-green-deep text-lg" lang="ar" dir="rtl">{honorificFor(savant.generation)}</span>
+            {honorificFor(savant.generation, { role: savant.role, sexe }) && (
+              <span className="font-arabic-name font-medium text-green-deep text-lg" lang="ar" dir="rtl">{honorificFor(savant.generation, { role: savant.role, sexe })}</span>
             )}
           </div>
           {savant.nom_arabe && (
@@ -79,7 +81,7 @@ export const SavantPage: React.FC = () => {
               </span>
             )}
             {savant.ecole && <EcoleBadge ecole={savant.ecole} />}
-            <BadgeGeneration generation={savant.generation} />
+            <BadgeGeneration generation={savant.generation} role={savant.role} sexe={sexe} />
           </div>
         </div>
       </m.header>

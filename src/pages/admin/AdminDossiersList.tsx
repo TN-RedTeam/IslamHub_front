@@ -14,7 +14,7 @@ export const AdminDossiersList: React.FC = () => {
   const filtered = useMemo(() => {
     const s = q.trim().toLowerCase();
     if (!s) return items;
-    return items.filter((d) => `${d.h1} ${d.slug}`.toLowerCase().includes(s));
+    return items.filter((d) => String(d.id) === s.replace(/^#/, '') || `${d.h1} ${d.slug}`.toLowerCase().includes(s));
   }, [items, q]);
 
   return (

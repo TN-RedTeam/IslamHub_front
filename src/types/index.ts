@@ -169,6 +169,8 @@ export interface SavantInfo {
   domaines: string[];         // Hadith, Fiqh, Aqida, Tafsir, Langue…
   nb_paroles: number;
   generation?: string | null; // sahabi | tabii | tabi_tabii | khalaf (Phase 12.6)
+  is_compagnon?: boolean;     // Sahabi → section distincte, rang supérieur
+  role?: string | null;       // calife_rachidoun | epouse_prophete | null
 }
 
 /** Coran — exégèse (Phase 8). */
@@ -243,6 +245,8 @@ export interface SavantDetail {
     ecole: string | null;
     ecole_slug: string | null;
     generation?: string | null; // Phase 12.6
+    is_compagnon?: boolean;
+    role?: string | null;       // calife_rachidoun | epouse_prophete | null
   };
   paroles: {
     id: number;

@@ -16,7 +16,7 @@ export const AdminFemmesList: React.FC = () => {
   const filtered = useMemo(() => {
     const s = q.trim().toLowerCase();
     if (!s) return items;
-    return items.filter((r) => `${r.chapitre} ${r.matn ?? ''}`.toLowerCase().includes(s));
+    return items.filter((r) => String(r.id) === s.replace(/^#/, '') || `${r.chapitre} ${r.matn ?? ''}`.toLowerCase().includes(s));
   }, [items, q]);
 
   return (

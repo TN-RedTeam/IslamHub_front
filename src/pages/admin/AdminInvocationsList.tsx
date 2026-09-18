@@ -14,7 +14,7 @@ export const AdminInvocationsList: React.FC = () => {
   const filtered = useMemo(() => {
     const s = q.trim().toLowerCase();
     if (!s) return items;
-    return items.filter((i) => `${i.sujet} ${i.tag ?? ''}`.toLowerCase().includes(s));
+    return items.filter((i) => String(i.id) === s.replace(/^#/, '') || `${i.sujet} ${i.tag ?? ''}`.toLowerCase().includes(s));
   }, [items, q]);
 
   return (
