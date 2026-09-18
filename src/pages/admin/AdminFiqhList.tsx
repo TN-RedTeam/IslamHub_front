@@ -18,7 +18,7 @@ export const AdminFiqhList: React.FC = () => {
     const s = q.trim().toLowerCase();
     return items.filter((r) =>
       (!ecole || r.ecole.toLowerCase() === ecole.toLowerCase()) &&
-      (!s || `${r.chapitre} ${r.sujet ?? ''}`.toLowerCase().includes(s)));
+      (!s || String(r.id) === s.replace(/^#/, '') || `${r.chapitre} ${r.sujet ?? ''}`.toLowerCase().includes(s)));
   }, [items, q, ecole]);
 
   return (

@@ -14,7 +14,7 @@ export const AdminEquivoquesList: React.FC = () => {
   const filtered = useMemo(() => {
     const s = q.trim().toLowerCase();
     if (!s) return items;
-    return items.filter((v) => `${v.theme} ${v.sourate} ${v.slug}`.toLowerCase().includes(s));
+    return items.filter((v) => String(v.id) === s.replace(/^#/, '') || `${v.theme} ${v.sourate} ${v.slug}`.toLowerCase().includes(s));
   }, [items, q]);
 
   return (

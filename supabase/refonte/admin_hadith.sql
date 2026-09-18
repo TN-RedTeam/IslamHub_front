@@ -334,3 +334,22 @@ $$;
 --   delete narrateurs id=8 ; delete savants id=75 (aucune référence).
 -- Résultat : narrateur 14 porte 5 liens (hadiths 18,29,46,98,110), plus aucune
 --   occurrence de l'ancienne graphie.
+
+-- ─────────────────────────────────────────────────────────────────────────
+-- Compagnons ↔ savants : lien explicite, dédoublonnage, recherche par id
+-- ─────────────────────────────────────────────────────────────────────────
+-- Migration narrateur_savant_link_and_dedup (+ fix_narrateur_savant_normalization) :
+--   • narrateurs.savant_id (FK → savants, ON DELETE SET NULL) : lien explicite.
+--   • Trigger BEFORE réécrit : rapproche par NOM NORMALISÉ (unaccent PUIS retrait
+--     des séparateurs — l'ordre inverse supprimait les lettres accentuées et
+--     cassait le rapprochement), en préférant une fiche historique (non
+--     « Compagnon ») ; ne crée une fiche que si aucune ne correspond ; propage un
+--     renommage uniquement vers une fiche Compagnon ; pose narrateurs.savant_id.
+--   • Doublons de graphie fusionnés : Ibn ʿUmar (fiches 68 puis 106 → 50) et
+--     ʿAli (81 → 26 « Imam ^Aliyy », lien narrateur posé à la main car nom trop
+--     différent). Résultat : 0 doublon par nom normalisé.
+-- Migration search_by_id_hadiths_paroles : search_hadiths / search_paroles
+--   acceptent une requête purement numérique = recherche par id
+--   ( or (q ~ '^[0-9]+$' and id = q::bigint) ). Côté front, les listes admin à
+--   filtrage client (coran, équivoques, invocations, savants, dossiers, fiqh,
+--   femmes) matchent aussi l'id exact (avec un éventuel « # » en tête).

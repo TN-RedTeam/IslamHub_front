@@ -25,7 +25,7 @@ export const AdminSavantsList: React.FC = () => {
   const filtered = useMemo(() => {
     const s = q.trim().toLowerCase();
     if (!s) return items;
-    return items.filter((x) => x.nom.toLowerCase().includes(s));
+    return items.filter((x) => String(x.id) === s.replace(/^#/, '') || x.nom.toLowerCase().includes(s));
   }, [items, q]);
 
   return (
