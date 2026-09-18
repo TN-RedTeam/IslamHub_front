@@ -3,6 +3,7 @@ import { DeleteEntryButton } from '../../components/admin/DeleteEntryButton';
 import { useNavigate, useParams, Link } from 'react-router-dom';
 import { Loader2, Plus, Trash2, Check, AlertTriangle } from 'lucide-react';
 import { adminService, type SavantRow, type ParoleFormData, type ParoleImageInput, type RefOption } from '../../services/AdminService';
+import { AR_TEMPLATE, caretBetween } from '../../utils/arabicTemplate';
 import type { ThemeRef } from '../../types';
 
 const NEW = '__new';
@@ -22,7 +23,7 @@ export const AdminParoleForm: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [ok, setOk] = useState(false);
 
-  const [f, setF] = useState({ sujet: '', texte_arabe: '', texte_francais: '', phonetique: '', explication: '', source_livre: '', page: '', ecole: '', tag: '', commente_livre: '' });
+  const [f, setF] = useState({ sujet: '', texte_arabe: AR_TEMPLATE.parole, texte_francais: '', phonetique: '', explication: '', source_livre: '', page: '', ecole: '', tag: '', commente_livre: '' });
   const set = (k: keyof typeof f) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => setF((p) => ({ ...p, [k]: e.target.value }));
   const [savant, setSavant] = useState('');           // savant_id (string) ou NEW
   const [newSavant, setNewSavant] = useState('');
@@ -72,7 +73,7 @@ export const AdminParoleForm: React.FC = () => {
     try {
       const newId = await adminService.saveParole(buildPayload());
       setOk(true);
-      if (andNew) { setF({ sujet: '', texte_arabe: '', texte_francais: '', phonetique: '', explication: '', source_livre: '', page: '', ecole: '', tag: '', commente_livre: '' }); setSavant(''); setNewSavant(''); setRapporteur(''); setCommente(''); setImages([]); setTimeout(() => setOk(false), 2500); }
+      if (andNew) { setF({ sujet: '', texte_arabe: AR_TEMPLATE.parole, texte_francais: '', phonetique: '', explication: '', source_livre: '', page: '', ecole: '', tag: '', commente_livre: '' }); setSavant(''); setNewSavant(''); setRapporteur(''); setCommente(''); setImages([]); setTimeout(() => setOk(false), 2500); }
       else { navigate(`/admin/paroles/${newId}`, { replace: true }); setTimeout(() => setOk(false), 2500); }
     } catch (e) {
       const msg = (e as Error).message || 'Erreur à l’enregistrement.';
@@ -93,7 +94,7 @@ export const AdminParoleForm: React.FC = () => {
         <h2 className="font-display font-semibold text-green-deep text-lg mb-4">1 · La parole</h2>
         <div className="mb-3.5"><label className={label}>Sujet <span className="text-red-600">*</span></label><input className={field} value={f.sujet} onChange={set('sujet')} placeholder="Ex. Allah existe sans endroit" /></div>
         <div className="mb-3.5"><label className={label}>Texte arabe <span className="text-red-600">*</span></label>
-          <textarea dir="rtl" lang="ar" className={`${field} font-arabic text-2xl leading-loose text-right min-h-[90px]`} value={f.texte_arabe} onChange={set('texte_arabe')} placeholder="Colle ici le texte arabe (vocalisé)…" /></div>
+          <textarea dir="rtl" lang="ar" className={`${field} font-arabic text-2xl leading-loose text-right min-h-[90px]`} value={f.texte_arabe} onChange={set('texte_arabe')} onFocus={caretBetween(AR_TEMPLATE.parole)} placeholder="Colle ici le texte arabe (vocalisé)…" /></div>
         <div className="grid sm:grid-cols-2 gap-3.5">
           <div><label className={label}>Phonétique</label><input className={field} value={f.phonetique} onChange={set('phonetique')} /></div>
           <div><label className={label}>Traduction française</label><input className={field} value={f.texte_francais} onChange={set('texte_francais')} /></div>
