@@ -423,3 +423,8 @@ $$;
 -- Data : tag des 5 hadiths équivoques standardisé — ajout de « équivoque » et
 --   « interprétation » (fusion non destructive, tags existants conservés),
 --   thèmes re-déduits.
+
+-- Data : les 56 paroles non vides ont été enveloppées en guillemets simples
+--   ‹ … › (nettoyage des guillemets/parenthèses/espaces existants en tête/fin),
+--   pour uniformiser avec le gabarit de saisie. Les 2 paroles vides sont
+--   laissées telles quelles.
