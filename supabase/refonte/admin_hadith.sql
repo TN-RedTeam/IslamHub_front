@@ -392,3 +392,18 @@ $$;
 --   titre est le thème, l'eyebrow indique « Hadith/Verset équivoque ». Cartes de
 --   la liste uniformisées (thème = titre 2 lignes, arabe tronqué à 3 lignes,
 --   source sur une ligne).
+
+-- ─────────────────────────────────────────────────────────────────────────
+-- Hadith ↔ fiche équivoque (présence dans les 2 rubriques)
+-- ─────────────────────────────────────────────────────────────────────────
+-- Migration hadith_equivoque_link :
+--   • versets_equivoques.hadith_id (FK → hadiths, ON DELETE CASCADE, unique).
+--   • admin_save_hadith accepte is_equivoque : à cocher, crée/synchronise la
+--     fiche équivoque liée (type hadith, textes copiés, published=false) ; à
+--     décocher, supprime la fiche liée seulement si elle est vide (aucun
+--     argument ni bloc). admin_get_hadith renvoie is_equivoque / equivoque_id /
+--     equivoque_slug. get_hadith renvoie l'objet equivoque (slug,id) si publié.
+-- Flux : on marque le hadith équivoque → il apparaît dans « Versets et hadiths
+--   équivoques » où l'on saisit les arguments (blocs / sens juste / objection /
+--   réponse) ; une fois la fiche publiée, la fiche publique du hadith affiche
+--   l'analyse (blocs) + un lien vers l'analyse complète.

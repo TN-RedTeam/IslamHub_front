@@ -223,6 +223,7 @@ export interface HadithDetail {
   recueils: string | null;
   sources?: HadithSource[];   // source structurée (groupée par rapporteur)
   themes?: ThemeRef[];        // thèmes transverses (puces)
+  equivoque?: { slug: string; id: number } | null; // fiche « équivoque » liée (si publiée)
 }
 
 /** Infos légères d'un savant (mini-bio au survol). */

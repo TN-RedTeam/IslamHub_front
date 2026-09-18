@@ -23,12 +23,14 @@ export interface HadithFormData {
   new_narrateur?: { nom: string; generation: string; role: string; sexe: string } | null;
   tag: string;
   sources: HadithSourceInput[];
+  is_equivoque?: boolean; // marque aussi le hadith dans « Versets et hadiths équivoques »
 }
 export interface HadithEditShape {
   id: number; sujet: string | null; texte_arabe: string | null; texte_francais: string | null;
   phonetique: string | null; explication: string | null; degre_authenticite: string | null;
   type_hadith: string | null; juge_par: string | null; rapporteur: string | null; narrateur: string | null;
   rapporteur_ids: number[]; narrateur_ids: number[];
+  is_equivoque: boolean; equivoque_id: number | null; equivoque_slug: string | null;
   tag: string | null; sources: { recueil_id: number; numero: string | null; chapitre: string | null }[];
 }
 

@@ -1,20 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { m } from 'framer-motion';
-import { Loader2, ArrowLeft, Copy, Check, Share2 } from 'lucide-react';
+import { Loader2, ArrowLeft, Copy, Check, Share2, Scale, ArrowRight } from 'lucide-react';
 import { dataService } from '../services/DataService';
 import { BadgeGeneration } from '../components/BadgeGeneration';
 import { HadithSources } from '../components/HadithSources';
 import { ThemeChips } from '../components/ThemeChips';
 import { RelatedByTheme } from '../components/RelatedByTheme';
+import { ArticleBlocs } from '../components/ArticleBlocs';
 import { Markdown } from '../components/Markdown';
 import { useSeo } from '../hooks/useSeo';
-import type { HadithDetail } from '../types';
+import type { HadithDetail, Bloc } from '../types';
 import { IconBadge } from '../components/Icon';
 
 export const HadithPage: React.FC = () => {
   const { id = '' } = useParams();
   const [hadith, setHadith] = useState<HadithDetail | null>(null);
+  const [eqBlocs, setEqBlocs] = useState<Bloc[]>([]);
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
   const [copied, setCopied] = useState(false);
@@ -30,8 +32,17 @@ export const HadithPage: React.FC = () => {
     let alive = true;
     setLoading(true); setNotFound(false);
     if (!Number.isFinite(numId)) { setNotFound(true); setLoading(false); return; }
+    setEqBlocs([]);
     dataService.getHadith(numId)
-      .then((h) => { if (!alive) return; if (!h) setNotFound(true); else setHadith(h); setLoading(false); })
+      .then((h) => {
+        if (!alive) return;
+        if (!h) setNotFound(true);
+        else {
+          setHadith(h);
+          if (h.equivoque?.id != null) dataService.getBlocs('equivoque', h.equivoque.id).then((bl) => { if (alive) setEqBlocs(bl); }).catch(() => {});
+        }
+        setLoading(false);
+      })
       .catch(() => { if (alive) { setNotFound(true); setLoading(false); } });
     return () => { alive = false; };
   }, [numId]);
@@ -148,6 +159,24 @@ export const HadithPage: React.FC = () => {
               Source{hadith.sources.length > 1 ? 's' : ''}
             </h2>
             <HadithSources sources={hadith.sources} />
+          </section>
+        )}
+
+        {hadith.equivoque && (
+          <section className="rounded-card border border-gold bg-gold-soft/40 p-5">
+            <div className="flex items-center gap-2 mb-2">
+              <Scale className="h-5 w-5 text-[#7a5a17]" />
+              <h2 className="font-display font-semibold text-green-deep text-lg">Texte équivoque — l'analyse</h2>
+            </div>
+            <p className="text-sm text-ink/80 mb-3">Le sens apparent de ce hadith prêterait à confusion&nbsp;: voici le sens conforme et digne d'Allah, avec les preuves.</p>
+            {eqBlocs.length > 0 && (
+              <div className="rounded-card bg-surface border border-line p-4 mb-3">
+                <ArticleBlocs blocs={eqBlocs} />
+              </div>
+            )}
+            <Link to={`/croyance/versets-hadiths-equivoques/${hadith.equivoque.slug}`} className="inline-flex items-center gap-1.5 rounded-lg bg-green text-white font-semibold px-4 py-2 text-sm hover:bg-green-deep transition-colors">
+              Voir l'analyse complète <ArrowRight className="h-4 w-4" />
+            </Link>
           </section>
         )}
 
