@@ -428,3 +428,15 @@ $$;
 --   ‹ … › (nettoyage des guillemets/parenthèses/espaces existants en tête/fin),
 --   pour uniformiser avec le gabarit de saisie. Les 2 paroles vides sont
 --   laissées telles quelles.
+
+-- ─────────────────────────────────────────────────────────────────────────
+-- Guillemets simples ‹ › traités comme les autres guillemets
+-- ─────────────────────────────────────────────────────────────────────────
+-- Migrations normalize_simple_guillemets + normalize_ar_btrim :
+--   • normalize_ar retire aussi ‹ › (U+2039/U+203A) et applique btrim →
+--     « ‹ texte › » et « texte » sont identiques à la recherche (toutes rubriques).
+--   • paroles.arabe_hash recréé pour ignorer ‹ › (détection de doublon
+--     transparente). Index unique reconstruit (56 hachages distincts).
+--   Les autres tables à arabe_hash (hadiths, coran, dhikrs, douaas) n'utilisent
+--   pas ‹ › (gabarits « » ou ﴿ ﴾) → inchangées côté hash ; la recherche est
+--   couverte par normalize_ar.
