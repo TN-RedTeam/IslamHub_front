@@ -321,3 +321,16 @@ $$;
 --   ces fiches n'apparaissent en public qu'une fois une bio saisie.
 -- NB data : `narrateurs` contient un doublon interne (Abou Saʿid al-Khudri, ids
 --   8 et 14, graphies différentes) — à fusionner manuellement si souhaité.
+
+-- ─────────────────────────────────────────────────────────────────────────
+-- Fusion du doublon narrateur « Abou Saʿid al-Khudri »
+-- ─────────────────────────────────────────────────────────────────────────
+-- Deux graphies du même Compagnon existaient : narrateur 8 « Abou Sa^id
+--   Al-Khoudriyy » (+ savant 75) et narrateur 14 « Abou Saʿid al-Khudri »
+--   (+ savant 76). Conservé : 14 / 76.
+-- Opération (data, ponctuelle) :
+--   update hadith_narrateurs set narrateur_id=14 where narrateur_id=8; (3 liens,
+--     aucun chevauchement) → le trigger de synchro régénère hadiths.narrateur.
+--   delete narrateurs id=8 ; delete savants id=75 (aucune référence).
+-- Résultat : narrateur 14 porte 5 liens (hadiths 18,29,46,98,110), plus aucune
+--   occurrence de l'ancienne graphie.
