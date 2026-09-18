@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Loader2, Plus, Search } from 'lucide-react';
 import { adminService, type FemmeRow } from '../../services/AdminService';
+import { CountBadge } from '../../components/admin/AdminListUI';
 
 const excerpt = (s: string | null, n = 70) => { const t = (s ?? '').replace(/[#*_>`]/g, '').trim(); return t.length > n ? t.slice(0, n) + '…' : t; };
 
@@ -22,6 +23,7 @@ export const AdminFemmesList: React.FC = () => {
     <div className="max-w-4xl px-6 py-8">
       <div className="flex items-center gap-3 flex-wrap mb-5">
         <h1 className="font-display font-semibold text-green-deep text-3xl">La femme musulmane</h1>
+        <CountBadge n={loading ? null : items.length} />
         <Link to="/admin/femmes/nouveau" className="ml-auto inline-flex items-center gap-1.5 rounded-lg bg-green text-white font-semibold px-4 py-2 hover:bg-green-deep transition-colors"><Plus className="w-4 h-4" /> Nouveau segment</Link>
       </div>
 

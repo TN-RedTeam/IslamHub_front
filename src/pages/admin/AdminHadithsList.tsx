@@ -2,29 +2,38 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Loader2, Search, Plus } from 'lucide-react';
 import { dataService } from '../../services/DataService';
+import { CountBadge, Pagination } from '../../components/admin/AdminListUI';
 import type { Hadith } from '../../types';
+
+const PAGE_SIZE = 50;
 
 export const AdminHadithsList: React.FC = () => {
   const [q, setQ] = useState('');
   const [items, setItems] = useState<Hadith[]>([]);
+  const [total, setTotal] = useState<number | null>(null);
+  const [page, setPage] = useState(0);
   const [loading, setLoading] = useState(true);
+
+  // Toute nouvelle recherche repart de la première page.
+  useEffect(() => { setPage(0); }, [q]);
 
   useEffect(() => {
     let alive = true;
     setLoading(true);
     const t = setTimeout(() => {
-      dataService.searchHadiths(q, null, { page: 0, pageSize: 100 })
-        .then((r) => { if (alive) setItems((r.data ?? []) as Hadith[]); })
-        .catch(() => { if (alive) setItems([]); })
+      dataService.searchHadiths(q, null, { page, pageSize: PAGE_SIZE })
+        .then((r) => { if (alive) { setItems((r.data ?? []) as Hadith[]); setTotal(r.count ?? 0); } })
+        .catch(() => { if (alive) { setItems([]); setTotal(0); } })
         .finally(() => { if (alive) setLoading(false); });
     }, 250);
     return () => { alive = false; clearTimeout(t); };
-  }, [q]);
+  }, [q, page]);
 
   return (
     <div className="max-w-4xl px-6 py-8">
       <div className="flex items-center gap-3 flex-wrap mb-5">
         <h1 className="font-display font-semibold text-green-deep text-3xl">Hadiths</h1>
+        <CountBadge n={total} />
         <Link to="/admin/hadiths/nouveau" className="ml-auto inline-flex items-center gap-1.5 rounded-lg bg-green text-white font-semibold px-4 py-2 hover:bg-green-deep transition-colors">
           <Plus className="w-4 h-4" /> Nouveau hadith
         </Link>
@@ -41,17 +50,20 @@ export const AdminHadithsList: React.FC = () => {
       ) : items.length === 0 ? (
         <p className="text-muted italic py-8">Aucun hadith.</p>
       ) : (
-        <ul className="divide-y divide-line rounded-card border border-line bg-surface overflow-hidden">
-          {items.map((h) => (
-            <li key={h.id}>
-              <Link to={`/admin/hadiths/${h.id}`} className="flex items-center gap-3 px-4 py-3 hover:bg-green-soft transition-colors">
-                <span className="text-ink font-medium">{h.sujet || `Hadith #${h.id}`}</span>
-                {h.statut && <span className="text-[11px] px-2 py-0.5 rounded-full bg-green-soft text-green-deep border border-green-line">{h.statut}</span>}
-                <span className="ml-auto text-muted text-sm">Modifier →</span>
-              </Link>
-            </li>
-          ))}
-        </ul>
+        <>
+          <ul className="divide-y divide-line rounded-card border border-line bg-surface overflow-hidden">
+            {items.map((h) => (
+              <li key={h.id}>
+                <Link to={`/admin/hadiths/${h.id}`} className="flex items-center gap-3 px-4 py-3 hover:bg-green-soft transition-colors">
+                  <span className="text-ink font-medium">{h.sujet || `Hadith #${h.id}`}</span>
+                  {h.statut && <span className="text-[11px] px-2 py-0.5 rounded-full bg-green-soft text-green-deep border border-green-line">{h.statut}</span>}
+                  <span className="ml-auto text-muted text-sm">Modifier →</span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+          <Pagination page={page} pageSize={PAGE_SIZE} total={total ?? 0} onPage={setPage} />
+        </>
       )}
     </div>
   );

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Loader2, Plus } from 'lucide-react';
 import { adminService, type SourateRow } from '../../services/AdminService';
+import { CountBadge } from '../../components/admin/AdminListUI';
 
 export const AdminSouratesList: React.FC = () => {
   const [items, setItems] = useState<SourateRow[]>([]);
@@ -12,6 +13,7 @@ export const AdminSouratesList: React.FC = () => {
     <div className="max-w-4xl px-6 py-8">
       <div className="flex items-center gap-3 flex-wrap mb-5">
         <h1 className="font-display font-semibold text-green-deep text-3xl">Coran — exégèse (sourates)</h1>
+        <CountBadge n={loading ? null : items.length} />
         <Link to="/admin/sourates/nouveau" className="ml-auto inline-flex items-center gap-1.5 rounded-lg bg-green text-white font-semibold px-4 py-2 hover:bg-green-deep transition-colors"><Plus className="w-4 h-4" /> Nouvelle sourate</Link>
       </div>
       {loading ? <div className="flex justify-center py-16"><Loader2 className="w-8 h-8 text-green animate-spin" /></div>
