@@ -36,11 +36,24 @@ export const AdminSourateForm: React.FC = () => {
   const set = (k: keyof typeof f) => (e: React.ChangeEvent<HTMLInputElement>) => setF((p) => ({ ...p, [k]: e.target.value }));
   const [versets, setVersets] = useState<Verset[]>([]);
   const [savantNames, setSavantNames] = useState<string[]>([]);
+  // nom de savant (minuscule) → titre de son tafsir (recueil type « tafsir »).
+  const [tafsirBySavant, setTafsirBySavant] = useState<Map<string, string>>(new Map());
 
-  // Noms de savants → autocomplétion du champ « Source » des exégèses.
+  // Noms de savants → autocomplétion du champ « Source » des exégèses ;
+  // tafsirs → association automatique du titre quand on choisit l'auteur.
   useEffect(() => {
     adminService.listSavants().then((s) => setSavantNames(s.map((x) => x.nom))).catch(() => {});
+    adminService.listTafsirsBySavant()
+      .then((rows) => setTafsirBySavant(new Map(rows.map((r) => [r.nom.trim().toLowerCase(), r.titre]))))
+      .catch(() => {});
   }, []);
+
+  // Saisie de la source : si la valeur correspond à un savant ayant un tafsir,
+  // on associe automatiquement le titre (« Savant — Titre du tafsir »).
+  const setSource = (vi: number, ei: number, val: string) => {
+    const t = tafsirBySavant.get(val.trim().toLowerCase());
+    patchExeg(vi, ei, { source: t ? `${val.trim()} — ${t}` : val });
+  };
 
   useEffect(() => {
     if (!editId) return;
@@ -153,7 +166,8 @@ export const AdminSourateForm: React.FC = () => {
                     </div>
                   </div>
                   <textarea className={`${field} min-h-[60px]`} value={ex.texte} onChange={(e) => patchExeg(vi, ei, { texte: e.target.value })} placeholder="Le commentaire (Markdown)…" />
-                  <input className={`${field} mt-2`} list="exeg-savants" value={ex.source} onChange={(e) => patchExeg(vi, ei, { source: e.target.value })} placeholder="Source — choisir un savant ou saisir (Ibn Kathīr, Al-Ṭabarī…)" />
+                  <input className={`${field} mt-2`} list="exeg-savants" value={ex.source} onChange={(e) => setSource(vi, ei, e.target.value)} placeholder="Source — choisir un savant ou saisir (Ibn Kathīr, Al-Ṭabarī…)" />
+                  <p className="text-[11px] text-muted mt-1">Choisir un savant qui a un tafsir associe automatiquement le titre de son tafsir.</p>
                 </div>
               ))}
               <button type="button" onClick={() => patchVerset(vi, { exegeses: [...v.exegeses, emptyExeg()] })} className="inline-flex items-center gap-1.5 rounded-lg border border-dashed border-green-line bg-green-soft text-green-deep font-semibold px-3 py-1.5 text-[13px]"><Plus className="w-3.5 h-3.5" /> Ajouter une exégèse</button>

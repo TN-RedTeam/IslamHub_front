@@ -51,6 +51,14 @@ class AdminService {
     const { data, error } = await supabase.from('savants').select('id,nom').order('nom');
     if (error) throw error; return (data ?? []) as SavantRow[];
   }
+  /** Tafsirs (recueils de type « tafsir ») → titre par nom de savant auteur. */
+  async listTafsirsBySavant(): Promise<{ nom: string; titre: string }[]> {
+    const { data, error } = await supabase.from('recueils').select('titre,type,savants(nom)').ilike('type', 'tafsir');
+    if (error) throw error;
+    return (data ?? [])
+      .map((r: Record<string, unknown>) => ({ nom: (r.savants as { nom?: string } | null)?.nom ?? '', titre: r.titre as string }))
+      .filter((x) => x.nom && x.titre);
+  }
   async getHadithForEdit(id: number): Promise<HadithEditShape | null> {
     const { data, error } = await supabase.rpc('admin_get_hadith', { p_id: id });
     if (error) throw error; return (data ?? null) as HadithEditShape | null;
