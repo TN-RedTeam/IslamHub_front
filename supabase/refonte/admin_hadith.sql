@@ -381,3 +381,14 @@ $$;
 --     mettant génération « Compagnon » et/ou un rôle.
 -- Front : formulaire savant, section « Repères », sélecteur Rôle honorifique
 --   (— aucun / Calife bien-guidé / Mère des croyants).
+
+-- ─────────────────────────────────────────────────────────────────────────
+-- Paroles : « commente un livre » ; page équivoque : titre = thème
+-- ─────────────────────────────────────────────────────────────────────────
+-- Migration parole_commente_livre : colonne paroles.commente_livre (texte libre).
+--   admin_get_parole / admin_save_parole / get_parole la gèrent. Front : champ
+--   « Commente un livre » dans le formulaire parole ; affiché sur la fiche parole.
+-- Front équivoques : l'en-tête de la fiche n'affiche plus « Le sens de … » ; le
+--   titre est le thème, l'eyebrow indique « Hadith/Verset équivoque ». Cartes de
+--   la liste uniformisées (thème = titre 2 lignes, arabe tronqué à 3 lignes,
+--   source sur une ligne).

@@ -267,13 +267,14 @@ export interface ParoleFormData {
   new_savant?: { nom: string } | null;
   rapporteur_savant_id?: number | null;
   commente_parole_id?: number | null;
+  commente_livre: string;
   images: ParoleImageInput[];
 }
 export interface ParoleEditShape {
   id: number; sujet: string | null; texte_arabe: string | null; texte_francais: string | null;
   phonetique: string | null; explication: string | null; source_livre: string | null; page: string | null;
   ecole: string | null; savant_id: number | null; tag: string | null;
-  rapporteur_savant_id: number | null; commente_parole_id: number | null;
+  rapporteur_savant_id: number | null; commente_parole_id: number | null; commente_livre: string | null;
   images: { image_url: string; alt: string | null; legende: string | null; source_livre: string | null; ordre: number | null }[];
 }
 

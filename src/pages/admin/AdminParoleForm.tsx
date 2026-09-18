@@ -22,7 +22,7 @@ export const AdminParoleForm: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [ok, setOk] = useState(false);
 
-  const [f, setF] = useState({ sujet: '', texte_arabe: '', texte_francais: '', phonetique: '', explication: '', source_livre: '', page: '', ecole: '', tag: '' });
+  const [f, setF] = useState({ sujet: '', texte_arabe: '', texte_francais: '', phonetique: '', explication: '', source_livre: '', page: '', ecole: '', tag: '', commente_livre: '' });
   const set = (k: keyof typeof f) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => setF((p) => ({ ...p, [k]: e.target.value }));
   const [savant, setSavant] = useState('');           // savant_id (string) ou NEW
   const [newSavant, setNewSavant] = useState('');
@@ -41,7 +41,7 @@ export const AdminParoleForm: React.FC = () => {
     if (!editId) return;
     adminService.getParoleForEdit(editId).then((p) => {
       if (!p) return;
-      setF({ sujet: p.sujet ?? '', texte_arabe: p.texte_arabe ?? '', texte_francais: p.texte_francais ?? '', phonetique: p.phonetique ?? '', explication: p.explication ?? '', source_livre: p.source_livre ?? '', page: p.page ?? '', ecole: p.ecole ?? '', tag: p.tag ?? '' });
+      setF({ sujet: p.sujet ?? '', texte_arabe: p.texte_arabe ?? '', texte_francais: p.texte_francais ?? '', phonetique: p.phonetique ?? '', explication: p.explication ?? '', source_livre: p.source_livre ?? '', page: p.page ?? '', ecole: p.ecole ?? '', tag: p.tag ?? '', commente_livre: p.commente_livre ?? '' });
       setSavant(p.savant_id ? String(p.savant_id) : '');
       setRapporteur(p.rapporteur_savant_id ? String(p.rapporteur_savant_id) : '');
       setCommente(p.commente_parole_id ? String(p.commente_parole_id) : '');
@@ -72,7 +72,7 @@ export const AdminParoleForm: React.FC = () => {
     try {
       const newId = await adminService.saveParole(buildPayload());
       setOk(true);
-      if (andNew) { setF({ sujet: '', texte_arabe: '', texte_francais: '', phonetique: '', explication: '', source_livre: '', page: '', ecole: '', tag: '' }); setSavant(''); setNewSavant(''); setRapporteur(''); setCommente(''); setImages([]); setTimeout(() => setOk(false), 2500); }
+      if (andNew) { setF({ sujet: '', texte_arabe: '', texte_francais: '', phonetique: '', explication: '', source_livre: '', page: '', ecole: '', tag: '', commente_livre: '' }); setSavant(''); setNewSavant(''); setRapporteur(''); setCommente(''); setImages([]); setTimeout(() => setOk(false), 2500); }
       else { navigate(`/admin/paroles/${newId}`, { replace: true }); setTimeout(() => setOk(false), 2500); }
     } catch (e) {
       const msg = (e as Error).message || 'Erreur à l’enregistrement.';
@@ -131,6 +131,10 @@ export const AdminParoleForm: React.FC = () => {
               <option value="">— (aucune)</option>
               {paroles.filter((o) => o.id !== editId).map((o) => <option key={o.id} value={o.id}>{o.label}</option>)}
             </select></div>
+        </div>
+        <div className="mt-3.5">
+          <label className={label}>Commente un livre <span className="text-muted font-normal">(titre du livre commenté, optionnel)</span></label>
+          <input className={field} value={f.commente_livre} onChange={set('commente_livre')} placeholder="Ex. Al-Fiqh al-Akbar de Abou Hanifa" />
         </div>
       </section>
 

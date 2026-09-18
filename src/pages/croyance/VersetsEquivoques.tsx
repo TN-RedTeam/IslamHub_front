@@ -139,21 +139,22 @@ export const VersetsEquivoques: React.FC = () => {
                   to={`/croyance/versets-hadiths-equivoques/${v.slug}`}
                   className="group flex flex-col gap-3 h-full rounded-card border border-line bg-surface p-5 shadow-card hover:shadow-card-hover hover:-translate-y-0.5 hover:border-green transition-all motion-reduce:transition-none motion-reduce:hover:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green"
                 >
-                  <div className="flex items-center justify-between gap-2.5">
-                    <span className="inline-flex items-center gap-1.5">
-                      <span className={`text-[10.5px] font-semibold uppercase tracking-wide px-2 py-0.5 rounded-full border ${
-                        v.type === 'hadith' ? 'bg-gold-soft text-[#7a5a17] border-[#e6d3a3]' : 'bg-green-soft text-green-deep border-green-line'
-                      }`}>{v.type === 'hadith' ? 'Hadith' : 'Verset'}</span>
-                      <span className="text-[11.5px] font-semibold text-green-deep bg-green-soft border border-green-line px-2.5 py-1 rounded-full">{v.theme}</span>
-                    </span>
-                    <span className="text-xs text-muted tabular-nums whitespace-nowrap text-right">
+                  {/* Méta : type + source, sur une seule ligne */}
+                  <div className="flex items-center justify-between gap-2">
+                    <span className={`shrink-0 text-[10.5px] font-semibold uppercase tracking-wide px-2 py-0.5 rounded-full border ${
+                      v.type === 'hadith' ? 'bg-gold-soft text-[#7a5a17] border-[#e6d3a3]' : 'bg-green-soft text-green-deep border-green-line'
+                    }`}>{v.type === 'hadith' ? 'Hadith' : 'Verset'}</span>
+                    <span className="min-w-0 truncate text-xs text-muted tabular-nums text-right">
                       {v.type === 'hadith'
                         ? [v.rapporteur, v.recueil].filter(Boolean).join(' · ')
                         : `${v.sourate}${v.ayah != null ? ` : ${v.ayah}` : ''}`}
                     </span>
                   </div>
-                  <p className="font-arabic text-2xl leading-[1.9] text-right text-ink my-0.5" lang="ar" dir="rtl">{v.verset_arabe}</p>
-                  {v.sens_juste && <p className="text-sm text-ink/80">{snippet(v.sens_juste)}</p>}
+                  {/* Thème = titre de la carte (2 lignes max, hauteur réservée pour l'alignement) */}
+                  <h3 className="font-display font-semibold text-green-deep text-[16.5px] leading-snug line-clamp-2 min-h-[2.6em]">{v.theme}</h3>
+                  {/* Texte arabe tronqué à 3 lignes pour des cartes uniformes */}
+                  <p className="font-arabic text-2xl leading-[1.9] text-right text-ink line-clamp-3 [overflow-wrap:anywhere]" lang="ar" dir="rtl">{v.verset_arabe}</p>
+                  {v.sens_juste && <p className="text-sm text-ink/80 line-clamp-2">{snippet(v.sens_juste)}</p>}
                   <span className="mt-auto pt-2 inline-flex items-center gap-1.5 text-[13.5px] font-semibold text-green group-hover:gap-2.5 transition-all motion-reduce:transition-none">
                     Voir l'explication <ArrowRight className="w-4 h-4" />
                   </span>

@@ -38,7 +38,8 @@ export const VersetEquivoque: React.FC = () => {
   const [box, setBox] = useState<LightboxImage | null>(null);
 
   const v = data?.verset;
-  const title = v ? `Le sens de « ${v.theme} »` : 'Verset équivoque';
+  const title = v ? v.theme : 'Verset équivoque';
+  const eyebrow = v ? (v.type === 'hadith' ? 'Hadith équivoque' : 'Verset équivoque') : '';
 
   useSeo({ title, description: v?.sens_juste || undefined });
 
@@ -146,7 +147,7 @@ export const VersetEquivoque: React.FC = () => {
           <Link to="/croyance" className="hover:text-green-deep">Croyance</Link> <span aria-hidden>·</span>{' '}
           <Link to="/croyance/versets-hadiths-equivoques" className="hover:text-green-deep">Versets et hadiths équivoques</Link>
         </nav>
-        <p className="text-[11.5px] font-semibold uppercase tracking-[0.2em] text-gold mb-1">{v.theme}</p>
+        <p className="text-[11.5px] font-semibold uppercase tracking-[0.2em] text-gold mb-1">{eyebrow}</p>
         <h1 className="font-display font-semibold text-green-deep leading-tight" style={{ fontSize: 'clamp(26px,4vw,38px)' }}>{title}</h1>
 
         {/* Verset ou hadith équivoque */}
