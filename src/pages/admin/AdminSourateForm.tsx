@@ -34,6 +34,12 @@ export const AdminSourateForm: React.FC = () => {
   const [f, setF] = useState(blank);
   const set = (k: keyof typeof f) => (e: React.ChangeEvent<HTMLInputElement>) => setF((p) => ({ ...p, [k]: e.target.value }));
   const [versets, setVersets] = useState<Verset[]>([]);
+  const [savantNames, setSavantNames] = useState<string[]>([]);
+
+  // Noms de savants → autocomplétion du champ « Source » des exégèses.
+  useEffect(() => {
+    adminService.listSavants().then((s) => setSavantNames(s.map((x) => x.nom))).catch(() => {});
+  }, []);
 
   useEffect(() => {
     if (!editId) return;
@@ -81,6 +87,8 @@ export const AdminSourateForm: React.FC = () => {
 
   return (
     <div className="max-w-3xl px-6 py-8 pb-28">
+      {/* Autocomplétion « Source » des exégèses : noms de savants (table savants) */}
+      <datalist id="exeg-savants">{savantNames.map((n) => <option key={n} value={n} />)}</datalist>
       <p className="text-xs text-muted"><Link to="/admin/sourates" className="hover:text-green-deep">Coran — exégèse</Link> · {editId ? 'Modifier' : 'Nouvelle'}</p>
       <h1 className="font-display font-semibold text-green-deep text-3xl mt-1 mb-1">{editId ? 'Modifier la sourate' : 'Nouvelle sourate'}</h1>
       <p className="text-muted text-sm mb-6">Le texte arabe collé ici est enregistré tel quel (UTF-8).</p>
@@ -144,7 +152,7 @@ export const AdminSourateForm: React.FC = () => {
                     </div>
                   </div>
                   <textarea className={`${field} min-h-[60px]`} value={ex.texte} onChange={(e) => patchExeg(vi, ei, { texte: e.target.value })} placeholder="Le commentaire (Markdown)…" />
-                  <input className={`${field} mt-2`} value={ex.source} onChange={(e) => patchExeg(vi, ei, { source: e.target.value })} placeholder="Source (Ibn Kathīr, Al-Ṭabarī…)" />
+                  <input className={`${field} mt-2`} list="exeg-savants" value={ex.source} onChange={(e) => patchExeg(vi, ei, { source: e.target.value })} placeholder="Source — choisir un savant ou saisir (Ibn Kathīr, Al-Ṭabarī…)" />
                 </div>
               ))}
               <button type="button" onClick={() => patchVerset(vi, { exegeses: [...v.exegeses, emptyExeg()] })} className="inline-flex items-center gap-1.5 rounded-lg border border-dashed border-green-line bg-green-soft text-green-deep font-semibold px-3 py-1.5 text-[13px]"><Plus className="w-3.5 h-3.5" /> Ajouter une exégèse</button>
