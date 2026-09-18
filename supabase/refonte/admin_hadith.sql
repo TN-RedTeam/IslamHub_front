@@ -407,3 +407,19 @@ $$;
 --   équivoques » où l'on saisit les arguments (blocs / sens juste / objection /
 --   réponse) ; une fois la fiche publiée, la fiche publique du hadith affiche
 --   l'analyse (blocs) + un lien vers l'analyse complète.
+
+-- ─────────────────────────────────────────────────────────────────────────
+-- Hadith ↔ équivoque : rattachement des existants + symétrie
+-- ─────────────────────────────────────────────────────────────────────────
+-- Migration backfill_equivoque_hadiths : les hadiths équivoques existants
+--   (type='hadith', sans hadith_id) sont rattachés à la rubrique Hadiths — liés
+--   au hadith de même texte (normalize_ar) si présent, sinon un hadith est créé
+--   (sujet=theme, textes copiés, tag « équivoque ») — puis hadith_id est posé.
+-- Migration equivoque_to_hadith_reverse : admin_save_verset_equivoque crée/relie
+--   désormais un hadith pour tout hadith équivoque sans hadith_id (symétrie avec
+--   admin_save_hadith.is_equivoque). Résultat : quel que soit le point d'entrée
+--   (Hadiths ou Équivoques), le hadith équivoque apparaît dans les deux rubriques.
+
+-- Data : tag des 5 hadiths équivoques standardisé — ajout de « équivoque » et
+--   « interprétation » (fusion non destructive, tags existants conservés),
+--   thèmes re-déduits.
