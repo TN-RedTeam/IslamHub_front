@@ -293,3 +293,13 @@ $$;
 --   normalisation que arabe_hash : hamza unifiée, harakât/tatwil/guillemets
 --   retirés, espaces compactés). Les colonnes arabes sont aussi ajoutées aux
 --   extraits. Le motif latin existant est conservé (recherche FR inchangée).
+
+-- ─────────────────────────────────────────────────────────────────────────
+-- Recherche par liste (barres de recherche) insensible aux harakât — suite
+-- ─────────────────────────────────────────────────────────────────────────
+-- search_hadiths / search_paroles intégraient déjà normalize_ar(texte_arabe).
+-- Migration : search_arabic_normalize_coran_invocations — même clause ajoutée à
+--   search_coran, search_invocations, search_dhikrs, search_douaas :
+--   « or normalize_ar(texte_arabe) ilike '%'||normalize_ar(q)||'%' ».
+--   Toutes les barres de recherche admin retrouvent désormais un texte arabe
+--   quelle que soit sa vocalisation (harakât, hamza). Aucun changement front.
