@@ -246,3 +246,35 @@ $$;
 --   dossier (croyance / preuves / objection / réponse) → contenu_blocs.
 -- Page /dossiers/:slug : privilégie les blocs quand ils existent (repli legacy).
 -- Admin dossier : éditeur de blocs (section 7).
+
+-- ─────────────────────────────────────────────────────────────────────────
+-- Hadiths — rapporteurs & narrateurs individuels (filtrage + saisie multiple)
+-- ─────────────────────────────────────────────────────────────────────────
+-- Constat : hadiths.rapporteur / hadiths.narrateur sont des TEXTES agrégés
+--   (« Abou Dawoud, Ahmad Ibn Hanbal, At-Tirmidhi ») régénérés par les triggers
+--   sync_hadith_rapporteurs / sync_hadith_narrateurs depuis les tables de
+--   liaison (source de vérité) hadith_rapporteurs / hadith_narrateurs.
+--   Côté public le filtre proposait ces chaînes agrégées → impossible de
+--   filtrer par « Al-Bukhari » seul ; côté admin la saisie était mono-valeur
+--   (datalist rapporteur + select narrateur).
+--
+-- Migration : hadith_filters_by_individual
+--   hadith_rubriques() : rapporteurs = DISTINCT savants.nom via hadith_rapporteurs ;
+--     narrateurs = DISTINCT narrateurs.nom via hadith_narrateurs (noms unitaires).
+--   search_hadiths() : rapporteur_filter / narrateur_filter deviennent des
+--     EXISTS sur les liaisons (match d'UN nom exact), plus d'ilike sur l'agrégat.
+--     Génération / rôle / sexe du narrateur pris sur la 1re liaison (order n.id).
+--   → aucun changement front : la page Hadiths consomme ces RPCs directement.
+--
+-- Migration : admin_hadith_multi_rapporteurs
+--   admin_get_hadith(id) : renvoie en plus rapporteur_ids[] (hadith_rapporteurs)
+--     et narrateur_ids[] (hadith_narrateurs).
+--   admin_save_hadith(p) : accepte rapporteur_ids[] / narrateur_ids[] ;
+--     new_narrateur (facultatif) crée le Compagnon (on conflict nom) et l'ajoute.
+--     Les liaisons sont remplacées (delete + insert filtré sur l'existence) ;
+--     le texte rapporteur/narrateur est laissé au trigger (mis à null à l'écriture
+--     quand des ids sont fournis). Sources & thèmes inchangés.
+-- Admin (front) : section 3 « Narrateurs & rapporteurs » = deux sélecteurs
+--   multiples avec recherche (puces retirables). Rapporteurs = savants ;
+--   narrateurs = Compagnons + création d'un nouveau narrateur. AdminService :
+--   HadithFormData / HadithEditShape portent rapporteur_ids[] / narrateur_ids[].

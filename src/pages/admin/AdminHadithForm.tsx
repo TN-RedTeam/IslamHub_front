@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { DeleteEntryButton } from '../../components/admin/DeleteEntryButton';
 import { useNavigate, useParams, Link } from 'react-router-dom';
-import { Loader2, Plus, Trash2, Check, AlertTriangle } from 'lucide-react';
+import { Loader2, Plus, Trash2, Check, AlertTriangle, X } from 'lucide-react';
 import { adminService, type NarrateurRow, type RecueilRow, type SavantRow, type HadithFormData, type HadithSourceInput } from '../../services/AdminService';
 import type { ThemeRef } from '../../types';
 
@@ -17,6 +17,69 @@ const emptySrc = (): Src => ({ key: Math.random().toString(36).slice(2), recueil
 const label = 'block text-[13px] font-semibold text-ink mb-1.5';
 const field = 'w-full rounded-lg border border-line bg-surface px-3 py-2.5 text-[15px] text-ink focus:outline-none focus:ring-2 focus:ring-green';
 
+/**
+ * Sélecteur multiple avec recherche : on choisit des entités (savants, narrateurs)
+ * une par une, affichées ensuite sous forme de puces retirables. La valeur sortante
+ * est un tableau d'identifiants — c'est ce qu'attend `admin_save_hadith`.
+ */
+const MultiPicker: React.FC<{
+  options: { id: number; nom: string }[];
+  selected: number[];
+  onChange: (ids: number[]) => void;
+  placeholder?: string;
+}> = ({ options, selected, onChange, placeholder }) => {
+  const [q, setQ] = useState('');
+  const [open, setOpen] = useState(false);
+  const byId = useMemo(() => new Map(options.map((o) => [o.id, o.nom])), [options]);
+  const filtered = useMemo(() => {
+    const needle = q.trim().toLowerCase();
+    return options
+      .filter((o) => !selected.includes(o.id) && (!needle || o.nom.toLowerCase().includes(needle)))
+      .slice(0, 40);
+  }, [options, selected, q]);
+  const add = (id: number) => { onChange([...selected, id]); setQ(''); };
+  const remove = (id: number) => onChange(selected.filter((x) => x !== id));
+  return (
+    <div>
+      {selected.length > 0 && (
+        <div className="flex flex-wrap gap-1.5 mb-2">
+          {selected.map((id) => (
+            <span key={id} className="inline-flex items-center gap-1 rounded-full bg-green-soft text-green-deep border border-green-line px-2.5 py-1 text-[13px]">
+              {byId.get(id) ?? `#${id}`}
+              <button type="button" onClick={() => remove(id)} className="text-green-deep/70 hover:text-red-600" aria-label="Retirer"><X className="w-3.5 h-3.5" /></button>
+            </span>
+          ))}
+        </div>
+      )}
+      <div className="relative">
+        <input
+          className={field}
+          value={q}
+          placeholder={placeholder}
+          onFocus={() => setOpen(true)}
+          onChange={(e) => { setQ(e.target.value); setOpen(true); }}
+          onBlur={() => setTimeout(() => setOpen(false), 150)}
+        />
+        {open && filtered.length > 0 && (
+          <div className="absolute z-20 left-0 right-0 mt-1 max-h-60 overflow-auto rounded-lg border border-line bg-surface shadow-lg py-1">
+            {filtered.map((o) => (
+              <button
+                key={o.id}
+                type="button"
+                onMouseDown={(e) => e.preventDefault()}
+                onClick={() => add(o.id)}
+                className="block w-full text-left px-3.5 py-2 text-[14px] text-ink hover:bg-green-soft"
+              >
+                {o.nom}
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
 export const AdminHadithForm: React.FC = () => {
   const { id } = useParams();
   const editId = id ? Number(id) : null;
@@ -25,7 +88,6 @@ export const AdminHadithForm: React.FC = () => {
   const [narrateurs, setNarrateurs] = useState<NarrateurRow[]>([]);
   const [recueils, setRecueils] = useState<RecueilRow[]>([]);
   const [savants, setSavants] = useState<SavantRow[]>([]);
-  const [rapporteurs, setRapporteurs] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -34,19 +96,22 @@ export const AdminHadithForm: React.FC = () => {
   // Champs
   const [f, setF] = useState({
     sujet: '', texte_arabe: '', texte_francais: '', phonetique: '', explication: '',
-    degre_authenticite: 'Sahih', type_hadith: '', juge_par: '', rapporteur: '', tag: '',
+    degre_authenticite: 'Sahih', type_hadith: '', juge_par: '', tag: '',
   });
   const set = (k: keyof typeof f) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) =>
     setF((prev) => ({ ...prev, [k]: e.target.value }));
 
-  const [narr, setNarr] = useState('');                 // nom sélectionné, ou NEW
+  // Rapporteurs (savants) & narrateurs (Compagnons) : listes d'identifiants.
+  const [rapporteurIds, setRapporteurIds] = useState<number[]>([]);
+  const [narrateurIds, setNarrateurIds] = useState<number[]>([]);
+  const [addingNarr, setAddingNarr] = useState(false);
   const [newNarr, setNewNarr] = useState({ nom: '', generation: 'sahabi', role: '', sexe: 'm' });
   const [sources, setSources] = useState<Src[]>([emptySrc()]);
   const [derived, setDerived] = useState<ThemeRef[]>([]);
 
   useEffect(() => {
-    Promise.all([adminService.listNarrateurs(), adminService.listRecueils(), adminService.listSavants(), adminService.listRapporteurs()])
-      .then(([n, r, s, rap]) => { setNarrateurs(n); setRecueils(r); setSavants(s); setRapporteurs(rap); })
+    Promise.all([adminService.listNarrateurs(), adminService.listRecueils(), adminService.listSavants()])
+      .then(([n, r, s]) => { setNarrateurs(n); setRecueils(r); setSavants(s); })
       .catch(() => setError("Impossible de charger les référentiels."))
       .finally(() => setLoading(false));
   }, []);
@@ -58,9 +123,10 @@ export const AdminHadithForm: React.FC = () => {
       setF({
         sujet: h.sujet ?? '', texte_arabe: h.texte_arabe ?? '', texte_francais: h.texte_francais ?? '',
         phonetique: h.phonetique ?? '', explication: h.explication ?? '', degre_authenticite: h.degre_authenticite ?? '',
-        type_hadith: h.type_hadith ?? '', juge_par: h.juge_par ?? '', rapporteur: h.rapporteur ?? '', tag: h.tag ?? '',
+        type_hadith: h.type_hadith ?? '', juge_par: h.juge_par ?? '', tag: h.tag ?? '',
       });
-      setNarr(h.narrateur ?? '');
+      setRapporteurIds(h.rapporteur_ids ?? []);
+      setNarrateurIds(h.narrateur_ids ?? []);
       setSources(h.sources.length ? h.sources.map((s) => ({ ...emptySrc(), recueil_id: String(s.recueil_id), numero: s.numero ?? '', chapitre: s.chapitre ?? '' })) : [emptySrc()]);
     }).catch(() => setError("Hadith introuvable."));
   }, [editId]);
@@ -80,8 +146,9 @@ export const AdminHadithForm: React.FC = () => {
   const buildPayload = (): HadithFormData => ({
     id: editId,
     ...f,
-    narrateur: narr === NEW ? newNarr.nom : narr,
-    new_narrateur: narr === NEW && newNarr.nom.trim() ? newNarr : null,
+    rapporteur_ids: rapporteurIds,
+    narrateur_ids: narrateurIds,
+    new_narrateur: addingNarr && newNarr.nom.trim() ? newNarr : null,
     sources: sources.map<HadithSourceInput>((s) => s.recueil_id === NEW
       ? { new_recueil: { titre: s.new_titre.trim(), savant_id: s.new_savant ? Number(s.new_savant) : null }, numero: s.numero || null, chapitre: s.chapitre || null }
       : { recueil_id: s.recueil_id ? Number(s.recueil_id) : null, numero: s.numero || null, chapitre: s.chapitre || null },
@@ -94,8 +161,9 @@ export const AdminHadithForm: React.FC = () => {
       const newId = await adminService.saveHadith(buildPayload());
       setOk(true);
       if (andNew) {
-        setF({ sujet: '', texte_arabe: '', texte_francais: '', phonetique: '', explication: '', degre_authenticite: 'Sahih', type_hadith: '', juge_par: '', rapporteur: '', tag: '' });
-        setNarr(''); setSources([emptySrc()]); setTimeout(() => setOk(false), 2500);
+        setF({ sujet: '', texte_arabe: '', texte_francais: '', phonetique: '', explication: '', degre_authenticite: 'Sahih', type_hadith: '', juge_par: '', tag: '' });
+        setRapporteurIds([]); setNarrateurIds([]); setAddingNarr(false); setNewNarr({ nom: '', generation: 'sahabi', role: '', sexe: 'm' });
+        setSources([emptySrc()]); setTimeout(() => setOk(false), 2500);
       } else {
         navigate(`/admin/hadiths/${newId}`, { replace: true });
         setTimeout(() => setOk(false), 2500);
@@ -141,32 +209,39 @@ export const AdminHadithForm: React.FC = () => {
         <div className="mt-3.5"><label className={label}>Jugé authentique par <span className="text-muted font-normal">(noms séparés par des virgules)</span></label><input className={field} value={f.juge_par} onChange={set('juge_par')} placeholder="Al-Bukhari, Ibn Hibban" /></div>
       </section>
 
-      {/* 3. Narrateur & rapporteur */}
+      {/* 3. Narrateurs & rapporteurs */}
       <section className="rounded-card border border-line bg-surface p-5 mb-4">
-        <h2 className="font-display font-semibold text-green-deep text-lg mb-4">3 · Narrateur & rapporteur</h2>
-        <div className="grid sm:grid-cols-2 gap-3.5">
+        <h2 className="font-display font-semibold text-green-deep text-lg mb-1">3 · Narrateurs & rapporteurs</h2>
+        <p className="text-xs text-muted mb-4">Un hadith peut être rapporté par plusieurs savants et remonter à plusieurs Compagnons. Ajoute-les un par un&nbsp;: chacun devient filtrable individuellement sur le site.</p>
+        <div className="grid sm:grid-cols-2 gap-5">
           <div>
-            <label className={label}>Narrateur <span className="text-muted font-normal">(le Compagnon)</span></label>
-            <select className={field} value={narr} onChange={(e) => setNarr(e.target.value)}>
-              <option value="">—</option>
-              {narrateurs.map((n) => <option key={n.id} value={n.nom}>{n.nom}</option>)}
-              <option value={NEW}>＋ Nouveau narrateur…</option>
-            </select>
+            <label className={label}>Rapporteurs <span className="text-muted font-normal">(savants)</span></label>
+            <MultiPicker options={savants} selected={rapporteurIds} onChange={setRapporteurIds} placeholder="Chercher un savant (ex. Al-Bukhari)…" />
           </div>
           <div>
-            <label className={label}>Rapporteur <span className="text-muted font-normal">(liste + saisie libre)</span></label>
-            <input className={field} list="rapporteurs-list" value={f.rapporteur} onChange={set('rapporteur')} placeholder="Al-Bukhari" />
-            <datalist id="rapporteurs-list">{rapporteurs.map((r) => <option key={r} value={r} />)}</datalist>
+            <label className={label}>Narrateurs <span className="text-muted font-normal">(Compagnons)</span></label>
+            <MultiPicker options={narrateurs} selected={narrateurIds} onChange={setNarrateurIds} placeholder="Chercher un Compagnon…" />
+            {!addingNarr ? (
+              <button type="button" onClick={() => setAddingNarr(true)} className="mt-2 inline-flex items-center gap-1.5 text-green-deep font-semibold text-[13px] hover:underline">
+                <Plus className="w-3.5 h-3.5" /> Nouveau narrateur
+              </button>
+            ) : (
+              <div className="mt-3 grid gap-2.5 rounded-lg border border-dashed border-green-line bg-green-soft/40 p-3.5">
+                <div className="flex items-center justify-between">
+                  <p className="text-[13px] font-semibold text-ink">Nouveau narrateur</p>
+                  <button type="button" onClick={() => { setAddingNarr(false); setNewNarr({ nom: '', generation: 'sahabi', role: '', sexe: 'm' }); }} className="text-muted hover:text-red-600" aria-label="Annuler"><X className="w-4 h-4" /></button>
+                </div>
+                <div><label className={label}>Nom</label><input className={field} value={newNarr.nom} onChange={(e) => setNewNarr({ ...newNarr, nom: e.target.value })} placeholder="Ex. Anas ibn Malik" /></div>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+                  <div><label className={label}>Génération</label><select className={field} value={newNarr.generation} onChange={(e) => setNewNarr({ ...newNarr, generation: e.target.value })}>{GENERATIONS.map((g) => <option key={g}>{g}</option>)}</select></div>
+                  <div><label className={label}>Rôle</label><select className={field} value={newNarr.role} onChange={(e) => setNewNarr({ ...newNarr, role: e.target.value })}>{ROLES.map((r) => <option key={r.v} value={r.v}>{r.l}</option>)}</select></div>
+                  <div><label className={label}>Sexe</label><select className={field} value={newNarr.sexe} onChange={(e) => setNewNarr({ ...newNarr, sexe: e.target.value })}><option value="m">Homme</option><option value="f">Femme</option></select></div>
+                </div>
+                <p className="text-[12px] text-muted">Il sera créé puis ajouté aux narrateurs de ce hadith à l’enregistrement.</p>
+              </div>
+            )}
           </div>
         </div>
-        {narr === NEW && (
-          <div className="mt-3.5 grid sm:grid-cols-2 gap-3.5 rounded-lg border border-dashed border-green-line bg-green-soft/40 p-3.5">
-            <div><label className={label}>Nom du narrateur</label><input className={field} value={newNarr.nom} onChange={(e) => setNewNarr({ ...newNarr, nom: e.target.value })} placeholder="Ex. Anas ibn Malik" /></div>
-            <div><label className={label}>Génération</label><select className={field} value={newNarr.generation} onChange={(e) => setNewNarr({ ...newNarr, generation: e.target.value })}>{GENERATIONS.map((g) => <option key={g}>{g}</option>)}</select></div>
-            <div><label className={label}>Rôle (badge)</label><select className={field} value={newNarr.role} onChange={(e) => setNewNarr({ ...newNarr, role: e.target.value })}>{ROLES.map((r) => <option key={r.v} value={r.v}>{r.l}</option>)}</select></div>
-            <div><label className={label}>Sexe (honorifique)</label><select className={field} value={newNarr.sexe} onChange={(e) => setNewNarr({ ...newNarr, sexe: e.target.value })}><option value="m">Homme</option><option value="f">Femme</option></select></div>
-          </div>
-        )}
       </section>
 
       {/* 4. Sources */}
