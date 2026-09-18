@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Loader2, Plus, Search } from 'lucide-react';
 import { adminService, type SavantFullRow, type EcoleRow } from '../../services/AdminService';
-import { CountBadge } from '../../components/admin/AdminListUI';
+import { CountBadge, IdTag } from '../../components/admin/AdminListUI';
 
 const GEN_LABEL: Record<string, string> = {
   sahabi: 'Compagnon', salaf: 'Salaf', tabii: 'Tābiʿī', tabi_tabii: 'Tābiʿ al-tābiʿīn', khalaf: 'Khalaf',
@@ -48,6 +48,7 @@ export const AdminSavantsList: React.FC = () => {
             {filtered.map((s) => (
               <li key={s.id}>
                 <Link to={`/admin/savants/${s.id}`} className="flex items-center gap-3 px-4 py-3 hover:bg-green-soft transition-colors">
+                  <IdTag id={s.id} />
                   <span className="text-ink font-medium min-w-0 truncate">{s.nom}</span>
                   {ecoleName(s.ecole_id) && <span className="text-[11px] px-2 py-0.5 rounded-full bg-green-soft text-green-deep border border-green-line shrink-0">{ecoleName(s.ecole_id)}</span>}
                   {s.generation && GEN_LABEL[s.generation] && <span className="text-[11px] px-2 py-0.5 rounded-full bg-ground text-muted border border-line shrink-0">{GEN_LABEL[s.generation]}</span>}

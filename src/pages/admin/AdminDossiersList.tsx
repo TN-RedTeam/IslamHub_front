@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Loader2, Plus, Search } from 'lucide-react';
 import { adminService, type DossierListRow } from '../../services/AdminService';
-import { CountBadge } from '../../components/admin/AdminListUI';
+import { CountBadge, IdTag } from '../../components/admin/AdminListUI';
 
 export const AdminDossiersList: React.FC = () => {
   const [items, setItems] = useState<DossierListRow[]>([]);
@@ -37,6 +37,7 @@ export const AdminDossiersList: React.FC = () => {
             {filtered.map((d) => (
               <li key={d.id}>
                 <Link to={`/admin/dossiers/${d.id}`} className="flex items-center gap-3 px-4 py-3 hover:bg-green-soft transition-colors">
+                  <IdTag id={d.id} />
                   <span className="text-ink font-medium min-w-0 truncate">{d.h1}</span>
                   {!d.published && <span className="text-[10.5px] px-2 py-0.5 rounded-full bg-ground text-muted border border-line shrink-0">brouillon</span>}
                   <span className="ml-auto text-muted text-sm shrink-0">Modifier →</span>

@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Loader2, Plus, Search } from 'lucide-react';
 import { adminService, type InvocationRow } from '../../services/AdminService';
-import { CountBadge } from '../../components/admin/AdminListUI';
+import { CountBadge, IdTag } from '../../components/admin/AdminListUI';
 
 export const AdminInvocationsList: React.FC = () => {
   const [items, setItems] = useState<InvocationRow[]>([]);
@@ -37,6 +37,7 @@ export const AdminInvocationsList: React.FC = () => {
             {filtered.map((i) => (
               <li key={i.id}>
                 <Link to={`/admin/invocations/${i.id}`} className="flex items-center gap-3 px-4 py-3 hover:bg-green-soft transition-colors">
+                  <IdTag id={i.id} />
                   <span className={`text-[10.5px] font-semibold uppercase tracking-wide px-2 py-0.5 rounded-full border shrink-0 ${
                     i.type_id === 2 ? 'bg-gold-soft text-[#7a5a17] border-[#e6d3a3]' : 'bg-green-soft text-green-deep border-green-line'
                   }`}>{i.type_id === 2 ? 'Évocation' : 'Invocation'}</span>

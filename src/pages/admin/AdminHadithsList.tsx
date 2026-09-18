@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Loader2, Search, Plus } from 'lucide-react';
 import { dataService } from '../../services/DataService';
-import { CountBadge, Pagination } from '../../components/admin/AdminListUI';
+import { CountBadge, Pagination, IdTag } from '../../components/admin/AdminListUI';
 import type { Hadith } from '../../types';
 
 const PAGE_SIZE = 50;
@@ -55,6 +55,7 @@ export const AdminHadithsList: React.FC = () => {
             {items.map((h) => (
               <li key={h.id}>
                 <Link to={`/admin/hadiths/${h.id}`} className="flex items-center gap-3 px-4 py-3 hover:bg-green-soft transition-colors">
+                  <IdTag id={h.id} />
                   <span className="text-ink font-medium">{h.sujet || `Hadith #${h.id}`}</span>
                   {h.statut && <span className="text-[11px] px-2 py-0.5 rounded-full bg-green-soft text-green-deep border border-green-line">{h.statut}</span>}
                   <span className="ml-auto text-muted text-sm">Modifier →</span>

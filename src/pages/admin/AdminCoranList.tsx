@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Loader2, Plus, Search } from 'lucide-react';
 import { adminService, type CoranRow } from '../../services/AdminService';
-import { CountBadge } from '../../components/admin/AdminListUI';
+import { CountBadge, IdTag } from '../../components/admin/AdminListUI';
 
 export const AdminCoranList: React.FC = () => {
   const [items, setItems] = useState<CoranRow[]>([]);
@@ -37,6 +37,7 @@ export const AdminCoranList: React.FC = () => {
             {filtered.map((c) => (
               <li key={c.id}>
                 <Link to={`/admin/coran/${c.id}`} className="flex items-center gap-3 px-4 py-3 hover:bg-green-soft transition-colors">
+                  <IdTag id={c.id} />
                   <span className="text-ink font-medium">{c.sujet}</span>
                   {c.sourate && <span className="text-[11px] px-2 py-0.5 rounded-full bg-green-soft text-green-deep border border-green-line">{c.sourate}</span>}
                   <span className="ml-auto text-muted text-sm">Modifier →</span>

@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Loader2, Plus, Search } from 'lucide-react';
 import { adminService, type VersetListRow } from '../../services/AdminService';
-import { CountBadge } from '../../components/admin/AdminListUI';
+import { CountBadge, IdTag } from '../../components/admin/AdminListUI';
 
 export const AdminEquivoquesList: React.FC = () => {
   const [items, setItems] = useState<VersetListRow[]>([]);
@@ -37,6 +37,7 @@ export const AdminEquivoquesList: React.FC = () => {
             {filtered.map((v) => (
               <li key={v.id}>
                 <Link to={`/admin/equivoques/${v.id}`} className="flex items-center gap-3 px-4 py-3 hover:bg-green-soft transition-colors">
+                  <IdTag id={v.id} />
                   <span className={`text-[10.5px] font-semibold uppercase tracking-wide px-2 py-0.5 rounded-full border shrink-0 ${
                     v.type === 'hadith' ? 'bg-gold-soft text-[#7a5a17] border-[#e6d3a3]' : 'bg-green-soft text-green-deep border-green-line'
                   }`}>{v.type === 'hadith' ? 'Hadith' : 'Verset'}</span>
