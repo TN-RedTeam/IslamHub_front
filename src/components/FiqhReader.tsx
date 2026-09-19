@@ -39,7 +39,7 @@ export const FiqhReader: React.FC<{ chapitres: FiqhChapitre[] }> = ({ chapitres 
     })),
   }));
 
-  return <DocReader sections={sections} searchPlaceholder="Rechercher un point de fiqh…" />;
+  return <DocReader sections={sections} searchPlaceholder="Rechercher un point de fiqh…" title="Fiqh" />;
 };
 
 export default FiqhReader;
