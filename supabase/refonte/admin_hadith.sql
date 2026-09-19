@@ -471,3 +471,13 @@ $$;
 --   Admin : champ « Jusqu'au verset (plage) » sur chaque exégèse (regroupe sans
 --   re-saisir). Public : versets regroupés par plage (badge « Versets D à F »),
 --   exégèses de la plage réunies sous l'accordéon.
+
+-- Ajustement Phase 6 (retour lecture verset par verset) :
+--   Le HashRouter rendait les ancres href="#vN"/#full inutilisables (→ 404).
+--   Retiré : « Lire la sourate entière » (6.6 front + asset public/data), le
+--   bouton « Aller à l'exégèse », le navigateur de versets, le regroupement par
+--   plage à l'affichage (6.2). La page redevient une carte par verset, chaque
+--   carte étant repliable (le verset reste visible, traduction + exégèse au clic).
+--   Le commentaire/introduction passe dans l'en-tête, près du nom de la sourate.
+--   Colonnes DB conservées (introduction_md, ordre_revelation, exegeses.verset_fin)
+--   — verset_fin dormant (plus d'UI), les autres toujours utilisées.
