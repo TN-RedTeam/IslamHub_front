@@ -48,7 +48,7 @@ export const FemmesReader: React.FC<{ chapitres: FemmesChapitre[] }> = ({ chapit
   }));
 
   const sections: ReaderSection[] = [{ items }];
-  return <DocReader sections={sections} searchPlaceholder="Rechercher un cours…" />;
+  return <DocReader sections={sections} searchPlaceholder="Rechercher un cours…" title="La femme musulmane" />;
 };
 
 export default FemmesReader;
