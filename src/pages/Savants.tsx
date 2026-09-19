@@ -86,29 +86,19 @@ export const Savants: React.FC = () => {
 
   const renderCard = (s: SavantInfo) => {
     const dates = [s.naissance, s.deces].filter(Boolean).join(' – ');
-    const mono = (s.nom_arabe?.trim()?.charAt(0)) || s.nom.charAt(0);
     const doms = (s.domaines ?? []).filter((d) => d !== 'Compagnon');
     return (
       <Link
         key={s.id}
         to={`/savants/${s.slug}`}
-        className="group flex flex-col gap-3 rounded-card border border-line bg-white dark:bg-gray-800 p-5 shadow-sm hover:shadow-lg hover:border-green dark:hover:border-green hover:-translate-y-0.5 transition-all motion-reduce:transition-none motion-reduce:hover:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green"
+        className="group flex flex-col gap-2.5 rounded-card border border-line bg-white dark:bg-gray-800 p-5 shadow-sm hover:shadow-lg hover:border-green dark:hover:border-green hover:-translate-y-0.5 transition-all motion-reduce:transition-none motion-reduce:hover:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green"
       >
-        <div className="flex items-start gap-3.5">
-          <span
-            aria-hidden="true"
-            className={`shrink-0 w-[52px] h-[52px] rounded-full grid place-items-center font-display text-2xl font-bold text-white ring-2 ring-inset ${
-              s.is_compagnon ? 'bg-gold ring-[#7a5a17]/30' : 'bg-green ring-gold/40'
-            }`}
-          >
-            {mono}
-          </span>
-          <span className="min-w-0">
-            <span className="block font-display text-xl font-bold leading-tight text-green-deep group-hover:text-green">{s.nom}</span>
-            {s.nom_arabe && (
-              <span dir="rtl" lang="ar" className="block font-arabic-name font-medium text-base text-ink [unicode-bidi:plaintext]">{s.nom_arabe}</span>
-            )}
-          </span>
+        {/* 7.2 — carte typographique : nom > rôle > lien, sans gros avatar */}
+        <div className="min-w-0">
+          <h3 className="font-display text-xl font-bold leading-tight text-green-deep group-hover:text-green break-words">{s.nom}</h3>
+          {s.nom_arabe && (
+            <p dir="rtl" lang="ar" className="font-arabic-name font-medium text-lg text-gold mt-0.5 [unicode-bidi:plaintext]">{s.nom_arabe}</p>
+          )}
         </div>
 
         <BadgeGeneration generation={s.generation} role={s.role} sexe={s.role === 'epouse_prophete' ? 'f' : undefined} />
