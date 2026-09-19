@@ -455,3 +455,11 @@ $$;
 --   navigateur de versets sticky (6.4) ; exégèses en accordéon <details> (6.3).
 -- Reste : 6.2 (exégèse par plage de versets) et 6.6 (import du texte coranique
 --   complet — à cadrer : provenance à confirmer).
+
+-- Phase 6.6 — Texte coranique complet (« Lire la sourate entière »)
+--   Riwāyah Ḥafṣ ʿan ʿĀṣim, script ʿUthmānī, muṣḥaf de Médine.
+--   Source : King Fahd Complex (qurancomplex.gov.sa), édition ara-quranuthmanihaf
+--   (fawazahmed0/quran-api). Décomptes vérifiés : 6236 versets, 114 sourates.
+--   Bundlé en local (public/data/quran-uthmani.json) → hors-ligne (Capacitor) ;
+--   non précaché par le service worker (json hors globPatterns). Aucune table DB
+--   (le texte vit côté front, découplé de l'exégèse qui reste sélective).

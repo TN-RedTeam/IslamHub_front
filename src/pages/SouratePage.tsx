@@ -4,6 +4,7 @@ import { Loader2, ArrowLeft, BookOpen, ChevronRight, BookOpenText, ArrowDownToLi
 import { dataService } from '../services/DataService';
 import { Markdown } from '../components/Markdown';
 import { useSeo } from '../hooks/useSeo';
+import { loadSuraText } from '../utils/quranText';
 import type { SourateDetail } from '../types';
 import { IconBadge } from '../components/Icon';
 
@@ -22,6 +23,8 @@ export const SouratePage: React.FC = () => {
   const [data, setData] = useState<SourateDetail | null>(null);
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
+  const [fullText, setFullText] = useState<string[] | null>(null);
+  const [fullLoading, setFullLoading] = useState(false);
 
   useSeo({
     title: data ? `Sourate ${data.sourate.nom} — exégèse` : 'Sourate',
@@ -30,12 +33,19 @@ export const SouratePage: React.FC = () => {
 
   useEffect(() => {
     let alive = true;
-    setLoading(true); setNotFound(false);
+    setLoading(true); setNotFound(false); setFullText(null); setFullLoading(false);
     dataService.getSourate(slug)
       .then((d) => { if (!alive) return; if (!d) setNotFound(true); else setData(d); setLoading(false); })
       .catch(() => { if (alive) { setNotFound(true); setLoading(false); } });
     return () => { alive = false; };
   }, [slug]);
+
+  // Charge le texte complet de la sourate à la première ouverture du volet.
+  const openFull = (numero: number) => {
+    if (fullText !== null || fullLoading) return;
+    setFullLoading(true);
+    loadSuraText(numero).then((v) => setFullText(v)).finally(() => setFullLoading(false));
+  };
 
   if (loading) {
     return (
@@ -58,8 +68,6 @@ export const SouratePage: React.FC = () => {
   }
 
   const { sourate, versets } = data;
-  const withArabic = versets.filter((v) => v.texte_arabe && v.texte_arabe.trim());
-  const isExtract = sourate.nb_versets != null && withArabic.length < sourate.nb_versets;
 
   return (
     <div className="min-h-screen bg-ground">
@@ -83,18 +91,16 @@ export const SouratePage: React.FC = () => {
               {sourate.nb_versets != null && <Chip>{sourate.nb_versets} versets</Chip>}
             </div>
           </div>
-          {versets.length > 0 && (
-            <div className="flex gap-2.5 flex-wrap mt-4">
-              {withArabic.length > 0 && (
-                <a href="#full" className="inline-flex items-center gap-2 rounded-lg border border-line bg-surface text-green px-3.5 py-2 text-sm font-semibold hover:border-gold transition-colors">
-                  <BookOpenText className="w-4 h-4" /> Lire la sourate {isExtract ? '(extrait)' : 'entière'}
-                </a>
-              )}
+          <div className="flex gap-2.5 flex-wrap mt-4">
+            <a href="#full" className="inline-flex items-center gap-2 rounded-lg border border-line bg-surface text-green px-3.5 py-2 text-sm font-semibold hover:border-gold transition-colors">
+              <BookOpenText className="w-4 h-4" /> Lire la sourate entière
+            </a>
+            {versets.length > 0 && (
               <a href={`#v${versets[0].numero}`} className="inline-flex items-center gap-2 rounded-lg border border-line bg-surface text-green px-3.5 py-2 text-sm font-semibold hover:border-gold transition-colors">
                 <ArrowDownToLine className="w-4 h-4" /> Aller à l'exégèse
               </a>
-            </div>
-          )}
+            )}
+          </div>
         </div>
       </header>
 
@@ -107,25 +113,34 @@ export const SouratePage: React.FC = () => {
           </section>
         )}
 
-        {/* 6.4 — Lire la sourate entière (repliable) */}
-        {withArabic.length > 0 && (
-          <details id="full" className="group mt-4 bg-surface border border-line rounded-card overflow-hidden">
-            <summary className="cursor-pointer list-none px-5 py-3.5 font-display font-semibold text-green-deep flex items-center gap-2.5">
-              <ChevronRight className="w-4 h-4 text-gold transition-transform group-open:rotate-90 motion-reduce:transition-none" /> Lire la sourate {isExtract ? '(extrait)' : 'entière'}
-            </summary>
-            <div className="px-5 sm:px-6 pb-6 pt-3 border-t border-line">
-              <p className="font-arabic text-right text-ink" dir="rtl" lang="ar" style={{ fontSize: '26px', lineHeight: 2.4 }}>
-                {withArabic.map((v) => (
-                  <React.Fragment key={v.numero}>
-                    {v.texte_arabe}{' '}
-                    <span className="text-gold" style={{ fontSize: '19px' }}>{'۝'}{toArabicNum(v.numero)}</span>{' '}
-                  </React.Fragment>
-                ))}
-              </p>
-              {isExtract && <p className="text-xs text-muted text-center mt-3">extrait — la sourate compte {sourate.nb_versets} versets</p>}
-            </div>
-          </details>
-        )}
+        {/* 6.4 / 6.6 — Lire la sourate entière (texte du muṣḥaf de Médine, chargé à l'ouverture) */}
+        <details id="full" className="group mt-4 bg-surface border border-line rounded-card overflow-hidden"
+          onToggle={(e) => { if ((e.currentTarget as HTMLDetailsElement).open) openFull(sourate.numero); }}>
+          <summary className="cursor-pointer list-none px-5 py-3.5 font-display font-semibold text-green-deep flex items-center gap-2.5">
+            <ChevronRight className="w-4 h-4 text-gold transition-transform group-open:rotate-90 motion-reduce:transition-none" /> Lire la sourate entière
+          </summary>
+          <div className="px-5 sm:px-6 pb-6 pt-3 border-t border-line">
+            {fullLoading ? (
+              <div className="flex justify-center py-6"><Loader2 className="w-6 h-6 text-green animate-spin" /></div>
+            ) : fullText && fullText.length > 0 ? (
+              <>
+                <p className="font-arabic text-right text-ink" dir="rtl" lang="ar" style={{ fontSize: '26px', lineHeight: 2.4 }}>
+                  {fullText.map((t, i) => (
+                    <React.Fragment key={i}>
+                      {t}{' '}
+                      <span className="text-gold" style={{ fontSize: '19px' }}>{'۝'}{toArabicNum(i + 1)}</span>{' '}
+                    </React.Fragment>
+                  ))}
+                </p>
+                <p className="text-[11px] text-muted text-center mt-3">Texte ʿUthmānī (Ḥafṣ) — muṣḥaf de Médine.</p>
+              </>
+            ) : fullText ? (
+              <p className="text-sm text-muted text-center py-2">Texte indisponible pour le moment.</p>
+            ) : (
+              <p className="text-sm text-muted text-center py-2">Ouvre pour afficher le texte…</p>
+            )}
+          </div>
+        </details>
       </div>
 
       {/* 6.4 — Navigateur de versets (sticky sous la barre de navigation) */}
