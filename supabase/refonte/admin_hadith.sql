@@ -440,3 +440,34 @@ $$;
 --   Les autres tables à arabe_hash (hadiths, coran, dhikrs, douaas) n'utilisent
 --   pas ‹ › (gabarits « » ou ﴿ ﴾) → inchangées côté hash ; la recherche est
 --   couverte par normalize_ar.
+
+-- ─────────────────────────────────────────────────────────────────────────
+-- Phase 6 — Exégèse des sourates : intro + lisibilité (partiel)
+-- ─────────────────────────────────────────────────────────────────────────
+-- Migration phase6_sourate_intro_ordre :
+--   • sourates.introduction_md (nullable, Markdown) — 6.1
+--   • sourates.ordre_revelation (nullable int) — 6.5
+--   get_sourate / admin_get_sourate / admin_save_sourate mis à jour.
+-- Front : page /coran/sourates/:slug refondue d'après la maquette validée —
+--   en-tête resserré max-width + chips (révélation, ordre, nb versets) et
+--   actions (6.5) ; intro masquée si vide (6.1) ; « Lire la sourate entière »
+--   repliable, extrait tant que le texte complet n'est pas importé (6.4) ;
+--   navigateur de versets sticky (6.4) ; exégèses en accordéon <details> (6.3).
+-- Reste : 6.2 (exégèse par plage de versets) et 6.6 (import du texte coranique
+--   complet — à cadrer : provenance à confirmer).
+
+-- Phase 6.6 — Texte coranique complet (« Lire la sourate entière »)
+--   Riwāyah Ḥafṣ ʿan ʿĀṣim, script ʿUthmānī, muṣḥaf de Médine.
+--   Source : King Fahd Complex (qurancomplex.gov.sa), édition ara-quranuthmanihaf
+--   (fawazahmed0/quran-api). Décomptes vérifiés : 6236 versets, 114 sourates.
+--   Bundlé en local (public/data/quran-uthmani.json) → hors-ligne (Capacitor) ;
+--   non précaché par le service worker (json hors globPatterns). Aucune table DB
+--   (le texte vit côté front, découplé de l'exégèse qui reste sélective).
+
+-- Phase 6.2 — Exégèse par plage de versets.
+--   Migration phase6_exegese_plage : exegeses.verset_fin (nullable) — une exégèse
+--   couvre [numéro du verset .. verset_fin]. Rétrocompatible (null = un verset).
+--   get_sourate / admin_get_sourate / admin_save_sourate gèrent verset_fin.
+--   Admin : champ « Jusqu'au verset (plage) » sur chaque exégèse (regroupe sans
+--   re-saisir). Public : versets regroupés par plage (badge « Versets D à F »),
+--   exégèses de la plage réunies sous l'accordéon.

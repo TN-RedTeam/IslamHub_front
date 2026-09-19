@@ -192,13 +192,15 @@ export interface SourateDetail {
     slug: string;
     revelation: string | null;
     nb_versets: number | null;
+    introduction_md?: string | null;
+    ordre_revelation?: number | null;
   };
   versets: {
     numero: number;
     texte_arabe: string | null;
     texte_francais: string | null;
     phonetique: string | null;
-    exegeses: { texte: string; source: string | null }[];
+    exegeses: { texte: string; source: string | null; verset_fin?: number | null }[];
   }[];
 }
 
