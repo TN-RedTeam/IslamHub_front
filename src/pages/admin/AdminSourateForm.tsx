@@ -172,11 +172,8 @@ export const AdminSourateForm: React.FC = () => {
                     </div>
                   </div>
                   <textarea className={`${field} min-h-[60px]`} value={ex.texte} onChange={(e) => patchExeg(vi, ei, { texte: e.target.value })} placeholder="Le commentaire (Markdown)…" />
-                  <div className="grid sm:grid-cols-[1fr_150px] gap-2 mt-2">
-                    <input className={field} list="exeg-savants" value={ex.source} onChange={(e) => setSource(vi, ei, e.target.value)} placeholder="Source — choisir un savant ou saisir (Ibn Kathīr…)" />
-                    <input className={field} type="number" min={v.numero || undefined} value={ex.verset_fin} onChange={(e) => patchExeg(vi, ei, { verset_fin: e.target.value })} placeholder="Jusqu'au verset (plage)" />
-                  </div>
-                  <p className="text-[11px] text-muted mt-1">Source : un savant avec tafsir associe son titre. « Jusqu'au verset » regroupe cette exégèse sur une plage (ex. versets {v.numero || 'N'} à …) — laisse vide pour un seul verset.</p>
+                  <input className={`${field} mt-2`} list="exeg-savants" value={ex.source} onChange={(e) => setSource(vi, ei, e.target.value)} placeholder="Source — choisir un savant ou saisir (Ibn Kathīr, Al-Ṭabarī…)" />
+                  <p className="text-[11px] text-muted mt-1">Choisir un savant qui a un tafsir associe automatiquement le titre de son tafsir.</p>
                 </div>
               ))}
               <button type="button" onClick={() => patchVerset(vi, { exegeses: [...v.exegeses, emptyExeg()] })} className="inline-flex items-center gap-1.5 rounded-lg border border-dashed border-green-line bg-green-soft text-green-deep font-semibold px-3 py-1.5 text-[13px]"><Plus className="w-3.5 h-3.5" /> Ajouter une exégèse</button>
