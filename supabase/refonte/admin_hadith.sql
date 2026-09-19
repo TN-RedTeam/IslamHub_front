@@ -481,3 +481,16 @@ $$;
 --   Le commentaire/introduction passe dans l'en-tête, près du nom de la sourate.
 --   Colonnes DB conservées (introduction_md, ordre_revelation, exegeses.verset_fin)
 --   — verset_fin dormant (plus d'UI), les autres toujours utilisées.
+
+-- ─────────────────────────────────────────────────────────────────────────
+-- Phase 7.3 — Filtre « Toutes les paroles » par sujet (ne renvoyait rien)
+-- ─────────────────────────────────────────────────────────────────────────
+-- Cause : sanitizeInput() (front) retirait les apostrophes droites (' ") du
+--   tag_filter → décalage avec le sujet stocké (ex. « Le sens de l'istiwā' »).
+-- Correctifs :
+--   • Front : sanitizeInput ne retire plus que < > (les valeurs partent en
+--     paramètres RPC, jamais concaténées → pas d'injection).
+--   • DB (search_paroles_sujet_normalise) : comparaison du sujet normalisée
+--     (minuscules, unaccent, apostrophes ' ’ ‘ ʾ ʿ " ` retirées). Robuste même
+--     si le filtre est nettoyé.
+-- Vérifié : les 39 sujets du filtre renvoient tous leurs paroles (0 sans résultat).
