@@ -192,6 +192,8 @@ export interface SourateDetail {
     slug: string;
     revelation: string | null;
     nb_versets: number | null;
+    introduction_md?: string | null;
+    ordre_revelation?: number | null;
   };
   versets: {
     numero: number;

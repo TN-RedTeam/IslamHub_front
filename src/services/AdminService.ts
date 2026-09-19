@@ -335,10 +335,12 @@ export interface VersetInput { numero: string; texte_arabe: string; texte_franca
 export interface SourateFormData {
   id?: number | null;
   numero: string; nom: string; nom_arabe: string; slug?: string | null; revelation: string; nb_versets: string;
+  introduction_md: string; ordre_revelation: string;
   versets: VersetInput[];
 }
 export interface SourateEditShape {
   id: number; numero: number; nom: string; nom_arabe: string | null; slug: string; revelation: string | null; nb_versets: number | null;
+  introduction_md: string | null; ordre_revelation: number | null;
   versets: { numero: number; texte_arabe: string | null; texte_francais: string | null; phonetique: string | null;
              exegeses: { texte: string; source: string | null; ordre: number | null }[] }[];
 }

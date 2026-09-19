@@ -14,7 +14,7 @@ type Exeg = { key: string; texte: string; source: string };
 type Verset = { key: string; numero: string; texte_arabe: string; texte_francais: string; phonetique: string; exegeses: Exeg[] };
 const emptyExeg = (): Exeg => ({ key: rid(), texte: '', source: '' });
 const emptyVerset = (numero = ''): Verset => ({ key: rid(), numero, texte_arabe: AR_TEMPLATE.coran, texte_francais: '', phonetique: '', exegeses: [] });
-const blank = { numero: '', nom: '', nom_arabe: '', slug: '', revelation: '', nb_versets: '' };
+const blank = { numero: '', nom: '', nom_arabe: '', slug: '', revelation: '', nb_versets: '', introduction_md: '', ordre_revelation: '' };
 
 const move = <T,>(a: T[], i: number, dir: -1 | 1): T[] => {
   const j = i + dir; if (j < 0 || j >= a.length) return a;
@@ -33,7 +33,7 @@ export const AdminSourateForm: React.FC = () => {
   const [slugTouched, setSlugTouched] = useState(Boolean(editId));
 
   const [f, setF] = useState(blank);
-  const set = (k: keyof typeof f) => (e: React.ChangeEvent<HTMLInputElement>) => setF((p) => ({ ...p, [k]: e.target.value }));
+  const set = (k: keyof typeof f) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => setF((p) => ({ ...p, [k]: e.target.value }));
   const [versets, setVersets] = useState<Verset[]>([]);
   const [savantNames, setSavantNames] = useState<string[]>([]);
   // nom de savant (minuscule) → titre de son tafsir (recueil type « tafsir »).
@@ -59,7 +59,7 @@ export const AdminSourateForm: React.FC = () => {
     if (!editId) return;
     adminService.getSourateForEdit(editId).then((s) => {
       if (!s) { setError('Sourate introuvable.'); return; }
-      setF({ numero: String(s.numero ?? ''), nom: s.nom ?? '', nom_arabe: s.nom_arabe ?? '', slug: s.slug ?? '', revelation: s.revelation ?? '', nb_versets: s.nb_versets != null ? String(s.nb_versets) : '' });
+      setF({ numero: String(s.numero ?? ''), nom: s.nom ?? '', nom_arabe: s.nom_arabe ?? '', slug: s.slug ?? '', revelation: s.revelation ?? '', nb_versets: s.nb_versets != null ? String(s.nb_versets) : '', introduction_md: s.introduction_md ?? '', ordre_revelation: s.ordre_revelation != null ? String(s.ordre_revelation) : '' });
       setVersets((s.versets ?? []).map((v) => ({
         key: rid(), numero: String(v.numero ?? ''), texte_arabe: v.texte_arabe ?? '', texte_francais: v.texte_francais ?? '', phonetique: v.phonetique ?? '',
         exegeses: (v.exegeses ?? []).map((e) => ({ key: rid(), texte: e.texte ?? '', source: e.source ?? '' })),
@@ -77,6 +77,7 @@ export const AdminSourateForm: React.FC = () => {
 
   const buildPayload = (): SourateFormData => ({
     id: editId, numero: f.numero, nom: f.nom.trim(), nom_arabe: f.nom_arabe, slug: autoSlug, revelation: f.revelation, nb_versets: f.nb_versets,
+    introduction_md: f.introduction_md, ordre_revelation: f.ordre_revelation,
     versets: versets
       .filter((v) => v.numero.trim())
       .map<VersetInput>((v) => ({
@@ -121,10 +122,15 @@ export const AdminSourateForm: React.FC = () => {
             <datalist id="revelation-list"><option value="Mecquoise" /><option value="Médinoise" /></datalist>
           </div>
         </div>
-        <div className="grid sm:grid-cols-2 gap-3.5 mt-3.5">
-          <div><label className={label}>Nb de versets <span className="text-muted font-normal">(total de la sourate)</span></label><input className={field} type="number" value={f.nb_versets} onChange={set('nb_versets')} placeholder="4" /></div>
+        <div className="grid sm:grid-cols-3 gap-3.5 mt-3.5">
+          <div><label className={label}>Nb de versets <span className="text-muted font-normal">(total)</span></label><input className={field} type="number" value={f.nb_versets} onChange={set('nb_versets')} placeholder="4" /></div>
+          <div><label className={label}>Ordre de révélation <span className="text-muted font-normal">(optionnel)</span></label><input className={field} type="number" value={f.ordre_revelation} onChange={set('ordre_revelation')} placeholder="81" /></div>
           <div><label className={label}>Slug (URL) <span className="text-muted font-normal">— depuis le nom</span></label>
             <input className={field} value={autoSlug} onChange={(e) => { setSlugTouched(true); setF((p) => ({ ...p, slug: e.target.value })); }} placeholder="al-ikhlas" /></div>
+        </div>
+        <div className="mt-3.5">
+          <label className={label}>Introduction de la sourate <span className="text-muted font-normal">(Markdown — contexte, période, thème ; masquée si vide)</span></label>
+          <textarea className={`${field} min-h-[90px]`} value={f.introduction_md} onChange={set('introduction_md')} placeholder="Sourate mecquoise centrée sur…" />
         </div>
       </section>
 
