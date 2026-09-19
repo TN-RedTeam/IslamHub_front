@@ -18,6 +18,28 @@ const Chip: React.FC<{ children: React.ReactNode }> = ({ children }) => (
   </span>
 );
 
+type VersetT = SourateDetail['versets'][number];
+type Entry = { debut: number; fin: number; versets: VersetT[]; exegeses: VersetT['exegeses'] };
+
+/**
+ * 6.2 — Regroupe les versets par plage d'exégèse : une exégèse avec `verset_fin`
+ * couvre [numéro du verset .. verset_fin]. Rétrocompatible : sans verset_fin, un
+ * verset = une entrée. Les exégèses des versets couverts sont réunies dans l'entrée.
+ */
+function buildEntries(versets: VersetT[]): Entry[] {
+  const sorted = [...versets].sort((a, b) => a.numero - b.numero);
+  const consumed = new Set<number>();
+  const out: Entry[] = [];
+  for (const v of sorted) {
+    if (consumed.has(v.numero)) continue;
+    const fin = v.exegeses.reduce((m, e) => Math.max(m, e.verset_fin ?? v.numero), v.numero);
+    const rangeVersets = sorted.filter((x) => x.numero >= v.numero && x.numero <= fin);
+    rangeVersets.forEach((x) => consumed.add(x.numero));
+    out.push({ debut: v.numero, fin, versets: rangeVersets, exegeses: rangeVersets.flatMap((x) => x.exegeses) });
+  }
+  return out;
+}
+
 export const SouratePage: React.FC = () => {
   const { slug = '' } = useParams();
   const [data, setData] = useState<SourateDetail | null>(null);
@@ -167,22 +189,29 @@ export const SouratePage: React.FC = () => {
             <p className="text-muted">Le texte et l'exégèse de cette sourate seront bientôt disponibles.</p>
           </div>
         ) : (
-          versets.map((v) => (
-            <article key={v.numero} id={`v${v.numero}`} className="mt-4 bg-surface border border-line rounded-card p-5" style={{ scrollMarginTop: '120px' }}>
-              <div className="flex items-start gap-3.5">
-                <span className="shrink-0 w-7 h-7 rounded-full bg-green-soft text-green-deep grid place-items-center text-xs font-semibold tabular-nums mt-1.5">{v.numero}</span>
-                <div className="min-w-0 flex-1">
-                  {v.texte_arabe && (
-                    <p className="font-arabic text-right leading-[2] text-ink whitespace-pre-wrap" dir="rtl" lang="ar" style={{ fontSize: 'clamp(22px,4vw,27px)' }}>{v.texte_arabe}</p>
-                  )}
-                  {v.phonetique && <p className="text-muted italic text-sm mt-1.5 [unicode-bidi:plaintext]">{v.phonetique}</p>}
-                  {v.texte_francais && (
-                    <div className="text-ink mt-1.5 [unicode-bidi:plaintext]"><Markdown>{v.texte_francais}</Markdown></div>
-                  )}
+          buildEntries(versets).map((entry) => (
+            <article key={entry.debut} className="mt-4 bg-surface border border-line rounded-card p-5">
+              {entry.fin > entry.debut && (
+                <span className="inline-block rounded-full bg-gold-soft text-[#7a5a17] border border-[#e6d3a3] text-[11.5px] font-semibold tracking-wide px-3 py-0.5 mb-2">
+                  Versets {entry.debut} à {entry.fin}
+                </span>
+              )}
+              {entry.versets.map((v, vi) => (
+                <div key={v.numero} id={`v${v.numero}`} className={`flex items-start gap-3.5 py-3.5 ${vi === 0 ? '' : 'border-t border-dashed border-line'}`} style={{ scrollMarginTop: '120px' }}>
+                  <span className="shrink-0 w-7 h-7 rounded-full bg-green-soft text-green-deep grid place-items-center text-xs font-semibold tabular-nums mt-1.5">{v.numero}</span>
+                  <div className="min-w-0 flex-1">
+                    {v.texte_arabe && (
+                      <p className="font-arabic text-right leading-[2] text-ink whitespace-pre-wrap" dir="rtl" lang="ar" style={{ fontSize: 'clamp(22px,4vw,27px)' }}>{v.texte_arabe}</p>
+                    )}
+                    {v.phonetique && <p className="text-muted italic text-sm mt-1.5 [unicode-bidi:plaintext]">{v.phonetique}</p>}
+                    {v.texte_francais && (
+                      <div className="text-ink mt-1.5 [unicode-bidi:plaintext]"><Markdown>{v.texte_francais}</Markdown></div>
+                    )}
+                  </div>
                 </div>
-              </div>
+              ))}
 
-              {v.exegeses.map((e, i) => (
+              {entry.exegeses.map((e, i) => (
                 <details key={i} className="group mt-3 bg-green-soft/50 border border-green-line rounded-xl overflow-hidden">
                   <summary className="cursor-pointer list-none px-4 py-2.5 flex items-center gap-2 text-[13px] font-semibold text-green-deep">
                     <ChevronRight className="w-3.5 h-3.5 text-gold transition-transform group-open:rotate-90 motion-reduce:transition-none" />

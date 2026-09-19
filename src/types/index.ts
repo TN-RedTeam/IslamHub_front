@@ -200,7 +200,7 @@ export interface SourateDetail {
     texte_arabe: string | null;
     texte_francais: string | null;
     phonetique: string | null;
-    exegeses: { texte: string; source: string | null }[];
+    exegeses: { texte: string; source: string | null; verset_fin?: number | null }[];
   }[];
 }
 

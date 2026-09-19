@@ -463,3 +463,11 @@ $$;
 --   Bundlé en local (public/data/quran-uthmani.json) → hors-ligne (Capacitor) ;
 --   non précaché par le service worker (json hors globPatterns). Aucune table DB
 --   (le texte vit côté front, découplé de l'exégèse qui reste sélective).
+
+-- Phase 6.2 — Exégèse par plage de versets.
+--   Migration phase6_exegese_plage : exegeses.verset_fin (nullable) — une exégèse
+--   couvre [numéro du verset .. verset_fin]. Rétrocompatible (null = un verset).
+--   get_sourate / admin_get_sourate / admin_save_sourate gèrent verset_fin.
+--   Admin : champ « Jusqu'au verset (plage) » sur chaque exégèse (regroupe sans
+--   re-saisir). Public : versets regroupés par plage (badge « Versets D à F »),
+--   exégèses de la plage réunies sous l'accordéon.
