@@ -58,7 +58,10 @@ export interface SiteStats {
 const LOAD_ALL: PaginationParams = { page: 0, pageSize: 1000 };
 
 function sanitizeInput(value: string): string {
-  return value.trim().slice(0, 300).replace(/[<>"']/g, '');
+  // Les valeurs partent en paramètres RPC (jamais concaténées dans du SQL), donc
+  // aucun risque d'injection : on ne retire QUE les chevrons (< >). Retirer les
+  // apostrophes/guillemets cassait le filtre par sujet (ex. « l'istiwā' »).
+  return value.trim().slice(0, 300).replace(/[<>]/g, '');
 }
 
 function shapeResult<T>(payload: unknown, page: number, pageSize: number) {
