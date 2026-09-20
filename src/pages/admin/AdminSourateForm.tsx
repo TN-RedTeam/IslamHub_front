@@ -3,7 +3,7 @@ import { DeleteEntryButton } from '../../components/admin/DeleteEntryButton';
 import { useNavigate, useParams, Link } from 'react-router-dom';
 import { Loader2, Plus, Trash2, Check, AlertTriangle, ArrowUp, ArrowDown } from 'lucide-react';
 import { adminService, type SourateFormData, type VersetInput, type ExegeseInput } from '../../services/AdminService';
-import { AR_TEMPLATE, caretBetween, normalizeBracketSpaces } from '../../utils/arabicTemplate';
+import { AR_TEMPLATE, TRAD_TEMPLATE, caretBetween, caretInsideGuillemets, normalizeBracketSpaces } from '../../utils/arabicTemplate';
 import { slugify } from '../../utils/slug';
 
 const label = 'block text-[13px] font-semibold text-ink mb-1.5';
@@ -13,7 +13,7 @@ const rid = () => Math.random().toString(36).slice(2);
 type Exeg = { key: string; texte: string; source: string; verset_fin: string };
 type Verset = { key: string; numero: string; texte_arabe: string; texte_francais: string; phonetique: string; exegeses: Exeg[] };
 const emptyExeg = (): Exeg => ({ key: rid(), texte: '', source: '', verset_fin: '' });
-const emptyVerset = (numero = ''): Verset => ({ key: rid(), numero, texte_arabe: AR_TEMPLATE.coran, texte_francais: '', phonetique: '', exegeses: [] });
+const emptyVerset = (numero = ''): Verset => ({ key: rid(), numero, texte_arabe: AR_TEMPLATE.coran, texte_francais: TRAD_TEMPLATE, phonetique: '', exegeses: [] });
 const blank = { numero: '', nom: '', nom_arabe: '', slug: '', revelation: '', nb_versets: '', introduction_md: '', ordre_revelation: '' };
 
 const move = <T,>(a: T[], i: number, dir: -1 | 1): T[] => {
@@ -81,7 +81,7 @@ export const AdminSourateForm: React.FC = () => {
     versets: versets
       .filter((v) => v.numero.trim())
       .map<VersetInput>((v) => ({
-        numero: v.numero, texte_arabe: normalizeBracketSpaces(v.texte_arabe), texte_francais: v.texte_francais, phonetique: v.phonetique,
+        numero: v.numero, texte_arabe: normalizeBracketSpaces(v.texte_arabe), texte_francais: normalizeBracketSpaces(v.texte_francais), phonetique: v.phonetique,
         exegeses: v.exegeses.filter((e) => e.texte.trim()).map<ExegeseInput>((e, k) => ({ texte: e.texte.trim(), source: e.source.trim() || null, ordre: k, verset_fin: e.verset_fin.trim() ? Number(e.verset_fin) : null })),
       })),
   });
@@ -154,7 +154,7 @@ export const AdminSourateForm: React.FC = () => {
               <div><label className={label}>Texte arabe</label><textarea dir="rtl" lang="ar" className={`${field} font-arabic text-xl leading-loose text-right min-h-[64px]`} value={v.texte_arabe} onChange={(e) => patchVerset(vi, { texte_arabe: e.target.value })} onFocus={caretBetween(AR_TEMPLATE.coran)} /></div>
             </div>
             <div className="grid sm:grid-cols-2 gap-2.5 mt-2.5">
-              <div><label className={label}>Traduction</label><input className={field} value={v.texte_francais} onChange={(e) => patchVerset(vi, { texte_francais: e.target.value })} /></div>
+              <div><label className={label}>Traduction</label><input className={field} value={v.texte_francais} onChange={(e) => patchVerset(vi, { texte_francais: e.target.value })} onFocus={caretInsideGuillemets(TRAD_TEMPLATE)} placeholder="ce qui signifie : « … »" /></div>
               <div><label className={label}>Phonétique</label><input className={field} value={v.phonetique} onChange={(e) => patchVerset(vi, { phonetique: e.target.value })} /></div>
             </div>
 
