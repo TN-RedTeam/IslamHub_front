@@ -3,7 +3,7 @@ import { DeleteEntryButton } from '../../components/admin/DeleteEntryButton';
 import { useNavigate, useParams, Link } from 'react-router-dom';
 import { Loader2, Plus, Trash2, Check, AlertTriangle } from 'lucide-react';
 import { adminService, type SavantRow, type ParoleFormData, type ParoleImageInput, type RefOption } from '../../services/AdminService';
-import { AR_TEMPLATE, caretBetween } from '../../utils/arabicTemplate';
+import { AR_TEMPLATE, caretBetween, normalizeBracketSpaces } from '../../utils/arabicTemplate';
 import type { ThemeRef } from '../../types';
 
 const NEW = '__new';
@@ -59,6 +59,7 @@ export const AdminParoleForm: React.FC = () => {
 
   const buildPayload = (): ParoleFormData => ({
     id: editId, ...f,
+    texte_arabe: normalizeBracketSpaces(f.texte_arabe),
     savant_id: savant && savant !== NEW ? Number(savant) : null,
     new_savant: savant === NEW && newSavant.trim() ? { nom: newSavant.trim() } : null,
     rapporteur_savant_id: rapporteur ? Number(rapporteur) : null,

@@ -3,7 +3,7 @@ import { DeleteEntryButton } from '../../components/admin/DeleteEntryButton';
 import { useNavigate, useParams, Link } from 'react-router-dom';
 import { Loader2, Plus, Trash2, Check, AlertTriangle, ArrowUp, ArrowDown } from 'lucide-react';
 import { adminService, type SourateFormData, type VersetInput, type ExegeseInput } from '../../services/AdminService';
-import { AR_TEMPLATE, caretBetween } from '../../utils/arabicTemplate';
+import { AR_TEMPLATE, caretBetween, normalizeBracketSpaces } from '../../utils/arabicTemplate';
 import { slugify } from '../../utils/slug';
 
 const label = 'block text-[13px] font-semibold text-ink mb-1.5';
@@ -81,7 +81,7 @@ export const AdminSourateForm: React.FC = () => {
     versets: versets
       .filter((v) => v.numero.trim())
       .map<VersetInput>((v) => ({
-        numero: v.numero, texte_arabe: v.texte_arabe, texte_francais: v.texte_francais, phonetique: v.phonetique,
+        numero: v.numero, texte_arabe: normalizeBracketSpaces(v.texte_arabe), texte_francais: v.texte_francais, phonetique: v.phonetique,
         exegeses: v.exegeses.filter((e) => e.texte.trim()).map<ExegeseInput>((e, k) => ({ texte: e.texte.trim(), source: e.source.trim() || null, ordre: k, verset_fin: e.verset_fin.trim() ? Number(e.verset_fin) : null })),
       })),
   });

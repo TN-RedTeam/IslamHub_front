@@ -494,3 +494,18 @@ $$;
 --     (minuscules, unaccent, apostrophes ' ’ ‘ ʾ ʿ " ` retirées). Robuste même
 --     si le filtre est nettoyé.
 -- Vérifié : les 39 sujets du filtre renvoient tous leurs paroles (0 sans résultat).
+
+-- ─────────────────────────────────────────────────────────────────────────
+-- Espace fine insécable autour des parenthèses/guillemets (﴿﴾ « » ‹ ›)
+-- ─────────────────────────────────────────────────────────────────────────
+-- Problème : la parenthèse fermante se retrouvait seule en début de ligne
+--   (surtout mobile) car l'espace autour était une espace normale.
+-- Correctif :
+--   • Front (utils/arabicTemplate) : gabarits ﴿ … ﴾, « … »,
+--     ‹ … › et normalizeBracketSpaces() appliqué à l'enregistrement des
+--     champs de texte arabe (hadith, parole, coran, sourate, équivoque).
+--   • DB : fonction normalize_bracket_spaces(text) ; données existantes
+--     normalisées (457 lignes : hadiths, versets, paroles, invocations, douaas,
+--     coran, versets_equivoques, femmes). Backup public._bkp_p7_brackets (RLS on).
+--   • Sans effet sur arabe_hash ni la recherche : U+202F est traité comme un
+--     espace par \s (collapsé/trim) → hachages inchangés, aucune collision.

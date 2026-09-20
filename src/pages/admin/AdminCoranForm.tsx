@@ -3,7 +3,7 @@ import { DeleteEntryButton } from '../../components/admin/DeleteEntryButton';
 import { useNavigate, useParams, Link } from 'react-router-dom';
 import { Loader2, Check, AlertTriangle } from 'lucide-react';
 import { adminService, type CoranFormData } from '../../services/AdminService';
-import { AR_TEMPLATE, caretBetween } from '../../utils/arabicTemplate';
+import { AR_TEMPLATE, caretBetween, normalizeBracketSpaces } from '../../utils/arabicTemplate';
 import type { ThemeRef } from '../../types';
 
 const label = 'block text-[13px] font-semibold text-ink mb-1.5';
@@ -40,7 +40,7 @@ export const AdminCoranForm: React.FC = () => {
   }, [f.tag]);
 
   const canSave = useMemo(() => f.sujet.trim() && f.texte_arabe.trim(), [f.sujet, f.texte_arabe]);
-  const buildPayload = (): CoranFormData => ({ id: editId, ...f });
+  const buildPayload = (): CoranFormData => ({ id: editId, ...f, texte_arabe: normalizeBracketSpaces(f.texte_arabe) });
 
   const save = async (andNew: boolean) => {
     setBusy(true); setError(null); setOk(false);

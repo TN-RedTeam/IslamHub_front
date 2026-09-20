@@ -4,6 +4,7 @@ import { useNavigate, useParams, Link } from 'react-router-dom';
 import { Loader2, Plus, Trash2, Check, AlertTriangle, ArrowUp, ArrowDown } from 'lucide-react';
 import { BlocEditor } from '../../components/admin/BlocEditor';
 import { TagPicker } from '../../components/admin/TagPicker';
+import { normalizeBracketSpaces } from '../../utils/arabicTemplate';
 import {
   adminService,
   type VersetFormData, type VersetType, type PreuveType,
@@ -100,7 +101,7 @@ export const AdminEquivoqueForm: React.FC = () => {
     sourate: isHadith ? f.sourate.trim() : f.sourate.trim(),
     sourate_num: isHadith ? '' : f.sourate_num,
     ayah: isHadith ? '' : f.ayah,
-    verset_arabe: f.verset_arabe, verset_traduction: f.verset_traduction, verset_phonetique: f.verset_phonetique,
+    verset_arabe: normalizeBracketSpaces(f.verset_arabe), verset_traduction: f.verset_traduction, verset_phonetique: f.verset_phonetique,
     sens_juste: f.sens_juste, objection: f.objection, reponse: f.reponse,
     rapporteur: isHadith ? rapporteurs.join(', ') : '', recueil: isHadith ? f.recueil : '', numero: isHadith ? f.numero : '',
     published: f.published,

@@ -8,14 +8,33 @@ import type { FocusEvent } from 'react';
  * - hadith : guillemets français « … » (parole rapportée du Prophète ﷺ).
  * - parole : guillemets simples ‹ … › (parole d'un savant — distinct du hadith).
  *
+ * L'espace entre la parenthèse et le texte est une ESPACE FINE INSÉCABLE
+ * (U+202F) : la parenthèse de fermeture ne peut plus se retrouver seule en début
+ * de ligne (surtout en mobile).
+ *
  * Remarque : ces signes sont ignorés par la détection de doublon (arabe_hash)
  * et par la normalisation de recherche — ils n'affectent donc pas l'unicité.
  */
+const NNBSP = ' '; // narrow no-break space
+
 export const AR_TEMPLATE: { coran: string; hadith: string; parole: string } = {
-  coran: '﴿  ﴾', // ﴿  ﴾
-  hadith: '«  »', // «  »
-  parole: '‹  ›', // ‹  ›
+  coran: `﴿${NNBSP}${NNBSP}﴾`, // ﴿ ﴾
+  hadith: `«${NNBSP}${NNBSP}»`, // « »
+  parole: `‹${NNBSP}${NNBSP}›`, // ‹ ›
 };
+
+/**
+ * Normalise l'espace autour des parenthèses/guillemets : toute espace normale
+ * (ou U+00A0) adjacente à une parenthèse ouvrante (﴿ « ‹) ou fermante (﴾ » ›)
+ * devient une espace fine insécable (U+202F). Idempotent.
+ * À appliquer à l'enregistrement sur les champs de texte arabe.
+ */
+export function normalizeBracketSpaces(t: string): string {
+  if (!t) return t;
+  return t
+    .replace(/([﴿«‹])[   ]+/g, `$1${NNBSP}`)
+    .replace(/[   ]+([﴾»›])/g, `${NNBSP}$1`);
+}
 
 /**
  * Handler onFocus : quand le champ contient encore le gabarit vierge, place le
