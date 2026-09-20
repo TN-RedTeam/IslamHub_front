@@ -183,6 +183,7 @@ export interface SourateInfo {
   revelation: string | null;
   nb_versets: number | null;
   a_du_contenu: boolean;
+  a_exegese?: boolean;
 }
 export interface SourateDetail {
   sourate: {
