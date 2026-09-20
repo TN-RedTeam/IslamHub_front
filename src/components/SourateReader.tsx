@@ -42,11 +42,22 @@ export const SourateReader: React.FC<{ versets: VersetT[] }> = ({ versets }) => 
   const pillRefs = useRef<Map<number, HTMLElement>>(new Map());   // pastilles (mobile)
   const interRef = useRef<Map<number, boolean>>(new Map());
   const pulseTimer = useRef<ReturnType<typeof setTimeout>>();
+  const stickyRef = useRef<HTMLDivElement>(null);
+  // Décalage réel entre le haut de la fenêtre et le bas de la barre sticky.
+  // Varie selon la largeur (mobile = barre + bande de pastilles) → mesuré.
+  const [topOffset, setTopOffset] = useState(140);
+
+  useEffect(() => {
+    const compute = () => setTopOffset(64 + (stickyRef.current?.offsetHeight ?? 0) + 8);
+    compute();
+    window.addEventListener('resize', compute);
+    return () => window.removeEventListener('resize', compute);
+  }, [versets]);
 
   const activeIndex = useMemo(() => Math.max(0, versets.findIndex((v) => v.numero === active)), [versets, active]);
   const pct = total > 0 ? Math.round(((activeIndex + 1) / total) * 100) : 0;
 
-  // Scroll-spy : le verset le plus haut encore visible devient l'actif.
+  // Scroll-spy : le verset le plus haut encore visible (sous la barre) devient l'actif.
   useEffect(() => {
     const obs = new IntersectionObserver((entries) => {
       for (const e of entries) {
@@ -56,10 +67,10 @@ export const SourateReader: React.FC<{ versets: VersetT[] }> = ({ versets }) => 
       let next: number | null = null;
       for (const v of versets) { if (interRef.current.get(v.numero)) { next = v.numero; break; } }
       if (next != null) setActive(next);
-    }, { rootMargin: '-132px 0px -55% 0px', threshold: 0 });
+    }, { rootMargin: `-${topOffset}px 0px -55% 0px`, threshold: 0 });
     cardRefs.current.forEach((el) => obs.observe(el));
     return () => obs.disconnect();
-  }, [versets]);
+  }, [versets, topOffset]);
 
   // Garde l'item actif visible dans la sidebar / la bande mobile.
   useEffect(() => {
@@ -70,14 +81,16 @@ export const SourateReader: React.FC<{ versets: VersetT[] }> = ({ versets }) => 
   const goToVerse = useCallback((n: number, pulse = true) => {
     const el = cardRefs.current.get(n);
     if (!el) return;
-    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    // Scroll précis sous la barre sticky (évite le décalage d'un verset sur mobile).
+    const y = el.getBoundingClientRect().top + window.scrollY - topOffset;
+    window.scrollTo({ top: y, behavior: 'smooth' });
     setActive(n);
     if (pulse) {
       setPulsing(n);
       clearTimeout(pulseTimer.current);
       pulseTimer.current = setTimeout(() => setPulsing(null), 2000);
     }
-  }, []);
+  }, [topOffset]);
 
   const submitGoto = (e: React.FormEvent) => {
     e.preventDefault();
@@ -88,7 +101,7 @@ export const SourateReader: React.FC<{ versets: VersetT[] }> = ({ versets }) => 
   return (
     <>
       {/* Barre sticky (compteur + progression + aller au verset) + bande mobile */}
-      <div className="sticky top-16 z-30 bg-ground/95 backdrop-blur border-b border-line">
+      <div ref={stickyRef} className="sticky top-16 z-30 bg-ground/95 backdrop-blur border-b border-line">
         <div className="max-w-6xl mx-auto px-4">
           <div className="flex items-center gap-3 py-2.5">
             <span className="text-[13px] font-semibold text-green-deep tabular-nums whitespace-nowrap">Verset {active} / {total}</span>
