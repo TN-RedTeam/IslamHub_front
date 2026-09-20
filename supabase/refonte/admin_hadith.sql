@@ -518,3 +518,7 @@ $$;
 --     « ce qui signifie » → enrobée « ce qui signifie : **«  …  »** »
 --     (leading/trailing */«»/espaces retirés). 183/183 versets au format.
 --     Sauvegarde dans _bkp_p7_brackets (tbl='versets_trad').
+
+-- Data (exegeses.source) : toutes les sources sauf « Tafsir At-Tabari » (14)
+--   remplacées par « An-Naçafiyy — Tafsir An-Naçafiyy » (203) — à la demande de
+--   l'auteur (écrasement confirmé). Backup _bkp_p7_brackets (tbl='exegeses_source').

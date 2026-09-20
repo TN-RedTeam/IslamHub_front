@@ -134,3 +134,12 @@ html {
     font-feature-settings: 'kern' 1;
     text-rendering: optimizeLegibility;
 }
+
+/* Pulse doré temporaire (2 s) sur un verset ciblé via « Aller au verset » */
+@keyframes pulse-gold {
+  0%   { box-shadow: 0 0 0 0 color-mix(in srgb, var(--gold) 60%, transparent); }
+  70%  { box-shadow: 0 0 0 7px color-mix(in srgb, var(--gold) 0%, transparent); }
+  100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--gold) 0%, transparent); }
+}
+.pulse-gold { animation: pulse-gold 1s ease-out 2; }
+@media (prefers-reduced-motion: reduce) { .pulse-gold { animation: none; } }
