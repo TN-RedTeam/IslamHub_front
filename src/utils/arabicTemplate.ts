@@ -24,6 +24,23 @@ export const AR_TEMPLATE: { coran: string; hadith: string; parole: string } = {
 };
 
 /**
+ * Gabarit de traduction d'un verset (exégèse du Coran) : « ce qui signifie : »
+ * suivi de la signification en gras entre guillemets (espaces fines insécables).
+ * L'auteur n'a plus qu'à saisir la signification entre « … ».
+ */
+export const TRAD_TEMPLATE = `ce qui signifie : **«${NNBSP}${NNBSP}»**`;
+
+/** onFocus : place le curseur entre les guillemets « … » quand le champ = gabarit. */
+export function caretInsideGuillemets(tpl: string) {
+  return (e: FocusEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+    if (e.target.value === tpl) {
+      const i = tpl.indexOf('«');
+      if (i >= 0) { const p = i + 2; try { e.target.setSelectionRange(p, p); } catch { /* selon type */ } }
+    }
+  };
+}
+
+/**
  * Normalise l'espace autour des parenthèses/guillemets : toute espace normale
  * (ou U+00A0) adjacente à une parenthèse ouvrante (﴿ « ‹) ou fermante (﴾ » ›)
  * devient une espace fine insécable (U+202F). Idempotent.

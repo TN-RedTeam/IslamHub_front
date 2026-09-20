@@ -509,3 +509,12 @@ $$;
 --     coran, versets_equivoques, femmes). Backup public._bkp_p7_brackets (RLS on).
 --   • Sans effet sur arabe_hash ni la recherche : U+202F est traité comme un
 --     espace par \s (collapsé/trim) → hachages inchangés, aucune collision.
+
+-- Exégèse Coran — gabarit de traduction « ce qui signifie : **« … »** »
+--   Front : TRAD_TEMPLATE pré-rempli dans le champ Traduction d'un verset
+--     (curseur entre les guillemets) ; normalizeBracketSpaces appliqué aussi à
+--     texte_francais à l'enregistrement.
+--   Data (versets) : traduction vide → gabarit ; traduction existante sans
+--     « ce qui signifie » → enrobée « ce qui signifie : **«  …  »** »
+--     (leading/trailing */«»/espaces retirés). 183/183 versets au format.
+--     Sauvegarde dans _bkp_p7_brackets (tbl='versets_trad').
