@@ -3,7 +3,7 @@ import { DeleteEntryButton } from '../../components/admin/DeleteEntryButton';
 import { useNavigate, useParams, Link } from 'react-router-dom';
 import { Loader2, Plus, Trash2, Check, AlertTriangle, X } from 'lucide-react';
 import { adminService, type NarrateurRow, type RecueilRow, type SavantRow, type HadithFormData, type HadithSourceInput } from '../../services/AdminService';
-import { AR_TEMPLATE, caretBetween } from '../../utils/arabicTemplate';
+import { AR_TEMPLATE, caretBetween, normalizeBracketSpaces } from '../../utils/arabicTemplate';
 import type { ThemeRef } from '../../types';
 
 const DEGRES = ['Sahih', 'Hassan', "Da'if"];
@@ -151,6 +151,7 @@ export const AdminHadithForm: React.FC = () => {
   const buildPayload = (): HadithFormData => ({
     id: editId,
     ...f,
+    texte_arabe: normalizeBracketSpaces(f.texte_arabe),
     rapporteur_ids: rapporteurIds,
     narrateur_ids: narrateurIds,
     is_equivoque: isEquivoque,
