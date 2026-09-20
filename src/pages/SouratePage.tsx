@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { Loader2, ArrowLeft, BookOpen, ChevronRight } from 'lucide-react';
+import { Loader2, ArrowLeft, BookOpen, ChevronLeft, ChevronRight } from 'lucide-react';
 import { dataService } from '../services/DataService';
 import { Markdown } from '../components/Markdown';
+import { SourateReader } from '../components/SourateReader';
 import { useSeo } from '../hooks/useSeo';
-import type { SourateDetail } from '../types';
+import type { SourateDetail, SourateInfo } from '../types';
 import { IconBadge } from '../components/Icon';
 
 const Chip: React.FC<{ children: React.ReactNode }> = ({ children }) => (
@@ -16,6 +17,7 @@ const Chip: React.FC<{ children: React.ReactNode }> = ({ children }) => (
 export const SouratePage: React.FC = () => {
   const { slug = '' } = useParams();
   const [data, setData] = useState<SourateDetail | null>(null);
+  const [all, setAll] = useState<SourateInfo[]>([]);
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
 
@@ -32,6 +34,19 @@ export const SouratePage: React.FC = () => {
       .catch(() => { if (alive) { setNotFound(true); setLoading(false); } });
     return () => { alive = false; };
   }, [slug]);
+
+  useEffect(() => { dataService.getSourates().then(setAll).catch(() => setAll([])); }, []);
+
+  // Sourates adjacentes (par numéro) parmi celles qui existent.
+  const { prev, next } = useMemo(() => {
+    if (!data) return { prev: null as SourateInfo | null, next: null as SourateInfo | null };
+    const sorted = [...all].sort((a, b) => a.numero - b.numero);
+    const n = data.sourate.numero;
+    return {
+      prev: [...sorted].reverse().find((s) => s.numero < n) ?? null,
+      next: sorted.find((s) => s.numero > n) ?? null,
+    };
+  }, [all, data]);
 
   if (loading) {
     return (
@@ -59,7 +74,7 @@ export const SouratePage: React.FC = () => {
     <div className="min-h-screen bg-ground">
       {/* En-tête resserré, aligné sur le corps, enrichi */}
       <header className="bg-ivory border-b border-line">
-        <div className="max-w-4xl mx-auto px-4 py-7">
+        <div className="max-w-6xl mx-auto px-4 py-7">
           <Link to="/coran/sourates" className="inline-flex items-center gap-1.5 text-xs text-muted hover:text-green-deep mb-3">
             <ArrowLeft className="h-4 w-4" /> Toutes les sourates
           </Link>
@@ -88,42 +103,40 @@ export const SouratePage: React.FC = () => {
         </div>
       </header>
 
-      <main className="max-w-4xl mx-auto px-4 py-8 pb-16">
-        {versets.length === 0 ? (
+      {versets.length === 0 ? (
+        <main className="max-w-6xl mx-auto px-4 py-8 pb-16">
           <div className="text-center py-16 bg-surface rounded-card shadow-card border border-line">
             <BookOpen className="h-10 w-10 mx-auto mb-3 text-green opacity-70" />
             <p className="text-muted">Le texte et l'exégèse de cette sourate seront bientôt disponibles.</p>
           </div>
-        ) : (
-          <div className="space-y-3">
-            {versets.map((v) => (
-              <details key={v.numero} className="group bg-surface border border-line rounded-card overflow-hidden">
-                {/* Repliable : le verset reste visible, le détail (traduction + exégèse) s'ouvre au clic */}
-                <summary className="cursor-pointer list-none px-4 py-3.5 flex items-start gap-3">
-                  <ChevronRight className="w-4 h-4 text-gold shrink-0 mt-1.5 transition-transform group-open:rotate-90 motion-reduce:transition-none" />
-                  <span className="shrink-0 w-7 h-7 rounded-full bg-green-soft text-green-deep grid place-items-center text-xs font-semibold tabular-nums mt-0.5">{v.numero}</span>
-                  {v.texte_arabe
-                    ? <span className="flex-1 min-w-0 font-arabic text-right text-ink leading-[1.9]" dir="rtl" lang="ar" style={{ fontSize: 'clamp(20px,3.6vw,25px)' }}>{v.texte_arabe}</span>
-                    : <span className="flex-1 font-display font-semibold text-green-deep">Verset {v.numero}</span>}
-                </summary>
-                <div className="px-4 pb-4 pt-3 border-t border-line space-y-2.5">
-                  {v.phonetique && <p className="text-muted italic text-sm [unicode-bidi:plaintext]">{v.phonetique}</p>}
-                  {v.texte_francais && <div className="text-ink [unicode-bidi:plaintext]"><Markdown>{v.texte_francais}</Markdown></div>}
-                  {v.exegeses.map((e, i) => (
-                    <div key={i} className="bg-green-soft/50 border border-green-line rounded-xl p-3.5">
-                      <p className="text-[12px] font-semibold text-green-deep mb-1">Exégèse{e.source ? ` — ${e.source}` : ''}</p>
-                      <div className="text-ink/85"><Markdown>{e.texte}</Markdown></div>
-                    </div>
-                  ))}
-                  {!v.texte_francais && v.exegeses.length === 0 && !v.phonetique && (
-                    <p className="text-sm text-muted italic">Pas de commentaire pour ce verset.</p>
-                  )}
-                </div>
-              </details>
-            ))}
-          </div>
-        )}
-      </main>
+        </main>
+      ) : (
+        <SourateReader versets={versets} />
+      )}
+
+      {/* Navigation fin de sourate : précédent / suivant */}
+      {(prev || next) && (
+        <nav aria-label="Sourates adjacentes" className="max-w-6xl mx-auto px-4 pb-16 grid grid-cols-2 gap-3">
+          {prev ? (
+            <Link to={`/coran/sourates/${prev.slug}`} className="flex items-center gap-2.5 rounded-card border border-line bg-surface px-4 py-3 hover:border-green transition-colors">
+              <ChevronLeft className="w-5 h-5 text-gold shrink-0" />
+              <span className="min-w-0">
+                <span className="block text-[11px] text-muted uppercase tracking-wide">Précédente</span>
+                <span className="block font-display font-semibold text-green-deep truncate">{prev.numero}. {prev.nom}</span>
+              </span>
+            </Link>
+          ) : <span />}
+          {next ? (
+            <Link to={`/coran/sourates/${next.slug}`} className="flex items-center justify-end gap-2.5 rounded-card border border-line bg-surface px-4 py-3 hover:border-green transition-colors text-right">
+              <span className="min-w-0">
+                <span className="block text-[11px] text-muted uppercase tracking-wide">Suivante</span>
+                <span className="block font-display font-semibold text-green-deep truncate">{next.numero}. {next.nom}</span>
+              </span>
+              <ChevronRight className="w-5 h-5 text-gold shrink-0" />
+            </Link>
+          ) : <span />}
+        </nav>
+      )}
     </div>
   );
 };
