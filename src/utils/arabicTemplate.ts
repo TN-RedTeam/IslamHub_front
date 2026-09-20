@@ -28,7 +28,7 @@ export const AR_TEMPLATE: { coran: string; hadith: string; parole: string } = {
  * suivi de la signification en gras entre guillemets (espaces fines insécables).
  * L'auteur n'a plus qu'à saisir la signification entre « … ».
  */
-export const TRAD_TEMPLATE = `ce qui signifie : **«${NNBSP}${NNBSP}»**`;
+export const TRAD_TEMPLATE = `ce qui signifie : **«${NNBSP}${NNBSP}»**.`;
 
 /** onFocus : place le curseur entre les guillemets « … » quand le champ = gabarit. */
 export function caretInsideGuillemets(tpl: string) {
