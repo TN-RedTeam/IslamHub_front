@@ -522,3 +522,8 @@ $$;
 -- Data (exegeses.source) : toutes les sources sauf « Tafsir At-Tabari » (14)
 --   remplacées par « An-Naçafiyy — Tafsir An-Naçafiyy » (203) — à la demande de
 --   l'auteur (écrasement confirmé). Backup _bkp_p7_brackets (tbl='exegeses_source').
+
+-- Liste des sourates (Juz 29 & 30) : sourates_all() expose aussi a_exegese
+--   (exists exégèse) pour le badge/filtre « Exégèse disponible ». Le juz est
+--   dérivé du numéro côté front (29 = 67–77, 30 = 78–114). Aucun seeding
+--   (choix auteur : afficher seulement l'existant).
