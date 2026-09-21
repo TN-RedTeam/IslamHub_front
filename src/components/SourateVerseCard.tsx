@@ -1,8 +1,16 @@
 import { forwardRef } from 'react';
+import { Link } from 'react-router-dom';
+import { AlertTriangle, ChevronRight } from 'lucide-react';
 import { Markdown } from './Markdown';
 import type { SourateDetail } from '../types';
 
 type VersetT = SourateDetail['versets'][number];
+
+// Aperçu court : retire le markdown léger et tronque proprement.
+const preview = (s: string | null | undefined, max = 180) => {
+  const t = (s ?? '').replace(/[*_>#`]/g, '').replace(/\s+/g, ' ').trim();
+  return t.length > max ? `${t.slice(0, max).trimEnd()}…` : t;
+};
 
 /**
  * Carte d'un verset (toujours dépliée) : n° + arabe + translittération +
@@ -32,6 +40,29 @@ export const SourateVerseCard = forwardRef<HTMLElement, { v: VersetT; pulsing?: 
         <div className="text-ink/85"><Markdown>{e.texte}</Markdown></div>
       </div>
     ))}
+
+    {/* Verset équivoque : renvoi vers l'explication complète (menu dépliable). */}
+    {v.equivoque && (
+      <details className="group mt-3 rounded-xl border border-gold/40 bg-gold/5 overflow-hidden">
+        <summary className="flex items-center gap-2 cursor-pointer list-none [&::-webkit-details-marker]:hidden select-none px-3.5 py-2.5 text-[13px] font-semibold text-ink hover:bg-gold/10 transition-colors">
+          <AlertTriangle className="w-4 h-4 shrink-0 text-gold" aria-hidden />
+          <span className="flex-1 min-w-0">Ce verset est équivoque — voir l'explication complète</span>
+          <ChevronRight className="w-4 h-4 shrink-0 text-gold transition-transform group-open:rotate-90" aria-hidden />
+        </summary>
+        <div className="px-3.5 pb-3.5 pt-1 border-t border-gold/20">
+          <p className="text-[13px] font-semibold text-ink mb-1">{v.equivoque.theme}</p>
+          {v.equivoque.sens_juste && (
+            <p className="text-[13px] text-ink/70 leading-relaxed mb-2.5">{preview(v.equivoque.sens_juste)}</p>
+          )}
+          <Link
+            to={`/croyance/versets-hadiths-equivoques/${v.equivoque.slug}`}
+            className="inline-flex items-center gap-1.5 rounded-lg bg-gold text-white font-semibold px-3 py-1.5 text-[13px] hover:brightness-95 transition"
+          >
+            Voir l'explication complète <ChevronRight className="w-3.5 h-3.5" />
+          </Link>
+        </div>
+      </details>
+    )}
   </article>
 ));
 SourateVerseCard.displayName = 'SourateVerseCard';

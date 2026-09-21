@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { m } from 'framer-motion';
-import { Loader2, ArrowLeft, Copy, Check, Share2, Scale, ArrowRight } from 'lucide-react';
+import { Loader2, ArrowLeft, Copy, Check, Share2, AlertTriangle, ChevronRight } from 'lucide-react';
 import { dataService } from '../services/DataService';
 import { BadgeGeneration } from '../components/BadgeGeneration';
 import { HadithSources } from '../components/HadithSources';
@@ -163,21 +163,25 @@ export const HadithPage: React.FC = () => {
         )}
 
         {hadith.equivoque && (
-          <section className="rounded-card border border-gold bg-gold-soft/40 p-5">
-            <div className="flex items-center gap-2 mb-2">
-              <Scale className="h-5 w-5 text-[#7a5a17]" />
-              <h2 className="font-display font-semibold text-green-deep text-lg">Texte équivoque — l'analyse</h2>
+          <details className="group rounded-card border border-gold/40 bg-gold/5 overflow-hidden">
+            <summary className="flex items-center gap-2 cursor-pointer list-none [&::-webkit-details-marker]:hidden select-none px-5 py-3.5 font-display font-semibold text-green-deep hover:bg-gold/10 transition-colors">
+              <AlertTriangle className="h-5 w-5 shrink-0 text-gold" aria-hidden />
+              <span className="flex-1 min-w-0">Ce hadith est équivoque — voir l'explication complète</span>
+              <ChevronRight className="h-5 w-5 shrink-0 text-gold transition-transform group-open:rotate-90" aria-hidden />
+            </summary>
+            <div className="px-5 pb-5 pt-1 border-t border-gold/20">
+              {hadith.equivoque.theme && <p className="text-[15px] font-semibold text-ink mb-1.5">{hadith.equivoque.theme}</p>}
+              <p className="text-sm text-ink/80 mb-3">Le sens apparent de ce hadith prêterait à confusion&nbsp;: voici le sens conforme et digne d'Allah, avec les preuves.</p>
+              {eqBlocs.length > 0 && (
+                <div className="rounded-card bg-surface border border-line p-4 mb-3">
+                  <ArticleBlocs blocs={eqBlocs} />
+                </div>
+              )}
+              <Link to={`/croyance/versets-hadiths-equivoques/${hadith.equivoque.slug}`} className="inline-flex items-center gap-1.5 rounded-lg bg-gold text-white font-semibold px-4 py-2 text-sm hover:brightness-95 transition">
+                Voir l'explication complète <ChevronRight className="h-4 w-4" />
+              </Link>
             </div>
-            <p className="text-sm text-ink/80 mb-3">Le sens apparent de ce hadith prêterait à confusion&nbsp;: voici le sens conforme et digne d'Allah, avec les preuves.</p>
-            {eqBlocs.length > 0 && (
-              <div className="rounded-card bg-surface border border-line p-4 mb-3">
-                <ArticleBlocs blocs={eqBlocs} />
-              </div>
-            )}
-            <Link to={`/croyance/versets-hadiths-equivoques/${hadith.equivoque.slug}`} className="inline-flex items-center gap-1.5 rounded-lg bg-green text-white font-semibold px-4 py-2 text-sm hover:bg-green-deep transition-colors">
-              Voir l'analyse complète <ArrowRight className="h-4 w-4" />
-            </Link>
-          </section>
+          </details>
         )}
 
         <RelatedByTheme kind="hadith" id={hadith.id} className="mt-2" />

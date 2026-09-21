@@ -527,3 +527,20 @@ $$;
 --   (exists exégèse) pour le badge/filtre « Exégèse disponible ». Le juz est
 --   dérivé du numéro côté front (29 = 67–77, 30 = 78–114). Aucun seeding
 --   (choix auteur : afficher seulement l'existant).
+
+-- ── Lien exégèse → verset équivoque (auto, par n° sourate + ayah) ──────────
+-- get_sourate() enrichit chaque verset d'un champ `equivoque` (nullable) :
+--   la fiche versets_equivoques (type='verset', published=true) dont
+--   sourate_num = sourate.numero ET ayah = verset.numero (order by id limit 1).
+-- Le lecteur (SourateVerseCard) affiche alors un encart dépliable
+--   « Ce verset est équivoque — voir l'explication complète » → /croyance/
+--   versets-hadiths-equivoques/{slug}. Aucun champ admin : le rattachement
+--   suit automatiquement le n° de sourate + ayah saisis sur la fiche équivoque.
+--   (ex. Al-Mulk v.16 ↔ équivoque « Allah n'habite pas le ciel », id 9.)
+
+-- ── Idem pour les hadiths équivoques ───────────────────────────────────────
+-- get_hadith().equivoque porte désormais aussi theme + sens_juste (en plus de
+--   slug + id), apparié par versets_equivoques.hadith_id (published=true).
+--   La fiche hadith (HadithPage) affiche un encart DÉPLIABLE identique au
+--   lecteur de sourate : « Ce hadith est équivoque — voir l'explication
+--   complète » (résumé + blocs de l'analyse + lien vers la fiche équivoque).
