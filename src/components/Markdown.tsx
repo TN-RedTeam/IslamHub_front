@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import type { Components } from 'react-markdown';
@@ -63,6 +64,11 @@ const mdComponents: Components = {
     //  se répètent entre entrées puisque la numérotation repart à 1 à chaque fois.)
     if (href.startsWith('#user-content-fn')) {
       return <span className="text-green font-semibold">{props.children}</span>;
+    }
+    // Lien interne (route du site, ex. /recits/younous) → navigation react-router
+    // (compatible HashRouter), même onglet. Externe → nouvel onglet.
+    if (href.startsWith('/') && !href.startsWith('//')) {
+      return <Link to={href} className="text-green underline">{props.children}</Link>;
     }
     return <a className="text-green underline" target="_blank" rel="noopener noreferrer" {...props} />;
   },
