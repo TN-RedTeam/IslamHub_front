@@ -202,6 +202,9 @@ export interface SourateDetail {
     texte_francais: string | null;
     phonetique: string | null;
     exegeses: { texte: string; source: string | null; verset_fin?: number | null }[];
+    // Fiche « verset équivoque » correspondante (publiée), appariée par n° de
+    // sourate + ayah côté RPC. Absente/null si le verset n'est pas équivoque.
+    equivoque?: { theme: string; slug: string; sens_juste: string | null } | null;
   }[];
 }
 
@@ -226,7 +229,7 @@ export interface HadithDetail {
   recueils: string | null;
   sources?: HadithSource[];   // source structurée (groupée par rapporteur)
   themes?: ThemeRef[];        // thèmes transverses (puces)
-  equivoque?: { slug: string; id: number } | null; // fiche « équivoque » liée (si publiée)
+  equivoque?: { slug: string; id: number; theme?: string; sens_juste?: string | null } | null; // fiche « équivoque » liée (si publiée)
 }
 
 /** Infos légères d'un savant (mini-bio au survol). */
