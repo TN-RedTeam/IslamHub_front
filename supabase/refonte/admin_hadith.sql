@@ -544,3 +544,11 @@ $$;
 --   La fiche hadith (HadithPage) affiche un encart DÉPLIABLE identique au
 --   lecteur de sourate : « Ce hadith est équivoque — voir l'explication
 --   complète » (résumé + blocs de l'analyse + lien vers la fiche équivoque).
+
+-- ── Liens internes dans le Markdown (exégèses, articles…) ──────────────────
+-- Le composant <Markdown> rend désormais les liens dont le href commence par
+--   « / » (route interne du site) via react-router <Link> (compatible
+--   HashRouter, même onglet) ; les liens externes gardent target=_blank.
+--   => on peut écrire dans un texte : [libellé](/recits/younous), etc.
+-- Donnée : exégèse Al-Qalam (68) v.48 (id 1066) — « le prophète Yoūnus (Jonas) »
+--   pointe vers le récit id 19 (slug younous) : /recits/younous.
