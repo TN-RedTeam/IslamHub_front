@@ -12,7 +12,9 @@ const rid = () => Math.random().toString(36).slice(2);
 
 type Exeg = { key: string; texte: string; source: string; verset_fin: string };
 type Verset = { key: string; numero: string; texte_arabe: string; texte_francais: string; phonetique: string; exegeses: Exeg[] };
-const emptyExeg = (): Exeg => ({ key: rid(), texte: '', source: '', verset_fin: '' });
+// Source par défaut d'une nouvelle exégèse (~95 % des cas) ; reste modifiable.
+const DEFAULT_EXEG_SOURCE = 'An-Naçafiyy — Tafsir An-Naçafiyy';
+const emptyExeg = (): Exeg => ({ key: rid(), texte: '', source: DEFAULT_EXEG_SOURCE, verset_fin: '' });
 const emptyVerset = (numero = ''): Verset => ({ key: rid(), numero, texte_arabe: AR_TEMPLATE.coran, texte_francais: TRAD_TEMPLATE, phonetique: '', exegeses: [] });
 const blank = { numero: '', nom: '', nom_arabe: '', slug: '', revelation: '', nb_versets: '', introduction_md: '', ordre_revelation: '' };
 
