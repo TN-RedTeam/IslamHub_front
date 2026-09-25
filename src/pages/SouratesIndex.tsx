@@ -6,10 +6,12 @@ import { CoranTabs } from '../components/CoranTabs';
 import { useSeo } from '../hooks/useSeo';
 import type { SourateInfo } from '../types';
 
-// Juz couverts (dérivés du numéro de sourate — aucun champ en base).
-const JUZ = [
-  { n: 29, nom: 'Tabārak', arabe: 'تبارك', min: 67, max: 77 },
-  { n: 30, nom: 'ʿAmma', arabe: 'عمّ', min: 78, max: 114 },
+// Sections de l'index (dérivées du numéro de sourate — aucun champ en base).
+// Al-Fātiḥah (hors Juz 29 & 30) ouvre la page, puis les deux juz.
+const SECTIONS: { key: string; badge: React.ReactNode; titre: string; arabe: string; has: (n: number) => boolean }[] = [
+  { key: 'fatiha', badge: <BookOpen className="w-5 h-5" aria-hidden />, titre: 'Al-Fātiḥah · L’ouverture', arabe: 'الفاتحة', has: (n) => n === 1 },
+  { key: 'juz29', badge: '29', titre: 'Juz 29 · Tabārak', arabe: 'تبارك', has: (n) => n >= 67 && n <= 77 },
+  { key: 'juz30', badge: '30', titre: 'Juz 30 · ʿAmma', arabe: 'عمّ', has: (n) => n >= 78 && n <= 114 },
 ];
 
 const norm = (s: string) => s.normalize('NFD').replace(/\p{Diacritic}/gu, '').toLowerCase();
@@ -34,9 +36,6 @@ export const SouratesIndex: React.FC = () => {
     dataService.getSourates().then(setSourates).catch(() => setSourates([])).finally(() => setLoading(false));
   }, []);
 
-  // Périmètre : Juz 29 & 30 uniquement (67–114).
-  const inScope = useMemo(() => sourates.filter((s) => s.numero >= 67 && s.numero <= 114), [sourates]);
-
   const matches = (s: SourateInfo) => {
     const term = norm(q.trim());
     if (onlyExegese && !hasTafsir(s)) return false;
@@ -45,18 +44,18 @@ export const SouratesIndex: React.FC = () => {
   };
 
   const blocks = useMemo(() =>
-    JUZ.map((j) => {
-      const all = inScope.filter((s) => s.numero >= j.min && s.numero <= j.max);
+    SECTIONS.map((sec) => {
+      const all = sourates.filter((s) => sec.has(s.numero));
       const shown = all.filter(matches);
       const stats = {
         sourates: all.length,
         versets: all.reduce((n, s) => n + (s.nb_versets ?? 0), 0),
         avecExegese: all.filter(hasTafsir).length,
       };
-      return { j, all, shown, stats };
+      return { sec, all, shown, stats };
     }).filter((b) => b.all.length > 0),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [inScope, q, onlyExegese],
+    [sourates, q, onlyExegese],
   );
 
   const totalShown = blocks.reduce((n, b) => n + b.shown.length, 0);
@@ -67,7 +66,7 @@ export const SouratesIndex: React.FC = () => {
         <div className="container mx-auto px-4 max-w-5xl text-center">
           <nav aria-label="Fil d'Ariane" className="text-xs text-muted mb-2"><Link to="/" className="hover:text-green-deep">Accueil</Link> <span aria-hidden>·</span> <Link to="/coran" className="hover:text-green-deep">Coran</Link> <span aria-hidden>·</span> Sourates</nav>
           <h1 className="text-4xl md:text-5xl font-bold text-green-deep font-display">Exégèse des sourates</h1>
-          <p className="text-muted mt-3 max-w-2xl mx-auto">Le tafsir des Juz 29 &amp; 30, expliqué à la lumière des savants.</p>
+          <p className="text-muted mt-3 max-w-2xl mx-auto">Le tafsir d’Al-Fātiḥah et des Juz 29 &amp; 30, expliqué à la lumière des savants.</p>
           <div className="mt-5 flex justify-center"><CoranTabs /></div>
         </div>
       </header>
@@ -111,14 +110,14 @@ export const SouratesIndex: React.FC = () => {
           <p className="text-center text-muted py-16">Aucune sourate ne correspond.</p>
         ) : (
           <div className="space-y-10">
-            {blocks.map(({ j, shown, stats }) => (
-              <section key={j.n} aria-label={`Juz ${j.n}`}>
-                {/* En-tête du Juz */}
+            {blocks.map(({ sec, shown, stats }) => (
+              <section key={sec.key} aria-label={sec.titre}>
+                {/* En-tête de section */}
                 <div className="flex items-center gap-3 mb-4">
-                  <span className="shrink-0 grid place-items-center w-11 h-11 rounded-2xl bg-green text-white font-display font-semibold text-lg tabular-nums">{j.n}</span>
+                  <span className="shrink-0 grid place-items-center w-11 h-11 rounded-2xl bg-green text-white font-display font-semibold text-lg tabular-nums">{sec.badge}</span>
                   <div className="min-w-0">
                     <h2 className="font-display font-semibold text-green-deep text-xl leading-tight">
-                      Juz {j.n} · {j.nom} <span className="font-arabic text-gold" dir="rtl" lang="ar">{j.arabe}</span>
+                      {sec.titre} <span className="font-arabic text-gold" dir="rtl" lang="ar">{sec.arabe}</span>
                     </h2>
                     <p className="text-xs text-muted mt-0.5">
                       {stats.sourates} sourate{stats.sourates > 1 ? 's' : ''} · {stats.versets} versets · {stats.avecExegese} avec exégèse
@@ -127,7 +126,7 @@ export const SouratesIndex: React.FC = () => {
                 </div>
 
                 {shown.length === 0 ? (
-                  <p className="text-sm text-muted italic pl-14">Aucune sourate de ce juz ne correspond.</p>
+                  <p className="text-sm text-muted italic pl-14">Aucune sourate de cette section ne correspond.</p>
                 ) : view === 'grid' ? (
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                     {shown.map((s) => (
