@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Home, BookOpen, Sparkles, Users, Search } from 'lucide-react';
+import { UI } from '../strings';
 
 /**
  * Navigation d'app sur mobile (< md) : pilule flottante + FAB recherche.
@@ -8,10 +9,10 @@ import { Home, BookOpen, Sparkles, Users, Search } from 'lucide-react';
  * Fixe en bas, respecte la safe-area, cibles tactiles ≥ 44 px, clavier OK.
  */
 const TABS = [
-  { to: '/', label: 'Accueil', icon: Home, exact: true },
-  { to: '/coran', label: 'Coran', icon: BookOpen },
-  { to: '/croyance', label: 'Croyance', icon: Sparkles },
-  { to: '/savants', label: 'Savants', icon: Users },
+  { to: '/', label: UI.nav.home, icon: Home, exact: true },
+  { to: '/coran', label: UI.nav.coran, icon: BookOpen },
+  { to: '/croyance', label: UI.nav.croyance, icon: Sparkles },
+  { to: '/savants', label: UI.nav.savants, icon: Users },
 ];
 
 export const BottomNav: React.FC = () => {
@@ -49,7 +50,7 @@ export const BottomNav: React.FC = () => {
 
       <Link
         to="/recherche"
-        aria-label="Rechercher"
+        aria-label={UI.nav.search}
         className="pointer-events-auto grid place-items-center w-[52px] h-[52px] rounded-full bg-gradient-to-br from-accent-br to-accent-deep text-[#062018] shadow-fab focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-transparent"
       >
         <Search className="w-[23px] h-[23px]" strokeWidth={2} />
