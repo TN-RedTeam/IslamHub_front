@@ -3,26 +3,29 @@ import { Link } from 'react-router-dom';
 import { Loader2 } from 'lucide-react';
 import { dataService } from '../../services/DataService';
 import { ExposeBody } from '../../components/ExposeBody';
+import { ArticleBlocs } from '../../components/ArticleBlocs';
 import { usePageTitle } from '../../hooks/usePageTitle';
-import type { Expose, ExposeCitation } from '../../types';
+import type { Expose, ExposeCitation, Bloc } from '../../types';
 
 /**
  * « Le jugement rationnel » — le nécessaire (al-wājib), l'impossible
  * (al-mustaḥīl), le possible (al-jāʾiz), et la raison comme voie vers la
- * connaissance du Créateur. Prose éditable (`exposes` slug jugement-rationnel)
- * + preuves via le mécanisme réutilisable (`expose_citations`).
+ * connaissance du Créateur. Contenu éditable (`exposes` slug jugement-rationnel) :
+ * article composable (blocs) s'il existe, sinon prose Markdown + preuves.
  */
 export const JugementRationnel: React.FC = () => {
   usePageTitle('Le jugement rationnel');
   const [expose, setExpose] = useState<Expose | null>(null);
   const [citations, setCitations] = useState<ExposeCitation[]>([]);
+  const [blocs, setBlocs] = useState<Bloc[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     Promise.all([
       dataService.getExpose('jugement-rationnel').catch(() => null),
       dataService.getExposeCitations('jugement-rationnel').catch(() => []),
-    ]).then(([e, ci]) => { setExpose(e); setCitations(ci); }).finally(() => setLoading(false));
+      dataService.getBlocs('expose', 'jugement-rationnel').catch(() => []),
+    ]).then(([e, ci, bl]) => { setExpose(e); setCitations(ci); setBlocs(bl); }).finally(() => setLoading(false));
   }, []);
 
   if (loading) {
@@ -46,7 +49,9 @@ export const JugementRationnel: React.FC = () => {
         </p>
 
         <div className="mt-6">
-          <ExposeBody contenuMd={expose?.contenu_md ?? null} citations={citations} />
+          {blocs.length > 0
+            ? <ArticleBlocs blocs={blocs} />
+            : <ExposeBody contenuMd={expose?.contenu_md ?? null} citations={citations} />}
         </div>
       </main>
     </div>
