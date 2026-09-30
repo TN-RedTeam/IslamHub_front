@@ -38,6 +38,7 @@ export const AdminExposesList: React.FC = () => {
               <li key={e.slug}>
                 <Link to={`/admin/exposes/${e.slug}`} className="flex items-center gap-3 px-4 py-3 hover:bg-glass-tint transition-colors">
                   <span className="text-ink font-medium min-w-0 truncate">{e.titre || e.slug}</span>
+                  {e.published === false && <span className="text-[10px] font-semibold text-warn bg-warn/10 border border-warn/40 rounded-full px-1.5 py-0.5 shrink-0">Brouillon</span>}
                   <span className="text-[11px] px-2 py-0.5 rounded-full bg-ground text-muted border border-line shrink-0">{e.slug}</span>
                   <span className="ml-auto text-muted text-sm shrink-0">Modifier →</span>
                 </Link>

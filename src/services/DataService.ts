@@ -256,14 +256,15 @@ class DataService {
       .from('exposes')
       .select('slug,titre,contenu_md,verset_arabe,verset_traduction,verset_phonetique,verset_ref')
       .eq('slug', slug)
+      .eq('published', true)
       .maybeSingle();
     if (error) throw error;
     return (data ?? null) as Expose | null;
   }
 
-  /** Liste légère des exposés (section « Exposés / Cours » de Croyance). */
+  /** Liste légère des exposés PUBLIÉS (section « Exposés / Cours » de Croyance). */
   async getExposes(): Promise<{ slug: string; titre: string }[]> {
-    const { data, error } = await supabase.from('exposes').select('slug,titre').order('titre');
+    const { data, error } = await supabase.from('exposes').select('slug,titre').eq('published', true).order('titre');
     if (error) throw error;
     return (data ?? []) as { slug: string; titre: string }[];
   }
