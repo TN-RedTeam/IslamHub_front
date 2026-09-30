@@ -457,12 +457,12 @@ export interface FemmeEditShape {
 }
 export interface FemmeRow { id: number; chapitre: string; matn: string | null; ordre: number; }
 
-export interface RecitRow { id: number; slug: string; categorie: RecitCategorie; titre: string; ordre: number; parent_recit_id: number | null; }
+export interface RecitRow { id: number; slug: string; categorie: RecitCategorie; titre: string; ordre: number; parent_recit_id: number | null; image_url: string | null; }
 export interface RecitFull { id?: number; slug: string; categorie: RecitCategorie; titre: string; contenu_md: string | null; image_url: string | null; ordre: number; parent_recit_id?: number | null; }
 
 class AdminRecits {
   async list(): Promise<RecitRow[]> {
-    const { data, error } = await supabase.from('recits').select('id,slug,categorie,titre,ordre,parent_recit_id').order('categorie').order('ordre');
+    const { data, error } = await supabase.from('recits').select('id,slug,categorie,titre,ordre,parent_recit_id,image_url').order('categorie').order('ordre');
     if (error) throw error; return (data ?? []) as RecitRow[];
   }
   async get(id: number): Promise<RecitFull | null> {
