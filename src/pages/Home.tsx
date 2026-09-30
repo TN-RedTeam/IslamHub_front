@@ -51,8 +51,28 @@ export const Home: React.FC = () => {
   ];
 
   return (
-    <div className="min-h-screen">
-      <main className="max-w-3xl mx-auto px-4 pb-20">
+    <div className="relative min-h-screen">
+      {/* Dôme en filigrane (silhouette SVG, ~6 %) — accueil uniquement, derrière
+          le contenu, décoratif. Prolonge l'ambiance sans image lourde. */}
+      <div aria-hidden="true" className="pointer-events-none select-none absolute inset-x-0 top-0 -z-10 flex justify-center overflow-hidden">
+        <svg width="560" height="280" viewBox="0 0 560 280" className="text-accent opacity-[0.06]" fill="currentColor">
+          {/* minarets */}
+          <rect x="132" y="96" width="15" height="150" />
+          <path d="M132 96c0-11 15-11 15 0z" />
+          <circle cx="139.5" cy="86" r="7" />
+          <rect x="413" y="96" width="15" height="150" />
+          <path d="M413 96c0-11 15-11 15 0z" />
+          <circle cx="420.5" cy="86" r="7" />
+          {/* corps + dôme central */}
+          <rect x="185" y="150" width="190" height="96" />
+          <path d="M203 152c-3-40 20-70 77-82 57 12 80 42 77 82z" />
+          {/* finial */}
+          <rect x="277" y="42" width="6" height="20" />
+          <circle cx="280" cy="38" r="7" />
+        </svg>
+      </div>
+
+      <main className="relative max-w-3xl mx-auto px-4 pb-20">
         {/* HERO — Dôme vert (photo bundlée + dégradé CSS). Le verset du jour est
             dynamique (rotation par date), posé sur l'image. */}
         <section className="relative mt-5 h-[clamp(230px,54vw,360px)] overflow-hidden rounded-[26px] border border-glass-border">
