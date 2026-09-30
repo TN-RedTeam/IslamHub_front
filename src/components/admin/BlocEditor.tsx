@@ -69,10 +69,10 @@ export const BlocEditor: React.FC<{ parentType: string; parentId: string | numbe
 
       <div className="flex flex-col gap-3">
         {rows.map((r, i) => (
-          <div key={r.key} className={`rounded-lg border p-3 ${r.type === 'preuve' ? 'border-gold bg-glass-tint' : r.type === 'commentaire' ? 'border-[#9db8d6] bg-[#eef4fb]' : 'border-line bg-surface'}`}>
+          <div key={r.key} className={`rounded-lg border p-3 ${r.type === 'preuve' ? 'border-gold bg-glass-tint' : r.type === 'commentaire' ? 'border-glass-border bg-glass-tint' : 'border-line bg-surface'}`}>
             <div className="flex items-center gap-2 mb-2.5">
               <span className="inline-flex items-center gap-1.5 text-[13px] font-semibold text-ink">
-                {r.type === 'texte' ? <FileText className="w-4 h-4 text-green" /> : r.type === 'commentaire' ? <MessageSquare className="w-4 h-4 text-[#2c5a7a]" /> : <BookOpen className="w-4 h-4 text-accent" />}
+                {r.type === 'texte' ? <FileText className="w-4 h-4 text-green" /> : r.type === 'commentaire' ? <MessageSquare className="w-4 h-4 text-accent" /> : <BookOpen className="w-4 h-4 text-accent" />}
                 Bloc {i + 1} · {r.type === 'texte' ? 'Texte' : r.type === 'commentaire' ? 'Commentaire' : 'Preuve'}
               </span>
               <div className="ml-auto flex items-center gap-1.5">
@@ -115,7 +115,7 @@ export const BlocEditor: React.FC<{ parentType: string; parentId: string | numbe
 
       <div className="flex flex-wrap items-center gap-2 mt-3.5">
         <button type="button" onClick={() => setRows((a) => [...a, empty('texte')])} className="inline-flex items-center gap-1.5 rounded-lg border border-dashed border-green-line bg-glass-tint text-ink font-semibold px-3 py-1.5 text-sm"><Plus className="w-4 h-4" /> Texte</button>
-        <button type="button" onClick={() => setRows((a) => [...a, empty('commentaire')])} className="inline-flex items-center gap-1.5 rounded-lg border border-dashed border-[#9db8d6] bg-[#eef4fb] text-[#2c5a7a] font-semibold px-3 py-1.5 text-sm"><Plus className="w-4 h-4" /> Commentaire</button>
+        <button type="button" onClick={() => setRows((a) => [...a, empty('commentaire')])} className="inline-flex items-center gap-1.5 rounded-lg border border-dashed border-glass-border bg-glass-tint text-accent font-semibold px-3 py-1.5 text-sm"><Plus className="w-4 h-4" /> Commentaire</button>
         <button type="button" onClick={() => setRows((a) => [...a, empty('preuve')])} className="inline-flex items-center gap-1.5 rounded-lg border border-dashed border-gold bg-glass-tint text-accent font-semibold px-3 py-1.5 text-sm"><Plus className="w-4 h-4" /> Preuve</button>
 
         <div className="ml-auto flex items-center gap-2.5">

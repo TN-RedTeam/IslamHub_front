@@ -33,23 +33,23 @@ export const AdminLayout: React.FC = () => {
 
   const linkCls = ({ isActive }: { isActive: boolean }) =>
     `flex items-center justify-between gap-2 px-3 py-2.5 rounded-lg text-[14.5px] transition-colors ${
-      isActive ? 'bg-green text-white' : 'text-ink hover:bg-glass-tint hover:text-ink'
+      isActive ? 'bg-accent-deep text-white' : 'text-ink hover:bg-glass-tint hover:text-ink'
     }`;
 
   return (
     <div className="min-h-screen">
-      <header className="sticky top-0 z-20 flex items-center gap-3 h-14 px-5 bg-green-deep text-[#f3ede0]">
-        <span className="font-display font-semibold text-xl">Islam<span className="text-[#e6c877]">Hub</span></span>
-        <span className="text-[11px] uppercase tracking-[0.16em] text-[#bcd3c6] border border-[#2e5c49] rounded-full px-2.5 py-0.5">Admin</span>
+      <header className="sticky top-0 z-20 flex items-center gap-3 h-14 px-5 bg-[#0b1e22] text-[#e9f4f1]">
+        <span className="font-display font-extrabold text-xl">Islam<span className="text-accent-br">Hub</span></span>
+        <span className="text-[11px] uppercase tracking-[0.16em] text-[#8fb2ad] border border-glass-border rounded-full px-2.5 py-0.5">Admin</span>
         <div className="ml-auto flex items-center gap-3">
-          <span className="hidden sm:block text-[13px] text-[#cfe0d6]">{email}</span>
-          <Link to="/" className="inline-flex items-center gap-1.5 text-[13px] bg-white text-ink rounded-lg px-3 py-1.5 font-semibold"><ExternalLink className="w-4 h-4" /> Voir le site</Link>
-          <button onClick={signOut} className="inline-flex items-center gap-1.5 text-[13px] text-[#cfe0d6] hover:text-white"><LogOut className="w-4 h-4" /> Déconnexion</button>
+          <span className="hidden sm:block text-[13px] text-[#8fb2ad]">{email}</span>
+          <Link to="/" className="inline-flex items-center gap-1.5 text-[13px] bg-white text-[#0b1e22] rounded-lg px-3 py-1.5 font-semibold"><ExternalLink className="w-4 h-4" /> Voir le site</Link>
+          <button onClick={signOut} className="inline-flex items-center gap-1.5 text-[13px] text-[#8fb2ad] hover:text-white"><LogOut className="w-4 h-4" /> Déconnexion</button>
         </div>
       </header>
 
       <div className="grid grid-cols-1 md:grid-cols-[230px_1fr]">
-        <nav className="hidden md:block border-r border-line bg-[#fbf8f1] p-3">
+        <nav className="hidden md:block border-r border-glass-border p-3">
           <NavLink to="/admin/recherche" className={linkCls}>Recherche &amp; correction</NavLink>
           <p className="text-[10.5px] uppercase tracking-[0.16em] text-muted font-semibold px-2 py-2 mt-2">Contenus</p>
           {ENTITIES.map((e) => (
