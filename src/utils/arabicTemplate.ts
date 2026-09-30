@@ -1,3 +1,4 @@
+/* eslint-disable no-irregular-whitespace -- espaces fines insécables (U+202F) intentionnelles (typographie arabe/française autour des parenthèses et guillemets). */
 import type { FocusEvent } from 'react';
 
 /**
