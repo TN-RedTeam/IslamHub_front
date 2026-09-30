@@ -261,6 +261,13 @@ class DataService {
     return (data ?? null) as Expose | null;
   }
 
+  /** Liste légère des exposés (section « Exposés / Cours » de Croyance). */
+  async getExposes(): Promise<{ slug: string; titre: string }[]> {
+    const { data, error } = await supabase.from('exposes').select('slug,titre').order('titre');
+    if (error) throw error;
+    return (data ?? []) as { slug: string; titre: string }[];
+  }
+
   async getMutashabihExemples(): Promise<MutashabihExemple[]> {
     const { data, error } = await supabase.rpc('mutashabih_exemples_all');
     if (error) throw error;
