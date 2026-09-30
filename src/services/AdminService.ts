@@ -478,6 +478,11 @@ class AdminRecits {
     const { data, error } = await supabase.from('recits').insert(row).select('id').single();
     if (error) throw error; return (data as { id: number }).id;
   }
+  /** Fixe l'ordre d'un récit (réordonnancement depuis la liste admin). */
+  async setOrdre(id: number, ordre: number): Promise<void> {
+    const { error } = await supabase.from('recits').update({ ordre }).eq('id', id);
+    if (error) throw error;
+  }
 }
 export const adminRecits = new AdminRecits();
 
