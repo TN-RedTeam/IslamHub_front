@@ -41,13 +41,13 @@ export const ExposePage: React.FC = () => {
   }, [slug]);
 
   if (loading) {
-    return <div className="min-h-screen bg-ground grid place-items-center"><Loader2 className="w-10 h-10 text-green animate-spin" /></div>;
+    return <div className="min-h-screen grid place-items-center"><Loader2 className="w-10 h-10 text-green animate-spin" /></div>;
   }
   if (notFound || !expose) {
     return (
-      <div className="min-h-screen bg-ground grid place-items-center px-5">
+      <div className="min-h-screen grid place-items-center px-5">
         <div className="text-center">
-          <h1 className="font-display text-2xl text-green-deep mb-2">Exposé introuvable</h1>
+          <h1 className="font-display text-2xl text-ink mb-2">Exposé introuvable</h1>
           <Link to="/" className="text-green font-medium hover:underline">Retour à l’accueil</Link>
         </div>
       </div>
@@ -57,21 +57,21 @@ export const ExposePage: React.FC = () => {
   const hasVerse = expose.verset_arabe || expose.verset_traduction;
 
   return (
-    <div className="min-h-screen bg-ground">
+    <div className="min-h-screen">
       <main className="max-w-5xl mx-auto px-5 py-7 pb-16">
         <nav aria-label="Fil d'Ariane" className="text-xs text-muted mb-1.5">
-          <Link to="/" className="hover:text-green-deep">Accueil</Link> <span aria-hidden>·</span> Exposé
+          <Link to="/" className="hover:text-ink">Accueil</Link> <span aria-hidden>·</span> Exposé
         </nav>
 
-        <p className="text-[11.5px] font-semibold uppercase tracking-[0.2em] text-gold mb-1">Exposé</p>
-        <h1 className="font-display font-semibold text-green-deep leading-tight" style={{ fontSize: 'clamp(26px,4vw,38px)' }}>{expose.titre || 'Exposé'}</h1>
+        <p className="text-[11.5px] font-semibold uppercase tracking-[0.2em] text-accent mb-1">Exposé</p>
+        <h1 className="font-display font-semibold text-ink leading-tight" style={{ fontSize: 'clamp(26px,4vw,38px)' }}>{expose.titre || 'Exposé'}</h1>
 
         {hasVerse && (
           <div className="rounded-panel border border-line bg-surface p-6 mt-5 text-center shadow-card">
-            {expose.verset_arabe && <p className="font-arabic text-green-deep leading-[2]" dir="rtl" lang="ar" style={{ fontSize: 'clamp(24px,4.2vw,34px)' }}>{expose.verset_arabe}</p>}
+            {expose.verset_arabe && <p className="font-arabic text-ink leading-[2]" dir="rtl" lang="ar" style={{ fontSize: 'clamp(24px,4.2vw,34px)' }}>{expose.verset_arabe}</p>}
             {expose.verset_traduction && <p className="text-[17px] text-ink mt-3">{expose.verset_traduction}</p>}
             {expose.verset_phonetique && <p className="text-[13px] text-muted italic mt-1.5 [unicode-bidi:plaintext]">{expose.verset_phonetique}</p>}
-            {expose.verset_ref && <p className="text-xs uppercase tracking-[0.06em] text-gold font-semibold mt-3">{expose.verset_ref}</p>}
+            {expose.verset_ref && <p className="text-xs uppercase tracking-[0.06em] text-accent font-semibold mt-3">{expose.verset_ref}</p>}
           </div>
         )}
 

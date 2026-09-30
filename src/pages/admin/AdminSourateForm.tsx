@@ -106,13 +106,13 @@ export const AdminSourateForm: React.FC = () => {
     <div className="max-w-3xl px-6 py-8 pb-28">
       {/* Autocomplétion « Source » des exégèses : noms de savants (table savants) */}
       <datalist id="exeg-savants">{savantNames.map((n) => <option key={n} value={n} />)}</datalist>
-      <p className="text-xs text-muted"><Link to="/admin/sourates" className="hover:text-green-deep">Coran — exégèse</Link> · {editId ? 'Modifier' : 'Nouvelle'}</p>
-      <h1 className="font-display font-semibold text-green-deep text-3xl mt-1 mb-1">{editId ? 'Modifier la sourate' : 'Nouvelle sourate'}</h1>
+      <p className="text-xs text-muted"><Link to="/admin/sourates" className="hover:text-ink">Coran — exégèse</Link> · {editId ? 'Modifier' : 'Nouvelle'}</p>
+      <h1 className="font-display font-semibold text-ink text-3xl mt-1 mb-1">{editId ? 'Modifier la sourate' : 'Nouvelle sourate'}</h1>
       <p className="text-muted text-sm mb-6">Le texte arabe collé ici est enregistré tel quel (UTF-8).</p>
 
       {/* 1. La sourate */}
       <section className="rounded-card border border-line bg-surface p-5 mb-4">
-        <h2 className="font-display font-semibold text-green-deep text-lg mb-4">1 · La sourate</h2>
+        <h2 className="font-display font-semibold text-ink text-lg mb-4">1 · La sourate</h2>
         <div className="grid sm:grid-cols-3 gap-3.5">
           <div><label className={label}>N° <span className="text-red-600">*</span></label><input className={field} type="number" value={f.numero} onChange={set('numero')} placeholder="112" /></div>
           <div className="sm:col-span-2"><label className={label}>Nom <span className="text-red-600">*</span></label><input className={field} value={f.nom} onChange={set('nom')} placeholder="Al-Ikhlāṣ" /></div>
@@ -138,16 +138,16 @@ export const AdminSourateForm: React.FC = () => {
 
       {/* 2. Versets + exégèses */}
       <section className="rounded-card border border-line bg-surface p-5 mb-4">
-        <h2 className="font-display font-semibold text-green-deep text-lg mb-1">2 · Versets & exégèses</h2>
+        <h2 className="font-display font-semibold text-ink text-lg mb-1">2 · Versets & exégèses</h2>
         <p className="text-xs text-muted mb-4">Ajoute les versets à commenter (pas nécessairement toute la sourate). Sous chaque verset, une ou plusieurs exégèses (texte + source).</p>
 
         {versets.map((v, vi) => (
           <div key={v.key} className="rounded-lg border border-line bg-ground/30 p-3.5 mb-3">
             <div className="flex items-center gap-2 mb-2.5">
-              <span className="text-sm font-semibold text-green-deep">Verset {v.numero || vi + 1}</span>
+              <span className="text-sm font-semibold text-ink">Verset {v.numero || vi + 1}</span>
               <div className="ml-auto flex items-center gap-1.5">
-                <button type="button" onClick={() => setVersets((a) => move(a, vi, -1))} disabled={vi === 0} className="text-muted disabled:opacity-30 hover:text-green-deep" aria-label="Monter"><ArrowUp className="w-4 h-4" /></button>
-                <button type="button" onClick={() => setVersets((a) => move(a, vi, 1))} disabled={vi === versets.length - 1} className="text-muted disabled:opacity-30 hover:text-green-deep" aria-label="Descendre"><ArrowDown className="w-4 h-4" /></button>
+                <button type="button" onClick={() => setVersets((a) => move(a, vi, -1))} disabled={vi === 0} className="text-muted disabled:opacity-30 hover:text-ink" aria-label="Monter"><ArrowUp className="w-4 h-4" /></button>
+                <button type="button" onClick={() => setVersets((a) => move(a, vi, 1))} disabled={vi === versets.length - 1} className="text-muted disabled:opacity-30 hover:text-ink" aria-label="Descendre"><ArrowDown className="w-4 h-4" /></button>
                 <button type="button" onClick={() => setVersets((a) => a.filter((_, j) => j !== vi))} className="text-red-600" aria-label="Retirer le verset"><Trash2 className="w-4 h-4" /></button>
               </div>
             </div>
@@ -162,14 +162,14 @@ export const AdminSourateForm: React.FC = () => {
 
             {/* Exégèses du verset */}
             <div className="mt-3 pl-3 border-l-2 border-green-line">
-              <p className="text-[11px] uppercase tracking-[0.12em] text-gold font-semibold mb-2">Exégèses</p>
+              <p className="text-[11px] uppercase tracking-[0.12em] text-accent font-semibold mb-2">Exégèses</p>
               {v.exegeses.map((ex, ei) => (
                 <div key={ex.key} className="rounded-lg border border-line bg-surface p-2.5 mb-2">
                   <div className="flex items-center gap-2 mb-1.5">
                     <span className="text-[12px] font-semibold text-muted">#{ei + 1}</span>
                     <div className="ml-auto flex items-center gap-1.5">
-                      <button type="button" onClick={() => patchVerset(vi, { exegeses: move(v.exegeses, ei, -1) })} disabled={ei === 0} className="text-muted disabled:opacity-30 hover:text-green-deep" aria-label="Monter"><ArrowUp className="w-3.5 h-3.5" /></button>
-                      <button type="button" onClick={() => patchVerset(vi, { exegeses: move(v.exegeses, ei, 1) })} disabled={ei === v.exegeses.length - 1} className="text-muted disabled:opacity-30 hover:text-green-deep" aria-label="Descendre"><ArrowDown className="w-3.5 h-3.5" /></button>
+                      <button type="button" onClick={() => patchVerset(vi, { exegeses: move(v.exegeses, ei, -1) })} disabled={ei === 0} className="text-muted disabled:opacity-30 hover:text-ink" aria-label="Monter"><ArrowUp className="w-3.5 h-3.5" /></button>
+                      <button type="button" onClick={() => patchVerset(vi, { exegeses: move(v.exegeses, ei, 1) })} disabled={ei === v.exegeses.length - 1} className="text-muted disabled:opacity-30 hover:text-ink" aria-label="Descendre"><ArrowDown className="w-3.5 h-3.5" /></button>
                       <button type="button" onClick={() => patchVerset(vi, { exegeses: v.exegeses.filter((_, k) => k !== ei) })} className="text-red-600" aria-label="Retirer l'exégèse"><Trash2 className="w-3.5 h-3.5" /></button>
                     </div>
                   </div>
@@ -178,16 +178,16 @@ export const AdminSourateForm: React.FC = () => {
                   <p className="text-[11px] text-muted mt-1">Choisir un savant qui a un tafsir associe automatiquement le titre de son tafsir.</p>
                 </div>
               ))}
-              <button type="button" onClick={() => patchVerset(vi, { exegeses: [...v.exegeses, emptyExeg()] })} className="inline-flex items-center gap-1.5 rounded-lg border border-dashed border-green-line bg-green-soft text-green-deep font-semibold px-3 py-1.5 text-[13px]"><Plus className="w-3.5 h-3.5" /> Ajouter une exégèse</button>
+              <button type="button" onClick={() => patchVerset(vi, { exegeses: [...v.exegeses, emptyExeg()] })} className="inline-flex items-center gap-1.5 rounded-lg border border-dashed border-green-line bg-glass-tint text-ink font-semibold px-3 py-1.5 text-[13px]"><Plus className="w-3.5 h-3.5" /> Ajouter une exégèse</button>
             </div>
           </div>
         ))}
 
-        <button type="button" onClick={() => setVersets((a) => [...a, emptyVerset(String(a.length + 1))])} className="mt-1 inline-flex items-center gap-1.5 rounded-lg border border-dashed border-green-line bg-green-soft text-green-deep font-semibold px-3.5 py-2 text-sm"><Plus className="w-4 h-4" /> Ajouter un verset</button>
+        <button type="button" onClick={() => setVersets((a) => [...a, emptyVerset(String(a.length + 1))])} className="mt-1 inline-flex items-center gap-1.5 rounded-lg border border-dashed border-green-line bg-glass-tint text-ink font-semibold px-3.5 py-2 text-sm"><Plus className="w-4 h-4" /> Ajouter un verset</button>
       </section>
 
       <div className="fixed bottom-0 left-0 md:left-[230px] right-0 flex items-center gap-3 px-6 py-3.5 bg-ivory/95 backdrop-blur border-t border-line">
-        {ok && <span className="inline-flex items-center gap-1.5 text-green-deep text-sm font-medium"><Check className="w-4 h-4" /> Enregistré</span>}
+        {ok && <span className="inline-flex items-center gap-1.5 text-ink text-sm font-medium"><Check className="w-4 h-4" /> Enregistré</span>}
         {error && <span className="inline-flex items-center gap-1.5 text-red-600 text-sm"><AlertTriangle className="w-4 h-4" /> {error}</span>}
         <div className="ml-auto flex items-center gap-2.5">
           {editId && <DeleteEntryButton kind="sourate" id={editId} label={f.nom} redirectTo="/admin/sourates" />}

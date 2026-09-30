@@ -1,25 +1,65 @@
-/* Phase 11.1 — les polices (EB Garamond titres FR, Newsreader corps, Amiri
-   Bismillah, Scheherazade New arabe) sont chargées via le <link> de index.html. */
+/* Phase 8 « Nuit Teal » — polices self-host (offline) via src/styles/fonts.css :
+   Manrope (UI + titres), Scheherazade New (versets), Amiri (calligraphie),
+   Noto Naskh Arabic (labels arabes), Amiri Quran (99 Noms). Aucune requête externe. */
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* ── Charte visuelle (Phase 11.1) — tokens définitifs, mêmes classes clair/sombre ──
-   Cartes/panneaux = --surface (blanc pur en clair) ; fond de page = --ground (crème).
-   Le token historique --ivory est aliasé sur --surface pour compat (bg-ivory). */
+/* ── Charte visuelle « Nuit Teal » (Phase 8) ───────────────────────────────
+   Palette signature : nuit teal + cartes « verre » + accent menthe unique.
+   Deux thèmes (clair = :root, sombre = .dark). Les anciens tokens (--ground,
+   --surface, --ink, --green, --gold…) sont ALIASÉS sur la nouvelle palette :
+   toute l'app bascule sans réécrire chaque composant. Rien en dur : tout ici. */
 :root {
-    --ground: #f2ebdd; --surface: #ffffff; --ivory: #ffffff; --ink: #1b2620; --muted: #6a746a; --line: #e5dccb;
-    --green: #1c5a43; --green-deep: #0f3d2e; --green-soft: #e6f0e9; --green-line: #cfe1d6;
-    --gold: #b0872f; --gold-soft: #f2e6cb;
+    /* Nuit Teal — CLAIR : neutre gris-lavande froid (s'accorde au ciel violet
+       du hero) ; l'accent reste teal. */
+    --bg1: #eef0f4; --bg2: #e7e9ef; --bg-glow: #eae6f2;
+    --tx: #141a22; --mut: #5c6470;
+    --acc: #0e8f80; --acc2: #0b6b62; --accdeep: #0e8f80;
+    --glass: #ffffff; --glass-b: #e2e4ec; --glass2: #dcf1ee;
+    --ok: #1f7d62; --warn: #a9791f; --low: #9c4f45;
+    --dome: #2f8d63; --dome2: #1c6142;
+    /* Voile gris-lavande très doux en haut. */
+    --shell: linear-gradient(180deg, #eae6f2 0%, #eef0f4 42%, #e7e9ef 100%);
+    --hero-fade: #e7e9ef; /* couleur de fondu du bas du hero (= --bg2) */
+    color-scheme: light;
+    /* Alias historiques → palette Nuit Teal */
+    --ground: var(--bg2); --surface: var(--glass); --ivory: var(--glass);
+    --ink: var(--tx); --muted: var(--mut); --line: var(--glass-b);
+    --green: var(--acc); --green-deep: var(--acc2); --green-soft: var(--glass2); --green-line: var(--glass-b);
+    --gold: var(--acc2); --gold-soft: var(--glass2);
 }
 .dark {
-    --ground: #0e1512; --surface: #161f1a; --ivory: #161f1a; --ink: #eaf1ec; --muted: #9db0a5; --line: #2a3830;
-    --green: #4bbf98; --green-deep: #a7e5cd; --green-soft: #17241d; --green-line: #2f4a3c;
-    --gold: #d8b466; --gold-soft: #2a2417;
+    /* Nuit Teal — SOMBRE (signature) */
+    --bg1: #0b1e22; --bg2: #09171a; --bg-glow: #12333a;
+    --tx: #e9f4f1; --mut: #8fb2ad;
+    --acc: #3fbfae; --acc2: #66e0cd; --accdeep: #0e8f80;
+    --glass: rgba(255,255,255,.055); --glass-b: rgba(255,255,255,.12); --glass2: rgba(63,191,174,.14);
+    --ok: #2ea27f; --warn: #c79237; --low: #b5675c;
+    --dome: #3a936a; --dome2: #1f5e3f;
+    /* Ambiance « crépuscule » (Phase 9.1) — le teal monte vers un soupçon de violet. */
+    --shell: linear-gradient(180deg, #241a33 0%, #152230 42%, #0b1e22 100%);
+    --hero-fade: #0b1e22; /* couleur de fondu du bas du hero (sombre) */
+    color-scheme: dark;
+    --ground: var(--bg2); --surface: var(--glass); --ivory: var(--glass);
+    --ink: var(--tx); --muted: var(--mut); --line: var(--glass-b);
+    --green: var(--acc); --green-deep: var(--acc2); --green-soft: var(--glass2); --green-line: var(--glass-b);
+    --gold: var(--acc2); --gold-soft: var(--glass2);
 }
 @layer base {
-    body { background-color: var(--ground); color: var(--ink); }
+    /* Fond de page : dégradé vertical --bg1 → --bg2 + halo radial en haut.
+       Fixé pour couvrir le défilement ; le contenu défile par-dessus. */
+    body {
+        color: var(--tx);
+        font-family: 'Manrope', system-ui, -apple-system, sans-serif;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        background: var(--shell);
+        background-attachment: fixed;
+        background-color: var(--bg2);
+        min-height: 100vh;
+    }
 }
 
 html {
@@ -102,21 +142,26 @@ html {
 }
 
 ::-webkit-scrollbar-thumb {
-    background-color: #10b981;
+    background-color: color-mix(in srgb, var(--acc) 55%, transparent);
     border-radius: 9999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background-color: #059669;
+    background-color: var(--acc);
+}
+/* Firefox */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: color-mix(in srgb, var(--acc) 55%, transparent) transparent;
 }
 
 ::selection {
-    background-color: #6ee7b7;
-    color: #064e3b;
+    background-color: color-mix(in srgb, var(--acc) 30%, transparent);
+    color: var(--tx);
 }
 
 *:focus-visible {
-    outline: 2px solid #10b981;
+    outline: 2px solid var(--acc);
     outline-offset: 2px;
 }
 

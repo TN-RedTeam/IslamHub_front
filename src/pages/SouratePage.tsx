@@ -9,7 +9,7 @@ import type { SourateDetail, SourateInfo } from '../types';
 import { IconBadge } from '../components/Icon';
 
 const Chip: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-  <span className="inline-flex items-center rounded-full bg-green-soft border border-line px-3 py-1 text-xs font-semibold text-ink/80 whitespace-nowrap">
+  <span className="inline-flex items-center rounded-full bg-glass-tint border border-line px-3 py-1 text-xs font-semibold text-ink/80 whitespace-nowrap">
     {children}
   </span>
 );
@@ -50,7 +50,7 @@ export const SouratePage: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-ground flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center">
         <Loader2 className="h-10 w-10 text-green animate-spin" />
       </div>
     );
@@ -58,11 +58,11 @@ export const SouratePage: React.FC = () => {
 
   if (notFound || !data) {
     return (
-      <div className="min-h-screen bg-ground flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center">
         <div className="text-center max-w-md mx-auto p-8 bg-surface rounded-card shadow-card border border-line">
           <IconBadge name="book" />
           <h1 className="text-xl font-bold text-ink mb-2 font-display">Sourate introuvable</h1>
-          <Link to="/coran/sourates" className="px-6 py-2 bg-green hover:bg-green-deep text-white rounded-lg transition-colors inline-block mt-2">Toutes les sourates</Link>
+          <Link to="/coran/sourates" className="px-6 py-2 bg-accent-deep hover:brightness-110 text-white rounded-lg transition-colors inline-block mt-2">Toutes les sourates</Link>
         </div>
       </div>
     );
@@ -71,20 +71,20 @@ export const SouratePage: React.FC = () => {
   const { sourate, versets } = data;
 
   return (
-    <div className="min-h-screen bg-ground">
+    <div className="min-h-screen">
       {/* En-tête resserré, aligné sur le corps, enrichi */}
       <header className="bg-ivory border-b border-line">
         <div className="max-w-6xl mx-auto px-4 py-7">
-          <Link to="/coran/sourates" className="inline-flex items-center gap-1.5 text-xs text-muted hover:text-green-deep mb-3">
+          <Link to="/coran/sourates" className="inline-flex items-center gap-1.5 text-xs text-muted hover:text-ink mb-3">
             <ArrowLeft className="h-4 w-4" /> Toutes les sourates
           </Link>
           <div className="flex items-center gap-5 flex-wrap">
-            <span className="shrink-0 w-14 h-14 rounded-2xl bg-green-soft text-green-deep grid place-items-center font-display font-semibold text-2xl tabular-nums">
+            <span className="shrink-0 w-14 h-14 rounded-2xl bg-glass-tint text-ink grid place-items-center font-display font-semibold text-2xl tabular-nums">
               {sourate.numero}
             </span>
             <div className="min-w-0">
-              <h1 className="font-display font-semibold text-green-deep leading-tight" style={{ fontSize: 'clamp(24px,3.4vw,32px)' }}>{sourate.nom}</h1>
-              {sourate.nom_arabe && <p className="font-arabic text-gold text-2xl leading-none mt-1" dir="rtl" lang="ar">{sourate.nom_arabe}</p>}
+              <h1 className="font-display font-semibold text-ink leading-tight" style={{ fontSize: 'clamp(24px,3.4vw,32px)' }}>{sourate.nom}</h1>
+              {sourate.nom_arabe && <p className="font-arabic text-accent text-2xl leading-none mt-1" dir="rtl" lang="ar">{sourate.nom_arabe}</p>}
             </div>
             <div className="flex gap-2 flex-wrap sm:ml-auto">
               {sourate.revelation && <Chip>{sourate.revelation}</Chip>}
@@ -96,7 +96,7 @@ export const SouratePage: React.FC = () => {
           {/* Commentaire / introduction — dans l'en-tête, près du nom (masqué si vide) */}
           {sourate.introduction_md && (
             <div className="mt-4 border-l-[3px] border-l-gold pl-4">
-              <p className="text-[11px] uppercase tracking-[0.14em] text-gold font-semibold mb-1">À propos de la sourate</p>
+              <p className="text-[11px] uppercase tracking-[0.14em] text-accent font-semibold mb-1">À propos de la sourate</p>
               <div className="text-ink/80 leading-relaxed text-[15px]"><Markdown>{sourate.introduction_md}</Markdown></div>
             </div>
           )}
@@ -119,10 +119,10 @@ export const SouratePage: React.FC = () => {
         <nav aria-label="Sourates adjacentes" className="max-w-6xl mx-auto px-4 pb-16 grid grid-cols-2 gap-3">
           {prev ? (
             <Link to={`/coran/sourates/${prev.slug}`} className="flex items-center gap-2.5 rounded-card border border-line bg-surface px-4 py-3 hover:border-green transition-colors">
-              <ChevronLeft className="w-5 h-5 text-gold shrink-0" />
+              <ChevronLeft className="w-5 h-5 text-accent shrink-0" />
               <span className="min-w-0">
                 <span className="block text-[11px] text-muted uppercase tracking-wide">Précédente</span>
-                <span className="block font-display font-semibold text-green-deep truncate">{prev.numero}. {prev.nom}</span>
+                <span className="block font-display font-semibold text-ink truncate">{prev.numero}. {prev.nom}</span>
               </span>
             </Link>
           ) : <span />}
@@ -130,9 +130,9 @@ export const SouratePage: React.FC = () => {
             <Link to={`/coran/sourates/${next.slug}`} className="flex items-center justify-end gap-2.5 rounded-card border border-line bg-surface px-4 py-3 hover:border-green transition-colors text-right">
               <span className="min-w-0">
                 <span className="block text-[11px] text-muted uppercase tracking-wide">Suivante</span>
-                <span className="block font-display font-semibold text-green-deep truncate">{next.numero}. {next.nom}</span>
+                <span className="block font-display font-semibold text-ink truncate">{next.numero}. {next.nom}</span>
               </span>
-              <ChevronRight className="w-5 h-5 text-gold shrink-0" />
+              <ChevronRight className="w-5 h-5 text-accent shrink-0" />
             </Link>
           ) : <span />}
         </nav>

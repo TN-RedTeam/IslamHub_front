@@ -28,7 +28,7 @@ export const EcoleFiqhSection: React.FC<{ ecole: string; titre?: string }> = ({ 
 
   return (
     <section className="py-10">
-      <h2 className="text-2xl font-bold text-green-deep mb-6 font-display text-center">
+      <h2 className="text-2xl font-bold text-ink mb-6 font-display text-center">
         {titre ?? 'Points de jurisprudence'}
       </h2>
 
@@ -37,7 +37,7 @@ export const EcoleFiqhSection: React.FC<{ ecole: string; titre?: string }> = ({ 
           <Loader2 className="w-7 h-7 text-green animate-spin" />
         </div>
       ) : chapitres.length === 0 ? (
-        <p className="text-center text-gray-500 dark:text-gray-400 py-8">
+        <p className="text-center text-muted py-8">
           Aucun point de jurisprudence pour l'instant.
         </p>
       ) : (

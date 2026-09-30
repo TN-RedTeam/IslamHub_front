@@ -118,13 +118,13 @@ export const VersetEquivoque: React.FC = () => {
   };
 
   if (loading) {
-    return <div className="min-h-screen bg-ground grid place-items-center"><Loader2 className="w-10 h-10 text-green animate-spin" /></div>;
+    return <div className="min-h-screen grid place-items-center"><Loader2 className="w-10 h-10 text-green animate-spin" /></div>;
   }
   if (notFound || !v) {
     return (
-      <div className="min-h-screen bg-ground grid place-items-center px-5">
+      <div className="min-h-screen grid place-items-center px-5">
         <div className="text-center">
-          <h1 className="font-display text-2xl text-green-deep mb-2">Verset introuvable</h1>
+          <h1 className="font-display text-2xl text-ink mb-2">Verset introuvable</h1>
           <Link to="/croyance/versets-hadiths-equivoques" className="text-green font-medium hover:underline">Tous les versets équivoques</Link>
         </div>
       </div>
@@ -133,32 +133,32 @@ export const VersetEquivoque: React.FC = () => {
 
   const num = (id: string) => sections.findIndex((s) => s.id === id) + 1;
   const H2: React.FC<{ id: string; children: React.ReactNode }> = ({ id, children }) => (
-    <h2 id={id} className="font-display font-semibold text-green-deep text-[23px] mb-3 flex items-center gap-2.5" style={{ scrollMarginTop: 20 }}>
-      <span className="w-[26px] h-[26px] rounded-full bg-green-soft text-green grid place-items-center text-sm shrink-0 font-display">{num(id)}</span>
+    <h2 id={id} className="font-display font-semibold text-ink text-[23px] mb-3 flex items-center gap-2.5" style={{ scrollMarginTop: 20 }}>
+      <span className="w-[26px] h-[26px] rounded-full bg-glass-tint text-green grid place-items-center text-sm shrink-0 font-display">{num(id)}</span>
       {children}
     </h2>
   );
 
   return (
-    <div className="min-h-screen bg-ground">
+    <div className="min-h-screen">
       <main className="max-w-5xl mx-auto px-5 py-6 pb-16">
         <nav aria-label="Fil d'Ariane" className="text-xs text-muted mb-1.5">
-          <Link to="/" className="hover:text-green-deep">Accueil</Link> <span aria-hidden>·</span>{' '}
-          <Link to="/croyance" className="hover:text-green-deep">Croyance</Link> <span aria-hidden>·</span>{' '}
-          <Link to="/croyance/versets-hadiths-equivoques" className="hover:text-green-deep">Versets et hadiths équivoques</Link>
+          <Link to="/" className="hover:text-ink">Accueil</Link> <span aria-hidden>·</span>{' '}
+          <Link to="/croyance" className="hover:text-ink">Croyance</Link> <span aria-hidden>·</span>{' '}
+          <Link to="/croyance/versets-hadiths-equivoques" className="hover:text-ink">Versets et hadiths équivoques</Link>
         </nav>
-        <p className="text-[11.5px] font-semibold uppercase tracking-[0.2em] text-gold mb-1">{eyebrow}</p>
-        <h1 className="font-display font-semibold text-green-deep leading-tight" style={{ fontSize: 'clamp(26px,4vw,38px)' }}>{title}</h1>
+        <p className="text-[11.5px] font-semibold uppercase tracking-[0.2em] text-accent mb-1">{eyebrow}</p>
+        <h1 className="font-display font-semibold text-ink leading-tight" style={{ fontSize: 'clamp(26px,4vw,38px)' }}>{title}</h1>
 
         {/* Verset ou hadith équivoque */}
         <div className="rounded-panel border border-line bg-surface p-6 sm:p-7 mt-4 text-center shadow-card">
           <span className={`inline-block text-[10.5px] font-semibold uppercase tracking-wide px-2 py-0.5 rounded-full border mb-3 ${
-            v.type === 'hadith' ? 'bg-gold-soft text-[#7a5a17] border-[#e6d3a3]' : 'bg-green-soft text-green-deep border-green-line'
+            v.type === 'hadith' ? 'bg-glass-tint text-accent border-glass-border' : 'bg-glass-tint text-ink border-green-line'
           }`}>{v.type === 'hadith' ? 'Hadith' : 'Verset'}</span>
-          <p className="font-arabic text-green-deep leading-[2]" dir="rtl" lang="ar" style={{ fontSize: 'clamp(26px,4.4vw,38px)' }}>{v.verset_arabe}</p>
+          <p className="font-arabic text-ink leading-[2]" dir="rtl" lang="ar" style={{ fontSize: 'clamp(26px,4.4vw,38px)' }}>{v.verset_arabe}</p>
           {v.verset_traduction && <p className="text-[17px] text-ink mt-3.5">{v.verset_traduction}</p>}
           {v.verset_phonetique && <p className="text-[13px] text-muted italic mt-1.5 [unicode-bidi:plaintext]">{v.verset_phonetique}</p>}
-          <p className="text-xs uppercase tracking-[0.06em] text-gold font-semibold mt-3">
+          <p className="text-xs uppercase tracking-[0.06em] text-accent font-semibold mt-3">
             {v.type === 'hadith'
               ? [v.rapporteur, v.recueil, v.numero ? `n° ${v.numero}` : ''].filter(Boolean).join(' · ')
               : `${v.sourate}${v.ayah != null ? ` · ${v.ayah}` : ''}`}
@@ -173,8 +173,8 @@ export const VersetEquivoque: React.FC = () => {
               <ol className="list-none m-0 p-0">
                 {sections.map((s, i) => (
                   <li key={s.id}>
-                    <a href={`#${s.id}`} className="flex items-baseline gap-2 px-2.5 py-1.5 rounded-lg text-sm text-ink hover:bg-green-soft hover:text-green-deep">
-                      <span className="font-display font-semibold text-gold text-[13px]">{i + 1}</span>{s.label}
+                    <a href={`#${s.id}`} className="flex items-baseline gap-2 px-2.5 py-1.5 rounded-lg text-sm text-ink hover:bg-glass-tint hover:text-ink">
+                      <span className="font-display font-semibold text-accent text-[13px]">{i + 1}</span>{s.label}
                     </a>
                   </li>
                 ))}
@@ -189,7 +189,7 @@ export const VersetEquivoque: React.FC = () => {
                 {images.length > 0 && (
                   <div className="mt-6 flex flex-wrap gap-3">
                     {images.map((img) => (
-                      <button key={img.id} onClick={() => setBox(img)} className="flex items-center gap-3 bg-green-soft border border-dashed border-green-line rounded-lg p-3 text-left hover:border-green transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green">
+                      <button key={img.id} onClick={() => setBox(img)} className="flex items-center gap-3 bg-glass-tint border border-dashed border-green-line rounded-lg p-3 text-left hover:border-green transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green">
                         <span className="w-[52px] h-16 rounded bg-surface border border-line grid place-items-center text-muted shrink-0 overflow-hidden">
                           <img src={img.image_url} alt="" className="w-full h-full object-cover" loading="lazy" />
                         </span>
@@ -231,7 +231,7 @@ export const VersetEquivoque: React.FC = () => {
                       <button
                         key={img.id}
                         onClick={() => setBox(img)}
-                        className="flex items-center gap-3 bg-green-soft border border-dashed border-green-line rounded-lg p-3 text-left hover:border-green transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green"
+                        className="flex items-center gap-3 bg-glass-tint border border-dashed border-green-line rounded-lg p-3 text-left hover:border-green transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green"
                       >
                         <span className="w-[52px] h-16 rounded bg-surface border border-line grid place-items-center text-muted shrink-0 overflow-hidden">
                           <img src={img.image_url} alt="" className="w-full h-full object-cover" loading="lazy" />
@@ -250,7 +250,7 @@ export const VersetEquivoque: React.FC = () => {
             {v.objection && (
               <section className="mb-8">
                 <H2 id="objection">L'interprétation erronée</H2>
-                <div className="rounded-r-xl border border-line border-l-[3px] border-l-gold bg-gold-soft p-4"><div className="italic"><Markdown>{v.objection}</Markdown></div></div>
+                <div className="rounded-r-xl border border-line border-l-[3px] border-l-gold bg-glass-tint p-4"><div className="italic"><Markdown>{v.objection}</Markdown></div></div>
               </section>
             )}
 
@@ -265,10 +265,10 @@ export const VersetEquivoque: React.FC = () => {
               <button onClick={copyDebate} className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-green text-white text-sm font-medium hover:bg-green-deep transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green">
                 {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />} Copier
               </button>
-              <button onClick={share} className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-green-line bg-surface text-green-deep text-sm hover:bg-green-soft transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green">
+              <button onClick={share} className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-green-line bg-surface text-ink text-sm hover:bg-glass-tint transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green">
                 <Share2 className="w-4 h-4" /> Partager
               </button>
-              <button onClick={toggleFav} aria-pressed={isFav} className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg border text-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green ${isFav ? 'bg-gold text-white border-gold' : 'border-green-line bg-surface text-green-deep hover:bg-green-soft'}`}>
+              <button onClick={toggleFav} aria-pressed={isFav} className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg border text-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green ${isFav ? 'bg-accent text-white border-gold' : 'border-green-line bg-surface text-ink hover:bg-glass-tint'}`}>
                 <Star className={`w-4 h-4 ${isFav ? 'fill-white' : ''}`} /> {isFav ? 'Favori' : 'Ajouter aux favoris'}
               </button>
             </div>
@@ -278,7 +278,7 @@ export const VersetEquivoque: React.FC = () => {
               <div className="mt-7">
                 <p className="text-[11px] uppercase tracking-[0.16em] text-muted font-semibold mb-2">Voir aussi</p>
                 {data.lies.map((l) => (
-                  <Link key={l.slug} to={`/croyance/versets-hadiths-equivoques/${l.slug}`} className="inline-block mr-2 mb-2 text-[13.5px] text-green-deep bg-green-soft border border-green-line px-3.5 py-1.5 rounded-full hover:border-green transition-colors">
+                  <Link key={l.slug} to={`/croyance/versets-hadiths-equivoques/${l.slug}`} className="inline-block mr-2 mb-2 text-[13.5px] text-ink bg-glass-tint border border-green-line px-3.5 py-1.5 rounded-full hover:border-green transition-colors">
                     {l.theme} — {l.sourate}{l.ayah != null ? ` : ${l.ayah}` : ''}
                   </Link>
                 ))}
@@ -299,11 +299,11 @@ const SavantQuote: React.FC<{ p: VersetPreuve }> = ({ p }) => (
     <div className="flex items-center gap-2.5 mb-2.5 flex-wrap">
       <BookOpen className="w-4 h-4 text-green shrink-0" aria-hidden="true" />
       {p.savant_slug ? (
-        <Link to={`/savants/${p.savant_slug}`} className="font-display font-semibold text-[17px] text-green-deep hover:underline">{p.savant}</Link>
+        <Link to={`/savants/${p.savant_slug}`} className="font-display font-semibold text-[17px] text-ink hover:underline">{p.savant}</Link>
       ) : (
-        <span className="font-display font-semibold text-[17px] text-green-deep">{p.savant}</span>
+        <span className="font-display font-semibold text-[17px] text-ink">{p.savant}</span>
       )}
-      {p.ecole && <span className="text-[11px] font-medium text-green-deep bg-green-soft border border-green-line px-2 py-0.5 rounded-full">{p.ecole}</span>}
+      {p.ecole && <span className="text-[11px] font-medium text-ink bg-glass-tint border border-green-line px-2 py-0.5 rounded-full">{p.ecole}</span>}
       <BadgeGeneration generation={p.generation} withHonorific />
     </div>
     {p.texte_arabe && <p className="font-arabic text-xl leading-[1.9] text-right text-ink" lang="ar" dir="rtl">{p.texte_arabe}</p>}

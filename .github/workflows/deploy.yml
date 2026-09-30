@@ -2,6 +2,12 @@ name: Déploiement GitHub Pages
 
 # Build + déploiement automatique du site à chaque push sur `main`.
 # (Déclenchable aussi à la main via l'onglet Actions → « Run workflow ».)
+#
+# En plus du site principal (racine = `main`), on publie deux DÉMOS par branche
+# accessibles sur des sous-URLs, pour comparer les chartes sans changer de branche :
+#   • /v2/  → refonte/architecture-v2 (ancienne charte)
+#   • /v3/  → refonte/architecture-v3 (Nuit Teal)
+# `base: './'` (vite.config) rend l'app fonctionnelle dans un sous-dossier.
 on:
   push:
     branches: [main]
@@ -22,8 +28,11 @@ jobs:
   build:
     name: Build
     runs-on: ubuntu-latest
+    env:
+      VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+      VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
     steps:
-      - name: Récupérer le code
+      - name: Récupérer le code (main)
         uses: actions/checkout@v4
 
       - name: Installer Node
@@ -35,14 +44,39 @@ jobs:
       - name: Installer les dépendances
         run: npm ci
 
-      - name: Compiler le site
+      - name: Compiler le site principal (racine)
         run: npm run build
         # Les clés Supabase sont injectées au build depuis les secrets du dépôt
         # (Settings → Secrets and variables → Actions). Sans elles, le site
         # déployé n'aurait pas d'accès à la base.
-        env:
-          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
-          VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
+
+      # --- Démo « ancienne charte » : refonte/architecture-v2 → /v2/ ---
+      - name: Récupérer la branche v2
+        uses: actions/checkout@v4
+        with:
+          ref: refonte/architecture-v2
+          path: _demo_v2
+      - name: Compiler v2 → dist/v2
+        working-directory: _demo_v2
+        run: |
+          npm ci
+          npm run build
+          mkdir -p "$GITHUB_WORKSPACE/dist/v2"
+          cp -r dist/. "$GITHUB_WORKSPACE/dist/v2/"
+
+      # --- Démo « Nuit Teal » : refonte/architecture-v3 → /v3/ ---
+      - name: Récupérer la branche v3
+        uses: actions/checkout@v4
+        with:
+          ref: refonte/architecture-v3
+          path: _demo_v3
+      - name: Compiler v3 → dist/v3
+        working-directory: _demo_v3
+        run: |
+          npm ci
+          npm run build
+          mkdir -p "$GITHUB_WORKSPACE/dist/v3"
+          cp -r dist/. "$GITHUB_WORKSPACE/dist/v3/"
 
       - name: Préparer l'artefact Pages
         uses: actions/upload-pages-artifact@v3

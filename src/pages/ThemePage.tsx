@@ -12,8 +12,8 @@ const PREVIEW = 4;
 
 const SectionHead: React.FC<{ icon: React.ReactNode; titre: string; n: number }> = ({ icon, titre, n }) => (
   <div className="flex items-center gap-3 mb-3.5 pb-2.5 border-b border-line">
-    <span className="w-[34px] h-[34px] rounded-[9px] bg-green-soft text-green grid place-items-center shrink-0">{icon}</span>
-    <h2 className="font-display font-semibold text-green-deep text-xl">{titre}</h2>
+    <span className="w-[34px] h-[34px] rounded-[9px] bg-glass-tint text-green grid place-items-center shrink-0">{icon}</span>
+    <h2 className="font-display font-semibold text-ink text-xl">{titre}</h2>
     <span className="ml-auto text-[12.5px] text-muted">{n}</span>
   </div>
 );
@@ -32,7 +32,7 @@ const HadithCard: React.FC<{ h: ThemeHadithItem }> = ({ h }) => {
       {h.texte_arabe && <p className="font-arabic text-[21px] leading-[1.9] text-right text-ink" dir="rtl" lang="ar">{h.texte_arabe}</p>}
       {h.texte_francais && <p className="text-sm text-ink/90 mt-2 [unicode-bidi:plaintext]">{h.texte_francais}</p>}
       <div className="mt-2.5 flex items-center gap-2 flex-wrap text-xs text-muted">
-        {h.degre_authenticite && <span className="text-[10.5px] font-semibold px-2 py-0.5 rounded-full bg-green-soft text-green-deep border border-green-line">{h.degre_authenticite}</span>}
+        {h.degre_authenticite && <span className="text-[10.5px] font-semibold px-2 py-0.5 rounded-full bg-glass-tint text-ink border border-green-line">{h.degre_authenticite}</span>}
         {h.narrateur && <span>{h.narrateur}</span>}
         <BadgeGeneration generation={h.narrateur_generation} role={h.narrateur_role} sexe={h.narrateur_sexe} />
       </div>
@@ -49,8 +49,8 @@ const ParoleCard: React.FC<{ p: ThemeParoleItem }> = ({ p }) => (
   <div className="rounded-card border border-green-line bg-ivory p-4 shadow-card">
     <div className="flex items-center gap-2 flex-wrap">
       {p.savant && (p.savant_slug ? (
-        <Link to={`/savants/${p.savant_slug}`} className="font-display font-semibold text-green-deep hover:underline">{p.savant}</Link>
-      ) : <span className="font-display font-semibold text-green-deep">{p.savant}</span>)}
+        <Link to={`/savants/${p.savant_slug}`} className="font-display font-semibold text-ink hover:underline">{p.savant}</Link>
+      ) : <span className="font-display font-semibold text-ink">{p.savant}</span>)}
       <BadgeGeneration generation={p.generation} />
       {p.ecole && <EcoleBadge ecole={p.ecole} />}
     </div>
@@ -85,12 +85,12 @@ export const ThemePage: React.FC = () => {
     return () => { alive = false; };
   }, [slug]);
 
-  if (loading) return <div className="min-h-screen bg-ground grid place-items-center"><Loader2 className="w-10 h-10 text-green animate-spin" /></div>;
+  if (loading) return <div className="min-h-screen grid place-items-center"><Loader2 className="w-10 h-10 text-green animate-spin" /></div>;
   if (notFound || !data) {
     return (
-      <div className="min-h-screen bg-ground grid place-items-center px-5">
+      <div className="min-h-screen grid place-items-center px-5">
         <div className="text-center">
-          <h1 className="font-display text-2xl text-green-deep mb-2">Thème introuvable</h1>
+          <h1 className="font-display text-2xl text-ink mb-2">Thème introuvable</h1>
           <Link to="/themes" className="text-green font-medium hover:underline">Tous les thèmes</Link>
         </div>
       </div>
@@ -104,18 +104,18 @@ export const ThemePage: React.FC = () => {
   if (paroles.length) counts.push(`${compteur(paroles.length, 'parole')} de savants`);
 
   return (
-    <div className="min-h-screen bg-ground">
+    <div className="min-h-screen">
       <main className="max-w-4xl mx-auto px-5 py-7 pb-16">
         <nav aria-label="Fil d'Ariane" className="text-xs text-muted mb-1.5">
-          <Link to="/" className="hover:text-green-deep">Accueil</Link> <span aria-hidden>·</span>{' '}
-          <Link to="/themes" className="hover:text-green-deep">Thèmes</Link> <span aria-hidden>·</span> {nom}
+          <Link to="/" className="hover:text-ink">Accueil</Link> <span aria-hidden>·</span>{' '}
+          <Link to="/themes" className="hover:text-ink">Thèmes</Link> <span aria-hidden>·</span> {nom}
         </nav>
-        <p className="text-[11.5px] font-semibold uppercase tracking-[0.2em] text-gold mb-1">Thème</p>
-        <h1 className="font-display font-semibold text-green-deep leading-tight" style={{ fontSize: 'clamp(28px,4.4vw,42px)' }}>{nom}</h1>
+        <p className="text-[11.5px] font-semibold uppercase tracking-[0.2em] text-accent mb-1">Thème</p>
+        <h1 className="font-display font-semibold text-ink leading-tight" style={{ fontSize: 'clamp(28px,4.4vw,42px)' }}>{nom}</h1>
         {counts.length > 0 && (
           <div className="flex flex-wrap gap-2 mt-3.5">
             {counts.map((c) => (
-              <span key={c} className="text-[12.5px] font-semibold text-green-deep bg-green-soft border border-green-line rounded-full px-3.5 py-1">{c}</span>
+              <span key={c} className="text-[12.5px] font-semibold text-ink bg-glass-tint border border-green-line rounded-full px-3.5 py-1">{c}</span>
             ))}
           </div>
         )}

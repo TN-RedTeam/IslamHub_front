@@ -45,9 +45,9 @@ const MultiPicker: React.FC<{
       {selected.length > 0 && (
         <div className="flex flex-wrap gap-1.5 mb-2">
           {selected.map((id) => (
-            <span key={id} className="inline-flex items-center gap-1 rounded-full bg-green-soft text-green-deep border border-green-line px-2.5 py-1 text-[13px]">
+            <span key={id} className="inline-flex items-center gap-1 rounded-full bg-glass-tint text-ink border border-green-line px-2.5 py-1 text-[13px]">
               {byId.get(id) ?? `#${id}`}
-              <button type="button" onClick={() => remove(id)} className="text-green-deep/70 hover:text-red-600" aria-label="Retirer"><X className="w-3.5 h-3.5" /></button>
+              <button type="button" onClick={() => remove(id)} className="text-ink/70 hover:text-red-600" aria-label="Retirer"><X className="w-3.5 h-3.5" /></button>
             </span>
           ))}
         </div>
@@ -69,7 +69,7 @@ const MultiPicker: React.FC<{
                 type="button"
                 onMouseDown={(e) => e.preventDefault()}
                 onClick={() => add(o.id)}
-                className="block w-full text-left px-3.5 py-2 text-[14px] text-ink hover:bg-green-soft"
+                className="block w-full text-left px-3.5 py-2 text-[14px] text-ink hover:bg-glass-tint"
               >
                 {o.nom}
               </button>
@@ -186,13 +186,13 @@ export const AdminHadithForm: React.FC = () => {
 
   return (
     <div className="max-w-3xl px-6 py-8 pb-28">
-      <p className="text-xs text-muted"><Link to="/admin/hadiths" className="hover:text-green-deep">Hadiths</Link> · {editId ? 'Modifier' : 'Nouveau'}</p>
-      <h1 className="font-display font-semibold text-green-deep text-3xl mt-1 mb-1">{editId ? 'Modifier le hadith' : 'Nouveau hadith'}</h1>
+      <p className="text-xs text-muted"><Link to="/admin/hadiths" className="hover:text-ink">Hadiths</Link> · {editId ? 'Modifier' : 'Nouveau'}</p>
+      <h1 className="font-display font-semibold text-ink text-3xl mt-1 mb-1">{editId ? 'Modifier le hadith' : 'Nouveau hadith'}</h1>
       <p className="text-muted text-sm mb-6">Le texte arabe collé ici est enregistré tel quel (UTF-8, aucune transformation).</p>
 
       {/* 1. Texte */}
       <section className="rounded-card border border-line bg-surface p-5 mb-4">
-        <h2 className="font-display font-semibold text-green-deep text-lg mb-4">1 · Le texte</h2>
+        <h2 className="font-display font-semibold text-ink text-lg mb-4">1 · Le texte</h2>
         <div className="mb-3.5"><label className={label}>Sujet <span className="text-red-600">*</span></label><input className={field} value={f.sujet} onChange={set('sujet')} placeholder="Ex. Allah existe sans endroit" /></div>
         <div className="mb-3.5"><label className={label}>Texte arabe <span className="text-red-600">*</span></label>
           <textarea dir="rtl" lang="ar" className={`${field} font-arabic text-2xl leading-loose text-right min-h-[90px]`} value={f.texte_arabe} onChange={set('texte_arabe')} onFocus={caretBetween(AR_TEMPLATE.hadith)} placeholder="Colle ici le texte arabe (vocalisé)…" />
@@ -207,7 +207,7 @@ export const AdminHadithForm: React.FC = () => {
 
       {/* 2. Authenticité */}
       <section className="rounded-card border border-line bg-surface p-5 mb-4">
-        <h2 className="font-display font-semibold text-green-deep text-lg mb-4">2 · Authenticité & type</h2>
+        <h2 className="font-display font-semibold text-ink text-lg mb-4">2 · Authenticité & type</h2>
         <div className="grid sm:grid-cols-2 gap-3.5">
           <div><label className={label}>Degré d’authenticité</label>
             <select className={field} value={f.degre_authenticite} onChange={set('degre_authenticite')}><option value="">—</option>{DEGRES.map((d) => <option key={d}>{d}</option>)}</select></div>
@@ -219,7 +219,7 @@ export const AdminHadithForm: React.FC = () => {
 
       {/* 3. Narrateurs & rapporteurs */}
       <section className="rounded-card border border-line bg-surface p-5 mb-4">
-        <h2 className="font-display font-semibold text-green-deep text-lg mb-1">3 · Narrateurs & rapporteurs</h2>
+        <h2 className="font-display font-semibold text-ink text-lg mb-1">3 · Narrateurs & rapporteurs</h2>
         <p className="text-xs text-muted mb-4">Un hadith peut être rapporté par plusieurs savants et remonter à plusieurs Compagnons. Ajoute-les un par un&nbsp;: chacun devient filtrable individuellement sur le site.</p>
         <div className="grid sm:grid-cols-2 gap-5">
           <div>
@@ -230,11 +230,11 @@ export const AdminHadithForm: React.FC = () => {
             <label className={label}>Narrateurs <span className="text-muted font-normal">(Compagnons)</span></label>
             <MultiPicker options={narrateurs} selected={narrateurIds} onChange={setNarrateurIds} placeholder="Chercher un Compagnon…" />
             {!addingNarr ? (
-              <button type="button" onClick={() => setAddingNarr(true)} className="mt-2 inline-flex items-center gap-1.5 text-green-deep font-semibold text-[13px] hover:underline">
+              <button type="button" onClick={() => setAddingNarr(true)} className="mt-2 inline-flex items-center gap-1.5 text-ink font-semibold text-[13px] hover:underline">
                 <Plus className="w-3.5 h-3.5" /> Nouveau narrateur
               </button>
             ) : (
-              <div className="mt-3 grid gap-2.5 rounded-lg border border-dashed border-green-line bg-green-soft/40 p-3.5">
+              <div className="mt-3 grid gap-2.5 rounded-lg border border-dashed border-green-line bg-glass-tint/40 p-3.5">
                 <div className="flex items-center justify-between">
                   <p className="text-[13px] font-semibold text-ink">Nouveau narrateur</p>
                   <button type="button" onClick={() => { setAddingNarr(false); setNewNarr({ nom: '', generation: 'sahabi', role: '', sexe: 'm' }); }} className="text-muted hover:text-red-600" aria-label="Annuler"><X className="w-4 h-4" /></button>
@@ -254,7 +254,7 @@ export const AdminHadithForm: React.FC = () => {
 
       {/* 4. Sources */}
       <section className="rounded-card border border-line bg-surface p-5 mb-4">
-        <h2 className="font-display font-semibold text-green-deep text-lg mb-1">4 · Sources</h2>
+        <h2 className="font-display font-semibold text-ink text-lg mb-1">4 · Sources</h2>
         <p className="text-xs text-muted mb-4">Un hadith → un ou plusieurs ouvrages. L’affichage regroupe par auteur (ordre par décès).</p>
         {sources.map((s, i) => (
           <div key={s.key} className="grid grid-cols-[1fr_84px_1fr_auto] gap-2.5 items-end mb-2.5">
@@ -270,41 +270,41 @@ export const AdminHadithForm: React.FC = () => {
             <div>{i === 0 && <label className={label}>Chapitre</label>}<input className={field} value={s.chapitre} onChange={(e) => setSources((arr) => arr.map((x, j) => j === i ? { ...x, chapitre: e.target.value } : x))} placeholder="(optionnel)" /></div>
             <button type="button" onClick={() => setSources((arr) => arr.length > 1 ? arr.filter((_, j) => j !== i) : arr)} className="h-[42px] w-[42px] grid place-items-center rounded-lg border border-line text-red-600 hover:bg-red-50" aria-label="Retirer"><Trash2 className="w-4 h-4" /></button>
             {s.recueil_id === NEW && (
-              <div className="col-span-4 grid sm:grid-cols-2 gap-2.5 rounded-lg border border-dashed border-green-line bg-green-soft/40 p-3">
+              <div className="col-span-4 grid sm:grid-cols-2 gap-2.5 rounded-lg border border-dashed border-green-line bg-glass-tint/40 p-3">
                 <div><label className={label}>Titre du nouvel ouvrage</label><input className={field} value={s.new_titre} onChange={(e) => setSources((arr) => arr.map((x, j) => j === i ? { ...x, new_titre: e.target.value } : x))} placeholder="Ex. As-Sounan al-Koubra" /></div>
                 <div><label className={label}>Auteur</label><select className={field} value={s.new_savant} onChange={(e) => setSources((arr) => arr.map((x, j) => j === i ? { ...x, new_savant: e.target.value } : x))}><option value="">—</option>{savants.map((sv) => <option key={sv.id} value={sv.id}>{sv.nom}</option>)}</select></div>
               </div>
             )}
           </div>
         ))}
-        <button type="button" onClick={() => setSources((arr) => [...arr, emptySrc()])} className="mt-1 inline-flex items-center gap-1.5 rounded-lg border border-dashed border-green-line bg-green-soft text-green-deep font-semibold px-3.5 py-2 text-sm"><Plus className="w-4 h-4" /> Ajouter une source</button>
+        <button type="button" onClick={() => setSources((arr) => [...arr, emptySrc()])} className="mt-1 inline-flex items-center gap-1.5 rounded-lg border border-dashed border-green-line bg-glass-tint text-ink font-semibold px-3.5 py-2 text-sm"><Plus className="w-4 h-4" /> Ajouter une source</button>
       </section>
 
       {/* 5. Thèmes */}
       <section className="rounded-card border border-line bg-surface p-5 mb-4">
-        <h2 className="font-display font-semibold text-green-deep text-lg mb-4">5 · Thèmes & mots-clés</h2>
+        <h2 className="font-display font-semibold text-ink text-lg mb-4">5 · Thèmes & mots-clés</h2>
         <label className={label}>Tags <span className="text-muted font-normal">(séparés par des virgules — les thèmes se déduisent automatiquement)</span></label>
         <input className={field} value={f.tag} onChange={set('tag')} placeholder="exemption, croyance" />
         <div className="mt-3.5 rounded-lg border border-line bg-ground/40 p-3">
-          <p className="text-[11px] uppercase tracking-[0.12em] text-gold font-semibold">Thèmes déduits</p>
+          <p className="text-[11px] uppercase tracking-[0.12em] text-accent font-semibold">Thèmes déduits</p>
           {derived.length === 0 ? (
             <p className="text-sm text-muted mt-1">Aucun (ajoute des tags reconnus, ou complète le mapping dans « Thèmes & mapping »).</p>
           ) : (
-            <div className="flex flex-wrap gap-1.5 mt-2">{derived.map((t) => <span key={t.slug} className="text-xs bg-gold-soft text-[#7a5a17] border border-[#e6d3a3] rounded-full px-2.5 py-0.5">{t.nom}</span>)}</div>
+            <div className="flex flex-wrap gap-1.5 mt-2">{derived.map((t) => <span key={t.slug} className="text-xs bg-glass-tint text-accent border border-glass-border rounded-full px-2.5 py-0.5">{t.nom}</span>)}</div>
           )}
         </div>
       </section>
 
       {/* 6. Texte équivoque */}
       <section className="rounded-card border border-line bg-surface p-5 mb-4">
-        <h2 className="font-display font-semibold text-green-deep text-lg mb-1">6 · Texte équivoque</h2>
+        <h2 className="font-display font-semibold text-ink text-lg mb-1">6 · Texte équivoque</h2>
         <p className="text-xs text-muted mb-3.5">Coche si ce hadith prête à confusion sur Allah&nbsp;: il apparaîtra <b>aussi</b> dans « Versets et hadiths équivoques », où tu saisis les arguments (sens juste, objection, réponse, blocs). Ces arguments seront alors visibles depuis la fiche du hadith.</p>
         <label className="flex items-center gap-2.5 cursor-pointer">
           <input type="checkbox" checked={isEquivoque} onChange={(e) => setIsEquivoque(e.target.checked)} className="w-4 h-4 accent-green" />
           <span className="text-[15px] text-ink font-medium">Ce hadith est équivoque</span>
         </label>
         {isEquivoque && editId && equivoqueId && (
-          <Link to={`/admin/equivoques/${equivoqueId}`} className="mt-3 inline-flex items-center gap-1.5 rounded-lg border border-green-line bg-green-soft text-green-deep font-semibold px-3.5 py-2 text-sm hover:border-green transition-colors">
+          <Link to={`/admin/equivoques/${equivoqueId}`} className="mt-3 inline-flex items-center gap-1.5 rounded-lg border border-green-line bg-glass-tint text-ink font-semibold px-3.5 py-2 text-sm hover:border-green transition-colors">
             Ajouter / éditer les arguments dans Équivoques →
           </Link>
         )}
@@ -315,12 +315,12 @@ export const AdminHadithForm: React.FC = () => {
 
       {/* Barre d'enregistrement */}
       <div className="fixed bottom-0 left-0 md:left-[230px] right-0 flex items-center gap-3 px-6 py-3.5 bg-ivory/95 backdrop-blur border-t border-line">
-        {ok && <span className="inline-flex items-center gap-1.5 text-green-deep text-sm font-medium"><Check className="w-4 h-4" /> Enregistré</span>}
+        {ok && <span className="inline-flex items-center gap-1.5 text-ink text-sm font-medium"><Check className="w-4 h-4" /> Enregistré</span>}
         {error && <span className="inline-flex items-center gap-1.5 text-red-600 text-sm"><AlertTriangle className="w-4 h-4" /> {error}</span>}
         <div className="ml-auto flex items-center gap-2.5">
           {editId && <DeleteEntryButton kind="hadith" id={editId} label={f.sujet} redirectTo="/admin/hadiths" />}
           <Link to="/admin/hadiths" className="text-muted text-sm px-3 py-2">Annuler</Link>
-          {!editId && <button disabled={busy || !canSave} onClick={() => save(true)} className="rounded-lg border border-line bg-surface text-green-deep font-semibold px-4 py-2.5 disabled:opacity-50">Enregistrer & nouveau</button>}
+          {!editId && <button disabled={busy || !canSave} onClick={() => save(true)} className="rounded-lg border border-line bg-surface text-ink font-semibold px-4 py-2.5 disabled:opacity-50">Enregistrer & nouveau</button>}
           <button disabled={busy || !canSave} onClick={() => save(false)} className="inline-flex items-center gap-2 rounded-lg bg-green text-white font-semibold px-5 py-2.5 hover:bg-green-deep transition-colors disabled:opacity-50">
             {busy && <Loader2 className="w-4 h-4 animate-spin" />} Enregistrer
           </button>

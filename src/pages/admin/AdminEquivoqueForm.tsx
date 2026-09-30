@@ -138,18 +138,18 @@ export const AdminEquivoqueForm: React.FC = () => {
 
   return (
     <div className="max-w-3xl px-6 py-8 pb-28">
-      <p className="text-xs text-muted"><Link to="/admin/equivoques" className="hover:text-green-deep">Versets / hadiths équivoques</Link> · {editId ? 'Modifier' : 'Nouveau'}</p>
-      <h1 className="font-display font-semibold text-green-deep text-3xl mt-1 mb-1">{editId ? 'Modifier l’équivoque' : 'Nouvelle équivoque'}</h1>
+      <p className="text-xs text-muted"><Link to="/admin/equivoques" className="hover:text-ink">Versets / hadiths équivoques</Link> · {editId ? 'Modifier' : 'Nouveau'}</p>
+      <h1 className="font-display font-semibold text-ink text-3xl mt-1 mb-1">{editId ? 'Modifier l’équivoque' : 'Nouvelle équivoque'}</h1>
       <p className="text-muted text-sm mb-6">Le texte arabe collé ici est enregistré tel quel (UTF-8).</p>
 
       {/* 1. Nature & thème */}
       <section className="rounded-card border border-line bg-surface p-5 mb-4">
-        <h2 className="font-display font-semibold text-green-deep text-lg mb-4">1 · Nature & thème</h2>
+        <h2 className="font-display font-semibold text-ink text-lg mb-4">1 · Nature & thème</h2>
         <div className="flex gap-2 mb-3.5">
           {(['verset', 'hadith'] as VersetType[]).map((t) => (
             <button key={t} type="button" onClick={() => setF((p) => ({ ...p, type: t }))}
               className={`px-4 py-2 rounded-lg text-sm font-semibold border transition-colors ${
-                f.type === t ? 'bg-green text-white border-green' : 'bg-surface text-ink border-line hover:bg-green-soft'}`}>
+                f.type === t ? 'bg-green text-white border-green' : 'bg-surface text-ink border-line hover:bg-glass-tint'}`}>
               {t === 'verset' ? 'Verset équivoque' : 'Hadith équivoque'}
             </button>
           ))}
@@ -160,7 +160,7 @@ export const AdminEquivoqueForm: React.FC = () => {
 
       {/* 2. Le texte */}
       <section className="rounded-card border border-line bg-surface p-5 mb-4">
-        <h2 className="font-display font-semibold text-green-deep text-lg mb-4">2 · Le texte {isHadith ? 'du hadith' : 'du verset'}</h2>
+        <h2 className="font-display font-semibold text-ink text-lg mb-4">2 · Le texte {isHadith ? 'du hadith' : 'du verset'}</h2>
         <div className="mb-3.5"><label className={label}>Texte arabe <span className="text-red-600">*</span></label>
           <textarea dir="rtl" lang="ar" className={`${field} font-arabic text-2xl leading-loose text-right min-h-[90px]`} value={f.verset_arabe} onChange={set('verset_arabe')} placeholder="Colle ici le texte arabe (vocalisé)…" /></div>
         <div className="grid sm:grid-cols-2 gap-3.5">
@@ -185,7 +185,7 @@ export const AdminEquivoqueForm: React.FC = () => {
 
       {/* 3. L'analyse */}
       <section className="rounded-card border border-line bg-surface p-5 mb-4">
-        <h2 className="font-display font-semibold text-green-deep text-lg mb-1">3 · L’analyse <span className="text-muted font-normal text-sm">(ancien format — Markdown)</span></h2>
+        <h2 className="font-display font-semibold text-ink text-lg mb-1">3 · L’analyse <span className="text-muted font-normal text-sm">(ancien format — Markdown)</span></h2>
         <p className="text-xs text-muted mb-4">Champs historiques (sens juste / objection / réponse). <b>Dès qu’un article composable existe (section 8), c’est lui qui s’affiche</b> et ces champs sont ignorés. Compose plutôt en blocs ci-dessous.</p>
         <div className="mb-3.5"><label className={label}>Le sens juste</label><textarea className={`${field} min-h-[90px]`} value={f.sens_juste} onChange={set('sens_juste')} placeholder="Le sens correct, sourcé…" /></div>
         <div className="mb-3.5"><label className={label}>L’interprétation erronée (objection)</label><textarea className={`${field} min-h-[70px]`} value={f.objection} onChange={set('objection')} placeholder="L’objection type, formulée de manière impersonnelle…" /></div>
@@ -194,15 +194,15 @@ export const AdminEquivoqueForm: React.FC = () => {
 
       {/* 4. Preuves */}
       <section className="rounded-card border border-line bg-surface p-5 mb-4">
-        <h2 className="font-display font-semibold text-green-deep text-lg mb-1">4 · Preuves</h2>
+        <h2 className="font-display font-semibold text-ink text-lg mb-1">4 · Preuves</h2>
         <p className="text-xs text-muted mb-4">Coran (texte libre), ou un hadith / une parole déjà en base. L’ordre d’affichage suit la liste.</p>
         {preuves.map((p, i) => (
           <div key={p.key} className="rounded-lg border border-line p-3 mb-2.5">
             <div className="flex items-center gap-2 mb-2.5">
-              <span className="text-sm font-semibold text-green-deep">Preuve {i + 1}</span>
+              <span className="text-sm font-semibold text-ink">Preuve {i + 1}</span>
               <div className="ml-auto flex items-center gap-1.5">
-                <button type="button" onClick={() => movePreuve(i, -1)} disabled={i === 0} className="text-muted disabled:opacity-30 hover:text-green-deep" aria-label="Monter"><ArrowUp className="w-4 h-4" /></button>
-                <button type="button" onClick={() => movePreuve(i, 1)} disabled={i === preuves.length - 1} className="text-muted disabled:opacity-30 hover:text-green-deep" aria-label="Descendre"><ArrowDown className="w-4 h-4" /></button>
+                <button type="button" onClick={() => movePreuve(i, -1)} disabled={i === 0} className="text-muted disabled:opacity-30 hover:text-ink" aria-label="Monter"><ArrowUp className="w-4 h-4" /></button>
+                <button type="button" onClick={() => movePreuve(i, 1)} disabled={i === preuves.length - 1} className="text-muted disabled:opacity-30 hover:text-ink" aria-label="Descendre"><ArrowDown className="w-4 h-4" /></button>
                 <button type="button" onClick={() => setPreuves((a) => a.filter((_, j) => j !== i))} className="text-red-600" aria-label="Retirer"><Trash2 className="w-4 h-4" /></button>
               </div>
             </div>
@@ -226,16 +226,16 @@ export const AdminEquivoqueForm: React.FC = () => {
             </div>
           </div>
         ))}
-        <button type="button" onClick={() => setPreuves((a) => [...a, emptyPreuve()])} className="mt-1 inline-flex items-center gap-1.5 rounded-lg border border-dashed border-green-line bg-green-soft text-green-deep font-semibold px-3.5 py-2 text-sm"><Plus className="w-4 h-4" /> Ajouter une preuve</button>
+        <button type="button" onClick={() => setPreuves((a) => [...a, emptyPreuve()])} className="mt-1 inline-flex items-center gap-1.5 rounded-lg border border-dashed border-green-line bg-glass-tint text-ink font-semibold px-3.5 py-2 text-sm"><Plus className="w-4 h-4" /> Ajouter une preuve</button>
       </section>
 
       {/* 5. Scans */}
       <section className="rounded-card border border-line bg-surface p-5 mb-4">
-        <h2 className="font-display font-semibold text-green-deep text-lg mb-1">5 · Scans du livre</h2>
+        <h2 className="font-display font-semibold text-ink text-lg mb-1">5 · Scans du livre</h2>
         <p className="text-xs text-muted mb-4">0 à N scans. Colle l’URL publique (bucket Storage <code>references</code>).</p>
         {images.map((im, i) => (
           <div key={im.key} className="rounded-lg border border-line p-3 mb-2.5">
-            <div className="flex items-center gap-2 mb-2"><span className="text-sm font-semibold text-green-deep">Scan {i + 1}</span>
+            <div className="flex items-center gap-2 mb-2"><span className="text-sm font-semibold text-ink">Scan {i + 1}</span>
               <button type="button" onClick={() => setImages((a) => a.filter((_, j) => j !== i))} className="ml-auto text-red-600" aria-label="Retirer"><Trash2 className="w-4 h-4" /></button></div>
             <div className="mb-2.5"><label className={label}>URL de l’image <span className="text-red-600">*</span></label><input className={field} value={im.image_url} onChange={(e) => setImages((a) => a.map((x, j) => j === i ? { ...x, image_url: e.target.value } : x))} placeholder="https://…/references/….webp" /></div>
             <div className="mb-2.5"><label className={label}>Alt (description)</label><input className={field} value={im.alt} onChange={(e) => setImages((a) => a.map((x, j) => j === i ? { ...x, alt: e.target.value } : x))} placeholder="Scan de la page … montrant …" /></div>
@@ -245,17 +245,17 @@ export const AdminEquivoqueForm: React.FC = () => {
             </div>
           </div>
         ))}
-        <button type="button" onClick={() => setImages((a) => [...a, emptyImg()])} className="mt-1 inline-flex items-center gap-1.5 rounded-lg border border-dashed border-green-line bg-green-soft text-green-deep font-semibold px-3.5 py-2 text-sm"><Plus className="w-4 h-4" /> Ajouter un scan</button>
+        <button type="button" onClick={() => setImages((a) => [...a, emptyImg()])} className="mt-1 inline-flex items-center gap-1.5 rounded-lg border border-dashed border-green-line bg-glass-tint text-ink font-semibold px-3.5 py-2 text-sm"><Plus className="w-4 h-4" /> Ajouter un scan</button>
       </section>
 
       {/* 6. Voir aussi */}
       <section className="rounded-card border border-line bg-surface p-5 mb-4">
-        <h2 className="font-display font-semibold text-green-deep text-lg mb-1">6 · Voir aussi</h2>
+        <h2 className="font-display font-semibold text-ink text-lg mb-1">6 · Voir aussi</h2>
         <p className="text-xs text-muted mb-4">Autres équivoques liées, affichées en bas de la fiche.</p>
         {lies.length > 0 && (
           <div className="flex flex-wrap gap-2 mb-3">
             {lies.map((vid) => (
-              <span key={vid} className="inline-flex items-center gap-1.5 text-[13px] text-green-deep bg-green-soft border border-green-line px-3 py-1 rounded-full">
+              <span key={vid} className="inline-flex items-center gap-1.5 text-[13px] text-ink bg-glass-tint border border-green-line px-3 py-1 rounded-full">
                 {labelForVerset(vid)}
                 <button type="button" onClick={() => setLies((a) => a.filter((x) => x !== vid))} className="text-red-600" aria-label="Retirer"><Trash2 className="w-3.5 h-3.5" /></button>
               </span>
@@ -267,7 +267,7 @@ export const AdminEquivoqueForm: React.FC = () => {
             <option value="">— Ajouter un lien…</option>
             {liesOptions.map((o) => <option key={o.id} value={o.id}>{o.label}</option>)}
           </select>
-          <button type="button" disabled={!lieToAdd} onClick={() => { setLies((a) => [...a, Number(lieToAdd)]); setLieToAdd(''); }} className="shrink-0 inline-flex items-center gap-1.5 rounded-lg bg-green-soft text-green-deep border border-green-line font-semibold px-3.5 py-2 text-sm disabled:opacity-50"><Plus className="w-4 h-4" /> Ajouter</button>
+          <button type="button" disabled={!lieToAdd} onClick={() => { setLies((a) => [...a, Number(lieToAdd)]); setLieToAdd(''); }} className="shrink-0 inline-flex items-center gap-1.5 rounded-lg bg-glass-tint text-ink border border-green-line font-semibold px-3.5 py-2 text-sm disabled:opacity-50"><Plus className="w-4 h-4" /> Ajouter</button>
         </div>
       </section>
 
@@ -281,7 +281,7 @@ export const AdminEquivoqueForm: React.FC = () => {
 
       {/* 8. Contenu composable (blocs) — disponible une fois l'entrée créée */}
       <section className="rounded-card border border-line bg-surface p-5 mb-4">
-        <h2 className="font-display font-semibold text-green-deep text-lg mb-1">8 · Article composable <span className="text-muted font-normal text-sm">(blocs)</span></h2>
+        <h2 className="font-display font-semibold text-ink text-lg mb-1">8 · Article composable <span className="text-muted font-normal text-sm">(blocs)</span></h2>
         <p className="text-xs text-muted mb-4">Compose l’article en blocs Texte / Commentaire / Preuve. Les preuves référencent une source existante (jamais recopiée).</p>
         {editId
           ? <BlocEditor parentType="equivoque" parentId={editId} />
@@ -289,12 +289,12 @@ export const AdminEquivoqueForm: React.FC = () => {
       </section>
 
       <div className="fixed bottom-0 left-0 md:left-[230px] right-0 flex items-center gap-3 px-6 py-3.5 bg-ivory/95 backdrop-blur border-t border-line">
-        {ok && <span className="inline-flex items-center gap-1.5 text-green-deep text-sm font-medium"><Check className="w-4 h-4" /> Enregistré</span>}
+        {ok && <span className="inline-flex items-center gap-1.5 text-ink text-sm font-medium"><Check className="w-4 h-4" /> Enregistré</span>}
         {error && <span className="inline-flex items-center gap-1.5 text-red-600 text-sm"><AlertTriangle className="w-4 h-4" /> {error}</span>}
         <div className="ml-auto flex items-center gap-2.5">
           {editId && <DeleteEntryButton kind="equivoque" id={editId} label={f.theme} redirectTo="/admin/equivoques" />}
           <Link to="/admin/equivoques" className="text-muted text-sm px-3 py-2">Annuler</Link>
-          {!editId && <button disabled={busy || !canSave} onClick={() => save(true)} className="rounded-lg border border-line bg-surface text-green-deep font-semibold px-4 py-2.5 disabled:opacity-50">Enregistrer & nouveau</button>}
+          {!editId && <button disabled={busy || !canSave} onClick={() => save(true)} className="rounded-lg border border-line bg-surface text-ink font-semibold px-4 py-2.5 disabled:opacity-50">Enregistrer & nouveau</button>}
           <button disabled={busy || !canSave} onClick={() => save(false)} className="inline-flex items-center gap-2 rounded-lg bg-green text-white font-semibold px-5 py-2.5 hover:bg-green-deep transition-colors disabled:opacity-50">
             {busy && <Loader2 className="w-4 h-4 animate-spin" />} Enregistrer
           </button>

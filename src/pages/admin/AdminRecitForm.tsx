@@ -56,8 +56,8 @@ export const AdminRecitForm: React.FC = () => {
 
   return (
     <div className="max-w-3xl px-6 py-8 pb-28">
-      <p className="text-xs text-muted"><Link to="/admin/recits" className="hover:text-green-deep">Récits</Link> · {editId ? 'Modifier' : 'Nouveau'}</p>
-      <h1 className="font-display font-semibold text-green-deep text-3xl mt-1 mb-6">{editId ? 'Modifier le récit' : 'Nouveau récit'}</h1>
+      <p className="text-xs text-muted"><Link to="/admin/recits" className="hover:text-ink">Récits</Link> · {editId ? 'Modifier' : 'Nouveau'}</p>
+      <h1 className="font-display font-semibold text-ink text-3xl mt-1 mb-6">{editId ? 'Modifier le récit' : 'Nouveau récit'}</h1>
 
       <section className="rounded-card border border-line bg-surface p-5 space-y-3.5">
         <div><label className={label}>Titre <span className="text-red-600">*</span></label><input className={field} value={f.titre} onChange={(e) => setF({ ...f, titre: e.target.value })} placeholder="Ex. Le prophète Adam" /></div>
@@ -82,7 +82,7 @@ export const AdminRecitForm: React.FC = () => {
       </section>
 
       <div className="fixed bottom-0 left-0 md:left-[230px] right-0 flex items-center gap-3 px-6 py-3.5 bg-ivory/95 backdrop-blur border-t border-line">
-        {ok && <span className="inline-flex items-center gap-1.5 text-green-deep text-sm font-medium"><Check className="w-4 h-4" /> Enregistré</span>}
+        {ok && <span className="inline-flex items-center gap-1.5 text-ink text-sm font-medium"><Check className="w-4 h-4" /> Enregistré</span>}
         {error && <span className="inline-flex items-center gap-1.5 text-red-600 text-sm"><AlertTriangle className="w-4 h-4" /> {error}</span>}
         <div className="ml-auto flex items-center gap-2.5">
           {editId && <DeleteEntryButton kind="recit" id={editId} label={f.titre} redirectTo="/admin/recits" />}

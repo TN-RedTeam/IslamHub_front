@@ -46,7 +46,7 @@ export const Icon: React.FC<{ name: IconName; className?: string }> = ({ name, c
 
 /** Chip rond (fond --green-soft, trait --green) contenant une icône — pour les empty states. */
 export const IconBadge: React.FC<{ name: IconName; className?: string }> = ({ name, className }) => (
-  <div className={`mx-auto mb-4 w-16 h-16 rounded-full bg-green-soft text-green grid place-items-center ${className ?? ''}`}>
+  <div className={`mx-auto mb-4 w-16 h-16 rounded-full bg-glass-tint text-green grid place-items-center ${className ?? ''}`}>
     <Icon name={name} className="w-8 h-8" />
   </div>
 );

@@ -29,7 +29,7 @@ export const RelatedSchools: React.FC<{ current: AccentKey }> = ({ current }) =>
   const others = SCHOOLS.filter((s) => s.key !== current);
   return (
     <section className="mt-16">
-      <h3 className="text-2xl font-bold text-green-deep mb-6 font-display text-center">
+      <h3 className="text-2xl font-bold text-ink mb-6 font-display text-center">
         Découvrir les autres écoles
       </h3>
       <div className="grid md:grid-cols-3 gap-6">
@@ -49,7 +49,7 @@ export const RelatedSchools: React.FC<{ current: AccentKey }> = ({ current }) =>
                   {MADHHAB_AR[s.arIndex]?.charAt(0)}
                 </span>
                 <span>
-                  <span className="block font-display text-lg font-semibold text-green-deep leading-tight">{s.name}</span>
+                  <span className="block font-display text-lg font-semibold text-ink leading-tight">{s.name}</span>
                   <span dir="rtl" className="block font-arabic-name font-medium text-sm text-ink [unicode-bidi:plaintext]">{MADHHAB_AR[s.arIndex]}</span>
                 </span>
               </div>

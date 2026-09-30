@@ -23,7 +23,7 @@ export const PiliersDeLaFoi: React.FC = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-ground">
+    <div className="min-h-screen">
       <PageHeader
         eyebrow="Aqida"
         title="Les piliers de la foi"

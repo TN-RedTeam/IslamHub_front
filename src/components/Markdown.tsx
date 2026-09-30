@@ -36,25 +36,25 @@ function isArabic(node: React.ReactNode): boolean {
  *       s'affiche automatiquement en bas du bloc.
  */
 const mdComponents: Components = {
-  h1: ({ children }) => <h3 lang={isArabic(children) ? 'ar' : undefined} className="text-xl font-bold text-green-deep mt-4 mb-2 font-display">{children}</h3>,
+  h1: ({ children }) => <h3 lang={isArabic(children) ? 'ar' : undefined} className="text-xl font-bold text-ink mt-4 mb-2 font-display">{children}</h3>,
   h2: ({ children, id }) =>
     // remark-gfm génère un <h2 id="footnote-label"> pour le titre des notes :
     // on le garde masqué (sr-only) au lieu d'afficher "Footnotes".
     id === 'footnote-label'
       ? <h2 className="sr-only">{children}</h2>
-      : <h4 lang={isArabic(children) ? 'ar' : undefined} className="text-lg font-bold text-green-deep mt-4 mb-2 font-display">{children}</h4>,
-  h3: ({ children }) => <h4 lang={isArabic(children) ? 'ar' : undefined} className="text-lg font-bold text-green-deep mt-4 mb-2 font-display">{children}</h4>,
+      : <h4 lang={isArabic(children) ? 'ar' : undefined} className="text-lg font-bold text-ink mt-4 mb-2 font-display">{children}</h4>,
+  h3: ({ children }) => <h4 lang={isArabic(children) ? 'ar' : undefined} className="text-lg font-bold text-ink mt-4 mb-2 font-display">{children}</h4>,
   p: ({ children }) => isArabic(children)
-    ? <p lang="ar" dir="rtl" className="text-xl leading-loose my-3 text-gray-900 dark:text-white">{children}</p>
-    : <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-3">{children}</p>,
+    ? <p lang="ar" dir="rtl" className="text-xl leading-loose my-3 text-ink">{children}</p>
+    : <p className="text-ink leading-relaxed mb-3">{children}</p>,
   ul: (props) => <ul className="list-disc pl-6 mb-3 space-y-1 marker:text-green" {...props} />,
   ol: (props) => <ol className="list-decimal pl-6 mb-3 space-y-1 marker:text-green" {...props} />,
   li: ({ children }) => isArabic(children)
-    ? <li lang="ar" dir="rtl" className="leading-loose text-gray-900 dark:text-white marker:text-green">{children}</li>
-    : <li className="text-gray-700 dark:text-gray-300 leading-relaxed">{children}</li>,
-  strong: (props) => <strong className="font-semibold text-gray-900 dark:text-white" {...props} />,
+    ? <li lang="ar" dir="rtl" className="leading-loose text-ink marker:text-green">{children}</li>
+    : <li className="text-ink leading-relaxed">{children}</li>,
+  strong: (props) => <strong className="font-semibold text-ink" {...props} />,
   em: (props) => <em className="italic" {...props} />,
-  blockquote: (props) => <blockquote className="border-l-4 border-green pl-4 italic text-gray-600 dark:text-gray-400 my-3" {...props} />,
+  blockquote: (props) => <blockquote className="border-l-4 border-green pl-4 italic text-muted my-3" {...props} />,
   a: (props) => {
     const href = (props as { href?: string }).href ?? '';
     // Flèche de retour "↩" de la note : inutile ici (pas de navigation), on la masque.
@@ -81,7 +81,7 @@ const mdComponents: Components = {
       <table className="min-w-full text-sm border border-line" {...props} />
     </div>
   ),
-  th: (props) => <th className="border border-line px-3 py-2 bg-green-soft font-semibold text-left" {...props} />,
+  th: (props) => <th className="border border-line px-3 py-2 bg-glass-tint font-semibold text-left" {...props} />,
   td: (props) => <td className="border border-line px-3 py-2" {...props} />,
 };
 

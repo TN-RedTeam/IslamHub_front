@@ -32,7 +32,7 @@ export const SavantPage: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-ground flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center">
         <Loader2 className="h-10 w-10 text-green animate-spin" />
       </div>
     );
@@ -40,11 +40,11 @@ export const SavantPage: React.FC = () => {
 
   if (notFound || !data) {
     return (
-      <div className="min-h-screen bg-ground flex items-center justify-center">
-        <div className="text-center max-w-md mx-auto p-8 bg-white dark:bg-gray-800 rounded-card shadow-card">
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center max-w-md mx-auto p-8 bg-glass rounded-card shadow-card">
           <IconBadge name="user" />
-          <h1 className="text-xl font-bold text-gray-700 dark:text-gray-300 mb-2 font-display">Savant introuvable</h1>
-          <Link to="/savants" className="px-6 py-2 bg-green hover:bg-green-deep text-white rounded-lg transition-colors inline-block mt-2">Tous les savants</Link>
+          <h1 className="text-xl font-bold text-ink mb-2 font-display">Savant introuvable</h1>
+          <Link to="/savants" className="px-6 py-2 bg-accent-deep hover:brightness-110 text-white rounded-lg transition-colors inline-block mt-2">Tous les savants</Link>
         </div>
       </div>
     );
@@ -55,24 +55,24 @@ export const SavantPage: React.FC = () => {
   const sexe = savant.role === 'epouse_prophete' ? 'f' : undefined;
 
   return (
-    <div className="min-h-screen bg-ground">
+    <div className="min-h-screen">
       <m.header
         initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }}
         className="bg-ivory border-b border-line py-10">
         
         
         <div className="relative container mx-auto px-4 max-w-4xl">
-          <Link to="/savants" className="inline-flex items-center gap-1.5 text-muted hover:text-green-deep text-sm mb-4">
+          <Link to="/savants" className="inline-flex items-center gap-1.5 text-muted hover:text-ink text-sm mb-4">
             <ArrowLeft className="h-4 w-4" /> Tous les savants
           </Link>
           <div className="flex items-baseline gap-3 flex-wrap">
-            <h1 className="text-4xl md:text-5xl font-bold text-green-deep font-display">{savant.nom}</h1>
+            <h1 className="text-4xl md:text-5xl font-bold text-ink font-display">{savant.nom}</h1>
             {honorificFor(savant.generation, { role: savant.role, sexe }) && (
-              <span className="font-arabic-name font-medium text-green-deep text-lg" lang="ar" dir="rtl">{honorificFor(savant.generation, { role: savant.role, sexe })}</span>
+              <span className="font-arabic-name font-medium text-ink text-lg" lang="ar" dir="rtl">{honorificFor(savant.generation, { role: savant.role, sexe })}</span>
             )}
           </div>
           {savant.nom_arabe && (
-            <p dir="rtl" lang="ar" className="font-arabic-name font-medium text-2xl text-green-deep mt-1 [unicode-bidi:plaintext]">{savant.nom_arabe}</p>
+            <p dir="rtl" lang="ar" className="font-arabic-name font-medium text-2xl text-ink mt-1 [unicode-bidi:plaintext]">{savant.nom_arabe}</p>
           )}
           <div className="flex items-center gap-3 flex-wrap mt-2">
             {[savant.naissance, savant.deces].filter(Boolean).length > 0 && (
@@ -88,28 +88,28 @@ export const SavantPage: React.FC = () => {
 
       <main className="container mx-auto px-4 py-10 max-w-4xl space-y-8">
         {savant.biographie && (
-          <section className="bg-white dark:bg-gray-800 rounded-card p-6 shadow border border-line">
+          <section className="bg-glass rounded-card p-6 shadow border border-line">
             <Markdown>{savant.biographie}</Markdown>
           </section>
         )}
 
         {paroles.length > 0 && (
           <section>
-            <h2 className="text-lg font-bold text-green-deep mb-4 flex items-center gap-2">
+            <h2 className="text-lg font-bold text-ink mb-4 flex items-center gap-2">
               <MessageSquareQuote className="h-5 w-5" /> Ses paroles ({paroles.length})
             </h2>
             <div className="space-y-4">
               {paroles.map((p) => (
-                <article key={p.id} className="bg-white dark:bg-gray-800 rounded-card p-5 shadow border border-green-line">
-                  {p.sujet && <h3 className="font-bold text-green-deep font-display mb-2">{p.sujet}</h3>}
+                <article key={p.id} className="bg-glass rounded-card p-5 shadow border border-green-line">
+                  {p.sujet && <h3 className="font-bold text-ink font-display mb-2">{p.sujet}</h3>}
                   {p.texte_arabe && (
-                    <p className="text-2xl leading-loose text-right font-arabic text-gray-900 dark:text-white whitespace-pre-wrap mb-3">{p.texte_arabe}</p>
+                    <p className="text-2xl leading-loose text-right font-arabic text-ink whitespace-pre-wrap mb-3">{p.texte_arabe}</p>
                   )}
                   {p.texte_francais && (
-                    <p className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap [unicode-bidi:plaintext] mb-2">« {p.texte_francais} »</p>
+                    <p className="text-ink whitespace-pre-wrap [unicode-bidi:plaintext] mb-2">« {p.texte_francais} »</p>
                   )}
                   {p.explication && (
-                    <div className="mt-2 text-sm text-gray-600 dark:text-gray-400">
+                    <div className="mt-2 text-sm text-muted">
                       <Markdown>{p.explication}</Markdown>
                     </div>
                   )}
@@ -126,15 +126,15 @@ export const SavantPage: React.FC = () => {
 
         {hadiths_juges.length > 0 && (
           <section>
-            <h2 className="text-lg font-bold text-green-deep mb-4 flex items-center gap-2">
+            <h2 className="text-lg font-bold text-ink mb-4 flex items-center gap-2">
               <ShieldCheck className="h-5 w-5" /> Hadiths qu'il a authentifiés ({hadiths_juges.length})
             </h2>
             <ul className="space-y-2">
               {hadiths_juges.map((h) => (
-                <li key={h.id} className="bg-white dark:bg-gray-800 rounded-xl px-4 py-3 shadow-sm border border-green-line flex items-center justify-between gap-3">
-                  <span className="text-gray-800 dark:text-gray-200 font-display">{h.sujet}</span>
+                <li key={h.id} className="bg-glass rounded-xl px-4 py-3 shadow-sm border border-green-line flex items-center justify-between gap-3">
+                  <span className="text-ink font-display">{h.sujet}</span>
                   {h.degre_authenticite && (
-                    <span className="text-xs px-2 py-0.5 rounded-full bg-green-soft text-green-deep dark:text-muted shrink-0">{h.degre_authenticite}</span>
+                    <span className="text-xs px-2 py-0.5 rounded-full bg-glass-tint text-ink dark:text-muted shrink-0">{h.degre_authenticite}</span>
                   )}
                 </li>
               ))}
@@ -143,7 +143,7 @@ export const SavantPage: React.FC = () => {
         )}
 
         {paroles.length === 0 && hadiths_juges.length === 0 && !savant.biographie && (
-          <p className="text-center text-gray-500 dark:text-gray-400 py-10">Fiche en cours de rédaction.</p>
+          <p className="text-center text-muted py-10">Fiche en cours de rédaction.</p>
         )}
       </main>
     </div>

@@ -20,17 +20,17 @@ const CollapsibleSection: React.FC<SectionProps> = ({ title, icon, children, def
         <m.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden border border-line"
+            className="bg-glass rounded-xl shadow-lg overflow-hidden border border-line"
         >
             <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="w-full px-6 py-4 flex items-center justify-between bg-green-soft hover:bg-green-line transition-colors"
+                className="w-full px-6 py-4 flex items-center justify-between bg-glass-tint hover:bg-green-line transition-colors"
             >
                 <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-full bg-green flex items-center justify-center text-white">
                         {icon}
                     </div>
-                    <h3 className="text-xl font-bold text-green-deep font-display">
+                    <h3 className="text-xl font-bold text-ink font-display">
                         {title}
                     </h3>
                 </div>
@@ -49,7 +49,7 @@ const CollapsibleSection: React.FC<SectionProps> = ({ title, icon, children, def
                         transition={{ duration: 0.3 }}
                         className="overflow-hidden"
                     >
-                        <div className="p-6 text-gray-700 dark:text-gray-300 leading-relaxed">
+                        <div className="p-6 text-ink leading-relaxed">
                             {children}
                         </div>
                     </m.div>
@@ -146,7 +146,7 @@ const Shafii: React.FC = () => {
     ];
 
     return (
-        <div className="min-h-screen bg-ground">
+        <div className="min-h-screen">
             <div className="border-t-[3px] border-ecole-shafii">
                 <PageHeader
                     eyebrow="École juridique"
@@ -171,15 +171,15 @@ const Shafii: React.FC = () => {
                             animate={{ opacity: 1, scale: 1 }}
                             transition={{ delay: 0.3 + index * 0.1 }}
                             whileHover={{ y: -5 }}
-                            className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-card p-6 text-center shadow-card border border-line"
+                            className="bg-white/80 /80 backdrop-blur-sm rounded-card p-6 text-center shadow-card border border-line"
                         >
                             <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-green mb-3">
                                 <stat.icon className="h-6 w-6 text-white" />
                             </div>
-                            <div className="text-2xl font-bold text-green-deep font-display">
+                            <div className="text-2xl font-bold text-ink font-display">
                                 {stat.value}
                             </div>
-                            <div className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                            <div className="text-sm text-muted mt-1">
                                 {stat.label}
                             </div>
                         </m.div>
@@ -193,17 +193,17 @@ const Shafii: React.FC = () => {
                     transition={{ delay: 0.4 }}
                     className="mb-16"
                 >
-                    <h2 className="text-3xl font-bold text-green-deep mb-6 font-display text-center">
+                    <h2 className="text-3xl font-bold text-ink mb-6 font-display text-center">
                         L'Imam Ach-Chafi^iyy
                     </h2>
                     <div className="max-w-4xl mx-auto">
-                        <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
+                        <p className="text-lg text-ink leading-relaxed mb-4">
                             L'école shafi'ite est la troisième des quatre grandes écoles juridiques sunnites.
                             Fondée par l'Imam Mouhammad fils de Idris Ach-Chafi^iyy (767-820 EC), elle se distingue
                             par sa méthodologie équilibrée qui combine harmonieusement l'attachement aux textes
                             et l'utilisation mesurée du raisonnement.
                         </p>
-                        <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
+                        <p className="text-lg text-ink leading-relaxed mb-4">
                             L'Imam Ach-Chafi^iyy est considéré comme le "maître des fondements" car il a systématisé
                             les principes de la jurisprudence islamique (Usul al-Fiqh). Son œuvre majeure,
                             "Ar-Riçalah", est le premier ouvrage consacré à la méthodologie juridique islamique.
@@ -219,7 +219,7 @@ const Shafii: React.FC = () => {
                     transition={{ delay: 0.5 }}
                     className="mb-16 space-y-6"
                 >
-                    <h2 className="text-3xl font-bold text-green-deep mb-8 font-display text-center">
+                    <h2 className="text-3xl font-bold text-ink mb-8 font-display text-center">
                         Biographie détaillée
                     </h2>
 
@@ -311,8 +311,8 @@ const Shafii: React.FC = () => {
                             textes et le raisonnement. Elle est aujourd'hui suivie par des millions de musulmans,
                             notamment en Égypte, en Asie du Sud-Est, au Yémen et en Afrique de l'Est.
                         </p>
-                        <div className="bg-green-soft rounded-lg p-4 mt-4">
-                            <p className="text-green-deep font-medium">
+                        <div className="bg-glass-tint rounded-lg p-4 mt-4">
+                            <p className="text-ink font-medium">
                                 L'école Chafi^iyy représente environ 15% des musulmans dans le monde et reste
                                 particulièrement influente dans les domaines de la jurisprudence, du hadith et
                                 des principes de jurisprudence.
@@ -331,15 +331,15 @@ const Shafii: React.FC = () => {
                         <ul className="space-y-3">
                             {qualities.map((quality, index) => (
                                 <li key={index} className="flex items-start gap-3">
-                                    <span className="w-6 h-6 rounded-full bg-green-soft flex items-center justify-center flex-shrink-0 mt-0.5">
-                                        <span className="text-gold text-sm font-bold">{index + 1}</span>
+                                    <span className="w-6 h-6 rounded-full bg-glass-tint flex items-center justify-center flex-shrink-0 mt-0.5">
+                                        <span className="text-accent text-sm font-bold">{index + 1}</span>
                                     </span>
                                     <span>{quality}</span>
                                 </li>
                             ))}
                         </ul>
-                        <div className="mt-6 p-4 bg-green-soft rounded-lg border-l-4 border-green-line">
-                            <p className="italic text-green-deep">
+                        <div className="mt-6 p-4 bg-glass-tint rounded-lg border-l-4 border-green-line">
+                            <p className="italic text-ink">
                                 L'Imam Ahmad a dit à son sujet : "Ach-Chafi^iyy était comme le soleil pour le monde
                                 et comme la santé pour les gens."
                             </p>
@@ -359,16 +359,16 @@ const Shafii: React.FC = () => {
                             {teachers.map((teacher, index) => (
                                 <div
                                     key={index}
-                                    className="flex items-center gap-3 p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg"
+                                    className="flex items-center gap-3 p-3 bg-gray-50 /50 rounded-lg"
                                 >
-                                    <span className="w-8 h-8 rounded-full bg-green-soft flex items-center justify-center text-green text-sm font-bold">
+                                    <span className="w-8 h-8 rounded-full bg-glass-tint flex items-center justify-center text-green text-sm font-bold">
                                         {index + 1}
                                     </span>
-                                    <span className="text-gray-700 dark:text-gray-300">{teacher}</span>
+                                    <span className="text-ink">{teacher}</span>
                                 </div>
                             ))}
                         </div>
-                        <p className="mt-4 text-sm text-gray-500 dark:text-gray-400">
+                        <p className="mt-4 text-sm text-muted">
                             Parmi ses professeurs les plus influents, l'Imam Malik ibn Anas occupe une place
                             particulière. L'Imam Ach-Chafi^iyy a étudié le Mouwatta' directement auprès de lui
                             à Médine.
@@ -388,13 +388,13 @@ const Shafii: React.FC = () => {
                             {students.map((student, index) => (
                                 <div
                                     key={index}
-                                    className="flex items-start gap-3 p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg"
+                                    className="flex items-start gap-3 p-3 bg-gray-50 /50 rounded-lg"
                                 >
                                     <span className="w-8 h-8 rounded-full bg-purple-100 dark:bg-purple-900 flex items-center justify-center text-purple-600 dark:text-purple-400 text-sm font-bold flex-shrink-0">
                                         {index + 1}
                                     </span>
                                     <div>
-                                        <span className="font-medium text-gray-800 dark:text-gray-200">{student.name}</span>
+                                        <span className="font-medium text-ink">{student.name}</span>
                                         {student.note && (
                                             <p className="text-sm text-purple-600 dark:text-purple-400 mt-1">{student.note}</p>
                                         )}
@@ -417,17 +417,17 @@ const Shafii: React.FC = () => {
                             <div className="flex items-start gap-4">
                                 <div className="w-3 h-3 rounded-full bg-green mt-2"></div>
                                 <div>
-                                    <h4 className="font-bold text-gray-800 dark:text-gray-200">La Mecque</h4>
-                                    <p className="text-gray-600 dark:text-gray-400">
+                                    <h4 className="font-bold text-ink">La Mecque</h4>
+                                    <p className="text-muted">
                                         Sa ville d'enfance où il a mémorisé le Coran et commencé ses études religieuses.
                                     </p>
                                 </div>
                             </div>
                             <div className="flex items-start gap-4">
-                                <div className="w-3 h-3 rounded-full bg-gold mt-2"></div>
+                                <div className="w-3 h-3 rounded-full bg-accent mt-2"></div>
                                 <div>
-                                    <h4 className="font-bold text-gray-800 dark:text-gray-200">Médine</h4>
-                                    <p className="text-gray-600 dark:text-gray-400">
+                                    <h4 className="font-bold text-ink">Médine</h4>
+                                    <p className="text-muted">
                                         Où il a étudié auprès de l'Imam Malik et appris le Mouwatta'.
                                     </p>
                                 </div>
@@ -435,8 +435,8 @@ const Shafii: React.FC = () => {
                             <div className="flex items-start gap-4">
                                 <div className="w-3 h-3 rounded-full bg-purple-500 mt-2"></div>
                                 <div>
-                                    <h4 className="font-bold text-gray-800 dark:text-gray-200">Yémen</h4>
-                                    <p className="text-gray-600 dark:text-gray-400">
+                                    <h4 className="font-bold text-ink">Yémen</h4>
+                                    <p className="text-muted">
                                         Où il a occupé un poste de juge et acquis une expérience pratique.
                                     </p>
                                 </div>
@@ -444,8 +444,8 @@ const Shafii: React.FC = () => {
                             <div className="flex items-start gap-4">
                                 <div className="w-3 h-3 rounded-full bg-blue-500 mt-2"></div>
                                 <div>
-                                    <h4 className="font-bold text-gray-800 dark:text-gray-200">Bagdad (Irak)</h4>
-                                    <p className="text-gray-600 dark:text-gray-400">
+                                    <h4 className="font-bold text-ink">Bagdad (Irak)</h4>
+                                    <p className="text-muted">
                                         Où il a étudié auprès de Mouhammad ibn Al-Haçan et enseigné sa première école (al-qadim).
                                     </p>
                                 </div>
@@ -453,8 +453,8 @@ const Shafii: React.FC = () => {
                             <div className="flex items-start gap-4">
                                 <div className="w-3 h-3 rounded-full bg-red-500 mt-2"></div>
                                 <div>
-                                    <h4 className="font-bold text-gray-800 dark:text-gray-200">Le Caire (Égypte)</h4>
-                                    <p className="text-gray-600 dark:text-gray-400">
+                                    <h4 className="font-bold text-ink">Le Caire (Égypte)</h4>
+                                    <p className="text-muted">
                                         Où il s'est installé définitivement et a développé sa nouvelle école (al-jadid).
                                         C'est là qu'il est décédé et qu'il repose.
                                     </p>
@@ -473,8 +473,8 @@ const Shafii: React.FC = () => {
                             Il a clairement exprimé sa croyance en l'unicité d'Allah et en Ses attributs parfaits.
                         </p>
                         <div className="space-y-4">
-                            <div className="p-4 bg-green-soft rounded-lg border-l-4 border-green">
-                                <p className="italic text-green-deep">
+                            <div className="p-4 bg-glass-tint rounded-lg border-l-4 border-green">
+                                <p className="italic text-ink">
                                     "J'ai cru en Allah et en ce qui est venu de la part d'Allah, selon ce qu'a voulu Allah.
                                     Et j'ai cru en le Messager d'Allah et en ce qui est venu de la part du Messager d'Allah,
                                     selon ce qu'a voulu le Messager d'Allah."
@@ -484,8 +484,8 @@ const Shafii: React.FC = () => {
                                 Il a affirmé que Allah existe sans endroit et qu'Il n'est pas concerné par le temps.
                                 Il a mis en garde contre le fait d'attribuer à Allah des caractéristiques des créatures.
                             </p>
-                            <div className="p-4 bg-green-soft rounded-lg border-l-4 border-green-line">
-                                <p className="italic text-green-deep">
+                            <div className="p-4 bg-glass-tint rounded-lg border-l-4 border-green-line">
+                                <p className="italic text-ink">
                                     L'Imam Ach-Chafi^iyy a dit : "Celui qui cherche à approfondir sa connaissance de la
                                     science du tawhid (unicité) avant d'avoir affermi sa croyance, celui-là sera perturbé."
                                 </p>
@@ -506,8 +506,8 @@ const Shafii: React.FC = () => {
                             Il fut enterré au Caire, où son mausolée est devenu un lieu de visite pour les musulmans
                             du monde entier. Sa tombe se trouve dans le quartier qui porte aujourd'hui son nom.
                         </p>
-                        <div className="p-4 bg-gray-100 dark:bg-gray-700 rounded-lg">
-                            <p className="text-gray-700 dark:text-gray-300">
+                        <div className="p-4 bg-glass rounded-lg">
+                            <p className="text-ink">
                                 Malgré sa courte vie, l'Imam Ach-Chafi^iyy a laissé un héritage immense : des ouvrages
                                 fondamentaux comme <span className="font-bold">Ar-Riçalah</span> et <span className="font-bold">Al-'Oumm</span>,
                                 une méthodologie juridique rigoureuse, et des milliers d'élèves qui ont perpétué son enseignement.
@@ -523,7 +523,7 @@ const Shafii: React.FC = () => {
                     transition={{ delay: 0.6 }}
                     className="mb-16"
                 >
-                    <h3 className="text-2xl font-bold text-green-deep mb-8 font-display text-center">
+                    <h3 className="text-2xl font-bold text-ink mb-8 font-display text-center">
                         Hiérarchie des Sources selon l'École Shafi'ite
                     </h3>
                     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -534,15 +534,15 @@ const Shafii: React.FC = () => {
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ delay: 0.7 + index * 0.1 }}
                                 whileHover={{ y: -5 }}
-                                className="bg-white/80 dark:bg-gray-800/80 rounded-xl p-6 shadow-lg border border-line"
+                                className="bg-white/80 /80 rounded-xl p-6 shadow-lg border border-line"
                             >
-                                <div className="w-12 h-12 rounded-full bg-green-soft flex items-center justify-center mb-4">
-                                    <source.icon className="h-6 w-6 text-gold" />
+                                <div className="w-12 h-12 rounded-full bg-glass-tint flex items-center justify-center mb-4">
+                                    <source.icon className="h-6 w-6 text-accent" />
                                 </div>
-                                <h4 className="text-lg font-bold text-gray-800 dark:text-white mb-2">
+                                <h4 className="text-lg font-bold text-ink dark:text-white mb-2">
                                     {source.title}
                                 </h4>
-                                <p className="text-gray-600 dark:text-gray-400">
+                                <p className="text-muted">
                                     {source.description}
                                 </p>
                             </m.div>
@@ -557,13 +557,13 @@ const Shafii: React.FC = () => {
                     transition={{ delay: 0.8 }}
                     className="mb-16"
                 >
-                    <div className="bg-green-soft rounded-card p-6 shadow-lg border border-line">
+                    <div className="bg-glass-tint rounded-card p-6 shadow-lg border border-line">
                         <div className="flex flex-col md:flex-row items-center gap-6">
                             <div className="flex-1 text-center md:text-left">
-                                <h3 className="text-2xl font-bold text-green-deep mb-3 font-display">
+                                <h3 className="text-2xl font-bold text-ink mb-3 font-display">
                                     Ar-Riçalah et l'Usul al-Fiqh
                                 </h3>
-                                <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
+                                <p className="text-ink leading-relaxed">
                                     "Ar-Riçalah" (L'Épître) est l'œuvre fondatrice qui a établi les principes
                                     méthodologiques de la jurisprudence islamique. L'Imam Ach-Chafi^iyy y a défini
                                     les sources du droit dans un ordre hiérarchique précis et a établi les règles
@@ -572,8 +572,8 @@ const Shafii: React.FC = () => {
                                 </p>
                             </div>
                             <div className="text-center">
-                                <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-green-soft">
-                                    <BookOpen className="h-10 w-10 text-gold" />
+                                <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-glass-tint">
+                                    <BookOpen className="h-10 w-10 text-accent" />
                                 </div>
                             </div>
                         </div>
@@ -587,33 +587,33 @@ const Shafii: React.FC = () => {
                     transition={{ delay: 0.85 }}
                     className="mb-16"
                 >
-                    <h3 className="text-2xl font-bold text-green-deep mb-8 font-display text-center">
+                    <h3 className="text-2xl font-bold text-ink mb-8 font-display text-center">
                         Particularités de l'École Shafi'ite
                     </h3>
                     <div className="grid md:grid-cols-3 gap-6">
                         <div className="bg-ivory rounded-xl p-6 shadow-lg border border-line">
-                            <h4 className="text-xl font-bold text-green-deep mb-3 font-display">
+                            <h4 className="text-xl font-bold text-ink mb-3 font-display">
                                 Équilibre Méthodologique
                             </h4>
-                            <p className="text-gray-700 dark:text-gray-300">
+                            <p className="text-ink">
                                 L'école shafi'ite trouve un juste milieu entre l'attachement strict aux textes
                                 de l'école hanbalite et l'utilisation extensive du raisonnement de l'école hanafite.
                             </p>
                         </div>
                         <div className="bg-ivory rounded-xl p-6 shadow-lg border border-line">
-                            <h4 className="text-xl font-bold text-green-deep mb-3 font-display">
+                            <h4 className="text-xl font-bold text-ink mb-3 font-display">
                                 Rejet de l'Istihsan
                             </h4>
-                            <p className="text-gray-700 dark:text-gray-300">
+                            <p className="text-ink">
                                 Contrairement aux hanafites, l'école shafi'ite rejette l'istihsan (préférence
                                 juridique) comme source de loi, privilégiant le qiyas strict.
                             </p>
                         </div>
                         <div className="bg-ivory rounded-xl p-6 shadow-lg border border-line">
-                            <h4 className="text-xl font-bold text-green-deep mb-3 font-display">
+                            <h4 className="text-xl font-bold text-ink mb-3 font-display">
                                 Rayonnement Mondial
                             </h4>
-                            <p className="text-gray-700 dark:text-gray-300">
+                            <p className="text-ink">
                                 L'école shafi'ite est majoritaire en Égypte, au Yémen, en Somalie, à Djibouti,
                                 en Jordanie, en Palestine, en Indonésie, en Malaisie, à Brunei et aux Philippines.
                             </p>
@@ -632,11 +632,11 @@ const Shafii: React.FC = () => {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: 1.1 }}
-                    className="mt-16 bg-green-soft rounded-card p-8 text-center shadow-lg"
+                    className="mt-16 bg-glass-tint rounded-card p-8 text-center shadow-lg"
                 >
                     <div className="max-w-2xl mx-auto">
-                        <div className="text-5xl mb-4 text-gold">"</div>
-                        <p className="text-xl text-gray-800 dark:text-gray-200 font-display leading-relaxed mb-4">
+                        <div className="text-5xl mb-4 text-accent">"</div>
+                        <p className="text-xl text-ink font-display leading-relaxed mb-4">
                             La science est ce qui profite, non ce qui est mémorisé.
                         </p>
                         <p className="text-sm text-green">

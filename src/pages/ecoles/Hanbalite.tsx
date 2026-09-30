@@ -19,17 +19,17 @@ const CollapsibleSection: React.FC<SectionProps> = ({ title, icon, children, def
         <m.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden border border-line"
+            className="bg-glass rounded-xl shadow-lg overflow-hidden border border-line"
         >
             <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="w-full px-6 py-4 flex items-center justify-between bg-green-soft hover:bg-green-line transition-colors"
+                className="w-full px-6 py-4 flex items-center justify-between bg-glass-tint hover:bg-green-line transition-colors"
             >
                 <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-full bg-green flex items-center justify-center text-white">
                         {icon}
                     </div>
-                    <h3 className="text-xl font-bold text-green-deep font-display">
+                    <h3 className="text-xl font-bold text-ink font-display">
                         {title}
                     </h3>
                 </div>
@@ -48,7 +48,7 @@ const CollapsibleSection: React.FC<SectionProps> = ({ title, icon, children, def
                         transition={{ duration: 0.3 }}
                         className="overflow-hidden"
                     >
-                        <div className="p-6 text-gray-700 dark:text-gray-300 leading-relaxed">
+                        <div className="p-6 text-ink leading-relaxed">
                             {children}
                         </div>
                     </m.div>
@@ -68,7 +68,7 @@ const Hanbalite: React.FC = () => {
 
 
     return (
-        <div className="min-h-screen bg-ground">
+        <div className="min-h-screen">
             <div className="border-t-[3px] border-ecole-hanbali">
                 <PageHeader
                     eyebrow="École juridique"
@@ -93,15 +93,15 @@ const Hanbalite: React.FC = () => {
                             animate={{ opacity: 1, scale: 1 }}
                             transition={{ delay: 0.3 + index * 0.1 }}
                             whileHover={{ y: -5 }}
-                            className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-card p-6 text-center shadow-card border border-line"
+                            className="bg-white/80 /80 backdrop-blur-sm rounded-card p-6 text-center shadow-card border border-line"
                         >
                             <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-green mb-3">
                                 <stat.icon className="h-6 w-6 text-white" />
                             </div>
-                            <div className="text-2xl font-bold text-green-deep font-display">
+                            <div className="text-2xl font-bold text-ink font-display">
                                 {stat.value}
                             </div>
-                            <div className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                            <div className="text-sm text-muted mt-1">
                                 {stat.label}
                             </div>
                         </m.div>
@@ -115,14 +115,14 @@ const Hanbalite: React.FC = () => {
                     transition={{ delay: 0.4 }}
                     className="mb-16"
                 >
-                    <h2 className="text-3xl font-bold text-green-deep mb-6 font-display text-center">
+                    <h2 className="text-3xl font-bold text-ink mb-6 font-display text-center">
                         L'Imam Ahmad Ibnou Hanbal
                     </h2>
                     <div className="max-w-4xl mx-auto">
-                        <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
+                        <p className="text-lg text-ink leading-relaxed mb-4">
                             L'Imam Ahmad Ibnou Hanbal fait partie des grands savants de l'Islam. Il a vécu pendant le 2ème siècle de l'Hégire, il a ainsi appris la science de la religion auprès de l'Imam Ach-Chafi^iyy (Chafi'i) entre autres. Il a par la suite fondé sa propre école de jurisprudence : l'école hanbalite. Il a eu entre autres deux fils : ^Abdou l-Lah, d'où son surnom Abou ^Abdi l-Lah, et Salih.
                         </p>
-                        <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
+                        <p className="text-lg text-ink leading-relaxed mb-4">
                             Grandir orphelin ne l'a pas empêché de devenir le défenseur de la croyance musulmane, il y a plus de 13 siècles de cela. Et ses enseignements constituent aujourd'hui encore une forteresse qui protège la croyance de toute tentative de corruption. Quoi que tu imagines en ton esprit Dieu en est différent. C'est là sa croyance et son enseignement. Ahmad ibn Hanbal !
                         </p>
                         <div className="h-1 w-24 mx-auto bg-green rounded-full mt-6"></div>
@@ -136,7 +136,7 @@ const Hanbalite: React.FC = () => {
                     transition={{ delay: 0.5 }}
                     className="mb-16 space-y-6"
                 >
-                    <h2 className="text-3xl font-bold text-green-deep mb-8 font-display text-center">
+                    <h2 className="text-3xl font-bold text-ink mb-8 font-display text-center">
                         Biographie détaillée
                     </h2>
 
@@ -610,42 +610,42 @@ const Hanbalite: React.FC = () => {
                     transition={{ delay: 0.6 }}
                     className="mb-16"
                 >
-                    <h3 className="text-2xl font-bold text-green-deep mb-8 font-display text-center">
+                    <h3 className="text-2xl font-bold text-ink mb-8 font-display text-center">
                         Caractéristiques de l'École Hanbalite
                     </h3>
                     <div className="grid md:grid-cols-3 gap-6">
-                        <div className="bg-white/80 dark:bg-gray-800/80 rounded-xl p-6 shadow-lg border border-line">
-                            <div className="w-12 h-12 rounded-full bg-green-soft flex items-center justify-center mb-4">
-                                <BookOpen className="h-6 w-6 text-gold" />
+                        <div className="bg-white/80 /80 rounded-xl p-6 shadow-lg border border-line">
+                            <div className="w-12 h-12 rounded-full bg-glass-tint flex items-center justify-center mb-4">
+                                <BookOpen className="h-6 w-6 text-accent" />
                             </div>
-                            <h4 className="text-lg font-bold text-gray-800 dark:text-white mb-2">
+                            <h4 className="text-lg font-bold text-ink dark:text-white mb-2">
                                 Attachement au Texte
                             </h4>
-                            <p className="text-gray-600 dark:text-gray-400">
+                            <p className="text-muted">
                                 Priorité absolue au Coran et à la Sunna authentique, avec une utilisation
                                 limitée du raisonnement analogique.
                             </p>
                         </div>
-                        <div className="bg-white/80 dark:bg-gray-800/80 rounded-xl p-6 shadow-lg border border-line">
-                            <div className="w-12 h-12 rounded-full bg-green-soft flex items-center justify-center mb-4">
-                                <Scale className="h-6 w-6 text-gold" />
+                        <div className="bg-white/80 /80 rounded-xl p-6 shadow-lg border border-line">
+                            <div className="w-12 h-12 rounded-full bg-glass-tint flex items-center justify-center mb-4">
+                                <Scale className="h-6 w-6 text-accent" />
                             </div>
-                            <h4 className="text-lg font-bold text-gray-800 dark:text-white mb-2">
+                            <h4 className="text-lg font-bold text-ink dark:text-white mb-2">
                                 Rigueur Juridique
                             </h4>
-                            <p className="text-gray-600 dark:text-gray-400">
+                            <p className="text-muted">
                                 Approche conservatrice en matière de jurisprudence, privilégiant la
                                 préservation des pratiques établies.
                             </p>
                         </div>
-                        <div className="bg-white/80 dark:bg-gray-800/80 rounded-xl p-6 shadow-lg border border-line">
-                            <div className="w-12 h-12 rounded-full bg-green-soft flex items-center justify-center mb-4">
-                                <Users className="h-6 w-6 text-gold" />
+                        <div className="bg-white/80 /80 rounded-xl p-6 shadow-lg border border-line">
+                            <div className="w-12 h-12 rounded-full bg-glass-tint flex items-center justify-center mb-4">
+                                <Users className="h-6 w-6 text-accent" />
                             </div>
-                            <h4 className="text-lg font-bold text-gray-800 dark:text-white mb-2">
+                            <h4 className="text-lg font-bold text-ink dark:text-white mb-2">
                                 Influence Moderne
                             </h4>
-                            <p className="text-gray-600 dark:text-gray-400">
+                            <p className="text-muted">
                                 L'école hanbalite est particulièrement influente en Arabie Saoudite,
                                 au Qatar et dans certaines régions de Syrie et d'Irak.
                             </p>
@@ -664,11 +664,11 @@ const Hanbalite: React.FC = () => {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: 0.9 }}
-                    className="mt-16 bg-green-soft rounded-card p-8 text-center shadow-lg"
+                    className="mt-16 bg-glass-tint rounded-card p-8 text-center shadow-lg"
                 >
                     <div className="max-w-2xl mx-auto">
-                        <div className="text-5xl mb-4 text-gold">"</div>
-                        <p className="text-xl text-gray-800 dark:text-gray-200 font-display leading-relaxed mb-4">
+                        <div className="text-5xl mb-4 text-accent">"</div>
+                        <p className="text-xl text-ink font-display leading-relaxed mb-4">
                             Quoi que tu imagines en ton esprit, Dieu en est différent.
                         </p>
                         <p className="text-sm text-green">

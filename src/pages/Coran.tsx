@@ -33,16 +33,16 @@ const getTagsArray = (tag: string | null | undefined): string[] => {
 const CoranCardSkeleton: React.FC = () => (
   <div className="relative bg-ivory rounded-card p-6 shadow-card border border-line animate-pulse">
     <div className="flex items-center gap-2 mb-4">
-      <div className="w-5 h-5 bg-gold rounded-full" />
-      <div className="h-6 bg-gold rounded-lg w-2/3" />
+      <div className="w-5 h-5 bg-accent rounded-full" />
+      <div className="h-6 bg-accent rounded-lg w-2/3" />
     </div>
-    <div className="bg-white dark:bg-gray-800/80 p-4 rounded-lg">
-      <div className="h-8 bg-gray-300 dark:bg-gray-600 rounded w-full mb-2" />
-      <div className="h-8 bg-gray-300 dark:bg-gray-600 rounded w-5/6" />
+    <div className="bg-glass-tint p-4 rounded-lg">
+      <div className="h-8 bg-gray-300  rounded w-full mb-2" />
+      <div className="h-8 bg-gray-300  rounded w-5/6" />
     </div>
     <div className="flex gap-2 mt-4">
-      <div className="h-6 bg-gold rounded-full w-16" />
-      <div className="h-6 bg-gold rounded-full w-20" />
+      <div className="h-6 bg-accent rounded-full w-16" />
+      <div className="h-6 bg-accent rounded-full w-20" />
     </div>
   </div>
 );
@@ -68,28 +68,28 @@ const CoranCard: React.FC<{
       className="relative bg-ivory rounded-card p-6 shadow-card border border-line space-y-4 overflow-hidden cursor-pointer h-full flex flex-col transition-all duration-300 hover:shadow-card"
     >
       <div className="absolute top-0 right-0 w-24 h-24 opacity-20">
-        <svg viewBox="0 0 100 100" className="text-gold">
+        <svg viewBox="0 0 100 100" className="text-accent">
           <path fill="currentColor" d="M20,20 Q30,10 40,20 T60,20 T80,20 T100,20" className="transform rotate-45" />
         </svg>
       </div>
 
       {coran.sujet && (
         <div className="flex items-center">
-          <Star className="h-5 w-5 text-gold mr-2" />
-          <h3 className="text-xl font-bold text-green-deep font-display line-clamp-1">
+          <Star className="h-5 w-5 text-accent mr-2" />
+          <h3 className="text-xl font-bold text-ink font-display line-clamp-1">
             {coran.sujet}
           </h3>
         </div>
       )}
 
-      <div className="bg-white dark:bg-gray-800/80 p-4 rounded-lg border border-line flex-grow">
-        <p className="text-2xl text-gray-900 dark:text-white font-arabic leading-loose text-right line-clamp-3 whitespace-pre-wrap">
+      <div className="bg-glass-tint p-4 rounded-lg border border-line flex-grow">
+        <p className="text-2xl text-ink font-arabic leading-loose text-right line-clamp-3 whitespace-pre-wrap">
           {coran.texte_arabe}
         </p>
         {coran.texte_francais && (
           <div className="mt-4 pl-4 border-l-4 border-green-line dark:border-green line-clamp-2">
-            <p className="text-sm text-green-deep mb-1">Signification :</p>
-            <p className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap [unicode-bidi:plaintext]">{coran.texte_francais}</p>
+            <p className="text-sm text-ink mb-1">Signification :</p>
+            <p className="text-ink whitespace-pre-wrap [unicode-bidi:plaintext]">{coran.texte_francais}</p>
           </div>
         )}
       </div>
@@ -101,14 +101,14 @@ const CoranCard: React.FC<{
               key={tag}
               whileHover={{ scale: 1.05 }}
               onClick={(e) => handleTagClick(e, tag)}
-              className="text-xs bg-green-soft text-green-deep px-3 py-1 rounded-full flex items-center cursor-pointer hover:bg-green-line dark:hover:bg-green-deep transition-colors"
+              className="text-xs bg-glass-tint text-ink px-3 py-1 rounded-full flex items-center cursor-pointer hover:bg-green-line dark:hover:bg-green-deep transition-colors"
             >
               <Hash className="h-3 w-3 mr-1" />
               {tag}
             </m.span>
           ))}
           {tags.length > 3 && (
-            <span className="text-xs text-gray-500 dark:text-gray-400 px-2 py-1">
+            <span className="text-xs text-muted px-2 py-1">
               +{tags.length - 3}
             </span>
           )}
@@ -146,46 +146,46 @@ const CoranModal: React.FC<{
         initial={{ scale: 0.9, y: 50 }}
         animate={{ scale: 1, y: 0 }}
         onClick={(e) => e.stopPropagation()}
-        className="bg-white dark:bg-gray-800 rounded-card p-8 max-w-4xl w-full max-h-[90vh] overflow-y-auto relative"
+        className="bg-bg1 rounded-card p-8 max-w-4xl w-full max-h-[90vh] overflow-y-auto relative"
       >
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 p-2 text-gray-500 hover:text-gray-700 dark:hover:text-gray-300"
+          className="absolute top-4 right-4 p-2 text-muted hover:text-ink dark:hover:text-muted"
         >
           <X className="h-6 w-6" />
         </button>
 
         <div className="space-y-6">
           <div>
-            <h2 className="text-2xl font-bold text-green-deep font-display">
+            <h2 className="text-2xl font-bold text-ink font-display">
               {coran.sujet}
             </h2>
           </div>
 
-          <div className="bg-green-soft dark:bg-gray-700 p-6 rounded-lg">
-            <p className="text-3xl text-gray-900 dark:text-white font-arabic leading-loose text-right whitespace-pre-wrap">
+          <div className="bg-glass-tint  p-6 rounded-lg">
+            <p className="text-3xl text-ink font-arabic leading-loose text-right whitespace-pre-wrap">
               {coran.texte_arabe}
             </p>
 
             {coran['phonétique'] && (
-              <div className="mt-6 bg-white dark:bg-gray-600 p-4 rounded">
-                <p className="text-sm text-green-deep mb-2">Phonétique:</p>
-                <p className="text-gray-700 dark:text-gray-200 whitespace-pre-wrap [unicode-bidi:plaintext]">{coran['phonétique']}</p>
+              <div className="mt-6 bg-glass-tint p-4 rounded">
+                <p className="text-sm text-ink mb-2">Phonétique:</p>
+                <p className="text-ink whitespace-pre-wrap [unicode-bidi:plaintext]">{coran['phonétique']}</p>
               </div>
             )}
 
             {coran.texte_francais && (
               <div className="mt-6 pl-4 border-l-4 border-green">
                 <p className="text-sm text-green mb-2">Traduction:</p>
-                <p className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap [unicode-bidi:plaintext]">{coran.texte_francais}</p>
+                <p className="text-ink whitespace-pre-wrap [unicode-bidi:plaintext]">{coran.texte_francais}</p>
               </div>
             )}
           </div>
 
           {coran.explication && (
-            <div className="bg-green-soft p-6 rounded-lg">
-              <p className="text-lg font-bold text-green-deep mb-3">Explication:</p>
-              <p className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap [unicode-bidi:plaintext]">{coran.explication}</p>
+            <div className="bg-glass-tint p-6 rounded-lg">
+              <p className="text-lg font-bold text-ink mb-3">Explication:</p>
+              <p className="text-ink whitespace-pre-wrap [unicode-bidi:plaintext]">{coran.explication}</p>
             </div>
           )}
 
@@ -196,7 +196,7 @@ const CoranModal: React.FC<{
                   key={tag}
                   whileHover={{ scale: 1.05 }}
                   onClick={() => { onTagClick?.(tag); onClose(); }}
-                  className="text-xs bg-green-soft text-green-deep px-3 py-1 rounded-full cursor-pointer hover:bg-green-line dark:hover:bg-green-deep transition-colors"
+                  className="text-xs bg-glass-tint text-ink px-3 py-1 rounded-full cursor-pointer hover:bg-green-line dark:hover:bg-green-deep transition-colors"
                 >
                   <Hash className="h-3 w-3 inline mr-1" />
                   {tag}
@@ -354,7 +354,7 @@ export const Corans: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-ground">
+    <div className="min-h-screen">
 
       {/* Reading progress */}
       <div
@@ -372,7 +372,7 @@ export const Corans: React.FC = () => {
         <div className="flex items-center gap-3 flex-wrap">
           <CoranTabs />
           {hasSearched && (
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-green-soft px-3 py-1 text-sm text-green-deep tabular-nums">
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-glass-tint px-3 py-1 text-sm text-ink tabular-nums">
               <Eye className="h-4 w-4" />
               {totalCount} verset{totalCount > 1 ? 's' : ''}
             </span>
@@ -389,7 +389,7 @@ export const Corans: React.FC = () => {
             animate={{ opacity: 1, y: 0 }}
             className="mb-8 flex justify-between items-center flex-wrap gap-4"
           >
-            <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl px-4 py-2">
+            <div className="bg-white/80 /80 backdrop-blur-sm rounded-xl px-4 py-2">
               <p className="text-green">
                 <span className="font-bold">{corans.length}</span>
                 {totalCount > corans.length && (
@@ -401,12 +401,12 @@ export const Corans: React.FC = () => {
               </p>
             </div>
 
-            <div className="flex gap-2 bg-white dark:bg-gray-800 rounded-xl p-1 border border-line">
+            <div className="flex gap-2 bg-glass rounded-xl p-1 border border-line">
               <button
                 onClick={() => handleViewChange('grid')}
                 aria-pressed={view === 'grid'}
                 aria-label="Affichage en grille"
-                className={`p-2 rounded-lg transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green ${view === 'grid' ? 'bg-green text-white shadow-md' : 'text-green hover:bg-green-soft'}`}
+                className={`p-2 rounded-lg transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green ${view === 'grid' ? 'bg-green text-white shadow-md' : 'text-green hover:bg-glass-tint'}`}
               >
                 <Grid3x3 className="w-5 h-5" />
               </button>
@@ -414,7 +414,7 @@ export const Corans: React.FC = () => {
                 onClick={() => handleViewChange('list')}
                 aria-pressed={view === 'list'}
                 aria-label="Affichage en liste"
-                className={`p-2 rounded-lg transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green ${view === 'list' ? 'bg-green text-white shadow-md' : 'text-green hover:bg-green-soft'}`}
+                className={`p-2 rounded-lg transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green ${view === 'list' ? 'bg-green text-white shadow-md' : 'text-green hover:bg-glass-tint'}`}
               >
                 <ListIcon className="w-5 h-5" />
               </button>
@@ -429,10 +429,10 @@ export const Corans: React.FC = () => {
             animate={{ opacity: 1, y: 0 }}
             className="mb-8"
           >
-            <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-card p-6 shadow-lg border border-line">
+            <div className="bg-white/80 /80 backdrop-blur-sm rounded-card p-6 shadow-lg border border-line">
               <div className="flex items-center gap-2 mb-4">
                 <Tags className="h-5 w-5 text-green" />
-                <h3 className="text-lg font-semibold text-green-deep">
+                <h3 className="text-lg font-semibold text-ink">
                   Mots-clés dans les résultats ({tagCounts.size})
                 </h3>
               </div>
@@ -448,7 +448,7 @@ export const Corans: React.FC = () => {
                       className={`inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-sm font-medium transition-all duration-300 ${
                         selectedTag === tag
                           ? 'bg-green text-white shadow-md'
-                          : 'bg-green-soft text-green-deep hover:bg-green-line dark:hover:bg-green-deep'
+                          : 'bg-glass-tint text-ink hover:bg-green-line dark:hover:bg-green-deep'
                       }`}
                     >
                       <Hash className="h-3 w-3" />
@@ -465,7 +465,7 @@ export const Corans: React.FC = () => {
         <m.section
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className="bg-white dark:bg-gray-800 rounded-card shadow-card p-6 mb-8 border border-line"
+          className="bg-glass rounded-card shadow-card p-6 mb-8 border border-line"
         >
           <div className="flex flex-col md:flex-row gap-6">
             <div className="flex-1 relative">
@@ -474,7 +474,7 @@ export const Corans: React.FC = () => {
                 type="text"
                 aria-label="Rechercher un verset"
                 placeholder="Rechercher un thème, un verset, un mot-clé…"
-                className="w-full pl-12 pr-6 py-3 rounded-xl border border-line bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-green focus:border-transparent text-lg font-display"
+                className="w-full pl-12 pr-6 py-3 rounded-xl border border-line bg-glass text-ink focus:ring-2 focus:ring-green focus:border-transparent text-lg font-display"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
@@ -493,10 +493,10 @@ export const Corans: React.FC = () => {
             <m.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              className="mt-4 flex items-center justify-between bg-green-soft rounded-lg px-4 py-2"
+              className="mt-4 flex items-center justify-between bg-glass-tint rounded-lg px-4 py-2"
             >
               <div className="flex items-center gap-2 flex-wrap">
-                <span className="font-medium text-green-deep">Filtre actif :</span>
+                <span className="font-medium text-ink">Filtre actif :</span>
                 {selectedTag && (
                   <span className="inline-flex items-center gap-1 px-2 py-1 bg-green text-white rounded-full text-sm">
                     <Filter className="h-3 w-3" />
@@ -504,7 +504,7 @@ export const Corans: React.FC = () => {
                   </span>
                 )}
                 {searchTerm && (
-                  <span className="inline-flex items-center gap-1 px-2 py-1 bg-gold text-white rounded-full text-sm">
+                  <span className="inline-flex items-center gap-1 px-2 py-1 bg-accent text-white rounded-full text-sm">
                     <Search className="h-3 w-3" />
                     "{searchTerm}"
                   </span>
@@ -513,7 +513,7 @@ export const Corans: React.FC = () => {
               <button
                 onClick={handleResetFilters}
                 aria-label="Retirer les filtres"
-                className="text-green hover:text-green-deep p-1 transition-colors"
+                className="text-green hover:text-ink p-1 transition-colors"
               >
                 <X className="h-5 w-5" />
               </button>
@@ -532,17 +532,17 @@ export const Corans: React.FC = () => {
             <m.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              className="text-center py-16 bg-white dark:bg-gray-800 rounded-card shadow-card"
+              className="text-center py-16 bg-glass rounded-card shadow-card"
             >
               <div className="max-w-md mx-auto">
                 <IconBadge name="sad" />
-                <h3 className="text-xl font-bold text-red-600 dark:text-red-400 mb-2">
+                <h3 className="text-xl font-bold text-low mb-2">
                   Une erreur est survenue
                 </h3>
-                <p className="text-gray-600 dark:text-gray-400 mb-6">{error}</p>
+                <p className="text-muted mb-6">{error}</p>
                 <button
                   onClick={() => doSearch(searchTerm, selectedTag, 0, false)}
-                  className="px-6 py-2 bg-green hover:bg-green-deep text-white rounded-lg transition-colors"
+                  className="px-6 py-2 bg-accent-deep hover:brightness-110 text-white rounded-lg transition-colors"
                 >
                   Réessayer
                 </button>
@@ -560,14 +560,14 @@ export const Corans: React.FC = () => {
                 <m.div
                   animate={{ y: [0, -10, 0] }}
                   transition={{ repeat: Infinity, duration: 4, ease: 'easeInOut' }}
-                  className="mx-auto mb-8 w-20 h-20 rounded-full bg-green-soft text-green grid place-items-center motion-reduce:animate-none"
+                  className="mx-auto mb-8 w-20 h-20 rounded-full bg-glass-tint text-green grid place-items-center motion-reduce:animate-none"
                 >
                   <Icon name="book" className="w-10 h-10" />
                 </m.div>
-                <h3 className="text-3xl font-bold text-green-deep mb-4 font-display">
+                <h3 className="text-3xl font-bold text-ink mb-4 font-display">
                   Recherchez parmi les versets
                 </h3>
-                <p className="text-gray-600 dark:text-gray-400 mb-6 leading-relaxed text-lg">
+                <p className="text-muted mb-6 leading-relaxed text-lg">
                   Saisissez un mot-clé, sélectionnez un thème — ou affichez tout.
                 </p>
                 <button
@@ -578,20 +578,20 @@ export const Corans: React.FC = () => {
                       setCorans(res.data ?? []); setTotalCount(res.count ?? 0); setHasMore(false); setCurrentPage(0); setHasSearched(true);
                     } finally { setIsLoading(false); }
                   }}
-                  className="inline-flex items-center gap-2 px-6 py-3 mb-8 rounded-xl bg-green hover:bg-green-deep text-white font-medium shadow"
+                  className="inline-flex items-center gap-2 px-6 py-3 mb-8 rounded-xl bg-accent-deep hover:brightness-110 text-white font-medium shadow"
                 >
                   Tout afficher
                 </button>
                 {allTags.length > 0 && (
                   <div className="flex flex-wrap gap-2 justify-center">
-                    <p className="w-full text-sm text-gray-500 dark:text-gray-400 mb-2">Sujets :</p>
+                    <p className="w-full text-sm text-muted mb-2">Sujets :</p>
                     {allTags.slice(0, 8).map(sujet => (
                       <m.button
                         key={sujet}
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                         onClick={() => handleSujetClick(sujet)}
-                        className="px-4 py-2 bg-green-soft text-green-deep rounded-full text-sm font-medium hover:bg-green-line dark:hover:bg-green-deep transition-colors border border-green-line"
+                        className="px-4 py-2 bg-glass-tint text-ink rounded-full text-sm font-medium hover:bg-green-line dark:hover:bg-green-deep transition-colors border border-green-line"
                       >
                         {sujet}
                       </m.button>
@@ -606,19 +606,19 @@ export const Corans: React.FC = () => {
               key="no-results"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              className="text-center py-16 bg-white dark:bg-gray-800 rounded-card shadow-card"
+              className="text-center py-16 bg-glass rounded-card shadow-card"
             >
               <div className="max-w-md mx-auto">
                 <IconBadge name="search" />
-                <h3 className="text-xl font-bold text-gray-700 dark:text-gray-300 mb-2">
+                <h3 className="text-xl font-bold text-ink mb-2">
                   Aucun résultat trouvé
                 </h3>
-                <p className="text-gray-500 dark:text-gray-400 mb-6">
+                <p className="text-muted mb-6">
                   Essayez de modifier vos critères de recherche
                 </p>
                 <button
                   onClick={handleResetFilters}
-                  className="px-6 py-2 bg-green hover:bg-green-deep text-white rounded-lg transition-colors"
+                  className="px-6 py-2 bg-accent-deep hover:brightness-110 text-white rounded-lg transition-colors"
                 >
                   Réinitialiser
                 </button>

@@ -104,7 +104,7 @@ export const SourateReader: React.FC<{ versets: VersetT[] }> = ({ versets }) => 
       <div ref={stickyRef} className="sticky top-16 z-30 bg-ground/95 backdrop-blur border-b border-line">
         <div className="max-w-6xl mx-auto px-4">
           <div className="flex items-center gap-3 py-2.5">
-            <span className="text-[13px] font-semibold text-green-deep tabular-nums whitespace-nowrap">Verset {active} / {total}</span>
+            <span className="text-[13px] font-semibold text-ink tabular-nums whitespace-nowrap">Verset {active} / {total}</span>
             <div className="flex-1 h-1.5 rounded-full bg-line overflow-hidden min-w-[40px]">
               <div className="h-full rounded-full bg-gradient-to-r from-gold to-green transition-[width] duration-300" style={{ width: `${pct}%` }} />
             </div>
@@ -148,7 +148,7 @@ export const SourateReader: React.FC<{ versets: VersetT[] }> = ({ versets }) => 
           ref={sidebarRef}
           className="hidden lg:block sticky top-[7rem] self-start max-h-[calc(100vh-8rem)] overflow-y-auto rounded-card border border-line bg-surface"
         >
-          <p className="px-3 pt-3 pb-2 text-[11px] uppercase tracking-[0.14em] text-gold font-semibold">Versets</p>
+          <p className="px-3 pt-3 pb-2 text-[11px] uppercase tracking-[0.14em] text-accent font-semibold">Versets</p>
           <ul className="pb-2">
             {versets.map((v) => {
               const on = v.numero === active;
@@ -160,11 +160,11 @@ export const SourateReader: React.FC<{ versets: VersetT[] }> = ({ versets }) => 
                     onClick={() => goToVerse(v.numero)}
                     aria-current={on}
                     className={`w-full text-left px-3 py-2 border-l-2 transition-colors ${
-                      on ? 'bg-green-soft border-green' : 'border-transparent hover:bg-green-soft/60'
+                      on ? 'bg-glass-tint border-green' : 'border-transparent hover:bg-glass-tint/60'
                     }`}
                   >
                     <span className="flex items-center gap-2">
-                      <span className={`shrink-0 w-6 h-6 rounded-full grid place-items-center text-[11px] font-semibold tabular-nums ${on ? 'bg-green text-white' : 'bg-green-soft text-green-deep'}`}>{v.numero}</span>
+                      <span className={`shrink-0 w-6 h-6 rounded-full grid place-items-center text-[11px] font-semibold tabular-nums ${on ? 'bg-green text-white' : 'bg-glass-tint text-ink'}`}>{v.numero}</span>
                       {v.texte_arabe && <span className="flex-1 min-w-0 font-arabic text-right text-ink/90 text-[15px] leading-tight truncate" dir="rtl" lang="ar">{v.texte_arabe}</span>}
                     </span>
                     {v.texte_francais && <span className="block mt-0.5 pl-8 text-[11.5px] text-muted line-clamp-1 [unicode-bidi:plaintext]">{strip(v.texte_francais)}</span>}

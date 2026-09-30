@@ -68,7 +68,7 @@ export const HadithPage: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-ground flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center">
         <Loader2 className="h-10 w-10 text-green animate-spin" />
       </div>
     );
@@ -76,11 +76,11 @@ export const HadithPage: React.FC = () => {
 
   if (notFound || !hadith) {
     return (
-      <div className="min-h-screen bg-ground flex items-center justify-center">
-        <div className="text-center max-w-md mx-auto p-8 bg-white dark:bg-gray-800 rounded-card shadow-card">
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center max-w-md mx-auto p-8 bg-glass rounded-card shadow-card">
           <IconBadge name="book" />
-          <h1 className="text-xl font-bold text-gray-700 dark:text-gray-300 mb-2 font-display">Hadith introuvable</h1>
-          <Link to="/hadiths" className="px-6 py-2 bg-green hover:bg-green-deep text-white rounded-lg transition-colors inline-block mt-2">Tous les hadiths</Link>
+          <h1 className="text-xl font-bold text-ink mb-2 font-display">Hadith introuvable</h1>
+          <Link to="/hadiths" className="px-6 py-2 bg-accent-deep hover:brightness-110 text-white rounded-lg transition-colors inline-block mt-2">Tous les hadiths</Link>
         </div>
       </div>
     );
@@ -89,17 +89,17 @@ export const HadithPage: React.FC = () => {
   const tags = (hadith.tag || '').split(',').map((t) => t.trim()).filter(Boolean);
 
   return (
-    <div className="min-h-screen bg-ground">
+    <div className="min-h-screen">
       <m.header
         initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }}
         className="bg-ivory border-b border-line py-10">
         
         
         <div className="relative container mx-auto px-4 max-w-3xl">
-          <Link to="/hadiths" className="inline-flex items-center gap-1.5 text-muted hover:text-green-deep text-sm mb-4">
+          <Link to="/hadiths" className="inline-flex items-center gap-1.5 text-muted hover:text-ink text-sm mb-4">
             <ArrowLeft className="h-4 w-4" /> Tous les hadiths
           </Link>
-          <h1 className="text-3xl md:text-4xl font-bold text-green-deep font-display">{hadith.sujet}</h1>
+          <h1 className="text-3xl md:text-4xl font-bold text-ink font-display">{hadith.sujet}</h1>
           {hadith.narrateur && (
             <p className="text-muted mt-2 text-sm flex items-center gap-2 flex-wrap">
               Narrateur : {hadith.narrateur}
@@ -116,20 +116,20 @@ export const HadithPage: React.FC = () => {
 
       <main className="container mx-auto px-4 py-10 max-w-3xl space-y-6">
         <div className="flex flex-wrap gap-3">
-          <button onClick={copyDebate} className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white dark:bg-gray-800 border border-line text-green hover:bg-green-soft transition-colors">
+          <button onClick={copyDebate} className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-glass border border-line text-green hover:bg-glass-tint transition-colors">
             {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />} Copier
           </button>
-          <button onClick={share} className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white dark:bg-gray-800 border border-line text-green hover:bg-green-soft transition-colors">
+          <button onClick={share} className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-glass border border-line text-green hover:bg-glass-tint transition-colors">
             <Share2 className="h-4 w-4" /> Partager
           </button>
         </div>
 
-        <div className="bg-white dark:bg-gray-800 rounded-card p-6 shadow border border-green-line space-y-5">
-          <p className="text-3xl leading-loose text-right font-arabic text-gray-900 dark:text-white whitespace-pre-wrap">{hadith.texte_arabe}</p>
+        <div className="bg-glass rounded-card p-6 shadow border border-green-line space-y-5">
+          <p className="text-3xl leading-loose text-right font-arabic text-ink whitespace-pre-wrap">{hadith.texte_arabe}</p>
           {hadith['phonétique'] && (
-            <div className="bg-green-soft rounded-lg p-4">
-              <p className="text-sm text-green-deep mb-1">Phonétique :</p>
-              <p className="text-gray-700 dark:text-gray-200 whitespace-pre-wrap [unicode-bidi:plaintext]">{hadith['phonétique']}</p>
+            <div className="bg-glass-tint rounded-lg p-4">
+              <p className="text-sm text-ink mb-1">Phonétique :</p>
+              <p className="text-ink whitespace-pre-wrap [unicode-bidi:plaintext]">{hadith['phonétique']}</p>
             </div>
           )}
           {hadith.texte_francais && (
@@ -139,15 +139,15 @@ export const HadithPage: React.FC = () => {
             </div>
           )}
           {hadith.explication && (
-            <div className="bg-green-soft rounded-lg p-4">
-              <p className="text-sm font-bold text-green-deep mb-1">Explication :</p>
+            <div className="bg-glass-tint rounded-lg p-4">
+              <p className="text-sm font-bold text-ink mb-1">Explication :</p>
               <Markdown className="[unicode-bidi:plaintext]">{hadith.explication}</Markdown>
             </div>
           )}
           {tags.length > 0 && (
             <div className="flex flex-wrap gap-2 pt-2">
               {tags.map((t) => (
-                <span key={t} className="text-xs bg-green-soft text-green-deep dark:text-muted px-3 py-1 rounded-full">{t}</span>
+                <span key={t} className="text-xs bg-glass-tint text-ink dark:text-muted px-3 py-1 rounded-full">{t}</span>
               ))}
             </div>
           )}
@@ -163,11 +163,11 @@ export const HadithPage: React.FC = () => {
         )}
 
         {hadith.equivoque && (
-          <details className="group rounded-card border border-gold/40 bg-gold/5 overflow-hidden">
-            <summary className="flex items-center gap-2 cursor-pointer list-none [&::-webkit-details-marker]:hidden select-none px-5 py-3.5 font-display font-semibold text-green-deep hover:bg-gold/10 transition-colors">
-              <AlertTriangle className="h-5 w-5 shrink-0 text-gold" aria-hidden />
+          <details className="group rounded-card border border-gold/40 bg-accent/5 overflow-hidden">
+            <summary className="flex items-center gap-2 cursor-pointer list-none [&::-webkit-details-marker]:hidden select-none px-5 py-3.5 font-display font-semibold text-ink hover:bg-accent/10 transition-colors">
+              <AlertTriangle className="h-5 w-5 shrink-0 text-accent" aria-hidden />
               <span className="flex-1 min-w-0">Ce hadith est équivoque — voir l'explication complète</span>
-              <ChevronRight className="h-5 w-5 shrink-0 text-gold transition-transform group-open:rotate-90" aria-hidden />
+              <ChevronRight className="h-5 w-5 shrink-0 text-accent transition-transform group-open:rotate-90" aria-hidden />
             </summary>
             <div className="px-5 pb-5 pt-1 border-t border-gold/20">
               {hadith.equivoque.theme && <p className="text-[15px] font-semibold text-ink mb-1.5">{hadith.equivoque.theme}</p>}
@@ -177,7 +177,7 @@ export const HadithPage: React.FC = () => {
                   <ArticleBlocs blocs={eqBlocs} />
                 </div>
               )}
-              <Link to={`/croyance/versets-hadiths-equivoques/${hadith.equivoque.slug}`} className="inline-flex items-center gap-1.5 rounded-lg bg-gold text-white font-semibold px-4 py-2 text-sm hover:brightness-95 transition">
+              <Link to={`/croyance/versets-hadiths-equivoques/${hadith.equivoque.slug}`} className="inline-flex items-center gap-1.5 rounded-lg bg-accent text-white font-semibold px-4 py-2 text-sm hover:brightness-95 transition">
                 Voir l'explication complète <ChevronRight className="h-4 w-4" />
               </Link>
             </div>

@@ -31,7 +31,7 @@ export const AdminSavantsList: React.FC = () => {
   return (
     <div className="max-w-4xl px-6 py-8">
       <div className="flex items-center gap-3 flex-wrap mb-5">
-        <h1 className="font-display font-semibold text-green-deep text-3xl">Savants</h1>
+        <h1 className="font-display font-semibold text-ink text-3xl">Savants</h1>
         <CountBadge n={loading ? null : items.length} />
         <Link to="/admin/savants/nouveau" className="ml-auto inline-flex items-center gap-1.5 rounded-lg bg-green text-white font-semibold px-4 py-2 hover:bg-green-deep transition-colors"><Plus className="w-4 h-4" /> Nouvelle fiche</Link>
       </div>
@@ -47,10 +47,10 @@ export const AdminSavantsList: React.FC = () => {
           <ul className="divide-y divide-line rounded-card border border-line bg-surface overflow-hidden">
             {filtered.map((s) => (
               <li key={s.id}>
-                <Link to={`/admin/savants/${s.id}`} className="flex items-center gap-3 px-4 py-3 hover:bg-green-soft transition-colors">
+                <Link to={`/admin/savants/${s.id}`} className="flex items-center gap-3 px-4 py-3 hover:bg-glass-tint transition-colors">
                   <IdTag id={s.id} />
                   <span className="text-ink font-medium min-w-0 truncate">{s.nom}</span>
-                  {ecoleName(s.ecole_id) && <span className="text-[11px] px-2 py-0.5 rounded-full bg-green-soft text-green-deep border border-green-line shrink-0">{ecoleName(s.ecole_id)}</span>}
+                  {ecoleName(s.ecole_id) && <span className="text-[11px] px-2 py-0.5 rounded-full bg-glass-tint text-ink border border-green-line shrink-0">{ecoleName(s.ecole_id)}</span>}
                   {s.generation && GEN_LABEL[s.generation] && <span className="text-[11px] px-2 py-0.5 rounded-full bg-ground text-muted border border-line shrink-0">{GEN_LABEL[s.generation]}</span>}
                   <span className="ml-auto text-muted text-sm shrink-0">Modifier →</span>
                 </Link>

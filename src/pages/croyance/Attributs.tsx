@@ -24,19 +24,19 @@ const Preuve: React.FC<{ c: AttributCitation }> = ({ c }) => {
     return (
       <figure className="rounded-xl border border-line bg-surface p-4 mt-3">
         <div className="flex items-center gap-2 flex-wrap mb-2">
-          <span className="inline-block text-[11px] font-semibold uppercase tracking-[0.08em] px-2 py-0.5 rounded-full bg-green-soft text-green-deep border border-green-line">
+          <span className="inline-block text-[11px] font-semibold uppercase tracking-[0.08em] px-2 py-0.5 rounded-full bg-glass-tint text-ink border border-green-line">
             Parole de savant
           </span>
           {c.savant && (c.savant_slug ? (
-            <Link to={`/savants/${c.savant_slug}`} className="font-display font-semibold text-green-deep hover:underline">{c.savant}</Link>
+            <Link to={`/savants/${c.savant_slug}`} className="font-display font-semibold text-ink hover:underline">{c.savant}</Link>
           ) : (
-            <span className="font-display font-semibold text-green-deep">{c.savant}</span>
+            <span className="font-display font-semibold text-ink">{c.savant}</span>
           ))}
           <BadgeGeneration generation={c.generation ?? null} />
         </div>
         {c.arabe && <p className="font-arabic text-2xl leading-loose text-right text-ink whitespace-pre-wrap line-clamp-3" dir="rtl" lang="ar">{c.arabe}</p>}
         {c.signification && <p className="text-ink mt-2 line-clamp-3 [unicode-bidi:plaintext]">{c.signification}</p>}
-        {c.ref && <figcaption className="text-xs uppercase tracking-wide text-gold font-semibold mt-2">{c.ref}</figcaption>}
+        {c.ref && <figcaption className="text-xs uppercase tracking-wide text-accent font-semibold mt-2">{c.ref}</figcaption>}
         {c.parole_slug && (
           <Link to={`/paroles/${c.parole_slug}`} className="inline-flex items-center gap-1.5 mt-3 text-green font-medium hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green rounded">
             Voir la parole complète et le scan <ArrowRight className="w-4 h-4" />
@@ -48,14 +48,14 @@ const Preuve: React.FC<{ c: AttributCitation }> = ({ c }) => {
   return (
     <figure className="rounded-xl border border-line bg-surface p-4 mt-3">
       <span className={`inline-block text-[11px] font-semibold uppercase tracking-[0.08em] px-2 py-0.5 rounded-full mb-2 ${
-        c.type === 'hadith' ? 'bg-gold-soft text-[#7a5a17] border border-[#e6d3a3]' : 'bg-green-soft text-green-deep border border-green-line'
+        c.type === 'hadith' ? 'bg-glass-tint text-accent border border-glass-border' : 'bg-glass-tint text-ink border border-green-line'
       }`}>
         {c.type === 'hadith' ? 'Hadith' : 'Coran'}
       </span>
       {c.arabe && <p className="font-arabic text-2xl leading-loose text-right text-ink whitespace-pre-wrap" dir="rtl" lang="ar">{c.arabe}</p>}
       {c.phonetique && <p className="text-sm text-muted italic mt-2 [unicode-bidi:plaintext]">{c.phonetique}</p>}
       {c.signification && <p className="text-ink font-bold mt-2 [unicode-bidi:plaintext]">{c.signification}</p>}
-      {c.ref && <figcaption className="text-xs uppercase tracking-wide text-gold font-semibold mt-2">{c.ref}</figcaption>}
+      {c.ref && <figcaption className="text-xs uppercase tracking-wide text-accent font-semibold mt-2">{c.ref}</figcaption>}
     </figure>
   );
 };
@@ -80,7 +80,7 @@ export const Attributs: React.FC = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-ground">
+    <div className="min-h-screen">
       <PageHeader
         eyebrow="Aqida"
         title="Les Attributs de Allah"
@@ -107,9 +107,9 @@ export const Attributs: React.FC = () => {
                     <a
                       href={`#attribut-${a.slug}`}
                       onClick={(e) => { e.preventDefault(); scrollToAttribut(a.slug); }}
-                      className="inline-flex items-baseline gap-1.5 px-2.5 py-1 rounded-full border border-line text-sm text-ink hover:bg-green-soft hover:text-green-deep hover:border-green transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green"
+                      className="inline-flex items-baseline gap-1.5 px-2.5 py-1 rounded-full border border-line text-sm text-ink hover:bg-glass-tint hover:text-ink hover:border-green transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green"
                     >
-                      <span className="font-display font-semibold text-gold text-[12px] tabular-nums">{i + 1}</span>
+                      <span className="font-display font-semibold text-accent text-[12px] tabular-nums">{i + 1}</span>
                       {a.nom}
                     </a>
                   </li>
@@ -120,8 +120,8 @@ export const Attributs: React.FC = () => {
             {/* Sections */}
             {items.map((a, i) => (
               <section key={a.id} id={`attribut-${a.slug}`} className="mb-10" style={{ scrollMarginTop: 80 }}>
-                <h2 className="font-display font-semibold text-green-deep text-[22px] mb-2 flex items-center gap-2.5">
-                  <span className="w-[26px] h-[26px] rounded-full bg-green-soft text-green grid place-items-center text-sm shrink-0 font-display tabular-nums">{i + 1}</span>
+                <h2 className="font-display font-semibold text-ink text-[22px] mb-2 flex items-center gap-2.5">
+                  <span className="w-[26px] h-[26px] rounded-full bg-glass-tint text-green grid place-items-center text-sm shrink-0 font-display tabular-nums">{i + 1}</span>
                   {a.nom}{a.gloss && <span className="text-muted font-sans text-base font-normal">— {a.gloss}</span>}
                 </h2>
 

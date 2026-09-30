@@ -14,8 +14,8 @@ const livres: React.FC = () => {
       </div>
 
       <div className="max-w-7xl mx-auto px-4">
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
-          <p className="text-gray-600 dark:text-gray-300">
+        <div className="bg-glass rounded-xl shadow-lg p-6">
+          <p className="text-muted">
             L'école Hanafi est l'une des quatre écoles de jurisprudence sunnites. Elle a été fondée par l'imam Abu Hanifa...
           </p>
         </div>

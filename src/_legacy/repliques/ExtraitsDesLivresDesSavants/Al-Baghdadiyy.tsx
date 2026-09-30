@@ -58,15 +58,15 @@ const AlBaghdadiyy: React.FC = () => {
 
                 
                 
-                <p className="font-amiri text-gray-600 dark:text-gray-300 text-2xl text-center my-4">
+                <p className="font-amiri text-muted text-2xl text-center my-4">
 Al-Bayhaqiyy a dit : "Certains de nos compagnons ont pris pour argument concernant l'exemption de l'endroit au sujet de Allah, la parole du Prophète salla l-Lahou ^alayhi wa sallam :"                </p>
 
-                <p className="font-amiri text-gray-600 dark:text-gray-300 text-2xl text-center my-4">
+                <p className="font-amiri text-muted text-2xl text-center my-4">
 أَنْتَ الظَّاهِرُ فَلَيْسَ فَوْقَكَ شَىْءٌ وَأَنْتَ الْبَاطِنُ فَلَيْسَ دُونَكَ شَىْءٌ                </p>
-                <p className="font-amiri text-gray-600 dark:text-gray-300 text-2xl text-center my-4">
+                <p className="font-amiri text-muted text-2xl text-center my-4">
 ('anta dh-dhahirou falayça fawqaka chay' ; wa 'anta l-batinou falayça dounaka chay') 
                 </p>
-                <p className="font-amiri text-gray-600 dark:text-gray-300 text-2xl text-center my-4">
+                <p className="font-amiri text-muted text-2xl text-center my-4">
 ce qui signifie : "Tu es Adh-Dhahir, rien n'est au dessus de Toi ; et Tu es Al-Batin, rien n'est en dessous de Toi". Et s'il n'y a rien au-dessus de Lui et rien au-dessous de Lui, Il n'est donc pas dans un endroit." Fin de citation.                </p>
                 
             </div>

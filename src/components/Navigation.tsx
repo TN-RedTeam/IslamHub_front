@@ -34,18 +34,18 @@ const HIJRI_MONTHS_FR = [
   'Ramadân', 'Chawwâl', 'Dhou al-qiʿda', 'Dhou al-hijja',
 ];
 
-// Marque IslamHub : croissant + étoile, motif or clair (#caa24a).
+// Marque IslamHub : croissant + étoile, teinte accent (héritée via currentColor).
 const Mark: React.FC<{ size?: number }> = ({ size = 26 }) => (
   <svg width={size} height={size} viewBox="0 0 40 40" fill="none" aria-hidden="true">
-    <path d="M27 8 A13 13 0 1 0 27 32 A10 10 0 1 1 27 8Z" fill="#caa24a" />
-    <path d="M30 15 l1.3 3.4 3.7.2-2.9 2.3 1 3.6-3.1-2-3.1 2 1-3.6-2.9-2.3 3.7-.2z" fill="#caa24a" />
+    <path d="M27 8 A13 13 0 1 0 27 32 A10 10 0 1 1 27 8Z" fill="currentColor" />
+    <path d="M30 15 l1.3 3.4 3.7.2-2.9 2.3 1 3.6-3.1-2-3.1 2 1-3.6-2.9-2.3 3.7-.2z" fill="currentColor" />
   </svg>
 );
 
-// Badge vert profond (dégradé fixe, lisible en clair comme en sombre) portant la marque.
+// Badge « verre » (glass-tint + bord fin) portant la marque en accent menthe.
 const BrandBadge: React.FC<{ px: number; radius: string; mark: number }> = ({ px, radius, mark }) => (
   <span
-    className={`grid place-items-center shrink-0 bg-[linear-gradient(140deg,#1c5a43,#0f3d2e)] ${radius}`}
+    className={`grid place-items-center shrink-0 bg-glass-tint border border-glass-border text-accent ${radius}`}
     style={{ width: px, height: px }}
   >
     <Mark size={mark} />
@@ -91,18 +91,18 @@ export const Navigation: React.FC = () => {
 
   const linkCls = (active: boolean) =>
     `font-sans text-[13.5px] px-2.5 py-2 rounded-lg whitespace-nowrap transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green ${
-      active ? 'bg-green-soft text-green-deep font-medium' : 'text-ink hover:bg-green-soft hover:text-green-deep'
+      active ? 'bg-glass-tint text-ink font-medium' : 'text-ink hover:bg-glass-tint hover:text-ink'
     }`;
 
   return (
-    <nav className="sticky top-0 z-50 bg-ivory/95 backdrop-blur border-b border-line">
+    <nav className="sticky top-0 z-50 backdrop-blur-md border-b border-glass-border" style={{ background: 'color-mix(in srgb, var(--bg2) 82%, transparent)' }}>
       <div className="max-w-[1440px] mx-auto px-4">
         <div className="flex items-center gap-4 h-16">
           {/* Marque */}
           <Link to="/" className="flex items-center gap-2.5 shrink-0" aria-label="IslamHub — accueil">
             <BrandBadge px={40} radius="rounded-[11px]" mark={26} />
-            <span className="font-display text-2xl font-bold tracking-tight">
-              <span className="text-green-deep">Islam</span><span className="text-gold">Hub</span>
+            <span className="font-display text-2xl font-extrabold tracking-[-0.02em]">
+              <span className="text-ink">Islam</span><span className="text-accent">Hub</span>
             </span>
           </Link>
 
@@ -125,14 +125,14 @@ export const Navigation: React.FC = () => {
                 <ChevronDown className={`w-3.5 h-3.5 transition-transform motion-reduce:transition-none ${resOpen ? 'rotate-180' : ''}`} />
               </button>
               {resOpen && (
-                <div role="menu" className="absolute left-0 top-full mt-1.5 min-w-[210px] rounded-xl border border-line bg-ivory shadow-lg py-1.5 z-50">
+                <div role="menu" className="absolute left-0 top-full mt-1.5 min-w-[210px] rounded-xl border border-glass-border bg-bg1 backdrop-blur-md shadow-glass py-1.5 z-50">
                   {resItems.map(({ to, label }) => (
                     <Link
                       key={to}
                       to={to}
                       role="menuitem"
                       className={`block px-3.5 py-2 text-[13.5px] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green ${
-                        isActive(to) ? 'bg-green-soft text-green-deep font-medium' : 'text-ink hover:bg-green-soft hover:text-green-deep'
+                        isActive(to) ? 'bg-glass-tint text-ink font-medium' : 'text-ink hover:bg-glass-tint hover:text-ink'
                       }`}
                     >
                       {label}
@@ -152,7 +152,7 @@ export const Navigation: React.FC = () => {
             >
               <BrandBadge px={30} radius="rounded-lg" mark={19} />
               <span className="leading-tight">
-                <span className="block font-display font-semibold text-[13px] text-green-deep whitespace-nowrap">{hijriFr}</span>
+                <span className="block font-display font-semibold text-[13px] text-ink whitespace-nowrap">{hijriFr}</span>
                 <span className="block text-[11px] text-muted whitespace-nowrap first-letter:uppercase">{greg}</span>
               </span>
             </div>
@@ -162,7 +162,7 @@ export const Navigation: React.FC = () => {
             <Link
               to="/recherche"
               aria-label="Rechercher sur le site"
-              className="w-9 h-9 grid place-items-center rounded-lg border border-line bg-ivory text-muted hover:text-green-deep hover:border-green transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green"
+              className="w-9 h-9 grid place-items-center rounded-lg border border-line bg-ivory text-muted hover:text-ink hover:border-green transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green"
             >
               <Search className="w-5 h-5" />
             </Link>
@@ -170,7 +170,7 @@ export const Navigation: React.FC = () => {
             <button
               onClick={toggleTheme}
               aria-label="Basculer le thème"
-              className="w-9 h-9 grid place-items-center rounded-lg border border-line bg-ivory text-muted hover:text-green-deep hover:border-green transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green"
+              className="w-9 h-9 grid place-items-center rounded-lg border border-line bg-ivory text-muted hover:text-ink hover:border-green transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green"
             >
               {theme === 'dark' ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
             </button>
@@ -179,7 +179,7 @@ export const Navigation: React.FC = () => {
               onClick={() => setIsMenuOpen((v) => !v)}
               aria-label={isMenuOpen ? 'Fermer le menu' : 'Ouvrir le menu'}
               aria-expanded={isMenuOpen}
-              className="min-[900px]:hidden w-9 h-9 grid place-items-center rounded-lg border border-line bg-ivory text-muted hover:text-green-deep transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green"
+              className="min-[900px]:hidden w-9 h-9 grid place-items-center rounded-lg border border-line bg-ivory text-muted hover:text-ink transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green"
             >
               {isMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
@@ -202,7 +202,7 @@ export const Navigation: React.FC = () => {
                     key={to}
                     to={to}
                     className={`block px-4 py-2.5 rounded-lg mb-0.5 font-sans transition-colors ${
-                      isActive(to, exact) ? 'bg-green-soft text-green-deep font-medium' : 'text-ink hover:bg-green-soft hover:text-green-deep'
+                      isActive(to, exact) ? 'bg-glass-tint text-ink font-medium' : 'text-ink hover:bg-glass-tint hover:text-ink'
                     }`}
                   >
                     {label}
@@ -216,7 +216,7 @@ export const Navigation: React.FC = () => {
                     key={to}
                     to={to}
                     className={`block pl-6 pr-4 py-2.5 rounded-lg mb-0.5 font-sans transition-colors ${
-                      isActive(to) ? 'bg-green-soft text-green-deep font-medium' : 'text-ink hover:bg-green-soft hover:text-green-deep'
+                      isActive(to) ? 'bg-glass-tint text-ink font-medium' : 'text-ink hover:bg-glass-tint hover:text-ink'
                     }`}
                   >
                     {label}

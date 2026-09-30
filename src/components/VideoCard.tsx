@@ -38,7 +38,7 @@ export const VideoCard: React.FC<VideoCardProps> = ({ video, index = 0 }) => {
       transition={{ delay: index * 0.05 }}
       className="flex flex-col h-full bg-surface rounded-card shadow-card overflow-hidden border border-line transition-all duration-200 hover:-translate-y-0.5 hover:shadow-card-hover motion-reduce:transition-none motion-reduce:hover:translate-y-0"
     >
-      <div className="aspect-video bg-gray-100 dark:bg-gray-700 relative">
+      <div className="aspect-video bg-glass relative">
         {playing ? (
           <iframe
             src={`https://www.youtube-nocookie.com/embed/${video.youtube_id}?autoplay=1&rel=0`}
@@ -88,7 +88,7 @@ export const VideoCard: React.FC<VideoCardProps> = ({ video, index = 0 }) => {
             {video.titre}
           </h3>
           {video.categorie && (
-            <span className="shrink-0 px-2 py-1 rounded-full bg-green-soft text-green-deep text-xs font-medium">
+            <span className="shrink-0 px-2 py-1 rounded-full bg-glass-tint text-ink text-xs font-medium">
               {video.categorie}
             </span>
           )}

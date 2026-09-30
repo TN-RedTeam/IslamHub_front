@@ -20,17 +20,17 @@ const CollapsibleSection: React.FC<SectionProps> = ({ title, icon, children, def
         <m.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden border border-line"
+            className="bg-glass rounded-xl shadow-lg overflow-hidden border border-line"
         >
             <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="w-full px-6 py-4 flex items-center justify-between bg-green-soft hover:bg-green-line transition-colors"
+                className="w-full px-6 py-4 flex items-center justify-between bg-glass-tint hover:bg-green-line transition-colors"
             >
                 <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-full bg-green flex items-center justify-center text-white">
                         {icon}
                     </div>
-                    <h3 className="text-xl font-bold text-green-deep font-display">
+                    <h3 className="text-xl font-bold text-ink font-display">
                         {title}
                     </h3>
                 </div>
@@ -49,7 +49,7 @@ const CollapsibleSection: React.FC<SectionProps> = ({ title, icon, children, def
                         transition={{ duration: 0.3 }}
                         className="overflow-hidden"
                     >
-                        <div className="p-6 text-gray-700 dark:text-gray-300 leading-relaxed">
+                        <div className="p-6 text-ink leading-relaxed">
                             {children}
                         </div>
                     </m.div>
@@ -102,7 +102,7 @@ const Malikite: React.FC = () => {
     ];
 
     return (
-        <div className="min-h-screen bg-ground">
+        <div className="min-h-screen">
             <div className="border-t-[3px] border-ecole-maliki">
                 <PageHeader
                     eyebrow="École juridique"
@@ -127,15 +127,15 @@ const Malikite: React.FC = () => {
                             animate={{ opacity: 1, scale: 1 }}
                             transition={{ delay: 0.3 + index * 0.1 }}
                             whileHover={{ y: -5 }}
-                            className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-card p-6 text-center shadow-card border border-line"
+                            className="bg-white/80 /80 backdrop-blur-sm rounded-card p-6 text-center shadow-card border border-line"
                         >
                             <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-green mb-3">
                                 <stat.icon className="h-6 w-6 text-white" />
                             </div>
-                            <div className="text-2xl font-bold text-green-deep font-display">
+                            <div className="text-2xl font-bold text-ink font-display">
                                 {stat.value}
                             </div>
-                            <div className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                            <div className="text-sm text-muted mt-1">
                                 {stat.label}
                             </div>
                         </m.div>
@@ -338,7 +338,7 @@ const Malikite: React.FC = () => {
                     transition={{ delay: 0.6 }}
                     className="mb-16"
                 >
-                    <h3 className="text-2xl font-bold text-green-deep mb-8 font-display text-center">
+                    <h3 className="text-2xl font-bold text-ink mb-8 font-display text-center">
                         Sources et Méthodologie de l'École Malikite
                     </h3>
                     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -349,15 +349,15 @@ const Malikite: React.FC = () => {
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ delay: 0.7 + index * 0.1 }}
                                 whileHover={{ y: -5 }}
-                                className="bg-white/80 dark:bg-gray-800/80 rounded-xl p-6 shadow-lg border border-line"
+                                className="bg-white/80 /80 rounded-xl p-6 shadow-lg border border-line"
                             >
-                                <div className="w-12 h-12 rounded-full bg-green-soft flex items-center justify-center mb-4">
-                                    <source.icon className="h-6 w-6 text-gold" />
+                                <div className="w-12 h-12 rounded-full bg-glass-tint flex items-center justify-center mb-4">
+                                    <source.icon className="h-6 w-6 text-accent" />
                                 </div>
-                                <h4 className="text-lg font-bold text-gray-800 dark:text-white mb-2">
+                                <h4 className="text-lg font-bold text-ink dark:text-white mb-2">
                                     {source.title}
                                 </h4>
-                                <p className="text-gray-600 dark:text-gray-400">
+                                <p className="text-muted">
                                     {source.description}
                                 </p>
                             </m.div>
@@ -372,25 +372,25 @@ const Malikite: React.FC = () => {
                     transition={{ delay: 0.8 }}
                     className="mb-16"
                 >
-                    <h3 className="text-2xl font-bold text-green-deep mb-8 font-display text-center">
+                    <h3 className="text-2xl font-bold text-ink mb-8 font-display text-center">
                         Particularités de l'École Malikite
                     </h3>
                     <div className="grid md:grid-cols-2 gap-6">
                         <div className="bg-ivory rounded-xl p-6 shadow-lg border border-line">
-                            <h4 className="text-xl font-bold text-green-deep mb-3 font-display">
+                            <h4 className="text-xl font-bold text-ink mb-3 font-display">
                                 L'Amal de Médine
                             </h4>
-                            <p className="text-gray-700 dark:text-gray-300">
+                            <p className="text-ink">
                                 L'école malikite accorde une autorité particulière à la pratique continue
                                 (Amal) des habitants de Médine, considérant que cette pratique représente
                                 la Sunna vivante transmise des compagnons.
                             </p>
                         </div>
                         <div className="bg-ivory rounded-xl p-6 shadow-lg border border-line">
-                            <h4 className="text-xl font-bold text-green-deep mb-3 font-display">
+                            <h4 className="text-xl font-bold text-ink mb-3 font-display">
                                 Rayonnement Géographique
                             </h4>
-                            <p className="text-gray-700 dark:text-gray-300">
+                            <p className="text-ink">
                                 L'école malikite est majoritaire en Afrique du Nord (Maroc, Algérie, Tunisie, Libye),
                                 en Afrique de l'Ouest (Sénégal, Mali, Niger, Nigeria), au Soudan, au Koweït,
                                 à Bahreïn et aux Émirats arabes unis.
@@ -410,11 +410,11 @@ const Malikite: React.FC = () => {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: 1.1 }}
-                    className="mt-16 bg-green-soft rounded-card p-8 text-center shadow-lg"
+                    className="mt-16 bg-glass-tint rounded-card p-8 text-center shadow-lg"
                 >
                     <div className="max-w-2xl mx-auto">
-                        <div className="text-5xl mb-4 text-gold">"</div>
-                        <p className="text-xl text-gray-800 dark:text-gray-200 font-display leading-relaxed mb-4">
+                        <div className="text-5xl mb-4 text-accent">"</div>
+                        <p className="text-xl text-ink font-display leading-relaxed mb-4">
                             La science se trouve dans les cœurs, pas dans les livres.
                         </p>
                         <p className="text-sm text-green">

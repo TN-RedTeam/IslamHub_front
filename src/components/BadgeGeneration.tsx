@@ -34,15 +34,15 @@ const HONOR: Record<HonorLevel, { m: string; f: string }> = {
 type Entry = { label: string; cls: string; honor: HonorLevel };
 
 const GEN: Record<Gen, Entry> = {
-  sahabi:     { label: 'Compagnon', cls: 'bg-gold-soft text-[#7a5a17] border-[#e6d3a3]', honor: 'sahabi' },
-  salaf:      { label: 'Salaf',     cls: 'bg-green-soft text-green-deep border-green-line', honor: 'default' },
-  tabii:      { label: 'Salaf',     cls: 'bg-green-soft text-green-deep border-green-line', honor: 'default' },
-  tabi_tabii: { label: 'Salaf',     cls: 'bg-green-soft text-green-deep border-green-line', honor: 'default' },
+  sahabi:     { label: 'Compagnon', cls: 'bg-glass-tint text-accent border-glass-border', honor: 'sahabi' },
+  salaf:      { label: 'Salaf',     cls: 'bg-glass-tint text-ink border-green-line', honor: 'default' },
+  tabii:      { label: 'Salaf',     cls: 'bg-glass-tint text-ink border-green-line', honor: 'default' },
+  tabi_tabii: { label: 'Salaf',     cls: 'bg-glass-tint text-ink border-green-line', honor: 'default' },
   khalaf:     { label: 'Khalaf',    cls: 'bg-transparent text-muted border-line',           honor: 'default' },
 };
 
 const ROLE: Record<Role, Entry> = {
-  epouse_prophete:  { label: 'Mère des croyants', cls: 'bg-gold text-white border-gold',   honor: 'sahabi' },
+  epouse_prophete:  { label: 'Mère des croyants', cls: 'bg-accent text-white border-gold',   honor: 'sahabi' },
   calife_rachidoun: { label: 'Calife bien-guidé',  cls: 'bg-green text-white border-green', honor: 'sahabi' },
 };
 

@@ -33,13 +33,13 @@ export const ParolePage: React.FC = () => {
   }, [slug]);
 
   if (loading) {
-    return <div className="min-h-screen bg-ground grid place-items-center"><Loader2 className="w-10 h-10 text-green animate-spin" /></div>;
+    return <div className="min-h-screen grid place-items-center"><Loader2 className="w-10 h-10 text-green animate-spin" /></div>;
   }
   if (notFound || !p) {
     return (
-      <div className="min-h-screen bg-ground grid place-items-center px-5">
+      <div className="min-h-screen grid place-items-center px-5">
         <div className="text-center">
-          <h1 className="font-display text-2xl text-green-deep mb-2">Parole introuvable</h1>
+          <h1 className="font-display text-2xl text-ink mb-2">Parole introuvable</h1>
           <Link to="/savants/paroles" className="text-green font-medium hover:underline">Toutes les paroles</Link>
         </div>
       </div>
@@ -52,23 +52,23 @@ export const ParolePage: React.FC = () => {
   const scans: ParoleImage[] = p.images ?? [];
 
   return (
-    <div className="min-h-screen bg-ground">
+    <div className="min-h-screen">
       <main className="max-w-3xl mx-auto px-5 py-7 pb-16">
         <nav aria-label="Fil d'Ariane" className="text-xs text-muted mb-1.5">
-          <Link to="/" className="hover:text-green-deep">Accueil</Link> <span aria-hidden>·</span>{' '}
-          <Link to="/savants/paroles" className="hover:text-green-deep">Paroles</Link>
+          <Link to="/" className="hover:text-ink">Accueil</Link> <span aria-hidden>·</span>{' '}
+          <Link to="/savants/paroles" className="hover:text-ink">Paroles</Link>
           {p.savant && <> <span aria-hidden>·</span> {p.savant}</>}
         </nav>
 
-        <p className="text-[11.5px] font-semibold uppercase tracking-[0.2em] text-gold mb-1">Parole de savant</p>
-        {p.sujet && <h1 className="font-display font-semibold text-green-deep leading-tight" style={{ fontSize: 'clamp(26px,4vw,38px)' }}>{p.sujet}</h1>}
+        <p className="text-[11.5px] font-semibold uppercase tracking-[0.2em] text-accent mb-1">Parole de savant</p>
+        {p.sujet && <h1 className="font-display font-semibold text-ink leading-tight" style={{ fontSize: 'clamp(26px,4vw,38px)' }}>{p.sujet}</h1>}
 
         {/* Savant : lien + honorifique + badge + école */}
         <div className="flex items-center gap-2.5 flex-wrap mt-2.5">
           {p.savant && (p.savant_slug ? (
-            <Link to={`/savants/${p.savant_slug}`} className="font-display font-semibold text-lg text-green-deep hover:underline">{p.savant}</Link>
+            <Link to={`/savants/${p.savant_slug}`} className="font-display font-semibold text-lg text-ink hover:underline">{p.savant}</Link>
           ) : (
-            <span className="font-display font-semibold text-lg text-green-deep">{p.savant}</span>
+            <span className="font-display font-semibold text-lg text-ink">{p.savant}</span>
           ))}
           {honorificFor(p.generation) && (
             <span className="font-arabic-name font-medium text-ink" lang="ar" dir="rtl">{honorificFor(p.generation)}</span>
@@ -81,7 +81,7 @@ export const ParolePage: React.FC = () => {
           <div className="mt-2 text-sm text-muted flex flex-col gap-0.5">
             {p.rapporteur && (
               <span>Rapporté par{' '}
-                <Link to={`/savants/${p.rapporteur.slug}`} className="text-green-deep font-medium hover:underline">{p.rapporteur.nom}</Link>
+                <Link to={`/savants/${p.rapporteur.slug}`} className="text-ink font-medium hover:underline">{p.rapporteur.nom}</Link>
               </span>
             )}
             {p.commente && (
@@ -90,7 +90,7 @@ export const ParolePage: React.FC = () => {
               </span>
             )}
             {p.commente_livre && (
-              <span>Commente le livre&nbsp;: <span className="text-green-deep font-medium">{p.commente_livre}</span></span>
+              <span>Commente le livre&nbsp;: <span className="text-ink font-medium">{p.commente_livre}</span></span>
             )}
           </div>
         )}
@@ -111,14 +111,14 @@ export const ParolePage: React.FC = () => {
             </div>
           )}
           {reference && (
-            <p className="text-xs uppercase tracking-[0.05em] text-gold font-semibold mt-4">{reference}</p>
+            <p className="text-xs uppercase tracking-[0.05em] text-accent font-semibold mt-4">{reference}</p>
           )}
         </div>
 
         {/* Explication */}
         {p.explication && (
           <section className="mt-6">
-            <h2 className="font-display font-semibold text-green-deep text-lg mb-2">Explication</h2>
+            <h2 className="font-display font-semibold text-ink text-lg mb-2">Explication</h2>
             <div className="rounded-card border border-line bg-surface p-5"><Markdown>{p.explication}</Markdown></div>
           </section>
         )}
@@ -126,7 +126,7 @@ export const ParolePage: React.FC = () => {
         {/* Scans du livre (0..N) */}
         {scans.length > 0 && (
           <section className="mt-6">
-            <h2 className="font-display font-semibold text-green-deep text-lg mb-2">
+            <h2 className="font-display font-semibold text-ink text-lg mb-2">
               {scans.length > 1 ? `Scans du livre (${scans.length})` : 'Scan du livre'}
             </h2>
             <div className={`grid gap-4 ${scans.length > 1 ? 'sm:grid-cols-2' : 'sm:grid-cols-1'}`}>

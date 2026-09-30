@@ -25,7 +25,7 @@ export const CoranTabs: React.FC<{ className?: string }> = ({ className = '' }) 
             role="tab"
             aria-selected={on}
             className={`px-4 py-1.5 rounded-full text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green ${
-              on ? 'bg-green text-white' : 'text-ink hover:bg-green-soft hover:text-green-deep'
+              on ? 'bg-green text-white' : 'text-ink hover:bg-glass-tint hover:text-ink'
             }`}
           >
             {t.label}

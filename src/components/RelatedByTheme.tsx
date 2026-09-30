@@ -30,14 +30,14 @@ export const RelatedByTheme: React.FC<{ kind: 'hadith' | 'parole' | 'verset'; id
 
   return (
     <section className={className} aria-labelledby="related-h">
-      <p id="related-h" className="text-[11px] uppercase tracking-[0.16em] text-gold font-semibold mb-3">Sur le même thème</p>
+      <p id="related-h" className="text-[11px] uppercase tracking-[0.16em] text-accent font-semibold mb-3">Sur le même thème</p>
       <ul className="grid gap-2.5 sm:grid-cols-2">
         {items.map((r) => {
           const Icon = ICON[r.kind];
           return (
             <li key={`${r.kind}-${r.id}`}>
               <Link to={hrefFor(r)} className="flex items-center gap-2.5 rounded-card border border-line bg-surface px-3.5 py-2.5 hover:border-green transition-colors">
-                <span className="w-8 h-8 rounded-lg bg-green-soft text-green grid place-items-center shrink-0"><Icon className="w-4 h-4" /></span>
+                <span className="w-8 h-8 rounded-lg bg-glass-tint text-green grid place-items-center shrink-0"><Icon className="w-4 h-4" /></span>
                 <span className="min-w-0">
                   <span className="block text-[10px] uppercase tracking-wide text-muted">{KIND_LABEL[r.kind]}</span>
                   <span className="block text-[14px] text-ink font-medium truncate">{r.sujet || r.savant || r.sourate || 'Voir'}</span>

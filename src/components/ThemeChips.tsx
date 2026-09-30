@@ -11,7 +11,7 @@ export const ThemeChips: React.FC<{ themes?: ThemeRef[] | null; className?: stri
         <Link
           key={t.slug}
           to={`/themes/${t.slug}`}
-          className="text-xs font-medium text-green-deep bg-green-soft border border-green-line px-2.5 py-0.5 rounded-full hover:border-green transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green"
+          className="text-xs font-medium text-ink bg-glass-tint border border-green-line px-2.5 py-0.5 rounded-full hover:border-green transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green"
         >
           {t.nom}
         </Link>

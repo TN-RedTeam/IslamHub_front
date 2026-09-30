@@ -26,14 +26,14 @@ const NomModal: React.FC<{ nom: NomAllah; onClose: () => void }> = ({ nom, onClo
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="relative w-full max-w-lg max-h-[90vh] overflow-y-auto rounded-card bg-surface border border-line p-7 shadow-card-hover text-center"
+        className="relative w-full max-w-lg max-h-[90vh] overflow-y-auto rounded-card bg-bg1 border border-glass-border p-7 shadow-card-hover text-center"
       >
-        <button onClick={onClose} aria-label="Fermer" className="absolute top-3 right-3 w-9 h-9 grid place-items-center rounded-full text-muted hover:text-green-deep hover:bg-green-soft focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green">
+        <button onClick={onClose} aria-label="Fermer" className="absolute top-3 right-3 w-9 h-9 grid place-items-center rounded-full text-muted hover:text-ink hover:bg-glass-tint focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green">
           <X className="w-5 h-5" />
         </button>
-        {nom.ordre != null && <p className="font-display text-gold text-sm mb-1 tabular-nums">{nom.ordre}</p>}
-        <p className="font-arabic-quran text-green-deep leading-[1.9]" dir="rtl" lang="ar" style={{ fontSize: 'clamp(34px,7vw,48px)' }}>{nom.nom_arabe}</p>
-        {nom.translitteration && <p className="font-display text-green-deep text-xl mt-2">{nom.translitteration}</p>}
+        {nom.ordre != null && <p className="font-display text-accent text-sm mb-1 tabular-nums">{nom.ordre}</p>}
+        <p className="font-arabic-quran text-ink leading-[1.9]" dir="rtl" lang="ar" style={{ fontSize: 'clamp(34px,7vw,48px)' }}>{nom.nom_arabe}</p>
+        {nom.translitteration && <p className="font-display text-ink text-xl mt-2">{nom.translitteration}</p>}
         {nom.sens_fr
           ? <div className="mt-1 text-lg"><Markdown>{nom.sens_fr}</Markdown></div>
           : <p className="text-muted italic mt-1">Sens à venir.</p>}
@@ -72,7 +72,7 @@ export const NomsDAllah: React.FC = () => {
   }, [noms, q]);
 
   return (
-    <div className="min-h-screen bg-ground">
+    <div className="min-h-screen">
       <PageHeader
         eyebrow="Aqida"
         title="Les 99 Noms d'Allah"
@@ -108,11 +108,11 @@ export const NomsDAllah: React.FC = () => {
                 className="group relative flex flex-col items-center text-center overflow-hidden rounded-card border border-line bg-surface px-4 pt-8 pb-4 shadow-card hover:shadow-card-hover hover:-translate-y-0.5 transition-all motion-reduce:transition-none motion-reduce:hover:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green"
               >
                 {n.ordre != null && (
-                  <span className="absolute top-2.5 left-3.5 font-display text-sm text-gold tabular-nums" aria-hidden="true">{n.ordre}</span>
+                  <span className="absolute top-2.5 left-3.5 font-display text-sm text-accent tabular-nums" aria-hidden="true">{n.ordre}</span>
                 )}
                 {/* Hauteur réservée : 2 lignes d'arabe, pour que toutes les cartes soient identiques. */}
                 <p
-                  className="font-arabic-quran text-green-deep w-full text-center leading-[1.7] [word-break:normal] [overflow-wrap:normal] line-clamp-2 min-h-[2.3em]"
+                  className="font-arabic-quran text-ink w-full text-center leading-[1.7] [word-break:normal] [overflow-wrap:normal] line-clamp-2 min-h-[2.3em]"
                   dir="rtl"
                   lang="ar"
                   style={{ fontSize: 'clamp(20px,2.8vw,26px)' }}
@@ -120,7 +120,7 @@ export const NomsDAllah: React.FC = () => {
                   {n.nom_arabe}
                 </p>
                 {n.translitteration && (
-                  <p className="font-display text-green-deep text-[15px] mt-1.5 w-full truncate">{n.translitteration}</p>
+                  <p className="font-display text-ink text-[15px] mt-1.5 w-full truncate">{n.translitteration}</p>
                 )}
                 <p className="text-[13px] text-muted mt-0.5 w-full line-clamp-2 min-h-[2.4em]">
                   {n.sens_fr || <span className="italic">à venir</span>}

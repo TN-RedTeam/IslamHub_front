@@ -78,13 +78,13 @@ export const AdminSavantForm: React.FC = () => {
 
   return (
     <div className="max-w-3xl px-6 py-8 pb-28">
-      <p className="text-xs text-muted"><Link to="/admin/savants" className="hover:text-green-deep">Savants</Link> · {editId ? 'Modifier' : 'Nouveau'}</p>
-      <h1 className="font-display font-semibold text-green-deep text-3xl mt-1 mb-1">{editId ? 'Modifier la fiche savant' : 'Nouvelle fiche savant'}</h1>
+      <p className="text-xs text-muted"><Link to="/admin/savants" className="hover:text-ink">Savants</Link> · {editId ? 'Modifier' : 'Nouveau'}</p>
+      <h1 className="font-display font-semibold text-ink text-3xl mt-1 mb-1">{editId ? 'Modifier la fiche savant' : 'Nouvelle fiche savant'}</h1>
       <p className="text-muted text-sm mb-6">Le nom arabe collé ici est enregistré tel quel (UTF-8).</p>
 
       {/* 1. Identité */}
       <section className="rounded-card border border-line bg-surface p-5 mb-4">
-        <h2 className="font-display font-semibold text-green-deep text-lg mb-4">1 · Identité</h2>
+        <h2 className="font-display font-semibold text-ink text-lg mb-4">1 · Identité</h2>
         <div className="grid sm:grid-cols-2 gap-3.5">
           <div><label className={label}>Nom <span className="text-red-600">*</span></label><input className={field} value={f.nom} onChange={set('nom')} placeholder="Al-Imām Al-Shāfiʿī" /></div>
           <div><label className={label}>Nom arabe</label><input dir="rtl" lang="ar" className={`${field} font-arabic-name text-xl text-right`} value={f.nom_arabe} onChange={set('nom_arabe')} placeholder="الإمام الشافعي" /></div>
@@ -95,7 +95,7 @@ export const AdminSavantForm: React.FC = () => {
 
       {/* 2. Repères */}
       <section className="rounded-card border border-line bg-surface p-5 mb-4">
-        <h2 className="font-display font-semibold text-green-deep text-lg mb-4">2 · Repères</h2>
+        <h2 className="font-display font-semibold text-ink text-lg mb-4">2 · Repères</h2>
         <div className="grid sm:grid-cols-3 gap-3.5">
           <div><label className={label}>École (madhhab)</label>
             <select className={field} value={f.ecole_id} onChange={set('ecole_id')}>
@@ -123,7 +123,7 @@ export const AdminSavantForm: React.FC = () => {
 
       {/* 3. Biographie */}
       <section className="rounded-card border border-line bg-surface p-5 mb-4">
-        <h2 className="font-display font-semibold text-green-deep text-lg mb-4">3 · Biographie</h2>
+        <h2 className="font-display font-semibold text-ink text-lg mb-4">3 · Biographie</h2>
         <div className="mb-3.5"><label className={label}>Résumé <span className="text-muted font-normal">(1-2 phrases, affiché en tête de fiche)</span></label>
           <textarea className={`${field} min-h-[60px]`} value={f.resume} onChange={set('resume')} /></div>
         <div><label className={label}>Biographie complète <span className="text-muted font-normal">(Markdown)</span></label>
@@ -131,7 +131,7 @@ export const AdminSavantForm: React.FC = () => {
       </section>
 
       <div className="fixed bottom-0 left-0 md:left-[230px] right-0 flex items-center gap-3 px-6 py-3.5 bg-ivory/95 backdrop-blur border-t border-line">
-        {ok && <span className="inline-flex items-center gap-1.5 text-green-deep text-sm font-medium"><Check className="w-4 h-4" /> Enregistré</span>}
+        {ok && <span className="inline-flex items-center gap-1.5 text-ink text-sm font-medium"><Check className="w-4 h-4" /> Enregistré</span>}
         {error && <span className="inline-flex items-center gap-1.5 text-red-600 text-sm"><AlertTriangle className="w-4 h-4" /> {error}</span>}
         <div className="ml-auto flex items-center gap-2.5">
           {editId && <DeleteEntryButton kind="savant" id={editId} label={f.nom} redirectTo="/admin/savants" />}

@@ -131,7 +131,7 @@ const Repliques: React.FC = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.4 }}
-          className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-6 mb-12 sticky top-4 z-20 border border-emerald-100 dark:border-emerald-900"
+          className="bg-glass rounded-2xl shadow-2xl p-6 mb-12 sticky top-4 z-20 border border-emerald-100 dark:border-emerald-900"
         >
           <div className="flex flex-col md:flex-row gap-6">
             <div className="flex-1 relative">
@@ -141,7 +141,7 @@ const Repliques: React.FC = () => {
               <input
                 type="text"
                 placeholder="Rechercher une réplique..."
-                className="w-full pl-12 pr-6 py-3 rounded-xl border border-emerald-200 dark:border-emerald-800 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-transparent text-lg font-amiri"
+                className="w-full pl-12 pr-6 py-3 rounded-xl border border-emerald-200 dark:border-emerald-800 bg-glass text-ink focus:ring-2 focus:ring-emerald-500 focus:border-transparent text-lg font-amiri"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
@@ -152,7 +152,7 @@ const Repliques: React.FC = () => {
                 <Filter className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
               </div>
               <select
-                className="w-full pl-4 pr-10 py-3 rounded-xl border border-emerald-200 dark:border-emerald-800 bg-white dark:bg-gray-800 text-gray-900 dark:text-white appearance-none font-medium"
+                className="w-full pl-4 pr-10 py-3 rounded-xl border border-emerald-200 dark:border-emerald-800 bg-glass text-ink appearance-none font-medium"
                 value={selectedCategory || ''}
                 onChange={(e) => setSelectedCategory(e.target.value || null)}
               >
@@ -192,14 +192,14 @@ const Repliques: React.FC = () => {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                className="text-center py-16 bg-white dark:bg-gray-800 rounded-2xl shadow-xl"
+                className="text-center py-16 bg-glass rounded-2xl shadow-xl"
               >
                 <div className="max-w-md mx-auto">
                   <div className="text-6xl mb-4">📖</div>
-                  <h3 className="text-xl font-bold text-gray-700 dark:text-gray-300 mb-2">
+                  <h3 className="text-xl font-bold text-ink mb-2">
                     Aucun résultat trouvé
                   </h3>
-                  <p className="text-gray-500 dark:text-gray-400 mb-6">
+                  <p className="text-muted mb-6">
                     Essayez de modifier vos critères de recherche
                   </p>
                   <button
@@ -246,7 +246,7 @@ const Repliques: React.FC = () => {
                       </div>
                       
                       <div className="flex items-start gap-4">
-                        <div className="w-14 h-14 rounded-full bg-white dark:bg-gray-800/80 flex items-center justify-center flex-shrink-0">
+                        <div className="w-14 h-14 rounded-full bg-glass-tint flex items-center justify-center flex-shrink-0">
                           <BookOpen className="h-6 w-6 text-emerald-600 dark:text-emerald-400" />
                         </div>
                         <div className="flex-1">
@@ -259,7 +259,7 @@ const Repliques: React.FC = () => {
                             </span>
                           </div>
                           
-                          <p className="text-gray-700 dark:text-gray-300 text-sm">
+                          <p className="text-ink text-sm">
                             {replique.description}
                           </p>
                           

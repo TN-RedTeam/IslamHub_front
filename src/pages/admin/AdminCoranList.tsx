@@ -20,7 +20,7 @@ export const AdminCoranList: React.FC = () => {
   return (
     <div className="max-w-4xl px-6 py-8">
       <div className="flex items-center gap-3 flex-wrap mb-5">
-        <h1 className="font-display font-semibold text-green-deep text-3xl">Coran — versets thématiques</h1>
+        <h1 className="font-display font-semibold text-ink text-3xl">Coran — versets thématiques</h1>
         <CountBadge n={loading ? null : items.length} />
         <Link to="/admin/coran/nouveau" className="ml-auto inline-flex items-center gap-1.5 rounded-lg bg-green text-white font-semibold px-4 py-2 hover:bg-green-deep transition-colors"><Plus className="w-4 h-4" /> Nouveau</Link>
       </div>
@@ -36,10 +36,10 @@ export const AdminCoranList: React.FC = () => {
           <ul className="divide-y divide-line rounded-card border border-line bg-surface overflow-hidden">
             {filtered.map((c) => (
               <li key={c.id}>
-                <Link to={`/admin/coran/${c.id}`} className="flex items-center gap-3 px-4 py-3 hover:bg-green-soft transition-colors">
+                <Link to={`/admin/coran/${c.id}`} className="flex items-center gap-3 px-4 py-3 hover:bg-glass-tint transition-colors">
                   <IdTag id={c.id} />
                   <span className="text-ink font-medium">{c.sujet}</span>
-                  {c.sourate && <span className="text-[11px] px-2 py-0.5 rounded-full bg-green-soft text-green-deep border border-green-line">{c.sourate}</span>}
+                  {c.sourate && <span className="text-[11px] px-2 py-0.5 rounded-full bg-glass-tint text-ink border border-green-line">{c.sourate}</span>}
                   <span className="ml-auto text-muted text-sm">Modifier →</span>
                 </Link>
               </li>

@@ -24,15 +24,15 @@ export const AdminFiqhList: React.FC = () => {
   return (
     <div className="max-w-4xl px-6 py-8">
       <div className="flex items-center gap-3 flex-wrap mb-5">
-        <h1 className="font-display font-semibold text-green-deep text-3xl">Fiqh</h1>
+        <h1 className="font-display font-semibold text-ink text-3xl">Fiqh</h1>
         <CountBadge n={loading ? null : items.length} />
         <Link to="/admin/fiqh/nouveau" className="ml-auto inline-flex items-center gap-1.5 rounded-lg bg-green text-white font-semibold px-4 py-2 hover:bg-green-deep transition-colors"><Plus className="w-4 h-4" /> Nouveau point</Link>
       </div>
 
       <div className="flex gap-1.5 flex-wrap mb-3">
-        <button onClick={() => setEcole('')} className={`px-3 py-1.5 rounded-lg text-[13px] font-semibold border transition-colors ${!ecole ? 'bg-green text-white border-green' : 'bg-surface text-ink border-line hover:bg-green-soft'}`}>Toutes</button>
+        <button onClick={() => setEcole('')} className={`px-3 py-1.5 rounded-lg text-[13px] font-semibold border transition-colors ${!ecole ? 'bg-green text-white border-green' : 'bg-surface text-ink border-line hover:bg-glass-tint'}`}>Toutes</button>
         {ECOLES.map((e) => (
-          <button key={e} onClick={() => setEcole(e)} className={`px-3 py-1.5 rounded-lg text-[13px] font-semibold border transition-colors ${ecole === e ? 'bg-green text-white border-green' : 'bg-surface text-ink border-line hover:bg-green-soft'}`}>{e}</button>
+          <button key={e} onClick={() => setEcole(e)} className={`px-3 py-1.5 rounded-lg text-[13px] font-semibold border transition-colors ${ecole === e ? 'bg-green text-white border-green' : 'bg-surface text-ink border-line hover:bg-glass-tint'}`}>{e}</button>
         ))}
       </div>
 
@@ -47,9 +47,9 @@ export const AdminFiqhList: React.FC = () => {
           <ul className="divide-y divide-line rounded-card border border-line bg-surface overflow-hidden">
             {filtered.map((r) => (
               <li key={r.id}>
-                <Link to={`/admin/fiqh/${r.id}`} className="flex items-center gap-3 px-4 py-3 hover:bg-green-soft transition-colors">
+                <Link to={`/admin/fiqh/${r.id}`} className="flex items-center gap-3 px-4 py-3 hover:bg-glass-tint transition-colors">
                   <IdTag id={r.id} />
-                  <span className="text-[10.5px] font-semibold uppercase tracking-wide px-2 py-0.5 rounded-full bg-green-soft text-green-deep border border-green-line shrink-0">{r.ecole}</span>
+                  <span className="text-[10.5px] font-semibold uppercase tracking-wide px-2 py-0.5 rounded-full bg-glass-tint text-ink border border-green-line shrink-0">{r.ecole}</span>
                   <span className="min-w-0">
                     <span className="text-ink font-medium block truncate">{r.sujet || r.chapitre}</span>
                     {r.sujet && <span className="text-muted text-[13px]">{r.chapitre}</span>}

@@ -118,7 +118,7 @@ export const DossierThematique: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-ground flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center">
         <Loader className="h-12 w-12 text-green animate-spin" />
       </div>
     );
@@ -126,12 +126,12 @@ export const DossierThematique: React.FC = () => {
 
   if (error || !data) {
     return (
-      <div className="min-h-screen bg-ground flex items-center justify-center">
-        <div className="text-center max-w-md mx-auto p-8 bg-white dark:bg-gray-800 rounded-card shadow-card">
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center max-w-md mx-auto p-8 bg-glass rounded-card shadow-card">
           <IconBadge name="folder" />
-          <h1 className="text-xl font-bold text-gray-700 dark:text-gray-300 mb-2 font-display">Dossier introuvable</h1>
-          <p className="text-gray-500 dark:text-gray-400 mb-6">{error || "Ce dossier n'existe pas ou n'est pas encore publié."}</p>
-          <Link to="/" className="px-6 py-2 bg-green hover:bg-green-deep text-white rounded-lg transition-colors">Accueil</Link>
+          <h1 className="text-xl font-bold text-ink mb-2 font-display">Dossier introuvable</h1>
+          <p className="text-muted mb-6">{error || "Ce dossier n'existe pas ou n'est pas encore publié."}</p>
+          <Link to="/" className="px-6 py-2 bg-accent-deep hover:brightness-110 text-white rounded-lg transition-colors">Accueil</Link>
         </div>
       </div>
     );
@@ -140,30 +140,30 @@ export const DossierThematique: React.FC = () => {
   const { dossier, preuves, images, lies } = data;
 
   return (
-    <div className="min-h-screen bg-ground">
+    <div className="min-h-screen">
       <m.header
         initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }}
         className="bg-ivory border-b border-line py-10">
         
         
         <div className="relative container mx-auto px-4 max-w-4xl">
-          <Link to="/" className="inline-flex items-center gap-1.5 text-muted hover:text-green-deep text-sm mb-4">
+          <Link to="/" className="inline-flex items-center gap-1.5 text-muted hover:text-ink text-sm mb-4">
             <ArrowLeft className="h-4 w-4" /> Accueil
           </Link>
-          <h1 className="text-4xl md:text-5xl font-bold text-green-deep font-display">{dossier.h1}</h1>
+          <h1 className="text-4xl md:text-5xl font-bold text-ink font-display">{dossier.h1}</h1>
         </div>
       </m.header>
 
       <main className="container mx-auto px-4 py-10 max-w-4xl space-y-8">
         {/* Actions */}
         <div className="flex flex-wrap gap-3">
-          <button onClick={copyDebate} className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white dark:bg-gray-800 border border-line text-green hover:bg-green-soft transition-colors">
+          <button onClick={copyDebate} className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-glass border border-line text-green hover:bg-glass-tint transition-colors">
             {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />} Copier
           </button>
-          <button onClick={share} className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white dark:bg-gray-800 border border-line text-green hover:bg-green-soft transition-colors">
+          <button onClick={share} className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-glass border border-line text-green hover:bg-glass-tint transition-colors">
             <Share2 className="h-4 w-4" /> Partager
           </button>
-          <button onClick={toggleFav} aria-pressed={isFav} className={`inline-flex items-center gap-2 px-4 py-2 rounded-xl border transition-colors ${isFav ? 'bg-gold border-green-line text-white' : 'bg-white dark:bg-gray-800 border-line text-green hover:bg-green-soft'}`}>
+          <button onClick={toggleFav} aria-pressed={isFav} className={`inline-flex items-center gap-2 px-4 py-2 rounded-xl border transition-colors ${isFav ? 'bg-accent border-green-line text-white' : 'bg-glass border-line text-green hover:bg-glass-tint'}`}>
             <Star className={`h-4 w-4 ${isFav ? 'fill-current' : ''}`} /> {isFav ? 'Favori' : 'Ajouter aux favoris'}
           </button>
         </div>
@@ -173,8 +173,8 @@ export const DossierThematique: React.FC = () => {
         ) : (<>
         {/* ① La croyance */}
         {dossier.croyance_texte && (
-          <section className="bg-green-soft border border-line rounded-card p-6">
-            <h2 className="text-lg font-bold text-green-deep mb-3 flex items-center gap-2">
+          <section className="bg-glass-tint border border-line rounded-card p-6">
+            <h2 className="text-lg font-bold text-ink mb-3 flex items-center gap-2">
               <BookOpen className="h-5 w-5" /> La croyance
             </h2>
             <Markdown>{dossier.croyance_texte}</Markdown>
@@ -184,19 +184,19 @@ export const DossierThematique: React.FC = () => {
         {/* ② Les preuves */}
         {preuves.length > 0 && (
           <section>
-            <h2 className="text-lg font-bold text-green-deep mb-4">Les preuves</h2>
+            <h2 className="text-lg font-bold text-ink mb-4">Les preuves</h2>
             <div className="space-y-4">
               {preuves.map((p) => p.ref && (
-                <article key={`${p.type}-${p.id}`} className="bg-white dark:bg-gray-800 rounded-card p-5 shadow border border-green-line">
+                <article key={`${p.type}-${p.id}`} className="bg-glass rounded-card p-5 shadow border border-green-line">
                   <div className="flex items-center justify-between mb-3">
                     <span className="text-xs font-semibold uppercase tracking-wide text-green">{TYPE_LABEL[p.type]}</span>
-                    {p.ref.sujet && <span className="text-sm text-gray-500 dark:text-gray-400 font-display">{p.ref.sujet}</span>}
+                    {p.ref.sujet && <span className="text-sm text-muted font-display">{p.ref.sujet}</span>}
                   </div>
                   {p.ref.texte_arabe && (
-                    <p className="text-2xl leading-loose text-right font-arabic text-gray-900 dark:text-white whitespace-pre-wrap mb-3">{p.ref.texte_arabe}</p>
+                    <p className="text-2xl leading-loose text-right font-arabic text-ink whitespace-pre-wrap mb-3">{p.ref.texte_arabe}</p>
                   )}
                   {p.ref.texte_francais && (
-                    <p className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap [unicode-bidi:plaintext] mb-3">« {p.ref.texte_francais} »</p>
+                    <p className="text-ink whitespace-pre-wrap [unicode-bidi:plaintext] mb-3">« {p.ref.texte_francais} »</p>
                   )}
                   {p.type === 'parole' && p.ref.savant && (
                     <p className="text-sm">
@@ -205,7 +205,7 @@ export const DossierThematique: React.FC = () => {
                     </p>
                   )}
                   {refLine(p) && p.type !== 'parole' && (
-                    <p className="text-sm text-gray-500 dark:text-gray-400 italic">{refLine(p)}</p>
+                    <p className="text-sm text-muted italic">{refLine(p)}</p>
                   )}
                 </article>
               ))}
@@ -215,18 +215,18 @@ export const DossierThematique: React.FC = () => {
 
         {/* ③ L'argument avancé (objection citée, non endossée) */}
         {dossier.objection_texte && (
-          <section className="bg-green-soft border-l-4 border-green-line rounded-r-2xl p-6">
-            <h2 className="text-lg font-bold text-green-deep mb-3 flex items-center gap-2">
+          <section className="bg-glass-tint border-l-4 border-green-line rounded-r-2xl p-6">
+            <h2 className="text-lg font-bold text-ink mb-3 flex items-center gap-2">
               <Quote className="h-5 w-5" /> L'argument avancé
             </h2>
-            <p className="text-gray-700 dark:text-gray-300 italic whitespace-pre-wrap [unicode-bidi:plaintext]">{dossier.objection_texte}</p>
+            <p className="text-ink italic whitespace-pre-wrap [unicode-bidi:plaintext]">{dossier.objection_texte}</p>
           </section>
         )}
 
         {/* ④ La réponse */}
         {dossier.reponse_texte && (
-          <section className="bg-white dark:bg-gray-800 border border-line rounded-card p-6">
-            <h2 className="text-lg font-bold text-green-deep mb-3">La réponse</h2>
+          <section className="bg-glass border border-line rounded-card p-6">
+            <h2 className="text-lg font-bold text-ink mb-3">La réponse</h2>
             <Markdown>{dossier.reponse_texte}</Markdown>
           </section>
         )}
@@ -236,10 +236,10 @@ export const DossierThematique: React.FC = () => {
         {images.length > 0 && (
           <section className="grid sm:grid-cols-2 gap-4">
             {images.map((img) => (
-              <figure key={img.id} className="bg-white dark:bg-gray-800 rounded-card overflow-hidden shadow border border-green-line">
+              <figure key={img.id} className="bg-glass rounded-card overflow-hidden shadow border border-green-line">
                 <img src={img.image_url} alt={img.alt} loading="lazy" className="w-full" />
                 {(img.legende || img.source_livre) && (
-                  <figcaption className="p-3 text-sm text-gray-500 dark:text-gray-400">
+                  <figcaption className="p-3 text-sm text-muted">
                     {img.legende}{img.source_livre ? ` — ${img.source_livre}` : ''}
                   </figcaption>
                 )}
@@ -251,7 +251,7 @@ export const DossierThematique: React.FC = () => {
         {/* Voir aussi */}
         {lies.length > 0 && (
           <section>
-            <h2 className="text-lg font-bold text-green-deep mb-3">Voir aussi</h2>
+            <h2 className="text-lg font-bold text-ink mb-3">Voir aussi</h2>
             <ul className="space-y-2">
               {lies.map((l) => (
                 <li key={l.slug}>

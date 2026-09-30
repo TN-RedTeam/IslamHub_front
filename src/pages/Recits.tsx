@@ -23,7 +23,7 @@ const Carte: React.FC<{ r: RecitCard }> = ({ r }) => (
       </div>
     )}
     <div className="p-5 flex-1 flex flex-col">
-      <h3 className="font-display font-bold text-lg text-green-deep group-hover:text-green">{r.titre}</h3>
+      <h3 className="font-display font-bold text-lg text-ink group-hover:text-green">{r.titre}</h3>
       {r.nb_enfants ? <span className="mt-1 text-xs text-muted">{compteur(r.nb_enfants, 'recit')}</span> : null}
       <span className="mt-auto pt-3 text-sm font-semibold text-green inline-flex items-center gap-1.5 group-hover:gap-2.5 transition-all motion-reduce:transition-none">
         Lire le récit →
@@ -47,7 +47,7 @@ export const Recits: React.FC = () => {
   }, [recits]);
 
   return (
-    <div className="min-h-screen bg-ground">
+    <div className="min-h-screen">
       <PageHeader
         eyebrow="Récits"
         title="Récits"
@@ -64,8 +64,8 @@ export const Recits: React.FC = () => {
             return (
               <section key={categorie}>
                 <div className="flex items-baseline gap-2.5 mb-4">
-                  {i === 0 ? <ScrollText className="h-5 w-5 text-gold shrink-0" aria-hidden /> : <BookMarked className="h-5 w-5 text-gold shrink-0" aria-hidden />}
-                  <h2 className="font-display font-bold text-2xl text-green-deep">{titre}</h2>
+                  {i === 0 ? <ScrollText className="h-5 w-5 text-accent shrink-0" aria-hidden /> : <BookMarked className="h-5 w-5 text-accent shrink-0" aria-hidden />}
+                  <h2 className="font-display font-bold text-2xl text-ink">{titre}</h2>
                   <span className="text-sm text-muted">— {sous_titre}</span>
                 </div>
                 {items.length === 0 ? (

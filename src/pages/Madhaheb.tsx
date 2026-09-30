@@ -27,14 +27,14 @@ export const Madhaheb: React.FC = () => {
   usePageTitle('Écoles');
 
   return (
-    <div className="min-h-screen bg-ground">
+    <div className="min-h-screen">
       <main className="max-w-5xl mx-auto px-5 py-10">
         <header className="text-center mb-8">
-          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-gold mb-2">Fiqh</p>
-          <nav aria-label="Fil d'Ariane" className="text-xs text-muted mb-2"><Link to="/" className="hover:text-green-deep">Accueil</Link> <span aria-hidden>·</span> Écoles</nav>
-          <h1 className="font-display font-semibold text-green-deep" style={{ fontSize: 'clamp(26px,4vw,38px)' }}>Écoles</h1>
+          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-accent mb-2">Fiqh</p>
+          <nav aria-label="Fil d'Ariane" className="text-xs text-muted mb-2"><Link to="/" className="hover:text-ink">Accueil</Link> <span aria-hidden>·</span> Écoles</nav>
+          <h1 className="font-display font-semibold text-ink" style={{ fontSize: 'clamp(26px,4vw,38px)' }}>Écoles</h1>
           <p className="text-muted mt-1">Les écoles juridiques (madhāhib)</p>
-          <div className="w-16 h-0.5 bg-gold rounded mx-auto mt-4 mb-5" />
+          <div className="w-16 h-0.5 bg-accent rounded mx-auto mt-4 mb-5" />
           <p className="text-muted max-w-[64ch] mx-auto">
             Les madhāhib représentent les méthodologies d'interprétation des sources. Chacune offre une compréhension riche et nuancée de la Charia, dans l'unité fondamentale de l'Islam.
           </p>
@@ -54,7 +54,7 @@ export const Madhaheb: React.FC = () => {
                     {MADHHAB_AR[i]?.charAt(0)}
                   </span>
                   <span>
-                    <span className="block font-display text-xl font-semibold text-green-deep leading-tight">{e.name}</span>
+                    <span className="block font-display text-xl font-semibold text-ink leading-tight">{e.name}</span>
                     <span dir="rtl" className="block font-arabic-name font-medium text-[15px] text-ink [unicode-bidi:plaintext]">{MADHHAB_AR[i]}</span>
                   </span>
                 </div>

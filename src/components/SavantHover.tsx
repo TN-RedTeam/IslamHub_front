@@ -68,12 +68,12 @@ export const SavantHover: React.FC<{ nom: string; className?: string }> = ({ nom
         <span
           role="tooltip"
           style={{ position: 'fixed', top: pos.top, left: pos.left }}
-          className="z-[60] block w-72 max-w-[calc(100vw-1rem)] rounded-xl border border-line bg-white dark:bg-gray-800 shadow-card p-3 text-left"
+          className="z-[60] block w-72 max-w-[calc(100vw-1rem)] rounded-xl border border-glass-border bg-bg1 backdrop-blur-md shadow-glass p-3 text-left"
         >
-          <span className="block font-bold text-green-deep font-display">{info.nom}</span>
+          <span className="block font-bold text-ink font-display">{info.nom}</span>
           {info.ecole && <span className="block text-xs text-green mb-1">{info.ecole}</span>}
           {info.resume && (
-            <span className="block text-xs text-gray-600 dark:text-gray-400 leading-relaxed">{info.resume}</span>
+            <span className="block text-xs text-muted leading-relaxed">{info.resume}</span>
           )}
           <Link to={`/savants/${slug}`} onClick={(e) => e.stopPropagation()} className="block mt-2 text-xs font-medium text-green hover:underline">
             Biographie complète →

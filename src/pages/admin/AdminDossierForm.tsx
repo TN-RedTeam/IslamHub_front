@@ -86,12 +86,12 @@ export const AdminDossierForm: React.FC = () => {
 
   return (
     <div className="max-w-3xl px-6 py-8 pb-28">
-      <p className="text-xs text-muted"><Link to="/admin/dossiers" className="hover:text-green-deep">Dossiers thématiques</Link> · {editId ? 'Modifier' : 'Nouveau'}</p>
-      <h1 className="font-display font-semibold text-green-deep text-3xl mt-1 mb-6">{editId ? 'Modifier le dossier' : 'Nouveau dossier'}</h1>
+      <p className="text-xs text-muted"><Link to="/admin/dossiers" className="hover:text-ink">Dossiers thématiques</Link> · {editId ? 'Modifier' : 'Nouveau'}</p>
+      <h1 className="font-display font-semibold text-ink text-3xl mt-1 mb-6">{editId ? 'Modifier le dossier' : 'Nouveau dossier'}</h1>
 
       {/* 1. En-tête & SEO */}
       <section className="rounded-card border border-line bg-surface p-5 mb-4">
-        <h2 className="font-display font-semibold text-green-deep text-lg mb-4">1 · En-tête & SEO</h2>
+        <h2 className="font-display font-semibold text-ink text-lg mb-4">1 · En-tête & SEO</h2>
         <div className="mb-3.5"><label className={label}>Titre (H1) <span className="text-red-600">*</span></label><input className={field} value={f.h1} onChange={set('h1')} placeholder="Ex. Le tawhid et ses catégories" /></div>
         <div className="mb-3.5"><label className={label}>Slug (URL) <span className="text-muted font-normal">— depuis le titre</span></label>
           <input className={field} value={autoSlug} onChange={(e) => { setSlugTouched(true); setF((p) => ({ ...p, slug: e.target.value })); }} placeholder="le-tawhid" /></div>
@@ -103,7 +103,7 @@ export const AdminDossierForm: React.FC = () => {
 
       {/* 2. Contenu */}
       <section className="rounded-card border border-line bg-surface p-5 mb-4">
-        <h2 className="font-display font-semibold text-green-deep text-lg mb-1">2 · Contenu <span className="text-muted font-normal text-sm">(Markdown)</span></h2>
+        <h2 className="font-display font-semibold text-ink text-lg mb-1">2 · Contenu <span className="text-muted font-normal text-sm">(Markdown)</span></h2>
         <p className="text-xs text-muted mb-4">Les sections vides ne s’affichent pas.</p>
         <div className="mb-3.5"><label className={label}>La croyance</label><textarea className={`${field} min-h-[90px]`} value={f.croyance_texte} onChange={set('croyance_texte')} placeholder="L’exposé de la croyance correcte…" /></div>
         <div className="mb-3.5"><label className={label}>L’objection</label><textarea className={`${field} min-h-[70px]`} value={f.objection_texte} onChange={set('objection_texte')} /></div>
@@ -112,15 +112,15 @@ export const AdminDossierForm: React.FC = () => {
 
       {/* 3. Preuves */}
       <section className="rounded-card border border-line bg-surface p-5 mb-4">
-        <h2 className="font-display font-semibold text-green-deep text-lg mb-1">3 · Preuves</h2>
+        <h2 className="font-display font-semibold text-ink text-lg mb-1">3 · Preuves</h2>
         <p className="text-xs text-muted mb-4">Hadith, parole de savant ou verset thématique déjà en base.</p>
         {preuves.map((p, i) => (
           <div key={p.key} className="rounded-lg border border-line p-3 mb-2.5">
             <div className="flex items-center gap-2 mb-2.5">
-              <span className="text-sm font-semibold text-green-deep">Preuve {i + 1}</span>
+              <span className="text-sm font-semibold text-ink">Preuve {i + 1}</span>
               <div className="ml-auto flex items-center gap-1.5">
-                <button type="button" onClick={() => setPreuves((a) => move(a, i, -1))} disabled={i === 0} className="text-muted disabled:opacity-30 hover:text-green-deep" aria-label="Monter"><ArrowUp className="w-4 h-4" /></button>
-                <button type="button" onClick={() => setPreuves((a) => move(a, i, 1))} disabled={i === preuves.length - 1} className="text-muted disabled:opacity-30 hover:text-green-deep" aria-label="Descendre"><ArrowDown className="w-4 h-4" /></button>
+                <button type="button" onClick={() => setPreuves((a) => move(a, i, -1))} disabled={i === 0} className="text-muted disabled:opacity-30 hover:text-ink" aria-label="Monter"><ArrowUp className="w-4 h-4" /></button>
+                <button type="button" onClick={() => setPreuves((a) => move(a, i, 1))} disabled={i === preuves.length - 1} className="text-muted disabled:opacity-30 hover:text-ink" aria-label="Descendre"><ArrowDown className="w-4 h-4" /></button>
                 <button type="button" onClick={() => setPreuves((a) => a.filter((_, j) => j !== i))} className="text-red-600" aria-label="Retirer"><Trash2 className="w-4 h-4" /></button>
               </div>
             </div>
@@ -139,16 +139,16 @@ export const AdminDossierForm: React.FC = () => {
             </div>
           </div>
         ))}
-        <button type="button" onClick={() => setPreuves((a) => [...a, emptyPreuve()])} className="mt-1 inline-flex items-center gap-1.5 rounded-lg border border-dashed border-green-line bg-green-soft text-green-deep font-semibold px-3.5 py-2 text-sm"><Plus className="w-4 h-4" /> Ajouter une preuve</button>
+        <button type="button" onClick={() => setPreuves((a) => [...a, emptyPreuve()])} className="mt-1 inline-flex items-center gap-1.5 rounded-lg border border-dashed border-green-line bg-glass-tint text-ink font-semibold px-3.5 py-2 text-sm"><Plus className="w-4 h-4" /> Ajouter une preuve</button>
       </section>
 
       {/* 4. Scans */}
       <section className="rounded-card border border-line bg-surface p-5 mb-4">
-        <h2 className="font-display font-semibold text-green-deep text-lg mb-1">4 · Scans</h2>
+        <h2 className="font-display font-semibold text-ink text-lg mb-1">4 · Scans</h2>
         <p className="text-xs text-muted mb-4">0 à N images (bucket <code>references</code>).</p>
         {images.map((im, i) => (
           <div key={im.key} className="rounded-lg border border-line p-3 mb-2.5">
-            <div className="flex items-center gap-2 mb-2"><span className="text-sm font-semibold text-green-deep">Scan {i + 1}</span>
+            <div className="flex items-center gap-2 mb-2"><span className="text-sm font-semibold text-ink">Scan {i + 1}</span>
               <button type="button" onClick={() => setImages((a) => a.filter((_, j) => j !== i))} className="ml-auto text-red-600" aria-label="Retirer"><Trash2 className="w-4 h-4" /></button></div>
             <div className="mb-2.5"><label className={label}>URL de l’image <span className="text-red-600">*</span></label><input className={field} value={im.image_url} onChange={(e) => setImages((a) => a.map((x, j) => j === i ? { ...x, image_url: e.target.value } : x))} placeholder="https://…/references/….webp" /></div>
             <div className="mb-2.5"><label className={label}>Alt (description)</label><input className={field} value={im.alt} onChange={(e) => setImages((a) => a.map((x, j) => j === i ? { ...x, alt: e.target.value } : x))} /></div>
@@ -158,17 +158,17 @@ export const AdminDossierForm: React.FC = () => {
             </div>
           </div>
         ))}
-        <button type="button" onClick={() => setImages((a) => [...a, emptyImg()])} className="mt-1 inline-flex items-center gap-1.5 rounded-lg border border-dashed border-green-line bg-green-soft text-green-deep font-semibold px-3.5 py-2 text-sm"><Plus className="w-4 h-4" /> Ajouter un scan</button>
+        <button type="button" onClick={() => setImages((a) => [...a, emptyImg()])} className="mt-1 inline-flex items-center gap-1.5 rounded-lg border border-dashed border-green-line bg-glass-tint text-ink font-semibold px-3.5 py-2 text-sm"><Plus className="w-4 h-4" /> Ajouter un scan</button>
       </section>
 
       {/* 5. Voir aussi */}
       <section className="rounded-card border border-line bg-surface p-5 mb-4">
-        <h2 className="font-display font-semibold text-green-deep text-lg mb-1">5 · Dossiers liés</h2>
+        <h2 className="font-display font-semibold text-ink text-lg mb-1">5 · Dossiers liés</h2>
         <p className="text-xs text-muted mb-4">Affichés en bas du dossier.</p>
         {lies.length > 0 && (
           <div className="flex flex-wrap gap-2 mb-3">
             {lies.map((did) => (
-              <span key={did} className="inline-flex items-center gap-1.5 text-[13px] text-green-deep bg-green-soft border border-green-line px-3 py-1 rounded-full">
+              <span key={did} className="inline-flex items-center gap-1.5 text-[13px] text-ink bg-glass-tint border border-green-line px-3 py-1 rounded-full">
                 {labelForDossier(did)}
                 <button type="button" onClick={() => setLies((a) => a.filter((x) => x !== did))} className="text-red-600" aria-label="Retirer"><Trash2 className="w-3.5 h-3.5" /></button>
               </span>
@@ -180,7 +180,7 @@ export const AdminDossierForm: React.FC = () => {
             <option value="">— Ajouter un lien…</option>
             {liesOptions.map((o) => <option key={o.id} value={o.id}>{o.label}</option>)}
           </select>
-          <button type="button" disabled={!lieToAdd} onClick={() => { setLies((a) => [...a, Number(lieToAdd)]); setLieToAdd(''); }} className="shrink-0 inline-flex items-center gap-1.5 rounded-lg bg-green-soft text-green-deep border border-green-line font-semibold px-3.5 py-2 text-sm disabled:opacity-50"><Plus className="w-4 h-4" /> Ajouter</button>
+          <button type="button" disabled={!lieToAdd} onClick={() => { setLies((a) => [...a, Number(lieToAdd)]); setLieToAdd(''); }} className="shrink-0 inline-flex items-center gap-1.5 rounded-lg bg-glass-tint text-ink border border-green-line font-semibold px-3.5 py-2 text-sm disabled:opacity-50"><Plus className="w-4 h-4" /> Ajouter</button>
         </div>
       </section>
 
@@ -194,7 +194,7 @@ export const AdminDossierForm: React.FC = () => {
 
       {/* 7. Article composable (blocs) — disponible une fois le dossier créé */}
       <section className="rounded-card border border-line bg-surface p-5 mb-4">
-        <h2 className="font-display font-semibold text-green-deep text-lg mb-1">7 · Article composable <span className="text-muted font-normal text-sm">(blocs)</span></h2>
+        <h2 className="font-display font-semibold text-ink text-lg mb-1">7 · Article composable <span className="text-muted font-normal text-sm">(blocs)</span></h2>
         <p className="text-xs text-muted mb-4">Alternative aux sections 2-4 : compose le dossier en blocs. <b>Dès qu’un bloc existe, c’est cet article qui s’affiche</b> (croyance / preuves / objection / réponse ci-dessus sont alors ignorés).</p>
         {editId
           ? <BlocEditor parentType="dossier" parentId={editId} />
@@ -202,7 +202,7 @@ export const AdminDossierForm: React.FC = () => {
       </section>
 
       <div className="fixed bottom-0 left-0 md:left-[230px] right-0 flex items-center gap-3 px-6 py-3.5 bg-ivory/95 backdrop-blur border-t border-line">
-        {ok && <span className="inline-flex items-center gap-1.5 text-green-deep text-sm font-medium"><Check className="w-4 h-4" /> Enregistré</span>}
+        {ok && <span className="inline-flex items-center gap-1.5 text-ink text-sm font-medium"><Check className="w-4 h-4" /> Enregistré</span>}
         {error && <span className="inline-flex items-center gap-1.5 text-red-600 text-sm"><AlertTriangle className="w-4 h-4" /> {error}</span>}
         <div className="ml-auto flex items-center gap-2.5">
           {editId && <DeleteEntryButton kind="dossier" id={editId} label={f.h1} redirectTo="/admin/dossiers" />}

@@ -23,8 +23,8 @@ export const HadithSources: React.FC<{ sources?: HadithSource[] | null; compact?
     <div className="rounded-xl border border-line bg-surface overflow-hidden divide-y divide-line">
       {sources.map((s, i) => (
         <div key={i} className="p-3 sm:p-3.5">
-          <div className="flex items-center gap-1.5 text-green-deep font-semibold text-sm">
-            <BookOpen className="w-3.5 h-3.5 text-gold shrink-0" aria-hidden />
+          <div className="flex items-center gap-1.5 text-ink font-semibold text-sm">
+            <BookOpen className="w-3.5 h-3.5 text-accent shrink-0" aria-hidden />
             {s.savant_slug ? (
               <Link to={`/savants/${s.savant_slug}`} className="hover:underline">{s.savant}</Link>
             ) : (
