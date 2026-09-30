@@ -354,7 +354,7 @@ export const Corans: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-ground">
+    <div className="min-h-screen">
 
       {/* Reading progress */}
       <div

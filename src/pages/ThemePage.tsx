@@ -85,10 +85,10 @@ export const ThemePage: React.FC = () => {
     return () => { alive = false; };
   }, [slug]);
 
-  if (loading) return <div className="min-h-screen bg-ground grid place-items-center"><Loader2 className="w-10 h-10 text-green animate-spin" /></div>;
+  if (loading) return <div className="min-h-screen grid place-items-center"><Loader2 className="w-10 h-10 text-green animate-spin" /></div>;
   if (notFound || !data) {
     return (
-      <div className="min-h-screen bg-ground grid place-items-center px-5">
+      <div className="min-h-screen grid place-items-center px-5">
         <div className="text-center">
           <h1 className="font-display text-2xl text-ink mb-2">Thème introuvable</h1>
           <Link to="/themes" className="text-green font-medium hover:underline">Tous les thèmes</Link>
@@ -104,7 +104,7 @@ export const ThemePage: React.FC = () => {
   if (paroles.length) counts.push(`${compteur(paroles.length, 'parole')} de savants`);
 
   return (
-    <div className="min-h-screen bg-ground">
+    <div className="min-h-screen">
       <main className="max-w-4xl mx-auto px-5 py-7 pb-16">
         <nav aria-label="Fil d'Ariane" className="text-xs text-muted mb-1.5">
           <Link to="/" className="hover:text-ink">Accueil</Link> <span aria-hidden>·</span>{' '}

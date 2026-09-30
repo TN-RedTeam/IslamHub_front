@@ -24,7 +24,7 @@ export const AdminLogin: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-ground grid place-items-center px-5">
+    <div className="min-h-screen grid place-items-center px-5">
       <div className="w-full max-w-sm bg-surface border border-line rounded-panel shadow-card p-7">
         <p className="text-[11.5px] font-semibold uppercase tracking-[0.2em] text-accent mb-1">Espace d’administration</p>
         <h1 className="font-display font-semibold text-ink text-2xl mb-1">IslamHub — Connexion</h1>

@@ -47,7 +47,7 @@ export const Recits: React.FC = () => {
   }, [recits]);
 
   return (
-    <div className="min-h-screen bg-ground">
+    <div className="min-h-screen">
       <PageHeader
         eyebrow="Récits"
         title="Récits"

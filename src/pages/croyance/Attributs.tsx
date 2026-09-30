@@ -80,7 +80,7 @@ export const Attributs: React.FC = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-ground">
+    <div className="min-h-screen">
       <PageHeader
         eyebrow="Aqida"
         title="Les Attributs de Allah"

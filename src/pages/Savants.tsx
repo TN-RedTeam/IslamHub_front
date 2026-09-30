@@ -138,7 +138,7 @@ export const Savants: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-ground">
+    <div className="min-h-screen">
       <div className="max-w-6xl mx-auto px-4 py-10">
         <header className="mb-6">
           <p className="text-xs font-semibold uppercase tracking-[0.16em] text-accent mb-1">

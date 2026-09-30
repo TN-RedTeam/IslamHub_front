@@ -118,11 +118,11 @@ export const VersetEquivoque: React.FC = () => {
   };
 
   if (loading) {
-    return <div className="min-h-screen bg-ground grid place-items-center"><Loader2 className="w-10 h-10 text-green animate-spin" /></div>;
+    return <div className="min-h-screen grid place-items-center"><Loader2 className="w-10 h-10 text-green animate-spin" /></div>;
   }
   if (notFound || !v) {
     return (
-      <div className="min-h-screen bg-ground grid place-items-center px-5">
+      <div className="min-h-screen grid place-items-center px-5">
         <div className="text-center">
           <h1 className="font-display text-2xl text-ink mb-2">Verset introuvable</h1>
           <Link to="/croyance/versets-hadiths-equivoques" className="text-green font-medium hover:underline">Tous les versets équivoques</Link>
@@ -140,7 +140,7 @@ export const VersetEquivoque: React.FC = () => {
   );
 
   return (
-    <div className="min-h-screen bg-ground">
+    <div className="min-h-screen">
       <main className="max-w-5xl mx-auto px-5 py-6 pb-16">
         <nav aria-label="Fil d'Ariane" className="text-xs text-muted mb-1.5">
           <Link to="/" className="hover:text-ink">Accueil</Link> <span aria-hidden>·</span>{' '}

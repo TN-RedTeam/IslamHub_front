@@ -3,6 +3,7 @@ import { LazyMotion, domAnimation } from 'framer-motion';
 import { Navigation } from './components/Navigation';
 import { PwaUpdater } from './components/PwaUpdater';
 import { SiteFooter } from './components/SiteFooter';
+import { BottomNav } from './components/BottomNav';
 import { Home } from './pages/Home';
 import { Hadiths } from './pages/Hadiths';
 import { HadithPage } from './pages/HadithPage';
@@ -82,7 +83,7 @@ function OldVersetRedirect() {
 /** Shell public : barre de nav + pied de page + toutes les pages du site. */
 function PublicShell() {
   return (
-    <div className="min-h-screen bg-ground transition-colors duration-200 flex flex-col">
+    <div className="min-h-screen transition-colors duration-200 flex flex-col">
       <Navigation />
       <PwaUpdater />
       <main className="flex-1">
@@ -148,6 +149,7 @@ function PublicShell() {
         </Routes>
       </main>
       <SiteFooter />
+      <BottomNav />
     </div>
   );
 }

@@ -33,7 +33,7 @@ export const ThemesIndex: React.FC = () => {
   }, [themes, q]);
 
   return (
-    <div className="min-h-screen bg-ground">
+    <div className="min-h-screen">
       <PageHeader
         eyebrow="Thématique"
         title="Explorer par thème"

@@ -50,7 +50,7 @@ export const SouratePage: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-ground flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center">
         <Loader2 className="h-10 w-10 text-green animate-spin" />
       </div>
     );
@@ -58,7 +58,7 @@ export const SouratePage: React.FC = () => {
 
   if (notFound || !data) {
     return (
-      <div className="min-h-screen bg-ground flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center">
         <div className="text-center max-w-md mx-auto p-8 bg-surface rounded-card shadow-card border border-line">
           <IconBadge name="book" />
           <h1 className="text-xl font-bold text-ink mb-2 font-display">Sourate introuvable</h1>
@@ -71,7 +71,7 @@ export const SouratePage: React.FC = () => {
   const { sourate, versets } = data;
 
   return (
-    <div className="min-h-screen bg-ground">
+    <div className="min-h-screen">
       {/* En-tête resserré, aligné sur le corps, enrichi */}
       <header className="bg-ivory border-b border-line">
         <div className="max-w-6xl mx-auto px-4 py-7">

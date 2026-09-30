@@ -101,7 +101,7 @@ const Hanafi: React.FC = () => {
     ];
 
     return (
-        <div className="min-h-screen bg-ground">
+        <div className="min-h-screen">
             <div className="border-t-[3px] border-ecole-hanafi">
                 <PageHeader
                     eyebrow="École juridique"

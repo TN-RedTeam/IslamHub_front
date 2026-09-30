@@ -118,7 +118,7 @@ export const DossierThematique: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-ground flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center">
         <Loader className="h-12 w-12 text-green animate-spin" />
       </div>
     );
@@ -126,7 +126,7 @@ export const DossierThematique: React.FC = () => {
 
   if (error || !data) {
     return (
-      <div className="min-h-screen bg-ground flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center">
         <div className="text-center max-w-md mx-auto p-8 bg-glass rounded-card shadow-card">
           <IconBadge name="folder" />
           <h1 className="text-xl font-bold text-ink mb-2 font-display">Dossier introuvable</h1>
@@ -140,7 +140,7 @@ export const DossierThematique: React.FC = () => {
   const { dossier, preuves, images, lies } = data;
 
   return (
-    <div className="min-h-screen bg-ground">
+    <div className="min-h-screen">
       <m.header
         initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }}
         className="bg-ivory border-b border-line py-10">

@@ -230,7 +230,7 @@ export const Invocations: React.FC = () => {
     };
 
     return (
-        <div className="min-h-screen bg-ground">
+        <div className="min-h-screen">
             <PageHeader
                 eyebrow="Adoration"
                 title="Invocations & Évocations"

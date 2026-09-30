@@ -176,7 +176,7 @@ export const Paroles: React.FC = () => {
 
   if (error) {
     return (
-        <div className="min-h-screen bg-ground flex items-center justify-center">
+        <div className="min-h-screen flex items-center justify-center">
           <div className="text-center max-w-md mx-auto p-8 bg-glass rounded-card shadow-card">
             <IconBadge name="sad" />
             <h3 className="text-xl font-bold text-low mb-2">Une erreur est survenue</h3>
@@ -189,7 +189,7 @@ export const Paroles: React.FC = () => {
   }
 
   return (
-      <div className="min-h-screen bg-ground">
+      <div className="min-h-screen">
         <PageHeader
             eyebrow="Savants"
             title="Toutes les paroles"

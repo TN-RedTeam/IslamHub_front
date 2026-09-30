@@ -24,7 +24,7 @@ export const AdminLayout: React.FC = () => {
   const location = useLocation();
 
   if (loading) {
-    return <div className="min-h-screen bg-ground grid place-items-center"><Loader2 className="w-10 h-10 text-green animate-spin" /></div>;
+    return <div className="min-h-screen grid place-items-center"><Loader2 className="w-10 h-10 text-green animate-spin" /></div>;
   }
   if (!isAdmin) {
     // Non connecté ou non autorisé → page de connexion (on garde l'origine).
@@ -37,7 +37,7 @@ export const AdminLayout: React.FC = () => {
     }`;
 
   return (
-    <div className="min-h-screen bg-ground">
+    <div className="min-h-screen">
       <header className="sticky top-0 z-20 flex items-center gap-3 h-14 px-5 bg-green-deep text-[#f3ede0]">
         <span className="font-display font-semibold text-xl">Islam<span className="text-[#e6c877]">Hub</span></span>
         <span className="text-[11px] uppercase tracking-[0.16em] text-[#bcd3c6] border border-[#2e5c49] rounded-full px-2.5 py-0.5">Admin</span>

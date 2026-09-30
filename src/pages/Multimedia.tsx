@@ -93,7 +93,7 @@ export const Multimedia: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-ground">
+    <div className="min-h-screen">
       {/* En-tête */}
       <PageHeader
         eyebrow="Multimédia"

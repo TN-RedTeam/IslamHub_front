@@ -41,7 +41,7 @@ export const Croyance: React.FC = () => {
   useEffect(() => { dataService.getDossiers().then(setDossiers).catch(() => setDossiers([])); }, []);
 
   return (
-    <div className="min-h-screen bg-ground">
+    <div className="min-h-screen">
       <main className="max-w-5xl mx-auto px-5 py-8 pb-16">
         <nav aria-label="Fil d'Ariane" className="text-xs text-muted mb-1.5">
           <Link to="/" className="hover:text-ink">Accueil</Link> <span aria-hidden="true">·</span> Croyance

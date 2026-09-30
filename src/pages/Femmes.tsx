@@ -19,7 +19,7 @@ export const Femmes: React.FC = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-ground">
+    <div className="min-h-screen">
       <PageHeader
         eyebrow="Fiqh"
         title="La femme musulmane"

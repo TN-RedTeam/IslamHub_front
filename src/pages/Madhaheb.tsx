@@ -27,7 +27,7 @@ export const Madhaheb: React.FC = () => {
   usePageTitle('Écoles');
 
   return (
-    <div className="min-h-screen bg-ground">
+    <div className="min-h-screen">
       <main className="max-w-5xl mx-auto px-5 py-10">
         <header className="text-center mb-8">
           <p className="text-xs font-semibold uppercase tracking-[0.22em] text-accent mb-2">Fiqh</p>

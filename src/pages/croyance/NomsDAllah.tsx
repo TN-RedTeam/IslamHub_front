@@ -72,7 +72,7 @@ export const NomsDAllah: React.FC = () => {
   }, [noms, q]);
 
   return (
-    <div className="min-h-screen bg-ground">
+    <div className="min-h-screen">
       <PageHeader
         eyebrow="Aqida"
         title="Les 99 Noms d'Allah"

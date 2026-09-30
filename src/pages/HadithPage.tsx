@@ -68,7 +68,7 @@ export const HadithPage: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-ground flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center">
         <Loader2 className="h-10 w-10 text-green animate-spin" />
       </div>
     );
@@ -76,7 +76,7 @@ export const HadithPage: React.FC = () => {
 
   if (notFound || !hadith) {
     return (
-      <div className="min-h-screen bg-ground flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center">
         <div className="text-center max-w-md mx-auto p-8 bg-glass rounded-card shadow-card">
           <IconBadge name="book" />
           <h1 className="text-xl font-bold text-ink mb-2 font-display">Hadith introuvable</h1>
@@ -89,7 +89,7 @@ export const HadithPage: React.FC = () => {
   const tags = (hadith.tag || '').split(',').map((t) => t.trim()).filter(Boolean);
 
   return (
-    <div className="min-h-screen bg-ground">
+    <div className="min-h-screen">
       <m.header
         initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }}
         className="bg-ivory border-b border-line py-10">

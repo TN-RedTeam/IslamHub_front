@@ -54,7 +54,7 @@ export const Recherche: React.FC = () => {
   const invLabel = (h: SearchHit) => (h.type_id === 2 ? 'Évocation' : 'Invocation');
 
   return (
-    <div className="min-h-screen bg-ground">
+    <div className="min-h-screen">
       <PageHeader eyebrow="Recherche" title="Rechercher" subtitle="Hadiths, paroles, invocations, versets et thèmes." crumbs={[{ label: 'Accueil', to: '/' }, { label: 'Recherche' }]} />
 
       <main className="max-w-4xl mx-auto px-4 py-8 pb-16">

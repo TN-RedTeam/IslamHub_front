@@ -6,7 +6,7 @@ import React from 'react';
  * thèmes), filet menthe centré en haut, citation + ligne de copyright discrète.
  */
 export const SiteFooter: React.FC = () => (
-  <footer className="relative mt-12 text-center px-6 pt-9 pb-7 bg-[#0b1e22]">
+  <footer className="relative mt-12 text-center px-6 pt-9 pb-24 md:pb-7 bg-[#0b1e22]">
     <span
       aria-hidden="true"
       className="absolute top-0 left-1/2 -translate-x-1/2 w-[120px] h-[3px] rounded-b-[3px] bg-[linear-gradient(90deg,#66e0cd,#0e8f80)]"
