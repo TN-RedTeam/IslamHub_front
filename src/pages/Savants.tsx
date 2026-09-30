@@ -91,14 +91,19 @@ export const Savants: React.FC = () => {
       <Link
         key={s.id}
         to={`/savants/${s.slug}`}
-        className="group flex flex-col gap-2.5 rounded-card border border-line bg-glass p-5 shadow-sm hover:shadow-lg hover:border-green dark:hover:border-green hover:-translate-y-0.5 transition-all motion-reduce:transition-none motion-reduce:hover:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green"
+        className="group flex flex-col gap-2.5 rounded-card border border-glass-border bg-glass p-5 shadow-glass hover:border-accent/60 hover:-translate-y-0.5 transition-all motion-reduce:transition-none motion-reduce:hover:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green"
       >
-        {/* 7.2 — carte typographique : nom > rôle > lien, sans gros avatar */}
-        <div className="min-w-0">
-          <h3 className="font-display text-xl font-bold leading-tight text-ink group-hover:text-green break-words">{s.nom}</h3>
-          {s.nom_arabe && (
-            <p dir="rtl" lang="ar" className="font-arabic-name font-medium text-lg text-accent mt-0.5 [unicode-bidi:plaintext]">{s.nom_arabe}</p>
-          )}
+        {/* Carte typographique : monogramme (lettre, jamais de visage) + nom > rôle */}
+        <div className="flex items-start gap-3 min-w-0">
+          <span className="shrink-0 grid place-items-center w-11 h-11 rounded-full bg-glass-tint border border-glass-border font-arabic-display text-[22px] text-accent" lang="ar" dir="rtl" aria-hidden="true">
+            {(s.nom_arabe?.trim()?.[0]) ?? s.nom?.trim()?.[0] ?? '•'}
+          </span>
+          <div className="min-w-0">
+            <h3 className="font-display text-xl font-bold leading-tight text-ink group-hover:text-accent break-words">{s.nom}</h3>
+            {s.nom_arabe && (
+              <p dir="rtl" lang="ar" className="font-arabic-name font-medium text-lg text-accent mt-0.5 [unicode-bidi:plaintext]">{s.nom_arabe}</p>
+            )}
+          </div>
         </div>
 
         <BadgeGeneration generation={s.generation} role={s.role} sexe={s.role === 'epouse_prophete' ? 'f' : undefined} />
