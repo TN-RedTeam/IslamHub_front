@@ -60,7 +60,7 @@ export const Home: React.FC = () => {
           passe sous la nav). Image ENTIÈRE (height:auto → sol compris, aucun
           recadrage à toutes les largeurs). Fondu bas en CSS vers la couleur de
           page (var --hero-fade). Verset du jour (dynamique) par-dessus. */}
-      <section className="relative w-full -mt-16 overflow-hidden">
+      <section className="relative w-full md:-mt-16 overflow-hidden">
         <picture>
           <source type="image/webp" srcSet={`${domeW800} 800w, ${domeW1280} 1280w, ${domeW1672} 1672w`} sizes="100vw" />
           <img
