@@ -5,21 +5,52 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ── Charte visuelle (Phase 11.1) — tokens définitifs, mêmes classes clair/sombre ──
-   Cartes/panneaux = --surface (blanc pur en clair) ; fond de page = --ground (crème).
-   Le token historique --ivory est aliasé sur --surface pour compat (bg-ivory). */
+/* ── Charte visuelle « Nuit Teal » (Phase 8) ───────────────────────────────
+   Palette signature : nuit teal + cartes « verre » + accent menthe unique.
+   Deux thèmes (clair = :root, sombre = .dark). Les anciens tokens (--ground,
+   --surface, --ink, --green, --gold…) sont ALIASÉS sur la nouvelle palette :
+   toute l'app bascule sans réécrire chaque composant. Rien en dur : tout ici. */
 :root {
-    --ground: #f2ebdd; --surface: #ffffff; --ivory: #ffffff; --ink: #1b2620; --muted: #6a746a; --line: #e5dccb;
-    --green: #1c5a43; --green-deep: #0f3d2e; --green-soft: #e6f0e9; --green-line: #cfe1d6;
-    --gold: #b0872f; --gold-soft: #f2e6cb;
+    /* Nuit Teal — CLAIR */
+    --bg1: #eaf2f0; --bg2: #e2ece9; --bg-glow: #d7ebe6;
+    --tx: #0f2e2a; --mut: #5b7d78;
+    --acc: #0e8f80; --acc2: #0b6b62; --accdeep: #0e8f80;
+    --glass: #ffffff; --glass-b: #dbe7e3; --glass2: #dcf1ee;
+    --ok: #1f7d62; --warn: #a9791f; --low: #9c4f45;
+    --dome: #2f8d63; --dome2: #1c6142;
+    color-scheme: light;
+    /* Alias historiques → palette Nuit Teal */
+    --ground: var(--bg2); --surface: var(--glass); --ivory: var(--glass);
+    --ink: var(--tx); --muted: var(--mut); --line: var(--glass-b);
+    --green: var(--acc); --green-deep: var(--acc2); --green-soft: var(--glass2); --green-line: var(--glass-b);
+    --gold: var(--acc2); --gold-soft: var(--glass2);
 }
 .dark {
-    --ground: #0e1512; --surface: #161f1a; --ivory: #161f1a; --ink: #eaf1ec; --muted: #9db0a5; --line: #2a3830;
-    --green: #4bbf98; --green-deep: #a7e5cd; --green-soft: #17241d; --green-line: #2f4a3c;
-    --gold: #d8b466; --gold-soft: #2a2417;
+    /* Nuit Teal — SOMBRE (signature) */
+    --bg1: #0b1e22; --bg2: #09171a; --bg-glow: #12333a;
+    --tx: #e9f4f1; --mut: #8fb2ad;
+    --acc: #3fbfae; --acc2: #66e0cd; --accdeep: #0e8f80;
+    --glass: rgba(255,255,255,.055); --glass-b: rgba(255,255,255,.12); --glass2: rgba(63,191,174,.14);
+    --ok: #2ea27f; --warn: #c79237; --low: #b5675c;
+    --dome: #3a936a; --dome2: #1f5e3f;
+    color-scheme: dark;
+    --ground: var(--bg2); --surface: var(--glass); --ivory: var(--glass);
+    --ink: var(--tx); --muted: var(--mut); --line: var(--glass-b);
+    --green: var(--acc); --green-deep: var(--acc2); --green-soft: var(--glass2); --green-line: var(--glass-b);
+    --gold: var(--acc2); --gold-soft: var(--glass2);
 }
 @layer base {
-    body { background-color: var(--ground); color: var(--ink); }
+    /* Fond de page : dégradé vertical --bg1 → --bg2 + halo radial en haut.
+       Fixé pour couvrir le défilement ; le contenu défile par-dessus. */
+    body {
+        color: var(--tx);
+        background:
+            radial-gradient(120% 60% at 50% -5%, var(--bg-glow), transparent 60%),
+            linear-gradient(180deg, var(--bg1), var(--bg2));
+        background-attachment: fixed;
+        background-color: var(--bg2);
+        min-height: 100vh;
+    }
 }
 
 html {
@@ -102,21 +133,26 @@ html {
 }
 
 ::-webkit-scrollbar-thumb {
-    background-color: #10b981;
+    background-color: color-mix(in srgb, var(--acc) 55%, transparent);
     border-radius: 9999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background-color: #059669;
+    background-color: var(--acc);
+}
+/* Firefox */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: color-mix(in srgb, var(--acc) 55%, transparent) transparent;
 }
 
 ::selection {
-    background-color: #6ee7b7;
-    color: #064e3b;
+    background-color: color-mix(in srgb, var(--acc) 30%, transparent);
+    color: var(--tx);
 }
 
 *:focus-visible {
-    outline: 2px solid #10b981;
+    outline: 2px solid var(--acc);
     outline-offset: 2px;
 }
 

@@ -16,7 +16,14 @@ export default {
         'arabic-quran': ['"Amiri Quran"', 'serif'],       // les 99 Noms d'Allah uniquement
       },
       colors: {
-        // ---- Tokens de charte (Phase 11.1) : pilotés par variables CSS (clair/sombre) ----
+        // ── Nuit Teal (Phase 8) — pilotés par variables CSS (clair/sombre) ──
+        bg1: 'var(--bg1)', bg2: 'var(--bg2)',
+        accent: { DEFAULT: 'var(--acc)', br: 'var(--acc2)', deep: 'var(--accdeep)' },
+        glass: { DEFAULT: 'var(--glass)', border: 'var(--glass-b)', tint: 'var(--glass2)' },
+        ok: 'var(--ok)', warn: 'var(--warn)', low: 'var(--low)',
+        dome: { DEFAULT: 'var(--dome)', deep: 'var(--dome2)' },
+
+        // ── Alias historiques (remappés sur Nuit Teal via index.css) ──
         ground: 'var(--ground)',
         surface: 'var(--surface)',
         ivory: 'var(--ivory)', // alias historique de --surface (bg-ivory)
@@ -28,20 +35,18 @@ export default {
         // Accents par rubrique (désaturés, identiques clair/sombre)
         ecole: { hanafi: '#b0782e', maliki: '#1f6f66', shafii: '#3c5390', hanbali: '#875073' },
 
-        // ---- Anciennes couleurs conservées le temps du balayage 10.3 (à retirer ensuite) ----
+        // ---- Anciennes couleurs conservées le temps du balayage (à retirer ensuite) ----
         emerald: {
           50: '#ecfdf5', 100: '#d1fae5', 200: '#a7f3d0', 300: '#6ee7b7', 400: '#34d399',
           500: '#10b981', 600: '#059669', 700: '#047857', 800: '#065f46', 900: '#064e3b', 950: '#022c22',
         },
       },
-      borderRadius: { card: '14px', panel: '18px' },
+      borderRadius: { card: '18px', panel: '20px', glass: '20px' },
       boxShadow: {
-        card: '0 1px 2px rgba(27,36,30,.03), 0 10px 24px -18px rgba(27,36,30,.20)',
-        'card-hover': '0 2px 6px rgba(27,36,30,.05), 0 18px 36px -20px rgba(27,36,30,.32)',
-      },
-      backgroundImage: {
-        // conservé le temps du balayage 10.3 (les héros colorés seront retirés)
-        arabesque: "url('https://images.unsplash.com/photo-1604147706283-d7119b5b822c?q=80&w=2487&auto=format&fit=crop')",
+        card: '0 1px 2px rgba(4,18,18,.04), 0 12px 28px -20px rgba(4,18,18,.45)',
+        'card-hover': '0 2px 8px rgba(4,18,18,.06), 0 22px 44px -22px rgba(4,18,18,.55)',
+        glass: '0 8px 30px -12px rgba(4,18,18,.35)',
+        fab: '0 10px 22px rgba(15,138,128,.45)',
       },
     },
   },
