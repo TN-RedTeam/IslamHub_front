@@ -6,9 +6,13 @@ import { usePageTitle } from '../hooks/usePageTitle';
 import { slugify } from '../utils/slug';
 import { GlassCard, SectionHeader, Tile } from '../components/ui/Nuit';
 import type { Hadith, Invocation, Coran } from '../types';
-import heroWebp1400 from '../assets/hero/dome-hero-1400.webp';
-import heroWebp800 from '../assets/hero/dome-hero-800.webp';
-import heroJpg800 from '../assets/hero/dome-hero-800.jpg';
+// Hero validé — Dôme vert au crépuscule (violet), images fidèles bundlées (offline).
+import domeW800 from '../assets/hero/dome-violet-800.webp';
+import domeW1280 from '../assets/hero/dome-violet-1280.webp';
+import domeW1672 from '../assets/hero/dome-violet-1672.webp';
+import domeJ800 from '../assets/hero/dome-violet-800.jpg';
+import domeJ1280 from '../assets/hero/dome-violet-1280.jpg';
+import domeJ1672 from '../assets/hero/dome-violet-1672.jpg';
 
 interface SiteStats { hadiths: number; paroles: number; douaas: number; dhikrs: number; videos: number; coran: number; }
 
@@ -52,38 +56,32 @@ export const Home: React.FC = () => {
 
   return (
     <div className="relative min-h-screen">
-      {/* HERO « Dôme vert » — pleine largeur (edge-to-edge, passe sous la nav).
-          La photo se fond vers le bas dans la page (masque linéaire bas) ;
-          côtés et haut pleins. Verset du jour (dynamique) posé par-dessus. */}
-      <section className="relative w-full -mt-16 h-[clamp(440px,54vw,760px)]">
-        <div
-          className="absolute inset-0"
-          style={{
-            WebkitMaskImage: 'linear-gradient(to bottom, #000 82%, transparent 100%)',
-            maskImage: 'linear-gradient(to bottom, #000 82%, transparent 100%)',
-          }}
-          aria-hidden="true"
-        >
-          <picture>
-            <source type="image/webp" srcSet={`${heroWebp800} 800w, ${heroWebp1400} 1400w`} sizes="100vw" />
-            <img
-              src={heroJpg800}
-              alt="Le Dôme vert de la mosquée du Prophète ﷺ, à Médine, au crépuscule"
-              width={1400} height={875} loading="eager" fetchPriority="high"
-              className="absolute inset-0 h-full w-full object-cover object-center"
-            />
-          </picture>
-          {/* Assombrissement du bas pour la lisibilité du verset (masqué avec l'image) */}
-          <div className="absolute inset-0" aria-hidden="true" style={{ background: 'linear-gradient(180deg, rgba(4,14,16,0) 42%, rgba(4,14,16,.42) 72%, rgba(4,14,16,.66) 100%)' }} />
-        </div>
+      {/* HERO validé — Dôme vert au crépuscule, PLEINE LARGEUR (edge-to-edge,
+          passe sous la nav). Image fidèle (non retouchée), fondu bas en CSS
+          uniquement. Le verset du jour (dynamique) est posé par-dessus. */}
+      <section className="relative w-full -mt-16 overflow-hidden h-[clamp(340px,44vw,540px)]">
+        <picture>
+          <source type="image/webp" srcSet={`${domeW800} 800w, ${domeW1280} 1280w, ${domeW1672} 1672w`} sizes="100vw" />
+          <img
+            src={domeJ1672}
+            srcSet={`${domeJ800} 800w, ${domeJ1280} 1280w, ${domeJ1672} 1672w`}
+            sizes="100vw"
+            alt="La mosquée du Prophète ﷺ et son Dôme vert au crépuscule, à Médine"
+            width={1672} height={941} loading="eager" fetchPriority="high"
+            className="absolute inset-0 h-full w-full object-cover object-[center_45%]"
+          />
+        </picture>
+        {/* Fondu bas décoratif (jamais cuit dans l'image) */}
+        <div className="absolute inset-0" aria-hidden="true" style={{ background: 'linear-gradient(180deg, transparent 50%, rgba(5,15,15,.88))' }} />
 
-        <div className="absolute inset-0 flex flex-col items-center justify-end px-6 pb-[11%] text-center">
-          <p className="mb-2 text-[10px] font-extrabold uppercase tracking-[0.24em] text-[#7fe9d8] [text-shadow:0_1px_10px_rgba(0,0,0,.7)]" lang="ar">آية اليوم · Verset du jour</p>
+        <div className="absolute inset-x-0 bottom-0 flex flex-col items-center px-6 pb-[30px] text-center">
+          {/* Textes sur photo sombre (bas assombri) → teintes claires fixes */}
+          <p className="mb-2 text-[10px] font-extrabold uppercase tracking-[0.22em] text-[#7fe9d8] [text-shadow:0_1px_10px_rgba(0,0,0,.7)]" lang="ar">آية اليوم · Verset du jour</p>
           {dailyVerse?.texte_arabe && (
-            <p className="font-arabic-display text-[#f6fdfb] [text-shadow:0_2px_18px_rgba(0,0,0,.8)] max-w-2xl" lang="ar" dir="rtl" style={{ fontSize: 'clamp(22px,4.6vw,34px)', lineHeight: 1.75 }}>{dailyVerse.texte_arabe}</p>
+            <p className="font-arabic-display text-white [text-shadow:0_2px_16px_rgba(0,0,0,.7)] max-w-2xl" lang="ar" dir="rtl" style={{ fontSize: 'clamp(24px,3vw,32px)', lineHeight: 1.7 }}>{dailyVerse.texte_arabe}</p>
           )}
           {(dailyVerse?.texte_francais || dailyVerse?.sourate) && (
-            <p className="mt-2.5 max-w-xl text-[13px] font-medium text-[#dcefeb] [text-shadow:0_1px_12px_rgba(0,0,0,.85)]">
+            <p className="mt-2.5 max-w-xl text-[14px] font-medium text-[#f3f6f4] [text-shadow:0_1px_10px_rgba(0,0,0,.6)]">
               {dailyVerse?.texte_francais && <>«&nbsp;{dailyVerse.texte_francais}&nbsp;»</>}{dailyVerse?.sourate ? ` — ${dailyVerse.sourate}` : ''}
             </p>
           )}
