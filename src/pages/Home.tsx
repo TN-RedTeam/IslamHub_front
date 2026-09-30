@@ -52,44 +52,44 @@ export const Home: React.FC = () => {
 
   return (
     <div className="relative min-h-screen">
-      {/* HERO plein cadre « Dôme vert » — la photo se fond dans la page via un
-          masque radial (les bords se dissolvent, en clair comme en sombre) ;
-          aucune bordure ni rectangle. Le verset du jour (dynamique) est posé
-          au-dessus, centré sur le dôme (zone opaque du masque). */}
-      <section className="relative w-full h-[clamp(420px,66vw,640px)] -mt-16">
-        <div
-          className="absolute inset-0"
-          style={{
-            WebkitMaskImage: 'radial-gradient(128% 116% at 50% 42%, #000 40%, rgba(0,0,0,0.5) 68%, transparent 100%)',
-            maskImage: 'radial-gradient(128% 116% at 50% 42%, #000 40%, rgba(0,0,0,0.5) 68%, transparent 100%)',
-          }}
-          aria-hidden="true"
-        >
-          <picture>
-            <source type="image/webp" srcSet={`${heroWebp800} 800w, ${heroWebp1400} 1400w`} sizes="100vw" />
-            <img
-              src={heroJpg800}
-              alt="Le Dôme vert de la mosquée du Prophète ﷺ, à Médine, au crépuscule"
-              width={1400} height={875} loading="eager" fetchPriority="high"
-              className="absolute inset-0 h-full w-full object-cover object-[50%_42%]"
-            />
-          </picture>
-          {/* Assombrissement léger, bas de l'image seulement (masqué → pas de rectangle) */}
-          <div className="absolute inset-0" aria-hidden="true" style={{ background: 'linear-gradient(180deg, rgba(4,14,16,0) 44%, rgba(4,14,16,.4) 74%, rgba(4,14,16,.62) 100%)' }} />
-        </div>
+      {/* HERO « Dôme vert » — mobile : plein cadre immersif (recadré) ; desktop :
+          la photo ENTIÈRE (ratio d'origine 8/5), centrée, largeur plafonnée.
+          Bords dissous via masque radial (clair + sombre), sans bordure. Le
+          verset du jour (dynamique) est posé par-dessus. */}
+      <section className="relative w-full -mt-16 flex justify-center">
+        <div className="relative w-full md:max-w-[1040px] h-[clamp(420px,80vw,560px)] md:h-auto md:aspect-[8/5]">
+          <div
+            className="absolute inset-0"
+            style={{
+              WebkitMaskImage: 'radial-gradient(130% 118% at 50% 44%, #000 42%, rgba(0,0,0,0.5) 70%, transparent 100%)',
+              maskImage: 'radial-gradient(130% 118% at 50% 44%, #000 42%, rgba(0,0,0,0.5) 70%, transparent 100%)',
+            }}
+            aria-hidden="true"
+          >
+            <picture>
+              <source type="image/webp" srcSet={`${heroWebp800} 800w, ${heroWebp1400} 1400w`} sizes="(min-width:768px) 1040px, 100vw" />
+              <img
+                src={heroJpg800}
+                alt="Le Dôme vert de la mosquée du Prophète ﷺ, à Médine, au crépuscule"
+                width={1400} height={875} loading="eager" fetchPriority="high"
+                className="absolute inset-0 h-full w-full object-cover object-[50%_42%] md:object-center"
+              />
+            </picture>
+            {/* Assombrissement léger du bas seulement (masqué → pas de rectangle) */}
+            <div className="absolute inset-0" aria-hidden="true" style={{ background: 'linear-gradient(180deg, rgba(4,14,16,0) 46%, rgba(4,14,16,.38) 74%, rgba(4,14,16,.6) 100%)' }} />
+          </div>
 
-        <span className="absolute top-[4.5rem] right-5 rounded-full border border-white/15 bg-black/25 px-2.5 py-1 text-[10px] font-bold text-[#eafffb] backdrop-blur-sm">Dôme vert · Médine</span>
-
-        <div className="absolute inset-0 flex flex-col items-center justify-end px-6 pb-[11%] text-center">
-          <p className="mb-2 text-[10px] font-extrabold uppercase tracking-[0.24em] text-[#7fe9d8] [text-shadow:0_1px_10px_rgba(0,0,0,.7)]" lang="ar">آية اليوم · Verset du jour</p>
-          {dailyVerse?.texte_arabe && (
-            <p className="font-arabic-display text-[#f6fdfb] [text-shadow:0_2px_18px_rgba(0,0,0,.75)] max-w-2xl" lang="ar" dir="rtl" style={{ fontSize: 'clamp(22px,4.6vw,34px)', lineHeight: 1.75 }}>{dailyVerse.texte_arabe}</p>
-          )}
-          {(dailyVerse?.texte_francais || dailyVerse?.sourate) && (
-            <p className="mt-2.5 max-w-xl text-[13px] font-medium text-[#dcefeb] [text-shadow:0_1px_12px_rgba(0,0,0,.8)]">
-              {dailyVerse?.texte_francais && <>«&nbsp;{dailyVerse.texte_francais}&nbsp;»</>}{dailyVerse?.sourate ? ` — ${dailyVerse.sourate}` : ''}
-            </p>
-          )}
+          <div className="absolute inset-0 flex flex-col items-center justify-end px-6 pb-[10%] text-center">
+            <p className="mb-2 text-[10px] font-extrabold uppercase tracking-[0.24em] text-[#7fe9d8] [text-shadow:0_1px_10px_rgba(0,0,0,.7)]" lang="ar">آية اليوم · Verset du jour</p>
+            {dailyVerse?.texte_arabe && (
+              <p className="font-arabic-display text-[#f6fdfb] [text-shadow:0_2px_18px_rgba(0,0,0,.8)] max-w-2xl" lang="ar" dir="rtl" style={{ fontSize: 'clamp(22px,4.6vw,34px)', lineHeight: 1.75 }}>{dailyVerse.texte_arabe}</p>
+            )}
+            {(dailyVerse?.texte_francais || dailyVerse?.sourate) && (
+              <p className="mt-2.5 max-w-xl text-[13px] font-medium text-[#dcefeb] [text-shadow:0_1px_12px_rgba(0,0,0,.85)]">
+                {dailyVerse?.texte_francais && <>«&nbsp;{dailyVerse.texte_francais}&nbsp;»</>}{dailyVerse?.sourate ? ` — ${dailyVerse.sourate}` : ''}
+              </p>
+            )}
+          </div>
         </div>
       </section>
 
