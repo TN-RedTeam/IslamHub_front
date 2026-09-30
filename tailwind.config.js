@@ -5,13 +5,12 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        // Phase 11.1 — charte définitive : titres FR = EB Garamond, corps/UI = Newsreader,
-        // arabe = Scheherazade New, Bismillah home = Amiri (arabic-display).
-        display: ['"EB Garamond"', 'Georgia', 'serif'],
-        sans: ['Newsreader', 'Georgia', 'serif'],
-        // Système de polices arabes par usage (Phase 13.4)
+        // Phase 8 « Nuit Teal » : UI + titres = Manrope (self-host). Arabe inchangé.
+        sans: ['Manrope', 'system-ui', 'sans-serif'],
+        display: ['Manrope', 'system-ui', 'sans-serif'],
+        // Système de polices arabes par usage
         arabic: ['"Scheherazade New"', 'serif'],          // lecture : hadiths, versets, invocations, paroles
-        'arabic-display': ['Amiri', 'serif'],             // grande Bismillah de la home uniquement
+        'arabic-display': ['Amiri', 'serif'],             // grande calligraphie (Bismillah, hero, 99 Noms)
         'arabic-name': ['"Noto Naskh Arabic"', 'serif'],  // NOMS & UI : écoles, savants, honorifiques
         'arabic-quran': ['"Amiri Quran"', 'serif'],       // les 99 Noms d'Allah uniquement
       },

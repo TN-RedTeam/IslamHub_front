@@ -1,5 +1,6 @@
-/* Phase 11.1 — les polices (EB Garamond titres FR, Newsreader corps, Amiri
-   Bismillah, Scheherazade New arabe) sont chargées via le <link> de index.html. */
+/* Phase 8 « Nuit Teal » — polices self-host (offline) via src/styles/fonts.css :
+   Manrope (UI + titres), Scheherazade New (versets), Amiri (calligraphie),
+   Noto Naskh Arabic (labels arabes), Amiri Quran (99 Noms). Aucune requête externe. */
 
 @tailwind base;
 @tailwind components;
@@ -44,6 +45,9 @@
        Fixé pour couvrir le défilement ; le contenu défile par-dessus. */
     body {
         color: var(--tx);
+        font-family: 'Manrope', system-ui, -apple-system, sans-serif;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
         background:
             radial-gradient(120% 60% at 50% -5%, var(--bg-glow), transparent 60%),
             linear-gradient(180deg, var(--bg1), var(--bg2));
