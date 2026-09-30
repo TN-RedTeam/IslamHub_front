@@ -57,9 +57,10 @@ export const Home: React.FC = () => {
   return (
     <div className="relative min-h-screen">
       {/* HERO validé — Dôme vert au crépuscule, PLEINE LARGEUR (edge-to-edge,
-          passe sous la nav). Image fidèle (non retouchée), fondu bas en CSS
-          uniquement. Le verset du jour (dynamique) est posé par-dessus. */}
-      <section className="relative w-full -mt-16 overflow-hidden h-[clamp(340px,44vw,540px)]">
+          passe sous la nav). Image ENTIÈRE (height:auto → sol compris, aucun
+          recadrage à toutes les largeurs). Fondu bas en CSS vers la couleur de
+          page (var --hero-fade). Verset du jour (dynamique) par-dessus. */}
+      <section className="relative w-full -mt-16 overflow-hidden">
         <picture>
           <source type="image/webp" srcSet={`${domeW800} 800w, ${domeW1280} 1280w, ${domeW1672} 1672w`} sizes="100vw" />
           <img
@@ -68,13 +69,14 @@ export const Home: React.FC = () => {
             sizes="100vw"
             alt="La mosquée du Prophète ﷺ et son Dôme vert au crépuscule, à Médine"
             width={1672} height={941} loading="eager" fetchPriority="high"
-            className="absolute inset-0 h-full w-full object-cover object-[center_45%]"
+            className="block w-full h-auto"
           />
         </picture>
-        {/* Fondu bas décoratif (jamais cuit dans l'image) */}
-        <div className="absolute inset-0" aria-hidden="true" style={{ background: 'linear-gradient(180deg, transparent 50%, rgba(5,15,15,.88))' }} />
+        {/* Fondu bas en CSS : léger assombrissement pour le verset, puis fondu
+            vers la couleur de page (clair comme sombre). Jamais cuit dans l'image. */}
+        <div className="absolute inset-0" aria-hidden="true" style={{ background: 'linear-gradient(180deg, transparent 46%, rgba(4,13,14,.5) 86%, var(--hero-fade) 100%)' }} />
 
-        <div className="absolute inset-x-0 bottom-0 flex flex-col items-center px-6 pb-[30px] text-center">
+        <div className="absolute inset-x-0 bottom-0 flex flex-col items-center px-6 pb-[max(26px,9%)] text-center">
           {/* Textes sur photo sombre (bas assombri) → teintes claires fixes */}
           <p className="mb-2 text-[10px] font-extrabold uppercase tracking-[0.22em] text-[#7fe9d8] [text-shadow:0_1px_10px_rgba(0,0,0,.7)]" lang="ar">آية اليوم · Verset du jour</p>
           {dailyVerse?.texte_arabe && (
