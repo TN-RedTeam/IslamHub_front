@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Layers } from 'lucide-react';
+import { ArrowRight, Layers, GraduationCap } from 'lucide-react';
 import { Icon, type IconName } from '../components/Icon';
 import { usePageTitle } from '../hooks/usePageTitle';
 import { dataService } from '../services/DataService';
@@ -21,24 +21,22 @@ const CARDS: Card[] = [
     desc: "Les plus beaux noms d'Allah, en arabe et en français, à parcourir et à méditer.",
     icon: 'qalam',
   },
-  {
-    to: '/croyance/piliers-de-la-foi',
-    title: 'Les piliers de la foi',
-    desc: 'Les six fondements : croire en Allah, en Ses anges, en Ses livres, en Ses prophètes, au Jour dernier et au destin.',
-    icon: 'pillars',
-  },
-  {
-    to: '/croyance/jugement-rationnel',
-    title: 'Le jugement rationnel',
-    desc: 'Le nécessaire, l\'impossible et le possible — et comment la raison saine mène à la connaissance du Créateur.',
-    icon: 'balance',
-  },
 ];
+
+// Route dédiée de certains exposés (sinon page générique /exposes/:slug).
+const EXPOSE_ROUTE: Record<string, string> = {
+  'jugement-rationnel': '/croyance/jugement-rationnel',
+  'piliers-de-la-foi': '/croyance/piliers-de-la-foi',
+  'comprendre-textes-equivoques': '/croyance/versets-hadiths-equivoques/comprendre',
+};
+const routeForExpose = (slug: string) => EXPOSE_ROUTE[slug] ?? `/exposes/${slug}`;
 
 export const Croyance: React.FC = () => {
   usePageTitle('Croyance');
   const [dossiers, setDossiers] = useState<DossierListItem[]>([]);
+  const [exposes, setExposes] = useState<{ slug: string; titre: string }[]>([]);
   useEffect(() => { dataService.getDossiers().then(setDossiers).catch(() => setDossiers([])); }, []);
+  useEffect(() => { dataService.getExposes().then(setExposes).catch(() => setExposes([])); }, []);
 
   return (
     <div className="min-h-screen">
@@ -97,6 +95,29 @@ export const Croyance: React.FC = () => {
             </Link>
           ))}
         </div>
+
+        {/* Exposés / Cours (dynamique — table `exposes`) */}
+        {exposes.length > 0 && (
+          <section className="mt-10">
+            <h2 className="font-display font-semibold text-ink text-2xl mb-1.5">Exposés &amp; cours</h2>
+            <p className="text-muted text-[14.5px] mb-4 max-w-[62ch]">Des articles de fond pour comprendre la croyance, à lire posément.</p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {exposes.map((e) => (
+                <Link
+                  key={e.slug}
+                  to={routeForExpose(e.slug)}
+                  className="group flex items-center gap-4 rounded-card border border-line bg-surface p-5 shadow-card hover:shadow-card-hover hover:-translate-y-0.5 hover:border-green transition-all motion-reduce:transition-none motion-reduce:hover:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green"
+                >
+                  <span className="w-11 h-11 shrink-0 rounded-[11px] bg-glass-tint text-green grid place-items-center"><GraduationCap className="w-[22px] h-[22px]" /></span>
+                  <span className="min-w-0 flex-1">
+                    <h3 className="font-display font-semibold text-ink text-lg leading-tight">{e.titre}</h3>
+                    <span className="mt-1 inline-flex items-center gap-1.5 font-semibold text-green text-[13.5px] group-hover:gap-2.5 transition-all motion-reduce:transition-none">Lire le cours <ArrowRight className="w-4 h-4" /></span>
+                  </span>
+                </Link>
+              ))}
+            </div>
+          </section>
+        )}
 
         {/* Dossiers thématiques (dynamique) */}
         {dossiers.length > 0 && (
