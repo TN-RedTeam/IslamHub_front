@@ -7,6 +7,7 @@ import type { Components } from 'react-markdown';
 // ---- Détection auto de l'arabe ------------------------------------------------
 // Un paragraphe / une puce / un titre majoritairement arabe est rendu en
 // RTL + Scheherazade (via lang="ar", stylé globalement dans index.css).
+// eslint-disable-next-line no-irregular-whitespace -- plages Unicode arabes (incluent U+FEFF) volontaires
 const AR_RE = /[؀-ۿݐ-ݿࢠ-ࣿﭐ-﷿ﹰ-﻿]/g;
 const LAT_RE = /[A-Za-zÀ-ɏ]/g;
 function textOf(node: React.ReactNode): string {

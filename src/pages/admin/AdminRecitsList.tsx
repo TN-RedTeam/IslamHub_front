@@ -3,9 +3,10 @@ import { Link } from 'react-router-dom';
 import { Loader2, Plus, ArrowUp, ArrowDown, ScrollText, BookMarked, Pencil } from 'lucide-react';
 import { adminRecits, type RecitRow } from '../../services/AdminService';
 import { CountBadge, IdTag } from '../../components/admin/AdminListUI';
+import type { RecitCategorie } from '../../types';
 
 // Mêmes sections que sur le site public.
-const SECTIONS: { categorie: string; titre: string; sous_titre: string }[] = [
+const SECTIONS: { categorie: RecitCategorie; titre: string; sous_titre: string }[] = [
   { categorie: 'prophetes', titre: 'Histoires des Prophètes', sous_titre: 'Qiṣaṣ al-anbiyāʾ' },
   { categorie: 'vertueux', titre: 'Vies des vertueux', sous_titre: 'Awliyāʾ et pieux prédécesseurs' },
   { categorie: 'histoires du passe', titre: 'Histoires du passé', sous_titre: 'Récits et leçons d’autrefois' },

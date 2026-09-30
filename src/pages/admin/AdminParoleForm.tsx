@@ -51,7 +51,7 @@ export const AdminParoleForm: React.FC = () => {
   }, [editId]);
 
   useEffect(() => {
-    const t = setTimeout(() => { f.tag.trim() ? adminService.themesForTag(f.tag).then(setDerived).catch(() => setDerived([])) : setDerived([]); }, 300);
+    const t = setTimeout(() => { if (f.tag.trim()) adminService.themesForTag(f.tag).then(setDerived).catch(() => setDerived([])); else setDerived([]); }, 300);
     return () => clearTimeout(t);
   }, [f.tag]);
 
