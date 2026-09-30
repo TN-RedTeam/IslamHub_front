@@ -71,32 +71,29 @@ export const Home: React.FC = () => {
               src={heroJpg800}
               alt="Le Dôme vert de la mosquée du Prophète ﷺ, à Médine, au crépuscule"
               width={1400} height={875} loading="eager" fetchPriority="high"
-              className="absolute inset-0 h-full w-full object-cover object-[50%_34%]"
+              className="absolute inset-0 h-full w-full object-cover object-[50%_42%]"
             />
           </picture>
-          {/* Assombrissement progressif (masqué avec l'image → pas de rectangle) */}
-          <div className="absolute inset-0" aria-hidden="true" style={{ background: 'linear-gradient(180deg, rgba(4,16,18,0) 30%, rgba(4,14,16,.5) 72%, rgba(4,14,16,.7) 100%)' }} />
+          {/* Assombrissement léger, bas de l'image seulement (masqué → pas de rectangle) */}
+          <div className="absolute inset-0" aria-hidden="true" style={{ background: 'linear-gradient(180deg, rgba(4,14,16,0) 44%, rgba(4,14,16,.4) 74%, rgba(4,14,16,.62) 100%)' }} />
         </div>
-
-        {/* Halo doux derrière le texte (non masqué) : garantit la lisibilité sans bord franc */}
-        <div className="absolute inset-x-0 bottom-0 h-3/4 pointer-events-none" aria-hidden="true" style={{ background: 'radial-gradient(85% 70% at 50% 100%, rgba(3,12,14,.55) 0%, rgba(3,12,14,.22) 42%, transparent 72%)' }} />
 
         <span className="absolute top-[4.5rem] right-5 rounded-full border border-white/15 bg-black/25 px-2.5 py-1 text-[10px] font-bold text-[#eafffb] backdrop-blur-sm">Dôme vert · Médine</span>
 
-        <div className="absolute inset-0 flex flex-col items-center justify-end px-6 pb-[13%] text-center">
-          <p className="mb-2 text-[10px] font-extrabold uppercase tracking-[0.24em] text-[#7fe9d8] [text-shadow:0_1px_10px_rgba(0,0,0,.6)]" lang="ar">آية اليوم · Verset du jour</p>
+        <div className="absolute inset-0 flex flex-col items-center justify-end px-6 pb-[11%] text-center">
+          <p className="mb-2 text-[10px] font-extrabold uppercase tracking-[0.24em] text-[#7fe9d8] [text-shadow:0_1px_10px_rgba(0,0,0,.7)]" lang="ar">آية اليوم · Verset du jour</p>
           {dailyVerse?.texte_arabe && (
-            <p className="font-arabic-display text-[#f6fdfb] [text-shadow:0_2px_16px_rgba(0,0,0,.6)] max-w-2xl" lang="ar" dir="rtl" style={{ fontSize: 'clamp(22px,4.6vw,34px)', lineHeight: 1.75 }}>{dailyVerse.texte_arabe}</p>
+            <p className="font-arabic-display text-[#f6fdfb] [text-shadow:0_2px_18px_rgba(0,0,0,.75)] max-w-2xl" lang="ar" dir="rtl" style={{ fontSize: 'clamp(22px,4.6vw,34px)', lineHeight: 1.75 }}>{dailyVerse.texte_arabe}</p>
           )}
           {(dailyVerse?.texte_francais || dailyVerse?.sourate) && (
-            <p className="mt-2.5 max-w-xl text-[13px] font-medium text-[#dcefeb] [text-shadow:0_1px_10px_rgba(0,0,0,.65)]">
+            <p className="mt-2.5 max-w-xl text-[13px] font-medium text-[#dcefeb] [text-shadow:0_1px_12px_rgba(0,0,0,.8)]">
               {dailyVerse?.texte_francais && <>«&nbsp;{dailyVerse.texte_francais}&nbsp;»</>}{dailyVerse?.sourate ? ` — ${dailyVerse.sourate}` : ''}
             </p>
           )}
         </div>
       </section>
 
-      <main className="relative z-10 -mt-12 sm:-mt-16 max-w-3xl mx-auto px-4 pb-20">
+      <main className="relative z-10 max-w-3xl mx-auto px-4 pb-20 pt-6">
 
         {/* AUJOURD'HUI — cartes verre (défilement horizontal sur mobile) */}
         <SectionHeader title="Aujourd'hui" />
