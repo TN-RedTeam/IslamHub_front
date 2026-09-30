@@ -12,7 +12,7 @@ import type { ExposeCitation } from '../types';
 export const ExposeCitationBloc: React.FC<{ c: ExposeCitation }> = ({ c }) => {
   const tag = c.type === 'parole' ? 'Parole de savant' : c.type === 'hadith' ? 'Hadith' : 'Coran';
   const tagCls = c.type === 'parole' || c.type === 'hadith'
-    ? 'bg-accent-soft text-[#7a5a17] border-[#e6d3a3]'
+    ? 'bg-glass-tint text-accent border-glass-border'
     : 'bg-glass-tint text-ink border-green-line';
 
   return (

@@ -39,7 +39,7 @@ export const AdminInvocationsList: React.FC = () => {
                 <Link to={`/admin/invocations/${i.id}`} className="flex items-center gap-3 px-4 py-3 hover:bg-glass-tint transition-colors">
                   <IdTag id={i.id} />
                   <span className={`text-[10.5px] font-semibold uppercase tracking-wide px-2 py-0.5 rounded-full border shrink-0 ${
-                    i.type_id === 2 ? 'bg-accent-soft text-[#7a5a17] border-[#e6d3a3]' : 'bg-glass-tint text-ink border-green-line'
+                    i.type_id === 2 ? 'bg-glass-tint text-accent border-glass-border' : 'bg-glass-tint text-ink border-green-line'
                   }`}>{i.type_id === 2 ? 'Évocation' : 'Invocation'}</span>
                   <span className="text-ink font-medium min-w-0 truncate">{i.sujet}</span>
                   <span className="ml-auto text-muted text-sm shrink-0">Modifier →</span>

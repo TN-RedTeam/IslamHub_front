@@ -22,7 +22,7 @@ function highlight(text: string, term: string): React.ReactNode {
     const idx = nText.indexOf(nt, i);
     if (idx === -1) { out.push(text.slice(i)); break; }
     if (idx > i) out.push(text.slice(i, idx));
-    out.push(<mark key={k++} className="bg-accent-soft text-[#5a4210] rounded px-0.5">{text.slice(idx, idx + t.length)}</mark>);
+    out.push(<mark key={k++} className="bg-glass-tint text-[#5a4210] rounded px-0.5">{text.slice(idx, idx + t.length)}</mark>);
     i = idx + t.length;
   }
   return out;

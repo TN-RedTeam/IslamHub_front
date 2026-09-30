@@ -72,8 +72,8 @@ export const DeleteEntryButton: React.FC<{
         {deps === null ? (
           <div className="flex items-center gap-2 text-muted text-sm py-3"><Loader2 className="w-4 h-4 animate-spin" /> Vérification des dépendances…</div>
         ) : hasRefs ? (
-          <div className="rounded-lg border border-gold bg-accent-soft px-3.5 py-3 mb-3">
-            <p className="text-[13.5px] text-[#7a5a17] font-semibold mb-1.5">Cette entrée est utilisée comme preuve ailleurs :</p>
+          <div className="rounded-lg border border-gold bg-glass-tint px-3.5 py-3 mb-3">
+            <p className="text-[13.5px] text-accent font-semibold mb-1.5">Cette entrée est utilisée comme preuve ailleurs :</p>
             <ul className="text-[13px] text-ink list-disc pl-5 space-y-0.5">
               {refLines.map(([k, n]) => <li key={k}>{n} {REF_LABEL[k] ?? k}</li>)}
             </ul>

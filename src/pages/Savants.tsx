@@ -237,7 +237,7 @@ export const Savants: React.FC = () => {
                   <h2 id="sec-compagnons" className="font-display text-2xl font-bold text-ink">
                     Les Compagnons du Prophète&nbsp;{'ﷺ'}
                   </h2>
-                  <span className="text-xs font-semibold text-[#7a5a17] bg-accent-soft border border-[#e6d3a3] rounded-full px-2.5 py-0.5 tabular-nums">{compagnons.length}</span>
+                  <span className="text-xs font-semibold text-accent bg-glass-tint border border-glass-border rounded-full px-2.5 py-0.5 tabular-nums">{compagnons.length}</span>
                 </div>
                 <p className="text-sm text-muted mb-4 max-w-2xl">
                   Ceux qui ont vu le Prophète&nbsp;{'ﷺ'} en étant croyants&nbsp;: les meilleurs de cette communauté, dont on rapporte les hadiths.

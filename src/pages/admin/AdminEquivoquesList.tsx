@@ -39,7 +39,7 @@ export const AdminEquivoquesList: React.FC = () => {
                 <Link to={`/admin/equivoques/${v.id}`} className="flex items-center gap-3 px-4 py-3 hover:bg-glass-tint transition-colors">
                   <IdTag id={v.id} />
                   <span className={`text-[10.5px] font-semibold uppercase tracking-wide px-2 py-0.5 rounded-full border shrink-0 ${
-                    v.type === 'hadith' ? 'bg-accent-soft text-[#7a5a17] border-[#e6d3a3]' : 'bg-glass-tint text-ink border-green-line'
+                    v.type === 'hadith' ? 'bg-glass-tint text-accent border-glass-border' : 'bg-glass-tint text-ink border-green-line'
                   }`}>{v.type === 'hadith' ? 'Hadith' : 'Verset'}</span>
                   <span className="min-w-0">
                     <span className="text-ink font-medium block truncate">{v.theme}</span>

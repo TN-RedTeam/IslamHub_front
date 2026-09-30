@@ -153,7 +153,7 @@ export const VersetEquivoque: React.FC = () => {
         {/* Verset ou hadith équivoque */}
         <div className="rounded-panel border border-line bg-surface p-6 sm:p-7 mt-4 text-center shadow-card">
           <span className={`inline-block text-[10.5px] font-semibold uppercase tracking-wide px-2 py-0.5 rounded-full border mb-3 ${
-            v.type === 'hadith' ? 'bg-accent-soft text-[#7a5a17] border-[#e6d3a3]' : 'bg-glass-tint text-ink border-green-line'
+            v.type === 'hadith' ? 'bg-glass-tint text-accent border-glass-border' : 'bg-glass-tint text-ink border-green-line'
           }`}>{v.type === 'hadith' ? 'Hadith' : 'Verset'}</span>
           <p className="font-arabic text-ink leading-[2]" dir="rtl" lang="ar" style={{ fontSize: 'clamp(26px,4.4vw,38px)' }}>{v.verset_arabe}</p>
           {v.verset_traduction && <p className="text-[17px] text-ink mt-3.5">{v.verset_traduction}</p>}
@@ -250,7 +250,7 @@ export const VersetEquivoque: React.FC = () => {
             {v.objection && (
               <section className="mb-8">
                 <H2 id="objection">L'interprétation erronée</H2>
-                <div className="rounded-r-xl border border-line border-l-[3px] border-l-gold bg-accent-soft p-4"><div className="italic"><Markdown>{v.objection}</Markdown></div></div>
+                <div className="rounded-r-xl border border-line border-l-[3px] border-l-gold bg-glass-tint p-4"><div className="italic"><Markdown>{v.objection}</Markdown></div></div>
               </section>
             )}
 

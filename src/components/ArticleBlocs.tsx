@@ -46,7 +46,7 @@ const Proof: React.FC<{ b: Bloc }> = ({ b }) => {
       {b.citation_type === 'parole' && (ref.savant || ref.sujet) && (
         <p className="font-display font-semibold text-ink text-[16px] mb-1.5">
           {ref.savant_slug ? <Link to={`/savants/${ref.savant_slug}`} className="hover:underline">{ref.savant}</Link> : ref.savant}
-          {badge && <span className="ml-2 align-middle text-[10px] font-bold uppercase text-[#7a5a17] bg-accent-soft border border-gold rounded-full px-2 py-0.5">{badge}</span>}
+          {badge && <span className="ml-2 align-middle text-[10px] font-bold uppercase text-accent bg-glass-tint border border-gold rounded-full px-2 py-0.5">{badge}</span>}
         </p>
       )}
 
@@ -55,7 +55,7 @@ const Proof: React.FC<{ b: Bloc }> = ({ b }) => {
       {ref.texte_francais && (
         <p className="mt-2 text-ink">
           <span className="text-muted italic">ce qui signifie&nbsp;: </span>«&nbsp;{ref.texte_francais}&nbsp;»
-          {b.citation_type !== 'parole' && badge && <span className="ml-2 align-middle text-[10px] font-bold uppercase text-[#7a5a17] bg-accent-soft border border-gold rounded-full px-2 py-0.5">{badge}</span>}
+          {b.citation_type !== 'parole' && badge && <span className="ml-2 align-middle text-[10px] font-bold uppercase text-accent bg-glass-tint border border-gold rounded-full px-2 py-0.5">{badge}</span>}
         </p>
       )}
 
@@ -66,8 +66,8 @@ const Proof: React.FC<{ b: Bloc }> = ({ b }) => {
       )}
 
       {b.commentaire_md && (
-        <div className="mt-3 -mx-5 -mb-4 px-5 py-2.5 border-t border-dashed border-line bg-accent-soft/60 rounded-br-card">
-          <span className="text-[10.5px] uppercase tracking-[0.1em] text-[#7a5a17] font-bold mr-1.5">Commentaire</span>
+        <div className="mt-3 -mx-5 -mb-4 px-5 py-2.5 border-t border-dashed border-line bg-glass-tint/60 rounded-br-card">
+          <span className="text-[10.5px] uppercase tracking-[0.1em] text-accent font-bold mr-1.5">Commentaire</span>
           <div className="text-[15px] text-muted italic [&_p]:my-1"><Markdown>{b.commentaire_md}</Markdown></div>
         </div>
       )}

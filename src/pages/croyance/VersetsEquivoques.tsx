@@ -142,7 +142,7 @@ export const VersetsEquivoques: React.FC = () => {
                   {/* Méta : type + source, sur une seule ligne */}
                   <div className="flex items-center justify-between gap-2">
                     <span className={`shrink-0 text-[10.5px] font-semibold uppercase tracking-wide px-2 py-0.5 rounded-full border ${
-                      v.type === 'hadith' ? 'bg-accent-soft text-[#7a5a17] border-[#e6d3a3]' : 'bg-glass-tint text-ink border-green-line'
+                      v.type === 'hadith' ? 'bg-glass-tint text-accent border-glass-border' : 'bg-glass-tint text-ink border-green-line'
                     }`}>{v.type === 'hadith' ? 'Hadith' : 'Verset'}</span>
                     <span className="min-w-0 truncate text-xs text-muted tabular-nums text-right">
                       {v.type === 'hadith'

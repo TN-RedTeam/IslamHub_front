@@ -48,7 +48,7 @@ const Preuve: React.FC<{ c: AttributCitation }> = ({ c }) => {
   return (
     <figure className="rounded-xl border border-line bg-surface p-4 mt-3">
       <span className={`inline-block text-[11px] font-semibold uppercase tracking-[0.08em] px-2 py-0.5 rounded-full mb-2 ${
-        c.type === 'hadith' ? 'bg-accent-soft text-[#7a5a17] border border-[#e6d3a3]' : 'bg-glass-tint text-ink border border-green-line'
+        c.type === 'hadith' ? 'bg-glass-tint text-accent border border-glass-border' : 'bg-glass-tint text-ink border border-green-line'
       }`}>
         {c.type === 'hadith' ? 'Hadith' : 'Coran'}
       </span>

@@ -90,7 +90,7 @@ export const AdminCoranForm: React.FC = () => {
         <div className="mt-3.5 rounded-lg border border-line bg-ground/40 p-3">
           <p className="text-[11px] uppercase tracking-[0.12em] text-accent font-semibold">Thèmes déduits</p>
           {derived.length === 0 ? <p className="text-sm text-muted mt-1">Aucun.</p> :
-            <div className="flex flex-wrap gap-1.5 mt-2">{derived.map((t) => <span key={t.slug} className="text-xs bg-accent-soft text-[#7a5a17] border border-[#e6d3a3] rounded-full px-2.5 py-0.5">{t.nom}</span>)}</div>}
+            <div className="flex flex-wrap gap-1.5 mt-2">{derived.map((t) => <span key={t.slug} className="text-xs bg-glass-tint text-accent border border-glass-border rounded-full px-2.5 py-0.5">{t.nom}</span>)}</div>}
         </div>
       </section>
 

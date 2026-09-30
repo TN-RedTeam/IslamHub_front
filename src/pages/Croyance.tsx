@@ -60,11 +60,11 @@ export const Croyance: React.FC = () => {
           to="/croyance/versets-hadiths-equivoques"
           className="group grid grid-cols-1 sm:grid-cols-[150px_1fr] overflow-hidden rounded-panel border border-line bg-surface shadow-card hover:shadow-card-hover hover:-translate-y-0.5 hover:border-green transition-all motion-reduce:transition-none motion-reduce:hover:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green"
         >
-          <div className="grid place-items-center p-6 text-white bg-[linear-gradient(135deg,#1c5a43,#0f3d2e)]" aria-hidden="true">
+          <div className="grid place-items-center p-6 text-white bg-[linear-gradient(140deg,#0e8f80,#0b1e22)]" aria-hidden="true">
             <Icon name="book" className="w-11 h-11" />
           </div>
           <div className="p-6 sm:p-7">
-            <span className="inline-block text-[11px] font-semibold uppercase tracking-[0.1em] text-[#7a5a17] bg-accent-soft border border-[#e6d3a3] px-2.5 py-0.5 rounded-full mb-2.5">
+            <span className="inline-block text-[11px] font-semibold uppercase tracking-[0.1em] text-accent bg-glass-tint border border-glass-border px-2.5 py-0.5 rounded-full mb-2.5">
               Au cœur de la croyance
             </span>
             <h2 className="font-display font-semibold text-ink text-2xl mb-1.5">Versets et hadiths équivoques</h2>

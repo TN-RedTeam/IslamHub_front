@@ -34,7 +34,7 @@ const HONOR: Record<HonorLevel, { m: string; f: string }> = {
 type Entry = { label: string; cls: string; honor: HonorLevel };
 
 const GEN: Record<Gen, Entry> = {
-  sahabi:     { label: 'Compagnon', cls: 'bg-accent-soft text-[#7a5a17] border-[#e6d3a3]', honor: 'sahabi' },
+  sahabi:     { label: 'Compagnon', cls: 'bg-glass-tint text-accent border-glass-border', honor: 'sahabi' },
   salaf:      { label: 'Salaf',     cls: 'bg-glass-tint text-ink border-green-line', honor: 'default' },
   tabii:      { label: 'Salaf',     cls: 'bg-glass-tint text-ink border-green-line', honor: 'default' },
   tabi_tabii: { label: 'Salaf',     cls: 'bg-glass-tint text-ink border-green-line', honor: 'default' },

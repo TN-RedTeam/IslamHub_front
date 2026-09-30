@@ -100,7 +100,7 @@ export const ComprendreEquivoques: React.FC = () => {
         {/* CTA vers la collection */}
         <Link
           to="/croyance/versets-hadiths-equivoques"
-          className="group mt-9 flex items-center justify-between gap-4 rounded-card bg-[linear-gradient(135deg,#1c5a43,#0f3d2e)] text-white px-6 py-5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green"
+          className="group mt-9 flex items-center justify-between gap-4 rounded-card bg-[linear-gradient(140deg,#0e8f80,#0b1e22)] text-white px-6 py-5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green"
         >
           <span>
             <span className="block font-display font-semibold text-lg">Passer aux textes, un par un</span>

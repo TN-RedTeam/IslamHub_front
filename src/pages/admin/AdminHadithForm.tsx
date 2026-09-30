@@ -290,7 +290,7 @@ export const AdminHadithForm: React.FC = () => {
           {derived.length === 0 ? (
             <p className="text-sm text-muted mt-1">Aucun (ajoute des tags reconnus, ou complète le mapping dans « Thèmes & mapping »).</p>
           ) : (
-            <div className="flex flex-wrap gap-1.5 mt-2">{derived.map((t) => <span key={t.slug} className="text-xs bg-accent-soft text-[#7a5a17] border border-[#e6d3a3] rounded-full px-2.5 py-0.5">{t.nom}</span>)}</div>
+            <div className="flex flex-wrap gap-1.5 mt-2">{derived.map((t) => <span key={t.slug} className="text-xs bg-glass-tint text-accent border border-glass-border rounded-full px-2.5 py-0.5">{t.nom}</span>)}</div>
           )}
         </div>
       </section>
