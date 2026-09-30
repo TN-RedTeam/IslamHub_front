@@ -57,12 +57,12 @@ export const Home: React.FC = () => {
           Bords dissous via masque radial (clair + sombre), sans bordure. Le
           verset du jour (dynamique) est posé par-dessus. */}
       <section className="relative w-full -mt-16 flex justify-center">
-        <div className="relative w-full md:max-w-[1040px] h-[clamp(420px,80vw,560px)] md:h-auto md:aspect-[8/5]">
+        <div className="relative w-full md:max-w-[1280px] h-[clamp(420px,80vw,560px)] md:h-auto md:aspect-[8/5]">
           <div
             className="absolute inset-0"
             style={{
-              WebkitMaskImage: 'radial-gradient(130% 118% at 50% 44%, #000 42%, rgba(0,0,0,0.5) 70%, transparent 100%)',
-              maskImage: 'radial-gradient(130% 118% at 50% 44%, #000 42%, rgba(0,0,0,0.5) 70%, transparent 100%)',
+              WebkitMaskImage: 'radial-gradient(150% 132% at 50% 46%, #000 58%, rgba(0,0,0,0.55) 83%, transparent 100%)',
+              maskImage: 'radial-gradient(150% 132% at 50% 46%, #000 58%, rgba(0,0,0,0.55) 83%, transparent 100%)',
             }}
             aria-hidden="true"
           >
