@@ -35,7 +35,7 @@ export const RecitPage: React.FC = () => {
     return (
       <div className="min-h-screen bg-ground grid place-items-center px-5">
         <div className="text-center">
-          <h1 className="font-display text-2xl text-green-deep mb-2">Récit introuvable</h1>
+          <h1 className="font-display text-2xl text-ink mb-2">Récit introuvable</h1>
           <Link to="/recits" className="text-green font-medium hover:underline">Tous les récits</Link>
         </div>
       </div>
@@ -46,13 +46,13 @@ export const RecitPage: React.FC = () => {
     <div className="min-h-screen bg-ground">
       <main className="max-w-3xl mx-auto px-5 py-7 pb-16">
         <nav aria-label="Fil d'Ariane" className="text-xs text-muted mb-1.5">
-          <Link to="/" className="hover:text-green-deep">Accueil</Link> <span aria-hidden>·</span>{' '}
-          <Link to="/recits" className="hover:text-green-deep">Récits</Link> <span aria-hidden>·</span>{' '}
+          <Link to="/" className="hover:text-ink">Accueil</Link> <span aria-hidden>·</span>{' '}
+          <Link to="/recits" className="hover:text-ink">Récits</Link> <span aria-hidden>·</span>{' '}
           {CAT_LABEL[r.categorie] ?? r.categorie}
         </nav>
 
-        <p className="text-[11.5px] font-semibold uppercase tracking-[0.2em] text-gold mb-1">{CAT_LABEL[r.categorie] ?? 'Récit'}</p>
-        <h1 className="font-display font-semibold text-green-deep leading-tight" style={{ fontSize: 'clamp(26px,4vw,38px)' }}>{r.titre}</h1>
+        <p className="text-[11.5px] font-semibold uppercase tracking-[0.2em] text-accent mb-1">{CAT_LABEL[r.categorie] ?? 'Récit'}</p>
+        <h1 className="font-display font-semibold text-ink leading-tight" style={{ fontSize: 'clamp(26px,4vw,38px)' }}>{r.titre}</h1>
 
         {r.image_url && (
           <img src={r.image_url} alt={r.titre} className="w-full rounded-card border border-line mt-5 object-cover" loading="lazy" />
@@ -66,11 +66,11 @@ export const RecitPage: React.FC = () => {
 
         {r.enfants && r.enfants.length > 0 && (
           <section className="mt-8">
-            <h2 className="font-display font-semibold text-green-deep text-xl mb-3">Ses récits</h2>
+            <h2 className="font-display font-semibold text-ink text-xl mb-3">Ses récits</h2>
             <ul className="divide-y divide-line rounded-card border border-line bg-surface overflow-hidden">
               {r.enfants.map((e) => (
                 <li key={e.slug}>
-                  <Link to={`/recits/${e.slug}`} className="flex items-center gap-3 px-4 py-3 hover:bg-green-soft transition-colors">
+                  <Link to={`/recits/${e.slug}`} className="flex items-center gap-3 px-4 py-3 hover:bg-glass-tint transition-colors">
                     <span className="text-ink font-medium">{e.titre}</span>
                     <span className="ml-auto text-muted text-sm">Lire →</span>
                   </Link>

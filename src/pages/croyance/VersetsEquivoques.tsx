@@ -61,11 +61,11 @@ export const VersetsEquivoques: React.FC = () => {
     <div className="min-h-screen bg-ground">
       <main className="max-w-6xl mx-auto px-5 py-7 pb-16">
         <nav aria-label="Fil d'Ariane" className="text-xs text-muted mb-1.5">
-          <Link to="/" className="hover:text-green-deep">Accueil</Link> <span aria-hidden="true">·</span>{' '}
-          <Link to="/croyance" className="hover:text-green-deep">Croyance</Link>
+          <Link to="/" className="hover:text-ink">Accueil</Link> <span aria-hidden="true">·</span>{' '}
+          <Link to="/croyance" className="hover:text-ink">Croyance</Link>
         </nav>
-        <p className="text-[11.5px] font-semibold uppercase tracking-[0.2em] text-gold mb-1">Croyance · Mutashābihāt</p>
-        <h1 className="font-display font-semibold text-green-deep" style={{ fontSize: 'clamp(28px,4.4vw,42px)' }}>Versets et hadiths équivoques</h1>
+        <p className="text-[11.5px] font-semibold uppercase tracking-[0.2em] text-accent mb-1">Croyance · Mutashābihāt</p>
+        <h1 className="font-display font-semibold text-ink" style={{ fontSize: 'clamp(28px,4.4vw,42px)' }}>Versets et hadiths équivoques</h1>
         <p className="text-muted text-[15px] mt-2 max-w-[62ch]">
           Les versets <b className="text-ink">et les hadiths</b> dont le sens apparent prêterait à confusion sur Allah —
           <b className="text-ink"> on va à l'essentiel</b> : le sens conforme et digne de Allah, avec les preuves.
@@ -74,11 +74,11 @@ export const VersetsEquivoques: React.FC = () => {
         {/* À lire en premier */}
         <Link
           to="/croyance/versets-hadiths-equivoques/comprendre"
-          className="group mt-6 flex items-center justify-between gap-4 rounded-card border border-green-line bg-green-soft px-5 py-4 hover:border-green transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green"
+          className="group mt-6 flex items-center justify-between gap-4 rounded-card border border-green-line bg-glass-tint px-5 py-4 hover:border-green transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green"
         >
           <span>
-            <span className="block text-[11px] font-semibold uppercase tracking-[0.16em] text-gold">À lire en premier</span>
-            <span className="block font-display font-semibold text-green-deep text-lg">Comprendre les textes équivoques</span>
+            <span className="block text-[11px] font-semibold uppercase tracking-[0.16em] text-accent">À lire en premier</span>
+            <span className="block font-display font-semibold text-ink text-lg">Comprendre les textes équivoques</span>
           </span>
           <ArrowRight className="w-5 h-5 text-green shrink-0 group-hover:translate-x-0.5 transition-transform motion-reduce:transition-none" />
         </Link>
@@ -95,7 +95,7 @@ export const VersetsEquivoques: React.FC = () => {
                 aria-selected={on}
                 onClick={() => setType(t.value)}
                 className={`px-4 py-1.5 rounded-full text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green ${
-                  on ? 'bg-green text-white' : 'text-ink hover:bg-green-soft hover:text-green-deep'
+                  on ? 'bg-green text-white' : 'text-ink hover:bg-glass-tint hover:text-ink'
                 }`}
               >
                 {t.label}
@@ -142,7 +142,7 @@ export const VersetsEquivoques: React.FC = () => {
                   {/* Méta : type + source, sur une seule ligne */}
                   <div className="flex items-center justify-between gap-2">
                     <span className={`shrink-0 text-[10.5px] font-semibold uppercase tracking-wide px-2 py-0.5 rounded-full border ${
-                      v.type === 'hadith' ? 'bg-gold-soft text-[#7a5a17] border-[#e6d3a3]' : 'bg-green-soft text-green-deep border-green-line'
+                      v.type === 'hadith' ? 'bg-accent-soft text-[#7a5a17] border-[#e6d3a3]' : 'bg-glass-tint text-ink border-green-line'
                     }`}>{v.type === 'hadith' ? 'Hadith' : 'Verset'}</span>
                     <span className="min-w-0 truncate text-xs text-muted tabular-nums text-right">
                       {v.type === 'hadith'
@@ -151,7 +151,7 @@ export const VersetsEquivoques: React.FC = () => {
                     </span>
                   </div>
                   {/* Thème = titre de la carte (2 lignes max, hauteur réservée pour l'alignement) */}
-                  <h3 className="font-display font-semibold text-green-deep text-[16.5px] leading-snug line-clamp-2 min-h-[2.6em]">{v.theme}</h3>
+                  <h3 className="font-display font-semibold text-ink text-[16.5px] leading-snug line-clamp-2 min-h-[2.6em]">{v.theme}</h3>
                   {/* Texte arabe tronqué à 3 lignes pour des cartes uniformes */}
                   <p className="font-arabic text-2xl leading-[1.9] text-right text-ink line-clamp-3 [overflow-wrap:anywhere]" lang="ar" dir="rtl">{v.verset_arabe}</p>
                   {v.sens_juste && <p className="text-sm text-ink/80 line-clamp-2">{snippet(v.sens_juste)}</p>}

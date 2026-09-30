@@ -91,36 +91,36 @@ export const Savants: React.FC = () => {
       <Link
         key={s.id}
         to={`/savants/${s.slug}`}
-        className="group flex flex-col gap-2.5 rounded-card border border-line bg-white dark:bg-gray-800 p-5 shadow-sm hover:shadow-lg hover:border-green dark:hover:border-green hover:-translate-y-0.5 transition-all motion-reduce:transition-none motion-reduce:hover:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green"
+        className="group flex flex-col gap-2.5 rounded-card border border-line bg-glass p-5 shadow-sm hover:shadow-lg hover:border-green dark:hover:border-green hover:-translate-y-0.5 transition-all motion-reduce:transition-none motion-reduce:hover:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green"
       >
         {/* 7.2 — carte typographique : nom > rôle > lien, sans gros avatar */}
         <div className="min-w-0">
-          <h3 className="font-display text-xl font-bold leading-tight text-green-deep group-hover:text-green break-words">{s.nom}</h3>
+          <h3 className="font-display text-xl font-bold leading-tight text-ink group-hover:text-green break-words">{s.nom}</h3>
           {s.nom_arabe && (
-            <p dir="rtl" lang="ar" className="font-arabic-name font-medium text-lg text-gold mt-0.5 [unicode-bidi:plaintext]">{s.nom_arabe}</p>
+            <p dir="rtl" lang="ar" className="font-arabic-name font-medium text-lg text-accent mt-0.5 [unicode-bidi:plaintext]">{s.nom_arabe}</p>
           )}
         </div>
 
         <BadgeGeneration generation={s.generation} role={s.role} sexe={s.role === 'epouse_prophete' ? 'f' : undefined} />
 
         {(dates || s.ecole) && (
-          <div className="flex items-center gap-2 flex-wrap text-xs text-gray-500 dark:text-gray-400 tabular-nums">
+          <div className="flex items-center gap-2 flex-wrap text-xs text-muted tabular-nums">
             {dates && <span>{dates}</span>}
             {dates && s.ecole && <span aria-hidden="true">·</span>}
             {s.ecole && (
-              <span className="inline-flex items-center gap-1.5 font-semibold text-gold">
-                <span className="w-1.5 h-1.5 rounded-full bg-gold" /> {s.ecole}
+              <span className="inline-flex items-center gap-1.5 font-semibold text-accent">
+                <span className="w-1.5 h-1.5 rounded-full bg-accent" /> {s.ecole}
               </span>
             )}
           </div>
         )}
 
-        {s.resume && <p className="text-sm text-gray-700 dark:text-gray-300 line-clamp-2">{s.resume}</p>}
+        {s.resume && <p className="text-sm text-ink line-clamp-2">{s.resume}</p>}
 
         {doms.length > 0 && (
           <div className="flex flex-wrap gap-1.5">
             {doms.map((d) => (
-              <span key={d} className="text-[11px] font-semibold tracking-wide text-green bg-green-soft px-2 py-0.5 rounded">{labelDom(d)}</span>
+              <span key={d} className="text-[11px] font-semibold tracking-wide text-green bg-glass-tint px-2 py-0.5 rounded">{labelDom(d)}</span>
             ))}
           </div>
         )}
@@ -136,12 +136,12 @@ export const Savants: React.FC = () => {
     <div className="min-h-screen bg-ground">
       <div className="max-w-6xl mx-auto px-4 py-10">
         <header className="mb-6">
-          <p className="text-xs font-semibold uppercase tracking-[0.16em] text-gold mb-1">
+          <p className="text-xs font-semibold uppercase tracking-[0.16em] text-accent mb-1">
             Ahlou s-Sounnah wa l-Jamā‘ah · Références
           </p>
-          <nav aria-label="Fil d'Ariane" className="text-xs text-muted mb-2"><Link to="/" className="hover:text-green-deep">Accueil</Link> <span aria-hidden>·</span> Savants</nav>
-          <h1 className="text-4xl md:text-5xl font-bold text-green-deep font-display">Les Savants de l'Islam</h1>
-          <p className="text-gray-600 dark:text-gray-400 mt-2 max-w-2xl">
+          <nav aria-label="Fil d'Ariane" className="text-xs text-muted mb-2"><Link to="/" className="hover:text-ink">Accueil</Link> <span aria-hidden>·</span> Savants</nav>
+          <h1 className="text-4xl md:text-5xl font-bold text-ink font-display">Les Savants de l'Islam</h1>
+          <p className="text-muted mt-2 max-w-2xl">
             Les savants cités à travers les hadiths, les paroles et les dossiers. Chaque fiche donne le crédit et le contexte de celui dont on rapporte la parole.
           </p>
           <SavantsTabs className="mt-5" />
@@ -150,7 +150,7 @@ export const Savants: React.FC = () => {
         {/* Barre d'outils sticky */}
         <div
           role="search"
-          className="sticky top-0 z-10 flex flex-wrap items-center gap-3 rounded-xl border border-line bg-green-soft dark:bg-gray-900/80 backdrop-blur px-3 py-3"
+          className="sticky top-0 z-10 flex flex-wrap items-center gap-3 rounded-xl border border-line bg-glass-tint /80 backdrop-blur px-3 py-3"
         >
           <div className="relative flex-1 min-w-[240px]">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-green" />
@@ -160,14 +160,14 @@ export const Savants: React.FC = () => {
               onChange={(e) => setQ(e.target.value)}
               placeholder="Rechercher un savant…"
               aria-label="Rechercher un savant"
-              className="w-full pl-9 pr-3 py-2.5 rounded-lg border border-line bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green"
+              className="w-full pl-9 pr-3 py-2.5 rounded-lg border border-line bg-glass text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green"
             />
           </div>
           <select
             aria-label="Filtrer par école"
             value={ecole}
             onChange={(e) => setEcole(e.target.value)}
-            className="py-2.5 px-3 rounded-lg border border-line bg-white dark:bg-gray-800 text-gray-900 dark:text-white cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green"
+            className="py-2.5 px-3 rounded-lg border border-line bg-glass text-ink cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green"
           >
             <option value="">Toutes les écoles</option>
             {ecoles.map((e) => <option key={e} value={e}>{e}</option>)}
@@ -176,7 +176,7 @@ export const Savants: React.FC = () => {
             aria-label="Filtrer par génération"
             value={gen}
             onChange={(e) => setGen(e.target.value)}
-            className="py-2.5 px-3 rounded-lg border border-line bg-white dark:bg-gray-800 text-gray-900 dark:text-white cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green"
+            className="py-2.5 px-3 rounded-lg border border-line bg-glass text-ink cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green"
           >
             <option value="">Toutes générations</option>
             <option value="sahabi">Compagnons</option>
@@ -187,7 +187,7 @@ export const Savants: React.FC = () => {
             aria-label="Trier"
             value={sort}
             onChange={(e) => setSort(e.target.value as 'az' | 'epoque')}
-            className="py-2.5 px-3 rounded-lg border border-line bg-white dark:bg-gray-800 text-gray-900 dark:text-white cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green"
+            className="py-2.5 px-3 rounded-lg border border-line bg-glass text-ink cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green"
           >
             <option value="az">A → Z</option>
             <option value="epoque">Par époque</option>
@@ -208,7 +208,7 @@ export const Savants: React.FC = () => {
                   className={`px-3 py-1.5 rounded-full text-sm font-medium border transition-colors motion-reduce:transition-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green ${
                     on
                       ? 'bg-green text-white border-green'
-                      : 'bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 border-line hover:border-green'
+                      : 'bg-glass text-muted border-line hover:border-green'
                   }`}
                 >
                   {labelDom(d)}
@@ -218,14 +218,14 @@ export const Savants: React.FC = () => {
           </div>
         )}
 
-        <p className="text-sm text-gray-500 dark:text-gray-400 font-medium my-4">
+        <p className="text-sm text-muted font-medium my-4">
           <span className="text-green font-bold">{total}</span> référence{total > 1 ? 's' : ''}
         </p>
 
         {loading ? (
           <div className="flex justify-center py-16"><Loader2 className="h-8 w-8 text-green animate-spin" /></div>
         ) : total === 0 ? (
-          <div className="text-center py-16 text-gray-500 dark:text-gray-400">
+          <div className="text-center py-16 text-muted">
             <Users className="h-10 w-10 mx-auto mb-3 opacity-60" />
             <p>Aucune référence ne correspond à ces critères.</p>
           </div>
@@ -234,10 +234,10 @@ export const Savants: React.FC = () => {
             {compagnons.length > 0 && (
               <section aria-labelledby="sec-compagnons">
                 <div className="flex items-center gap-2.5 mb-1">
-                  <h2 id="sec-compagnons" className="font-display text-2xl font-bold text-green-deep">
+                  <h2 id="sec-compagnons" className="font-display text-2xl font-bold text-ink">
                     Les Compagnons du Prophète&nbsp;{'ﷺ'}
                   </h2>
-                  <span className="text-xs font-semibold text-[#7a5a17] bg-gold-soft border border-[#e6d3a3] rounded-full px-2.5 py-0.5 tabular-nums">{compagnons.length}</span>
+                  <span className="text-xs font-semibold text-[#7a5a17] bg-accent-soft border border-[#e6d3a3] rounded-full px-2.5 py-0.5 tabular-nums">{compagnons.length}</span>
                 </div>
                 <p className="text-sm text-muted mb-4 max-w-2xl">
                   Ceux qui ont vu le Prophète&nbsp;{'ﷺ'} en étant croyants&nbsp;: les meilleurs de cette communauté, dont on rapporte les hadiths.
@@ -252,8 +252,8 @@ export const Savants: React.FC = () => {
             {autres.length > 0 && (
               <section aria-labelledby="sec-savants">
                 <div className="flex items-center gap-2.5 mb-1">
-                  <h2 id="sec-savants" className="font-display text-2xl font-bold text-green-deep">Les Savants</h2>
-                  <span className="text-xs font-semibold text-green-deep bg-green-soft border border-green-line rounded-full px-2.5 py-0.5 tabular-nums">{autres.length}</span>
+                  <h2 id="sec-savants" className="font-display text-2xl font-bold text-ink">Les Savants</h2>
+                  <span className="text-xs font-semibold text-ink bg-glass-tint border border-green-line rounded-full px-2.5 py-0.5 tabular-nums">{autres.length}</span>
                 </div>
                 <p className="text-sm text-muted mb-4 max-w-2xl">
                   Les savants de Ahlou s-Sounnah qui ont transmis, jugé et expliqué la religion après les Compagnons.

@@ -43,9 +43,9 @@ export const TagPicker: React.FC<{
       {value.length > 0 && (
         <div className="flex flex-wrap gap-1.5 mb-2">
           {value.map((t, i) => (
-            <span key={`${t}-${i}`} className="inline-flex items-center gap-1 rounded-full bg-green-soft text-green-deep border border-green-line px-2.5 py-1 text-[13px]">
+            <span key={`${t}-${i}`} className="inline-flex items-center gap-1 rounded-full bg-glass-tint text-ink border border-green-line px-2.5 py-1 text-[13px]">
               {t}
-              <button type="button" onClick={() => remove(i)} className="text-green-deep/70 hover:text-red-600" aria-label="Retirer"><X className="w-3.5 h-3.5" /></button>
+              <button type="button" onClick={() => remove(i)} className="text-ink/70 hover:text-red-600" aria-label="Retirer"><X className="w-3.5 h-3.5" /></button>
             </span>
           ))}
         </div>
@@ -63,10 +63,10 @@ export const TagPicker: React.FC<{
         {open && (filtered.length > 0 || (allowFree && q.trim() && !exactExists)) && (
           <div className="absolute z-20 left-0 right-0 mt-1 max-h-60 overflow-auto rounded-lg border border-line bg-surface shadow-lg py-1">
             {filtered.map((s) => (
-              <button key={s} type="button" onMouseDown={(e) => e.preventDefault()} onClick={() => add(s)} className="block w-full text-left px-3.5 py-2 text-[14px] text-ink hover:bg-green-soft">{s}</button>
+              <button key={s} type="button" onMouseDown={(e) => e.preventDefault()} onClick={() => add(s)} className="block w-full text-left px-3.5 py-2 text-[14px] text-ink hover:bg-glass-tint">{s}</button>
             ))}
             {allowFree && q.trim() && !exactExists && (
-              <button type="button" onMouseDown={(e) => e.preventDefault()} onClick={() => add(q)} className="flex w-full items-center gap-1.5 text-left px-3.5 py-2 text-[14px] text-green-deep hover:bg-green-soft border-t border-line">
+              <button type="button" onMouseDown={(e) => e.preventDefault()} onClick={() => add(q)} className="flex w-full items-center gap-1.5 text-left px-3.5 py-2 text-[14px] text-ink hover:bg-glass-tint border-t border-line">
                 <Plus className="w-3.5 h-3.5" /> Ajouter «&nbsp;{q.trim()}&nbsp;»
               </button>
             )}

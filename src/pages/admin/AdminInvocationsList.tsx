@@ -20,7 +20,7 @@ export const AdminInvocationsList: React.FC = () => {
   return (
     <div className="max-w-4xl px-6 py-8">
       <div className="flex items-center gap-3 flex-wrap mb-5">
-        <h1 className="font-display font-semibold text-green-deep text-3xl">Invocations & Évocations</h1>
+        <h1 className="font-display font-semibold text-ink text-3xl">Invocations & Évocations</h1>
         <CountBadge n={loading ? null : items.length} />
         <Link to="/admin/invocations/nouveau" className="ml-auto inline-flex items-center gap-1.5 rounded-lg bg-green text-white font-semibold px-4 py-2 hover:bg-green-deep transition-colors"><Plus className="w-4 h-4" /> Nouvelle</Link>
       </div>
@@ -36,10 +36,10 @@ export const AdminInvocationsList: React.FC = () => {
           <ul className="divide-y divide-line rounded-card border border-line bg-surface overflow-hidden">
             {filtered.map((i) => (
               <li key={i.id}>
-                <Link to={`/admin/invocations/${i.id}`} className="flex items-center gap-3 px-4 py-3 hover:bg-green-soft transition-colors">
+                <Link to={`/admin/invocations/${i.id}`} className="flex items-center gap-3 px-4 py-3 hover:bg-glass-tint transition-colors">
                   <IdTag id={i.id} />
                   <span className={`text-[10.5px] font-semibold uppercase tracking-wide px-2 py-0.5 rounded-full border shrink-0 ${
-                    i.type_id === 2 ? 'bg-gold-soft text-[#7a5a17] border-[#e6d3a3]' : 'bg-green-soft text-green-deep border-green-line'
+                    i.type_id === 2 ? 'bg-accent-soft text-[#7a5a17] border-[#e6d3a3]' : 'bg-glass-tint text-ink border-green-line'
                   }`}>{i.type_id === 2 ? 'Évocation' : 'Invocation'}</span>
                   <span className="text-ink font-medium min-w-0 truncate">{i.sujet}</span>
                   <span className="ml-auto text-muted text-sm shrink-0">Modifier →</span>

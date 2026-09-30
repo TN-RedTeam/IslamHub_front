@@ -46,11 +46,11 @@ const InvocationCard: React.FC<{ item: Item; onClick: () => void; onTagClick?: (
         >
             {item.sujet && (
                 <div className="flex items-center">
-                    <Star className="h-5 w-5 text-gold mr-2 shrink-0" />
-                    <h3 className="text-xl font-semibold text-green-deep font-display">{item.sujet}</h3>
+                    <Star className="h-5 w-5 text-accent mr-2 shrink-0" />
+                    <h3 className="text-xl font-semibold text-ink font-display">{item.sujet}</h3>
                 </div>
             )}
-            <div className="bg-white dark:bg-gray-800/80 p-4 rounded-lg border border-line flex-grow">
+            <div className="bg-glass-tint p-4 rounded-lg border border-line flex-grow">
                 <p className="text-2xl text-ink font-arabic leading-loose text-right line-clamp-3 whitespace-pre-wrap">{item.texte_arabe}</p>
                 {item.texte_francais && (
                     <div className="mt-4 pl-4 border-l-4 border-gold/60 line-clamp-2">
@@ -63,7 +63,7 @@ const InvocationCard: React.FC<{ item: Item; onClick: () => void; onTagClick?: (
                 <div className="flex flex-wrap gap-2">
                     {tags.map(tag => (
                         <m.span key={tag} whileHover={{ scale: 1.05 }} onClick={(e) => handleTagClick(e, tag)}
-                                     className="text-xs bg-green-soft text-green-deep px-3 py-1 rounded-full flex items-center cursor-pointer hover:bg-green hover:text-white transition-colors">
+                                     className="text-xs bg-glass-tint text-ink px-3 py-1 rounded-full flex items-center cursor-pointer hover:bg-green hover:text-white transition-colors">
                             <Hash className="h-3 w-3 mr-1" />{tag}
                         </m.span>
                     ))}
@@ -87,16 +87,16 @@ const InvocationModal: React.FC<{ item: Item; onClose: () => void; onTagClick?: 
                     className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4" onClick={onClose}>
             <m.div initial={{ scale: 0.9, y: 50 }} animate={{ scale: 1, y: 0 }} exit={{ scale: 0.9, y: 50 }}
                         onClick={(e) => e.stopPropagation()}
-                        className="bg-white dark:bg-gray-800 rounded-card p-8 max-w-4xl w-full max-h-[90vh] overflow-y-auto relative">
-                <button onClick={onClose} aria-label="Fermer" className="absolute top-4 right-4 p-2 text-muted hover:text-green-deep">
+                        className="bg-bg1 rounded-card p-8 max-w-4xl w-full max-h-[90vh] overflow-y-auto relative">
+                <button onClick={onClose} aria-label="Fermer" className="absolute top-4 right-4 p-2 text-muted hover:text-ink">
                     <X className="h-6 w-6" />
                 </button>
                 <div className="space-y-6">
-                    <h2 className="text-2xl font-semibold text-green-deep font-display">{item.sujet}</h2>
-                    <div className="bg-green-soft p-6 rounded-lg">
+                    <h2 className="text-2xl font-semibold text-ink font-display">{item.sujet}</h2>
+                    <div className="bg-glass-tint p-6 rounded-lg">
                         <p className="text-3xl text-ink font-arabic leading-loose text-right whitespace-pre-wrap">{item.texte_arabe}</p>
                         {item.phonétique && (
-                            <div className="mt-6 bg-white dark:bg-gray-600 p-4 rounded">
+                            <div className="mt-6 bg-glass-tint p-4 rounded">
                                 <p className="text-sm text-muted mb-2">Phonétique :</p>
                                 <p className="text-ink whitespace-pre-wrap [unicode-bidi:plaintext]">{item.phonétique}</p>
                             </div>
@@ -108,14 +108,14 @@ const InvocationModal: React.FC<{ item: Item; onClose: () => void; onTagClick?: 
                             </div>
                         )}
                         {item.explication && (
-                            <div className="mt-6 bg-white dark:bg-gray-700 p-6 rounded-lg border border-line">
-                                <p className="text-lg font-semibold text-green-deep mb-3">Explication :</p>
+                            <div className="mt-6 bg-glass p-6 rounded-lg border border-line">
+                                <p className="text-lg font-semibold text-ink mb-3">Explication :</p>
                                 <Markdown className="[unicode-bidi:plaintext]">{item.explication}</Markdown>
                             </div>
                         )}
                         {item.commentaire && (
-                            <div className="mt-6 bg-white dark:bg-gray-700 p-6 rounded-lg border border-line">
-                                <p className="text-lg font-semibold text-green-deep mb-3">Commentaire :</p>
+                            <div className="mt-6 bg-glass p-6 rounded-lg border border-line">
+                                <p className="text-lg font-semibold text-ink mb-3">Commentaire :</p>
                                 <Markdown className="[unicode-bidi:plaintext]">{item.commentaire}</Markdown>
                             </div>
                         )}
@@ -128,7 +128,7 @@ const InvocationModal: React.FC<{ item: Item; onClose: () => void; onTagClick?: 
                             <div className="flex flex-wrap gap-2">
                                 {tags.map(tag => (
                                     <m.span key={tag} whileHover={{ scale: 1.05 }} onClick={() => handleTagClick(tag)}
-                                                 className="cursor-pointer text-xs bg-green-soft text-green-deep px-3 py-1 rounded-full hover:bg-green hover:text-white transition-colors">
+                                                 className="cursor-pointer text-xs bg-glass-tint text-ink px-3 py-1 rounded-full hover:bg-green hover:text-white transition-colors">
                                         <Hash className="h-3 w-3 inline mr-1" />{tag}
                                     </m.span>
                                 ))}
@@ -238,7 +238,7 @@ export const Invocations: React.FC = () => {
                 crumbs={[{ label: 'Accueil', to: '/' }, { label: 'Invocations & Évocations' }]}
             >
                 {hasSearched && (
-                    <span className="inline-flex items-center rounded-full bg-green-soft px-3 py-1 text-sm text-green-deep tabular-nums">
+                    <span className="inline-flex items-center rounded-full bg-glass-tint px-3 py-1 text-sm text-ink tabular-nums">
                         {totalCount} {meta.nounPlural}
                     </span>
                 )}
@@ -257,7 +257,7 @@ export const Invocations: React.FC = () => {
                                     aria-selected={on}
                                     onClick={() => handleTypeChange(t.id)}
                                     className={`px-5 py-2 rounded-full text-[15px] font-medium transition-colors focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-green focus-visible:outline-offset-2 ${
-                                        on ? 'bg-green text-white' : 'text-muted hover:text-green-deep'
+                                        on ? 'bg-green text-white' : 'text-muted hover:text-ink'
                                     }`}
                                 >
                                     {t.label}
@@ -273,14 +273,14 @@ export const Invocations: React.FC = () => {
                         <div className="bg-ivory rounded-card p-6 shadow-card border border-line">
                             <div className="flex items-center gap-2 mb-4">
                                 <Tags className="h-5 w-5 text-green" />
-                                <h3 className="text-lg font-semibold text-green-deep">Tags dans les résultats ({tagCounts.size})</h3>
+                                <h3 className="text-lg font-semibold text-ink">Tags dans les résultats ({tagCounts.size})</h3>
                             </div>
                             <div className="flex flex-wrap gap-2 max-h-40 overflow-y-auto p-2">
                                 {Array.from(tagCounts.entries()).sort((a, b) => b[1] - a[1]).map(([tag, count]) => (
                                     <m.button key={tag} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
                                                    onClick={() => handleTagClick(tag)}
                                                    className={`inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
-                                                       selectedTag === tag ? 'bg-green text-white' : 'bg-green-soft text-green-deep hover:bg-green hover:text-white'
+                                                       selectedTag === tag ? 'bg-green text-white' : 'bg-glass-tint text-ink hover:bg-green hover:text-white'
                                                    }`}>
                                         <Hash className="h-3 w-3" />{tag}
                                         <span className="text-xs opacity-75">({count})</span>
@@ -301,7 +301,7 @@ export const Invocations: React.FC = () => {
                             </div>
                             <input type="text" aria-label={`Rechercher une ${meta.noun}`}
                                    placeholder="Rechercher par texte arabe, français, phonétique, mot-clé..."
-                                   className="w-full pl-12 pr-6 py-3 rounded-xl border border-line bg-white dark:bg-gray-800 text-ink focus:ring-2 focus:ring-green focus:border-transparent text-lg font-display"
+                                   className="w-full pl-12 pr-6 py-3 rounded-xl border border-line bg-glass text-ink focus:ring-2 focus:ring-green focus:border-transparent text-lg font-display"
                                    value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
                         </div>
                         <FilterSelect
@@ -316,21 +316,21 @@ export const Invocations: React.FC = () => {
 
                     {(selectedTag || searchTerm) && (
                         <m.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-                                    className="mt-4 flex items-center justify-between bg-green-soft rounded-lg px-4 py-2">
+                                    className="mt-4 flex items-center justify-between bg-glass-tint rounded-lg px-4 py-2">
                             <div className="flex items-center gap-2 flex-wrap">
-                                <span className="font-medium text-green-deep">Filtre actif :</span>
+                                <span className="font-medium text-ink">Filtre actif :</span>
                                 {selectedTag && (
                                     <span className="inline-flex items-center gap-1 px-2 py-1 bg-green text-white rounded-full text-sm">
                                         <Filter className="h-3 w-3" />{selectedTag}
                                     </span>
                                 )}
                                 {searchTerm && (
-                                    <span className="inline-flex items-center gap-1 px-2 py-1 bg-gold text-white rounded-full text-sm">
+                                    <span className="inline-flex items-center gap-1 px-2 py-1 bg-accent text-white rounded-full text-sm">
                                         <Search className="h-3 w-3" />"{searchTerm}"
                                     </span>
                                 )}
                             </div>
-                            <button onClick={handleResetFilters} aria-label="Retirer les filtres" className="text-green hover:text-green-deep p-1 transition-colors">
+                            <button onClick={handleResetFilters} aria-label="Retirer les filtres" className="text-green hover:text-ink p-1 transition-colors">
                                 <X className="h-5 w-5" />
                             </button>
                         </m.div>
@@ -342,18 +342,18 @@ export const Invocations: React.FC = () => {
                     {isLoading ? (
                         <div className="flex flex-col items-center py-16 gap-4">
                             <Loader className="h-12 w-12 text-green animate-spin" />
-                            <p className="text-green-deep font-display text-xl">Recherche en cours...</p>
+                            <p className="text-ink font-display text-xl">Recherche en cours...</p>
                         </div>
                     ) : error ? (
                         <div className="text-center py-16 bg-ivory rounded-card shadow-card border border-line">
                             <IconBadge name="sad" />
-                            <p className="text-red-600 dark:text-red-400 mb-4">{error}</p>
-                            <button onClick={() => doSearch(searchTerm, selectedTag, activeType)} className="px-6 py-2 bg-green hover:bg-green-deep text-white rounded-lg">Réessayer</button>
+                            <p className="text-low mb-4">{error}</p>
+                            <button onClick={() => doSearch(searchTerm, selectedTag, activeType)} className="px-6 py-2 bg-accent-deep hover:brightness-110 text-white rounded-lg">Réessayer</button>
                         </div>
                     ) : !hasSearched ? (
                         <m.div key="empty-state" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center py-14">
                             <div className="max-w-lg mx-auto">
-                                <h3 className="text-3xl font-semibold text-green-deep mb-4 font-display">
+                                <h3 className="text-3xl font-semibold text-ink mb-4 font-display">
                                     Recherchez parmi les {meta.nounPlural}
                                 </h3>
                                 <p className="text-muted mb-6 leading-relaxed text-lg">
@@ -361,7 +361,7 @@ export const Invocations: React.FC = () => {
                                 </p>
                                 <button
                                     onClick={showAll}
-                                    className="inline-flex items-center gap-2 px-6 py-3 mb-8 rounded-xl bg-green hover:bg-green-deep text-white font-medium shadow-card"
+                                    className="inline-flex items-center gap-2 px-6 py-3 mb-8 rounded-xl bg-accent-deep hover:brightness-110 text-white font-medium shadow-card"
                                 >
                                     Tout afficher
                                 </button>
@@ -371,7 +371,7 @@ export const Invocations: React.FC = () => {
                                         {allTags.slice(0, 8).map(sujet => (
                                             <m.button key={sujet} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
                                                            onClick={() => handleSujetClick(sujet)}
-                                                           className="px-4 py-2 bg-green-soft text-green-deep rounded-full text-sm font-medium hover:bg-green hover:text-white transition-colors border border-line">
+                                                           className="px-4 py-2 bg-glass-tint text-ink rounded-full text-sm font-medium hover:bg-green hover:text-white transition-colors border border-line">
                                                 {sujet}
                                             </m.button>
                                         ))}
@@ -384,16 +384,16 @@ export const Invocations: React.FC = () => {
                                     className="text-center py-16 bg-ivory rounded-card shadow-card border border-line">
                             <div className="max-w-md mx-auto">
                                 <IconBadge name="book" />
-                                <h3 className="text-xl font-semibold text-green-deep mb-2">Aucun résultat trouvé</h3>
+                                <h3 className="text-xl font-semibold text-ink mb-2">Aucun résultat trouvé</h3>
                                 <p className="text-muted mb-6">Essayez de modifier vos critères de recherche</p>
-                                <button onClick={handleResetFilters} className="px-6 py-2 bg-green hover:bg-green-deep text-white rounded-lg transition-colors">Réinitialiser</button>
+                                <button onClick={handleResetFilters} className="px-6 py-2 bg-accent-deep hover:brightness-110 text-white rounded-lg transition-colors">Réinitialiser</button>
                             </div>
                         </m.div>
                     ) : (
                         <AnimatePresence mode="wait">
                             <>
                                 <m.p initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-                                          className="text-sm font-medium text-green-deep mb-6">
+                                          className="text-sm font-medium text-ink mb-6">
                                     {items.length} {meta.noun}{items.length > 1 ? 's' : ''} trouvée{items.length > 1 ? 's' : ''}
                                     {totalCount > items.length && <span className="ml-1 text-muted">(sur {totalCount})</span>}
                                 </m.p>

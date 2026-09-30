@@ -32,7 +32,7 @@ const AllahExisteSansEndroit: React.FC = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.2 }}
-          className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 mb-12 border border-amber-200 dark:border-emerald-800"
+          className="bg-glass rounded-2xl shadow-xl p-8 mb-12 border border-amber-200 dark:border-emerald-800"
         >
           {/* Section 1 : L'existence */}
           <section className="space-y-8 mb-12">
@@ -114,7 +114,7 @@ const AllahExisteSansEndroit: React.FC = () => {
                 <h3 className="text-xl font-bold text-amber-800 dark:text-amber-200 mb-2 font-amiri">
                   {quote.author} <span className="text-sm text-emerald-700 dark:text-emerald-400">({quote.period})</span>
                 </h3>
-                <p className="font-amiri text-gray-700 dark:text-gray-300 text-xl leading-relaxed mb-4">
+                <p className="font-amiri text-ink text-xl leading-relaxed mb-4">
                   {quote.text}
                 </p>
                 <p className="text-sm text-emerald-700 dark:text-emerald-400">
@@ -141,16 +141,16 @@ const AllahExisteSansEndroit: React.FC = () => {
             >
               <div className="flex flex-col md:flex-row items-center gap-6">
                 <div className="text-center md:text-right w-full md:w-1/3">
-                  <p className="font-amiri text-3xl text-gray-900 dark:text-white mb-2">
+                  <p className="font-amiri text-3xl text-ink mb-2">
                     لَيْسَ كَمِثْلِهِ شَىءٌ
                   </p>
-                  <p className="text-gray-600 dark:text-gray-400">(layça kamithlihi chay')</p>
+                  <p className="text-muted">(layça kamithlihi chay')</p>
                 </div>
                 <div className="w-full md:w-2/3">
-                  <p className="text-gray-700 dark:text-gray-300 italic mb-4">
+                  <p className="text-ink italic mb-4">
                     "Absolument rien ne ressemble à Allah" [Sourate Ach-Choura, verset 11]
                   </p>
-                  <p className="text-gray-700 dark:text-gray-300">
+                  <p className="text-ink">
                     L'Imam At-Tahawiyy (mort en 323 H) a dit : « Il est exempt des limites, des fins, des côtés, des organes et des membres ; Il n'est pas concerné par les six directions contrairement à toutes les créatures ».
                   </p>
                 </div>
@@ -175,16 +175,16 @@ const AllahExisteSansEndroit: React.FC = () => {
             >
               <div className="flex flex-col md:flex-row items-center gap-6">
                 <div className="text-center md:text-right w-full md:w-1/3">
-                  <p className="font-amiri text-3xl text-gray-900 dark:text-white mb-2">
+                  <p className="font-amiri text-3xl text-ink mb-2">
                     وَإِلَهُكُمْ إِلَـهٌ وَاحِدٌ
                   </p>
-                  <p className="text-gray-600 dark:text-gray-400">(wa 'ilāhoukoum 'ilāhoun wāḥid)</p>
+                  <p className="text-muted">(wa 'ilāhoukoum 'ilāhoun wāḥid)</p>
                 </div>
                 <div className="w-full md:w-2/3">
-                  <p className="text-gray-700 dark:text-gray-300 italic mb-4">
+                  <p className="text-ink italic mb-4">
                     "Votre Dieu est un Dieu unique" [Sourate Al-Baqarah, verset 163]
                   </p>
-                  <p className="text-gray-700 dark:text-gray-300">
+                  <p className="text-ink">
                     L'Imam Abou Hanifah a dit : <strong>« Allah est Unique, non pas du point de vue numérique, mais dans le sens qu'Il n'a pas d'associé »</strong>. La preuve rationnelle montre qu'il est impossible selon la raison qu'il y ait un associé au sujet de Dieu.
                   </p>
                 </div>
@@ -200,13 +200,13 @@ const AllahExisteSansEndroit: React.FC = () => {
             >
               <div className="flex flex-col md:flex-row items-center gap-6">
                 <div className="text-center md:text-right w-full md:w-1/3">
-                  <p className="font-amiri text-3xl text-gray-900 dark:text-white mb-2">
+                  <p className="font-amiri text-3xl text-ink mb-2">
                     لَوْ كَانَ فِيهِمَا آلِهَةٌ إِلَّا اللَّـهُ لَفَسَدَتَا
                   </p>
-                  <p className="text-gray-600 dark:text-gray-400">(Law kāna fīhimā 'ālihatoun 'il-la l-Lāhou lafaçadatā)</p>
+                  <p className="text-muted">(Law kāna fīhimā 'ālihatoun 'il-la l-Lāhou lafaçadatā)</p>
                 </div>
                 <div className="w-full md:w-2/3">
-                  <p className="text-gray-700 dark:text-gray-300 italic mb-4">
+                  <p className="text-ink italic mb-4">
                     "S'il y avait [pour le ciel et la terre] des dieux hormis Allah, [les cieux et les terres] seraient certes en discordance" [Sourate Al-Anbiya, verset 22]
                   </p>
                 </div>

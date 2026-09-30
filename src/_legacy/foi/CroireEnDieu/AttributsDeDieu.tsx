@@ -27,12 +27,12 @@ const AttributsDeDieu: React.FC = () => {
         <m.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 border border-emerald-100 dark:border-emerald-900"
+          className="bg-glass rounded-2xl shadow-lg p-8 border border-emerald-100 dark:border-emerald-900"
         >
           <h2 className="text-2xl font-bold text-emerald-700 dark:text-emerald-300 font-amiri mb-6">
             L'attribut de Dieu - Allāh - l'existence
           </h2>
-          <div className="space-y-4 text-gray-600 dark:text-gray-300">
+          <div className="space-y-4 text-muted">
             <p>
               Dieu existe de toute éternité, sans début. Allāh Ta`ālā [Ta`ālā veut dire qu'Il est exempt d'imperfection] dit :
             </p>
@@ -66,12 +66,12 @@ const AttributsDeDieu: React.FC = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 border border-emerald-100 dark:border-emerald-900"
+          className="bg-glass rounded-2xl shadow-lg p-8 border border-emerald-100 dark:border-emerald-900"
         >
           <h2 className="text-2xl font-bold text-emerald-700 dark:text-emerald-300 font-amiri mb-6">
             L'attribut de Dieu - Allāh - la non ressemblance avec les créatures
           </h2>
-          <div className="space-y-4 text-gray-600 dark:text-gray-300">
+          <div className="space-y-4 text-muted">
             <p>
               Dieu a pour attribut toute perfection qui est digne de Lui et Il est exempt de toute imperfection c'est-à-dire de tout ce qui n'est pas digne de Lui ta`ālā, comme l'ignorance, l'impuissance, l'endroit, le lieu, la couleur et la limite. Allāh Ta`ālā dit :
             </p>
@@ -93,12 +93,12 @@ const AttributsDeDieu: React.FC = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 border border-emerald-100 dark:border-emerald-900"
+          className="bg-glass rounded-2xl shadow-lg p-8 border border-emerald-100 dark:border-emerald-900"
         >
           <h2 className="text-2xl font-bold text-emerald-700 dark:text-emerald-300 font-amiri mb-6">
             L'attribut de Dieu - Allāh - l'unicité
           </h2>
-          <div className="space-y-4 text-gray-600 dark:text-gray-300">
+          <div className="space-y-4 text-muted">
             <p>
               Allāh est unique, Il n'a pas d'associé c'est-à-dire qu'Il n'a pas de second. Dieu n'est pas composé de parties comme les corps, car le Trône ou n'importe quel corps, même le plus petit est composé de parties : il est donc impossible qu'il y ait une ressemblance entre le trône et Dieu. Allāh Ta`ālā - exempté d'imperfection - dit :
             </p>

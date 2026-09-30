@@ -25,15 +25,15 @@ const ParoleCard: React.FC<{ parole: Parole }> = ({ parole }) => {
         className="relative bg-ivory rounded-card p-6 shadow-card border border-line space-y-4 overflow-hidden cursor-pointer h-full flex flex-col focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green"
     >
       <div className="absolute top-0 right-0 w-24 h-24 opacity-20">
-        <svg viewBox="0 0 100 100" className="text-gold">
+        <svg viewBox="0 0 100 100" className="text-accent">
           <path fill="currentColor" d="M20,20 Q30,10 40,20 T60,20 T80,20 T100,20" className="transform rotate-45" />
         </svg>
       </div>
 
       {parole.sujet && (
           <div className="flex items-center">
-            <Star className="h-5 w-5 text-gold mr-2" />
-            <h3 className="text-xl font-bold text-green-deep font-display">
+            <Star className="h-5 w-5 text-accent mr-2" />
+            <h3 className="text-xl font-bold text-ink font-display">
               {parole.sujet}
             </h3>
           </div>
@@ -50,15 +50,15 @@ const ParoleCard: React.FC<{ parole: Parole }> = ({ parole }) => {
           </div>
       )}
 
-      <div className="bg-white dark:bg-gray-800/80 p-4 rounded-lg border border-line flex-grow">
-        <p className="text-2xl text-gray-900 dark:text-white font-arabic leading-loose text-right line-clamp-3 whitespace-pre-wrap">
+      <div className="bg-glass-tint p-4 rounded-lg border border-line flex-grow">
+        <p className="text-2xl text-ink font-arabic leading-loose text-right line-clamp-3 whitespace-pre-wrap">
           {parole.texte_arabe}
         </p>
 
         {parole.texte_francais && (
             <div className="mt-4 pl-4 border-l-4 border-green-line dark:border-green line-clamp-2">
-              <p className="text-sm text-green-deep mb-1">Signification :</p>
-              <p className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap [unicode-bidi:plaintext]">{parole.texte_francais}</p>
+              <p className="text-sm text-ink mb-1">Signification :</p>
+              <p className="text-ink whitespace-pre-wrap [unicode-bidi:plaintext]">{parole.texte_francais}</p>
             </div>
         )}
       </div>
@@ -68,7 +68,7 @@ const ParoleCard: React.FC<{ parole: Parole }> = ({ parole }) => {
             <m.span
                 key={tag.trim()}
                 whileHover={{ scale: 1.05 }}
-                className="text-xs bg-green-soft text-green-deep px-3 py-1 rounded-full flex items-center"
+                className="text-xs bg-glass-tint text-ink px-3 py-1 rounded-full flex items-center"
             >
               <ChevronRight className="h-3 w-3 mr-1" />
               {tag.trim()}
@@ -177,12 +177,12 @@ export const Paroles: React.FC = () => {
   if (error) {
     return (
         <div className="min-h-screen bg-ground flex items-center justify-center">
-          <div className="text-center max-w-md mx-auto p-8 bg-white dark:bg-gray-800 rounded-card shadow-card">
+          <div className="text-center max-w-md mx-auto p-8 bg-glass rounded-card shadow-card">
             <IconBadge name="sad" />
-            <h3 className="text-xl font-bold text-red-600 dark:text-red-400 mb-2">Une erreur est survenue</h3>
-            <p className="text-gray-600 dark:text-gray-400 mb-6">{error}</p>
+            <h3 className="text-xl font-bold text-low mb-2">Une erreur est survenue</h3>
+            <p className="text-muted mb-6">{error}</p>
             <button onClick={() => doSearch(searchTerm, selectedTag, selectedSavant, 0, false)}
-                className="px-6 py-2 bg-green hover:bg-green-deep text-white rounded-lg transition-colors">Réessayer</button>
+                className="px-6 py-2 bg-accent-deep hover:brightness-110 text-white rounded-lg transition-colors">Réessayer</button>
           </div>
         </div>
     );
@@ -202,7 +202,7 @@ export const Paroles: React.FC = () => {
         <main className="container mx-auto px-4 py-12 relative z-10">
           <m.section
               initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }}
-              className="bg-white dark:bg-gray-800 rounded-card shadow-card p-6 mb-12 border border-line">
+              className="bg-glass rounded-card shadow-card p-6 mb-12 border border-line">
             <div className="flex flex-col md:flex-row gap-6">
               <div className="flex-1 relative">
                 <div className="absolute left-3 top-1/2 transform -translate-y-1/2">
@@ -210,7 +210,7 @@ export const Paroles: React.FC = () => {
                 </div>
                 <input
                     type="text" aria-label="Rechercher une parole" placeholder="Rechercher une parole, un savant..."
-                    className="w-full pl-12 pr-6 py-3 rounded-xl border border-line bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-green focus:border-transparent text-lg font-display"
+                    className="w-full pl-12 pr-6 py-3 rounded-xl border border-line bg-glass text-ink focus:ring-2 focus:ring-green focus:border-transparent text-lg font-display"
                     value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
                 {isLoading && (
                     <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
@@ -232,14 +232,14 @@ export const Paroles: React.FC = () => {
 
             {(selectedTag || selectedSavant) && (
                 <m.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-                    className="mt-4 flex items-center justify-between bg-green-soft rounded-lg px-4 py-2">
-                  <span className="font-medium text-green-deep flex flex-wrap items-center gap-2">
+                    className="mt-4 flex items-center justify-between bg-glass-tint rounded-lg px-4 py-2">
+                  <span className="font-medium text-ink flex flex-wrap items-center gap-2">
                     Filtres :
-                    {selectedTag && <span className="px-2 py-0.5 bg-green-soft rounded-full text-sm">{selectedTag}</span>}
-                    {selectedSavant && <span className="px-2 py-0.5 bg-green-soft rounded-full text-sm">{selectedSavant}</span>}
+                    {selectedTag && <span className="px-2 py-0.5 bg-glass-tint rounded-full text-sm">{selectedTag}</span>}
+                    {selectedSavant && <span className="px-2 py-0.5 bg-glass-tint rounded-full text-sm">{selectedSavant}</span>}
                   </span>
                   <button onClick={handleResetFilters} aria-label="Retirer les filtres"
-                      className="text-green hover:text-green-deep p-1 shrink-0">
+                      className="text-green hover:text-ink p-1 shrink-0">
                     <X className="h-5 w-5" />
                   </button>
                 </m.div>
@@ -248,22 +248,22 @@ export const Paroles: React.FC = () => {
 
           <section className="pb-16">
             {!hasQuery && !showAll ? (
-              <div className="text-center py-14 bg-white/70 dark:bg-gray-800/70 rounded-card border border-line">
+              <div className="text-center py-14 bg-glass rounded-card border border-line">
                 <IconBadge name="search" />
-                <h3 className="text-xl font-bold text-gray-700 dark:text-gray-300 mb-2 font-display">Recherchez une parole</h3>
-                <p className="text-gray-500 dark:text-gray-400 max-w-md mx-auto mb-6">
+                <h3 className="text-xl font-bold text-ink mb-2 font-display">Recherchez une parole</h3>
+                <p className="text-muted max-w-md mx-auto mb-6">
                   Saisissez un mot-clé (cherche aussi les tags), un savant, choisissez un sujet — ou affichez tout.
                 </p>
                 <button onClick={() => setShowAll(true)}
-                    className="inline-flex items-center gap-2 px-6 py-3 mb-6 rounded-xl bg-green hover:bg-green-deep text-white font-medium shadow">
+                    className="inline-flex items-center gap-2 px-6 py-3 mb-6 rounded-xl bg-accent-deep hover:brightness-110 text-white font-medium shadow">
                   Tout afficher{totalCount > 0 ? ` (${totalCount})` : ''}
                 </button>
                 {allTags.length > 0 && (
                   <div className="flex flex-wrap gap-2 justify-center max-w-lg mx-auto">
-                    <span className="w-full text-sm text-gray-400 mb-1">Sujets :</span>
+                    <span className="w-full text-sm text-muted mb-1">Sujets :</span>
                     {allTags.slice(0, 8).map((t) => (
                       <button key={t} onClick={() => setSelectedTag(t)}
-                          className="px-4 py-2 rounded-full text-sm font-medium bg-green-soft text-green-deep hover:bg-green-line dark:hover:bg-green-deep transition-colors">
+                          className="px-4 py-2 rounded-full text-sm font-medium bg-glass-tint text-ink hover:bg-green-line dark:hover:bg-green-deep transition-colors">
                         {t}
                       </button>
                     ))}
@@ -277,13 +277,13 @@ export const Paroles: React.FC = () => {
               </div>
             ) : paroles.length === 0 ? (
               <m.div key="no-results" initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-                  className="text-center py-16 bg-white dark:bg-gray-800 rounded-card shadow-card">
+                  className="text-center py-16 bg-glass rounded-card shadow-card">
                 <div className="max-w-md mx-auto">
                   <IconBadge name="book" />
-                  <h3 className="text-xl font-bold text-gray-700 dark:text-gray-300 mb-2">Aucun résultat trouvé</h3>
-                  <p className="text-gray-500 dark:text-gray-400 mb-6">Essayez de modifier vos critères de recherche</p>
+                  <h3 className="text-xl font-bold text-ink mb-2">Aucun résultat trouvé</h3>
+                  <p className="text-muted mb-6">Essayez de modifier vos critères de recherche</p>
                   <button onClick={handleResetFilters}
-                      className="px-6 py-2 bg-green hover:bg-green-deep text-white rounded-lg transition-colors">Réinitialiser</button>
+                      className="px-6 py-2 bg-accent-deep hover:brightness-110 text-white rounded-lg transition-colors">Réinitialiser</button>
                 </div>
               </m.div>
             ) : (

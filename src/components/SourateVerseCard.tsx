@@ -25,7 +25,7 @@ export const SourateVerseCard = forwardRef<HTMLElement, { v: VersetT; pulsing?: 
     className={`bg-surface border rounded-card p-5 scroll-mt-[160px] lg:scroll-mt-[128px] ${pulsing ? 'pulse-gold border-gold' : 'border-line'}`}
   >
     <div className="flex items-start gap-3.5">
-      <span className="shrink-0 w-7 h-7 rounded-full bg-green-soft text-green-deep grid place-items-center text-xs font-semibold tabular-nums mt-1.5">{v.numero}</span>
+      <span className="shrink-0 w-7 h-7 rounded-full bg-glass-tint text-ink grid place-items-center text-xs font-semibold tabular-nums mt-1.5">{v.numero}</span>
       <div className="min-w-0 flex-1">
         {v.texte_arabe && (
           <p className="font-arabic text-right leading-[2] text-ink whitespace-pre-wrap" dir="rtl" lang="ar" style={{ fontSize: 'clamp(22px,4vw,27px)' }}>{v.texte_arabe}</p>
@@ -35,19 +35,19 @@ export const SourateVerseCard = forwardRef<HTMLElement, { v: VersetT; pulsing?: 
       </div>
     </div>
     {v.exegeses.map((e, i) => (
-      <div key={i} className="bg-green-soft/50 border border-green-line rounded-xl p-3.5 mt-3">
-        <p className="text-[12px] font-semibold text-green-deep mb-1">Exégèse{e.source ? ` — ${e.source}` : ''}</p>
+      <div key={i} className="bg-glass-tint/50 border border-green-line rounded-xl p-3.5 mt-3">
+        <p className="text-[12px] font-semibold text-ink mb-1">Exégèse{e.source ? ` — ${e.source}` : ''}</p>
         <div className="text-ink/85"><Markdown>{e.texte}</Markdown></div>
       </div>
     ))}
 
     {/* Verset équivoque : renvoi vers l'explication complète (menu dépliable). */}
     {v.equivoque && (
-      <details className="group mt-3 rounded-xl border border-gold/40 bg-gold/5 overflow-hidden">
-        <summary className="flex items-center gap-2 cursor-pointer list-none [&::-webkit-details-marker]:hidden select-none px-3.5 py-2.5 text-[13px] font-semibold text-ink hover:bg-gold/10 transition-colors">
-          <AlertTriangle className="w-4 h-4 shrink-0 text-gold" aria-hidden />
+      <details className="group mt-3 rounded-xl border border-gold/40 bg-accent/5 overflow-hidden">
+        <summary className="flex items-center gap-2 cursor-pointer list-none [&::-webkit-details-marker]:hidden select-none px-3.5 py-2.5 text-[13px] font-semibold text-ink hover:bg-accent/10 transition-colors">
+          <AlertTriangle className="w-4 h-4 shrink-0 text-accent" aria-hidden />
           <span className="flex-1 min-w-0">Ce verset est équivoque — voir l'explication complète</span>
-          <ChevronRight className="w-4 h-4 shrink-0 text-gold transition-transform group-open:rotate-90" aria-hidden />
+          <ChevronRight className="w-4 h-4 shrink-0 text-accent transition-transform group-open:rotate-90" aria-hidden />
         </summary>
         <div className="px-3.5 pb-3.5 pt-1 border-t border-gold/20">
           <p className="text-[13px] font-semibold text-ink mb-1">{v.equivoque.theme}</p>
@@ -56,7 +56,7 @@ export const SourateVerseCard = forwardRef<HTMLElement, { v: VersetT; pulsing?: 
           )}
           <Link
             to={`/croyance/versets-hadiths-equivoques/${v.equivoque.slug}`}
-            className="inline-flex items-center gap-1.5 rounded-lg bg-gold text-white font-semibold px-3 py-1.5 text-[13px] hover:brightness-95 transition"
+            className="inline-flex items-center gap-1.5 rounded-lg bg-accent text-white font-semibold px-3 py-1.5 text-[13px] hover:brightness-95 transition"
           >
             Voir l'explication complète <ChevronRight className="w-3.5 h-3.5" />
           </Link>

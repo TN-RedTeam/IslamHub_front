@@ -33,12 +33,12 @@ export const JugementRationnel: React.FC = () => {
     <div className="min-h-screen bg-ground">
       <main className="max-w-5xl mx-auto px-5 py-7 pb-16">
         <nav aria-label="Fil d'Ariane" className="text-xs text-muted mb-1.5">
-          <Link to="/" className="hover:text-green-deep">Accueil</Link> <span aria-hidden>·</span>{' '}
-          <Link to="/croyance" className="hover:text-green-deep">Croyance</Link>
+          <Link to="/" className="hover:text-ink">Accueil</Link> <span aria-hidden>·</span>{' '}
+          <Link to="/croyance" className="hover:text-ink">Croyance</Link>
         </nav>
 
-        <p className="text-[11.5px] font-semibold uppercase tracking-[0.2em] text-gold mb-1">Aqida · ʿaql</p>
-        <h1 className="font-display font-semibold text-green-deep leading-tight" style={{ fontSize: 'clamp(26px,4vw,38px)' }}>
+        <p className="text-[11.5px] font-semibold uppercase tracking-[0.2em] text-accent mb-1">Aqida · ʿaql</p>
+        <h1 className="font-display font-semibold text-ink leading-tight" style={{ fontSize: 'clamp(26px,4vw,38px)' }}>
           {expose?.titre || 'Le jugement rationnel'}
         </h1>
         <p className="text-muted text-[15px] mt-2 max-w-[64ch]">

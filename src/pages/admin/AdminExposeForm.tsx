@@ -76,13 +76,13 @@ export const AdminExposeForm: React.FC = () => {
 
   return (
     <div className="max-w-3xl px-6 py-8 pb-28">
-      <p className="text-xs text-muted"><Link to="/admin/exposes" className="hover:text-green-deep">Exposés</Link> · {editSlug ? 'Modifier' : 'Nouveau'}</p>
-      <h1 className="font-display font-semibold text-green-deep text-3xl mt-1 mb-1">{editSlug ? 'Modifier l’exposé' : 'Nouvel exposé'}</h1>
+      <p className="text-xs text-muted"><Link to="/admin/exposes" className="hover:text-ink">Exposés</Link> · {editSlug ? 'Modifier' : 'Nouveau'}</p>
+      <h1 className="font-display font-semibold text-ink text-3xl mt-1 mb-1">{editSlug ? 'Modifier l’exposé' : 'Nouvel exposé'}</h1>
       <p className="text-muted text-sm mb-6">Le texte arabe collé ici est enregistré tel quel (UTF-8).</p>
 
       {/* 1. Page */}
       <section className="rounded-card border border-line bg-surface p-5 mb-4">
-        <h2 className="font-display font-semibold text-green-deep text-lg mb-4">1 · La page</h2>
+        <h2 className="font-display font-semibold text-ink text-lg mb-4">1 · La page</h2>
         <div className="mb-3.5"><label className={label}>Titre <span className="text-red-600">*</span></label><input className={field} value={f.titre} onChange={set('titre')} placeholder="Ex. La science en Islam" /></div>
         <div><label className={label}>Slug (URL) {editSlug ? <span className="text-muted font-normal">— non modifiable (clé de la page)</span> : <span className="text-muted font-normal">— depuis le titre</span>}</label>
           <input className={`${field} ${editSlug ? 'opacity-60' : ''}`} value={autoSlug} readOnly={Boolean(editSlug)}
@@ -91,7 +91,7 @@ export const AdminExposeForm: React.FC = () => {
 
       {/* 2. Verset d'en-tête */}
       <section className="rounded-card border border-line bg-surface p-5 mb-4">
-        <h2 className="font-display font-semibold text-green-deep text-lg mb-1">2 · Verset d’en-tête <span className="text-muted font-normal text-sm">(optionnel)</span></h2>
+        <h2 className="font-display font-semibold text-ink text-lg mb-1">2 · Verset d’en-tête <span className="text-muted font-normal text-sm">(optionnel)</span></h2>
         <p className="text-xs text-muted mb-4">Affiché en tête de l’exposé.</p>
         <div className="mb-3.5"><label className={label}>Texte arabe</label><textarea dir="rtl" lang="ar" className={`${field} font-arabic text-2xl leading-loose text-right min-h-[70px]`} value={f.verset_arabe} onChange={set('verset_arabe')} /></div>
         <div className="grid sm:grid-cols-3 gap-3.5">
@@ -103,21 +103,21 @@ export const AdminExposeForm: React.FC = () => {
 
       {/* 3. Contenu */}
       <section className="rounded-card border border-line bg-surface p-5 mb-4">
-        <h2 className="font-display font-semibold text-green-deep text-lg mb-4">3 · Contenu <span className="text-muted font-normal text-sm">(Markdown)</span></h2>
+        <h2 className="font-display font-semibold text-ink text-lg mb-4">3 · Contenu <span className="text-muted font-normal text-sm">(Markdown)</span></h2>
         <textarea className={`${field} min-h-[260px]`} value={f.contenu_md} onChange={set('contenu_md')} placeholder="Le corps de l’exposé, en Markdown…" />
       </section>
 
       {/* 4. Citations */}
       <section className="rounded-card border border-line bg-surface p-5 mb-4">
-        <h2 className="font-display font-semibold text-green-deep text-lg mb-1">4 · Citations</h2>
+        <h2 className="font-display font-semibold text-ink text-lg mb-1">4 · Citations</h2>
         <p className="text-xs text-muted mb-4">Verset / hadith / parole. Pour un hadith ou une parole, choisis la référence <b>ou</b> saisis le texte à la main. La <b>section</b> regroupe les citations ; « accordéon » les replie.</p>
         {cits.map((c, i) => (
           <div key={c.key} className="rounded-lg border border-line p-3 mb-2.5">
             <div className="flex items-center gap-2 mb-2.5">
-              <span className="text-sm font-semibold text-green-deep">Citation {i + 1}</span>
+              <span className="text-sm font-semibold text-ink">Citation {i + 1}</span>
               <div className="ml-auto flex items-center gap-1.5">
-                <button type="button" onClick={() => setCits((a) => move(a, i, -1))} disabled={i === 0} className="text-muted disabled:opacity-30 hover:text-green-deep" aria-label="Monter"><ArrowUp className="w-4 h-4" /></button>
-                <button type="button" onClick={() => setCits((a) => move(a, i, 1))} disabled={i === cits.length - 1} className="text-muted disabled:opacity-30 hover:text-green-deep" aria-label="Descendre"><ArrowDown className="w-4 h-4" /></button>
+                <button type="button" onClick={() => setCits((a) => move(a, i, -1))} disabled={i === 0} className="text-muted disabled:opacity-30 hover:text-ink" aria-label="Monter"><ArrowUp className="w-4 h-4" /></button>
+                <button type="button" onClick={() => setCits((a) => move(a, i, 1))} disabled={i === cits.length - 1} className="text-muted disabled:opacity-30 hover:text-ink" aria-label="Descendre"><ArrowDown className="w-4 h-4" /></button>
                 <button type="button" onClick={() => setCits((a) => a.filter((_, j) => j !== i))} className="text-red-600" aria-label="Retirer"><Trash2 className="w-4 h-4" /></button>
               </div>
             </div>
@@ -147,12 +147,12 @@ export const AdminExposeForm: React.FC = () => {
             <div className="mt-2.5"><label className={label}>Référence (texte)</label><input className={field} value={c.ref} onChange={(e) => patchCit(i, { ref: e.target.value })} placeholder="Sourate · verset, ou recueil…" /></div>
           </div>
         ))}
-        <button type="button" onClick={() => setCits((a) => [...a, emptyCit()])} className="mt-1 inline-flex items-center gap-1.5 rounded-lg border border-dashed border-green-line bg-green-soft text-green-deep font-semibold px-3.5 py-2 text-sm"><Plus className="w-4 h-4" /> Ajouter une citation</button>
+        <button type="button" onClick={() => setCits((a) => [...a, emptyCit()])} className="mt-1 inline-flex items-center gap-1.5 rounded-lg border border-dashed border-green-line bg-glass-tint text-ink font-semibold px-3.5 py-2 text-sm"><Plus className="w-4 h-4" /> Ajouter une citation</button>
       </section>
 
       {/* 5. Article composable (blocs) — disponible une fois l'exposé créé */}
       <section className="rounded-card border border-line bg-surface p-5 mb-4">
-        <h2 className="font-display font-semibold text-green-deep text-lg mb-1">5 · Article composable <span className="text-muted font-normal text-sm">(blocs)</span></h2>
+        <h2 className="font-display font-semibold text-ink text-lg mb-1">5 · Article composable <span className="text-muted font-normal text-sm">(blocs)</span></h2>
         <p className="text-xs text-muted mb-4">Alternative aux sections 3 & 4 : compose l’exposé en blocs Texte / Commentaire / Preuve. <b>Dès qu’un bloc existe, c’est cet article qui s’affiche</b> (le contenu Markdown et les citations ci-dessus sont alors ignorés).</p>
         {editSlug
           ? <BlocEditor parentType="expose" parentId={editSlug} />
@@ -160,7 +160,7 @@ export const AdminExposeForm: React.FC = () => {
       </section>
 
       <div className="fixed bottom-0 left-0 md:left-[230px] right-0 flex items-center gap-3 px-6 py-3.5 bg-ivory/95 backdrop-blur border-t border-line">
-        {ok && <span className="inline-flex items-center gap-1.5 text-green-deep text-sm font-medium"><Check className="w-4 h-4" /> Enregistré</span>}
+        {ok && <span className="inline-flex items-center gap-1.5 text-ink text-sm font-medium"><Check className="w-4 h-4" /> Enregistré</span>}
         {error && <span className="inline-flex items-center gap-1.5 text-red-600 text-sm"><AlertTriangle className="w-4 h-4" /> {error}</span>}
         <div className="ml-auto flex items-center gap-2.5">
           {editSlug && <DeleteEntryButton kind="expose" id={editSlug} label={f.titre} redirectTo="/admin/exposes" />}

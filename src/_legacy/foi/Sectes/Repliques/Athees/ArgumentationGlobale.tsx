@@ -27,13 +27,13 @@ const ArgumentationGlobale: React.FC = () => {
         <m.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 border border-emerald-100 dark:border-emerald-900"
+          className="bg-glass rounded-2xl shadow-lg p-8 border border-emerald-100 dark:border-emerald-900"
         >
           <h2 className="text-2xl font-bold text-emerald-700 dark:text-emerald-300 font-amiri mb-6">
             Exposé de l'argumentation globale
           </h2>
           
-          <div className="space-y-6 text-gray-600 dark:text-gray-300">
+          <div className="space-y-6 text-muted">
             <p>
               Les savants de l'Islam ont dit qu'il est un devoir pour toute personne responsable de connaître la preuve globale selon la raison au sujet de l'existence de Allah.
             </p>     

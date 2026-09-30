@@ -30,7 +30,7 @@ export const AdminParolesList: React.FC = () => {
   return (
     <div className="max-w-4xl px-6 py-8">
       <div className="flex items-center gap-3 flex-wrap mb-5">
-        <h1 className="font-display font-semibold text-green-deep text-3xl">Paroles de savants</h1>
+        <h1 className="font-display font-semibold text-ink text-3xl">Paroles de savants</h1>
         <CountBadge n={total} />
         <Link to="/admin/paroles/nouveau" className="ml-auto inline-flex items-center gap-1.5 rounded-lg bg-green text-white font-semibold px-4 py-2 hover:bg-green-deep transition-colors">
           <Plus className="w-4 h-4" /> Nouvelle parole
@@ -50,7 +50,7 @@ export const AdminParolesList: React.FC = () => {
           <ul className="divide-y divide-line rounded-card border border-line bg-surface overflow-hidden">
             {items.map((p) => (
               <li key={p.id}>
-                <Link to={`/admin/paroles/${p.id}`} className="flex items-center gap-3 px-4 py-3 hover:bg-green-soft transition-colors">
+                <Link to={`/admin/paroles/${p.id}`} className="flex items-center gap-3 px-4 py-3 hover:bg-glass-tint transition-colors">
                   <IdTag id={p.id} />
                   <span className="text-ink font-medium">{p.sujet || `Parole #${p.id}`}</span>
                   {p.savant && <span className="text-sm text-muted">— {p.savant}</span>}

@@ -91,7 +91,7 @@ export const Navigation: React.FC = () => {
 
   const linkCls = (active: boolean) =>
     `font-sans text-[13.5px] px-2.5 py-2 rounded-lg whitespace-nowrap transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green ${
-      active ? 'bg-green-soft text-green-deep font-medium' : 'text-ink hover:bg-green-soft hover:text-green-deep'
+      active ? 'bg-glass-tint text-ink font-medium' : 'text-ink hover:bg-glass-tint hover:text-ink'
     }`;
 
   return (
@@ -132,7 +132,7 @@ export const Navigation: React.FC = () => {
                       to={to}
                       role="menuitem"
                       className={`block px-3.5 py-2 text-[13.5px] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green ${
-                        isActive(to) ? 'bg-green-soft text-green-deep font-medium' : 'text-ink hover:bg-green-soft hover:text-green-deep'
+                        isActive(to) ? 'bg-glass-tint text-ink font-medium' : 'text-ink hover:bg-glass-tint hover:text-ink'
                       }`}
                     >
                       {label}
@@ -152,7 +152,7 @@ export const Navigation: React.FC = () => {
             >
               <BrandBadge px={30} radius="rounded-lg" mark={19} />
               <span className="leading-tight">
-                <span className="block font-display font-semibold text-[13px] text-green-deep whitespace-nowrap">{hijriFr}</span>
+                <span className="block font-display font-semibold text-[13px] text-ink whitespace-nowrap">{hijriFr}</span>
                 <span className="block text-[11px] text-muted whitespace-nowrap first-letter:uppercase">{greg}</span>
               </span>
             </div>
@@ -162,7 +162,7 @@ export const Navigation: React.FC = () => {
             <Link
               to="/recherche"
               aria-label="Rechercher sur le site"
-              className="w-9 h-9 grid place-items-center rounded-lg border border-line bg-ivory text-muted hover:text-green-deep hover:border-green transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green"
+              className="w-9 h-9 grid place-items-center rounded-lg border border-line bg-ivory text-muted hover:text-ink hover:border-green transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green"
             >
               <Search className="w-5 h-5" />
             </Link>
@@ -170,7 +170,7 @@ export const Navigation: React.FC = () => {
             <button
               onClick={toggleTheme}
               aria-label="Basculer le thème"
-              className="w-9 h-9 grid place-items-center rounded-lg border border-line bg-ivory text-muted hover:text-green-deep hover:border-green transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green"
+              className="w-9 h-9 grid place-items-center rounded-lg border border-line bg-ivory text-muted hover:text-ink hover:border-green transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green"
             >
               {theme === 'dark' ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
             </button>
@@ -179,7 +179,7 @@ export const Navigation: React.FC = () => {
               onClick={() => setIsMenuOpen((v) => !v)}
               aria-label={isMenuOpen ? 'Fermer le menu' : 'Ouvrir le menu'}
               aria-expanded={isMenuOpen}
-              className="min-[900px]:hidden w-9 h-9 grid place-items-center rounded-lg border border-line bg-ivory text-muted hover:text-green-deep transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green"
+              className="min-[900px]:hidden w-9 h-9 grid place-items-center rounded-lg border border-line bg-ivory text-muted hover:text-ink transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green"
             >
               {isMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
@@ -202,7 +202,7 @@ export const Navigation: React.FC = () => {
                     key={to}
                     to={to}
                     className={`block px-4 py-2.5 rounded-lg mb-0.5 font-sans transition-colors ${
-                      isActive(to, exact) ? 'bg-green-soft text-green-deep font-medium' : 'text-ink hover:bg-green-soft hover:text-green-deep'
+                      isActive(to, exact) ? 'bg-glass-tint text-ink font-medium' : 'text-ink hover:bg-glass-tint hover:text-ink'
                     }`}
                   >
                     {label}
@@ -216,7 +216,7 @@ export const Navigation: React.FC = () => {
                     key={to}
                     to={to}
                     className={`block pl-6 pr-4 py-2.5 rounded-lg mb-0.5 font-sans transition-colors ${
-                      isActive(to) ? 'bg-green-soft text-green-deep font-medium' : 'text-ink hover:bg-green-soft hover:text-green-deep'
+                      isActive(to) ? 'bg-glass-tint text-ink font-medium' : 'text-ink hover:bg-glass-tint hover:text-ink'
                     }`}
                   >
                     {label}

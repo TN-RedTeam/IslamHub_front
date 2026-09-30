@@ -33,7 +33,7 @@ export const AdminLayout: React.FC = () => {
 
   const linkCls = ({ isActive }: { isActive: boolean }) =>
     `flex items-center justify-between gap-2 px-3 py-2.5 rounded-lg text-[14.5px] transition-colors ${
-      isActive ? 'bg-green text-white' : 'text-ink hover:bg-green-soft hover:text-green-deep'
+      isActive ? 'bg-green text-white' : 'text-ink hover:bg-glass-tint hover:text-ink'
     }`;
 
   return (
@@ -43,7 +43,7 @@ export const AdminLayout: React.FC = () => {
         <span className="text-[11px] uppercase tracking-[0.16em] text-[#bcd3c6] border border-[#2e5c49] rounded-full px-2.5 py-0.5">Admin</span>
         <div className="ml-auto flex items-center gap-3">
           <span className="hidden sm:block text-[13px] text-[#cfe0d6]">{email}</span>
-          <Link to="/" className="inline-flex items-center gap-1.5 text-[13px] bg-white text-green-deep rounded-lg px-3 py-1.5 font-semibold"><ExternalLink className="w-4 h-4" /> Voir le site</Link>
+          <Link to="/" className="inline-flex items-center gap-1.5 text-[13px] bg-white text-ink rounded-lg px-3 py-1.5 font-semibold"><ExternalLink className="w-4 h-4" /> Voir le site</Link>
           <button onClick={signOut} className="inline-flex items-center gap-1.5 text-[13px] text-[#cfe0d6] hover:text-white"><LogOut className="w-4 h-4" /> Déconnexion</button>
         </div>
       </header>

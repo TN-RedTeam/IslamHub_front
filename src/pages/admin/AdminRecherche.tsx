@@ -22,7 +22,7 @@ function highlight(text: string, term: string): React.ReactNode {
     const idx = nText.indexOf(nt, i);
     if (idx === -1) { out.push(text.slice(i)); break; }
     if (idx > i) out.push(text.slice(i, idx));
-    out.push(<mark key={k++} className="bg-gold-soft text-[#5a4210] rounded px-0.5">{text.slice(idx, idx + t.length)}</mark>);
+    out.push(<mark key={k++} className="bg-accent-soft text-[#5a4210] rounded px-0.5">{text.slice(idx, idx + t.length)}</mark>);
     i = idx + t.length;
   }
   return out;
@@ -51,7 +51,7 @@ export const AdminRecherche: React.FC = () => {
 
   return (
     <div className="max-w-4xl px-6 py-8">
-      <h1 className="font-display font-semibold text-green-deep text-3xl">Recherche & correction</h1>
+      <h1 className="font-display font-semibold text-ink text-3xl">Recherche & correction</h1>
       <p className="text-muted mt-2 max-w-[68ch]">Trouve un mot ou un nom (ex. une graphie de savant) dans tous les contenus, puis clique pour ouvrir la fiche et corriger. Insensible à la casse et aux accents.</p>
 
       <div className="relative my-5">
@@ -75,8 +75,8 @@ export const AdminRecherche: React.FC = () => {
           <ul className="divide-y divide-line rounded-card border border-line bg-surface overflow-hidden">
             {hits.map((h, i) => (
               <li key={`${h.path}-${i}`}>
-                <Link to={h.path} className="flex gap-3 px-4 py-3 hover:bg-green-soft transition-colors">
-                  <span className="text-[10.5px] font-semibold uppercase tracking-wide text-green-deep bg-green-soft border border-green-line rounded-full px-2 py-0.5 h-fit shrink-0">{h.kind}</span>
+                <Link to={h.path} className="flex gap-3 px-4 py-3 hover:bg-glass-tint transition-colors">
+                  <span className="text-[10.5px] font-semibold uppercase tracking-wide text-ink bg-glass-tint border border-green-line rounded-full px-2 py-0.5 h-fit shrink-0">{h.kind}</span>
                   <span className="min-w-0 flex-1">
                     <span className="block font-medium text-ink truncate">{h.label || h.ref}</span>
                     {h.extrait && <span className="block text-[13.5px] text-muted mt-0.5 line-clamp-2">{highlight(h.extrait, input)}</span>}

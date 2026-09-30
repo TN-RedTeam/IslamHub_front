@@ -34,15 +34,15 @@ const Sectes: React.FC = () => {
             </m.div>
 
             <div className="max-w-7xl mx-auto px-4">
-                <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 mb-8">
+                <div className="bg-glass rounded-xl shadow-lg p-6 mb-8">
                     <div className="flex flex-col md:flex-row gap-4">
                         <div className="flex-1 relative">
                             <input
                                 type="text"
                                 placeholder="Search topics..."
-                                className="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 dark:focus:ring-emerald-400 focus:border-transparent"
+                                className="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-glass text-ink focus:ring-2 focus:ring-emerald-500 dark:focus:ring-emerald-400 focus:border-transparent"
                             />
-                            <Search className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
+                            <Search className="absolute left-3 top-2.5 h-5 w-5 text-muted" />
                         </div>
                         <button className="flex items-center justify-center px-4 py-2 bg-emerald-100 dark:bg-emerald-900 text-emerald-700 dark:text-emerald-300 rounded-lg hover:bg-emerald-200 dark:hover:bg-emerald-800 transition-colors">
                             <Filter className="h-5 w-5 mr-2" />
@@ -58,7 +58,7 @@ const Sectes: React.FC = () => {
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: index * 0.1 }}
-                            className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg border border-emerald-100 dark:border-emerald-800 hover:border-emerald-300 dark:hover:border-emerald-700 transition-colors group cursor-pointer"
+                            className="bg-glass rounded-xl p-6 shadow-lg border border-emerald-100 dark:border-emerald-800 hover:border-emerald-300 dark:hover:border-emerald-700 transition-colors group cursor-pointer"
                             onClick={() => handleTopicClick(topic)} // Gestion du clic
                         >
                             <div className="flex items-center gap-4">
@@ -66,10 +66,10 @@ const Sectes: React.FC = () => {
                                     <BookOpen className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />
                                 </div>
                                 <div>
-                                    <h3 className="text-xl font-semibold text-gray-900 dark:text-white font-amiri">
+                                    <h3 className="text-xl font-semibold text-ink font-amiri">
                                         {topic}
                                     </h3>
-                                    <p className="text-sm text-gray-500 dark:text-gray-400">
+                                    <p className="text-sm text-muted">
                                         En savoir plus
                                     </p>
                                 </div>

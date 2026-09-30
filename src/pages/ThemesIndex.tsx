@@ -64,7 +64,7 @@ export const ThemesIndex: React.FC = () => {
             if (items.length === 0) return null;
             return (
               <section key={key} className="mb-10">
-                <h2 className="font-display font-semibold text-green-deep text-2xl mb-4">{label}</h2>
+                <h2 className="font-display font-semibold text-ink text-2xl mb-4">{label}</h2>
                 <div className="grid gap-3.5 grid-cols-[repeat(auto-fill,minmax(240px,1fr))]">
                   {items.map((t) => {
                     const total = t.n_coran + t.n_hadith + t.n_parole;
@@ -79,7 +79,7 @@ export const ThemesIndex: React.FC = () => {
                         to={`/themes/${t.slug}`}
                         className="group flex flex-col gap-2 rounded-card border border-line bg-surface p-5 shadow-card hover:shadow-card-hover hover:-translate-y-0.5 hover:border-green transition-all motion-reduce:transition-none motion-reduce:hover:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green"
                       >
-                        <h3 className="font-display font-semibold text-green-deep text-lg leading-tight group-hover:text-green">{t.nom}</h3>
+                        <h3 className="font-display font-semibold text-ink text-lg leading-tight group-hover:text-green">{t.nom}</h3>
                         <span className="text-xs text-muted">{detail}</span>
                         <span className="mt-auto pt-1.5 inline-flex items-center gap-1.5 text-[13px] font-semibold text-green group-hover:gap-2.5 transition-all motion-reduce:transition-none">
                           {total} contenu{total > 1 ? 's' : ''} <ArrowRight className="w-4 h-4" />

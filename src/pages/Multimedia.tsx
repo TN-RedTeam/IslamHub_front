@@ -108,7 +108,7 @@ export const Multimedia: React.FC = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.4 }}
-          className="bg-white dark:bg-gray-800 rounded-card shadow-card p-6 mb-12 sticky top-4 z-20 border border-line"
+          className="bg-glass rounded-card shadow-card p-6 mb-12 sticky top-4 z-20 border border-line"
         >
           <div className="flex flex-col md:flex-row gap-6">
             <div className="flex-1 relative">
@@ -116,7 +116,7 @@ export const Multimedia: React.FC = () => {
               <input
                 type="text"
                 placeholder="Rechercher une vidéo, un savant, un sujet..."
-                className="w-full pl-12 pr-6 py-3 rounded-xl border border-line bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-green focus:border-transparent text-lg"
+                className="w-full pl-12 pr-6 py-3 rounded-xl border border-line bg-glass text-ink focus:ring-2 focus:ring-green focus:border-transparent text-lg"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
@@ -135,16 +135,16 @@ export const Multimedia: React.FC = () => {
             <m.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              className="mt-4 flex items-center justify-between bg-green-soft rounded-lg px-4 py-2"
+              className="mt-4 flex items-center justify-between bg-glass-tint rounded-lg px-4 py-2"
             >
-              <span className="font-medium text-green-deep text-sm">
+              <span className="font-medium text-ink text-sm">
                 {hasSearched && !isLoading
                   ? `${totalCount} vidéo${totalCount > 1 ? 's' : ''} trouvée${totalCount > 1 ? 's' : ''}`
                   : 'Recherche en cours…'}
               </span>
               <button
                 onClick={resetFilters}
-                className="text-green hover:text-green-deep p-1"
+                className="text-green hover:text-ink p-1"
                 aria-label="Réinitialiser les filtres"
               >
                 <X className="h-5 w-5" />
@@ -163,19 +163,19 @@ export const Multimedia: React.FC = () => {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                className="text-center py-16 bg-white dark:bg-gray-800 rounded-card shadow-card"
+                className="text-center py-16 bg-glass rounded-card shadow-card"
               >
                 <m.div
                   animate={{ scale: [1, 1.05, 1] }}
                   transition={{ repeat: Infinity, duration: 2 }}
-                  className="mx-auto mb-6 w-20 h-20 rounded-full bg-green-soft text-green grid place-items-center motion-reduce:animate-none"
+                  className="mx-auto mb-6 w-20 h-20 rounded-full bg-glass-tint text-green grid place-items-center motion-reduce:animate-none"
                 >
                   <Icon name="camera" className="w-10 h-10" />
                 </m.div>
-                <h3 className="text-2xl font-bold text-gray-700 dark:text-gray-300 mb-3 font-display">
+                <h3 className="text-2xl font-bold text-ink mb-3 font-display">
                   Lance une recherche pour découvrir des vidéos
                 </h3>
-                <p className="text-gray-500 dark:text-gray-400 mb-8 max-w-md mx-auto">
+                <p className="text-muted mb-8 max-w-md mx-auto">
                   Tape un mot-clé, le nom d'un savant, ou choisis une catégorie pour explorer notre sélection.
                 </p>
                 {categories.length > 0 && (
@@ -184,7 +184,7 @@ export const Multimedia: React.FC = () => {
                       <button
                         key={c.categorie}
                         onClick={() => setCategory(c.categorie)}
-                        className="px-4 py-2 rounded-full bg-green-soft text-green-deep hover:bg-green-soft transition-colors text-sm font-medium"
+                        className="px-4 py-2 rounded-full bg-glass-tint text-ink hover:bg-glass-tint transition-colors text-sm font-medium"
                       >
                         {c.categorie}
                       </button>
@@ -204,12 +204,12 @@ export const Multimedia: React.FC = () => {
                 className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
               >
                 {Array.from({ length: 6 }).map((_, i) => (
-                  <div key={i} className="bg-white dark:bg-gray-800 rounded-card shadow-card overflow-hidden animate-pulse">
-                    <div className="aspect-video bg-gray-200 dark:bg-gray-700" />
+                  <div key={i} className="bg-glass rounded-card shadow-card overflow-hidden animate-pulse">
+                    <div className="aspect-video bg-gray-200 " />
                     <div className="p-5 space-y-3">
-                      <div className="h-5 bg-gray-200 dark:bg-gray-700 rounded w-3/4" />
-                      <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/2" />
-                      <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded" />
+                      <div className="h-5 bg-gray-200  rounded w-3/4" />
+                      <div className="h-4 bg-gray-200  rounded w-1/2" />
+                      <div className="h-3 bg-gray-200  rounded" />
                     </div>
                   </div>
                 ))}
@@ -236,18 +236,18 @@ export const Multimedia: React.FC = () => {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                className="text-center py-16 bg-white dark:bg-gray-800 rounded-card shadow-card"
+                className="text-center py-16 bg-glass rounded-card shadow-card"
               >
                 <IconBadge name="search" />
-                <h3 className="text-xl font-bold text-gray-700 dark:text-gray-300 mb-2">
+                <h3 className="text-xl font-bold text-ink mb-2">
                   Aucun résultat trouvé
                 </h3>
-                <p className="text-gray-500 dark:text-gray-400 mb-6">
+                <p className="text-muted mb-6">
                   Essayez d'autres mots-clés ou changez de catégorie.
                 </p>
                 <button
                   onClick={resetFilters}
-                  className="px-6 py-2 bg-green hover:bg-green-deep text-white rounded-lg transition-colors"
+                  className="px-6 py-2 bg-accent-deep hover:brightness-110 text-white rounded-lg transition-colors"
                 >
                   Réinitialiser
                 </button>

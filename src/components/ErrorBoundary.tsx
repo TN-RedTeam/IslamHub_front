@@ -23,12 +23,12 @@ class ErrorBoundary extends Component<Props, State> {
   render() {
     if (this.state.hasError) {
       return this.props.fallback ?? (
-        <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
+        <div className="min-h-screen flex items-center justify-center bg-glass">
           <div className="text-center p-8">
-            <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-200 mb-4">
+            <h2 className="text-2xl font-bold text-ink mb-4">
               Une erreur est survenue
             </h2>
-            <p className="text-gray-600 dark:text-gray-400 mb-6">
+            <p className="text-muted mb-6">
               Veuillez recharger la page ou réessayer plus tard.
             </p>
             <button

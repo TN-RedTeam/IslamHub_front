@@ -86,13 +86,13 @@ export const AdminParoleForm: React.FC = () => {
 
   return (
     <div className="max-w-3xl px-6 py-8 pb-28">
-      <p className="text-xs text-muted"><Link to="/admin/paroles" className="hover:text-green-deep">Paroles</Link> · {editId ? 'Modifier' : 'Nouvelle'}</p>
-      <h1 className="font-display font-semibold text-green-deep text-3xl mt-1 mb-1">{editId ? 'Modifier la parole' : 'Nouvelle parole'}</h1>
+      <p className="text-xs text-muted"><Link to="/admin/paroles" className="hover:text-ink">Paroles</Link> · {editId ? 'Modifier' : 'Nouvelle'}</p>
+      <h1 className="font-display font-semibold text-ink text-3xl mt-1 mb-1">{editId ? 'Modifier la parole' : 'Nouvelle parole'}</h1>
       <p className="text-muted text-sm mb-6">Le texte arabe collé ici est enregistré tel quel (UTF-8).</p>
 
       {/* 1. Parole */}
       <section className="rounded-card border border-line bg-surface p-5 mb-4">
-        <h2 className="font-display font-semibold text-green-deep text-lg mb-4">1 · La parole</h2>
+        <h2 className="font-display font-semibold text-ink text-lg mb-4">1 · La parole</h2>
         <div className="mb-3.5"><label className={label}>Sujet <span className="text-red-600">*</span></label><input className={field} value={f.sujet} onChange={set('sujet')} placeholder="Ex. Allah existe sans endroit" /></div>
         <div className="mb-3.5"><label className={label}>Texte arabe <span className="text-red-600">*</span></label>
           <textarea dir="rtl" lang="ar" className={`${field} font-arabic text-2xl leading-loose text-right min-h-[90px]`} value={f.texte_arabe} onChange={set('texte_arabe')} onFocus={caretBetween(AR_TEMPLATE.parole)} placeholder="Colle ici le texte arabe (vocalisé)…" /></div>
@@ -105,7 +105,7 @@ export const AdminParoleForm: React.FC = () => {
 
       {/* 2. Savant & référence */}
       <section className="rounded-card border border-line bg-surface p-5 mb-4">
-        <h2 className="font-display font-semibold text-green-deep text-lg mb-4">2 · Savant & référence</h2>
+        <h2 className="font-display font-semibold text-ink text-lg mb-4">2 · Savant & référence</h2>
         <div className="grid sm:grid-cols-2 gap-3.5">
           <div>
             <label className={label}>Savant (auteur de la parole)</label>
@@ -142,11 +142,11 @@ export const AdminParoleForm: React.FC = () => {
 
       {/* 3. Scans */}
       <section className="rounded-card border border-line bg-surface p-5 mb-4">
-        <h2 className="font-display font-semibold text-green-deep text-lg mb-1">3 · Scans du livre</h2>
+        <h2 className="font-display font-semibold text-ink text-lg mb-1">3 · Scans du livre</h2>
         <p className="text-xs text-muted mb-4">0 à N scans. Colle l’URL publique (bucket Storage <code>references</code>). L’<b>alt</b> décrit ce que montre la page.</p>
         {images.map((im, i) => (
           <div key={im.key} className="rounded-lg border border-line p-3 mb-2.5">
-            <div className="flex items-center gap-2 mb-2"><span className="text-sm font-semibold text-green-deep">Scan {i + 1}</span>
+            <div className="flex items-center gap-2 mb-2"><span className="text-sm font-semibold text-ink">Scan {i + 1}</span>
               <button type="button" onClick={() => setImages((a) => a.filter((_, j) => j !== i))} className="ml-auto text-red-600" aria-label="Retirer"><Trash2 className="w-4 h-4" /></button></div>
             <div className="mb-2.5"><label className={label}>URL de l’image <span className="text-red-600">*</span></label><input className={field} value={im.image_url} onChange={(e) => setImages((a) => a.map((x, j) => j === i ? { ...x, image_url: e.target.value } : x))} placeholder="https://…/references/….webp" /></div>
             <div className="mb-2.5"><label className={label}>Alt (description)</label><input className={field} value={im.alt} onChange={(e) => setImages((a) => a.map((x, j) => j === i ? { ...x, alt: e.target.value } : x))} placeholder="Scan de la page 88 de … montrant …" /></div>
@@ -156,28 +156,28 @@ export const AdminParoleForm: React.FC = () => {
             </div>
           </div>
         ))}
-        <button type="button" onClick={() => setImages((a) => [...a, emptyImg()])} className="mt-1 inline-flex items-center gap-1.5 rounded-lg border border-dashed border-green-line bg-green-soft text-green-deep font-semibold px-3.5 py-2 text-sm"><Plus className="w-4 h-4" /> Ajouter un scan</button>
+        <button type="button" onClick={() => setImages((a) => [...a, emptyImg()])} className="mt-1 inline-flex items-center gap-1.5 rounded-lg border border-dashed border-green-line bg-glass-tint text-ink font-semibold px-3.5 py-2 text-sm"><Plus className="w-4 h-4" /> Ajouter un scan</button>
       </section>
 
       {/* 4. Thèmes */}
       <section className="rounded-card border border-line bg-surface p-5 mb-4">
-        <h2 className="font-display font-semibold text-green-deep text-lg mb-4">4 · Thèmes & mots-clés</h2>
+        <h2 className="font-display font-semibold text-ink text-lg mb-4">4 · Thèmes & mots-clés</h2>
         <label className={label}>Tags <span className="text-muted font-normal">(séparés par des virgules)</span></label>
         <input className={field} value={f.tag} onChange={set('tag')} placeholder="croyance, attributs" />
         <div className="mt-3.5 rounded-lg border border-line bg-ground/40 p-3">
-          <p className="text-[11px] uppercase tracking-[0.12em] text-gold font-semibold">Thèmes déduits</p>
+          <p className="text-[11px] uppercase tracking-[0.12em] text-accent font-semibold">Thèmes déduits</p>
           {derived.length === 0 ? <p className="text-sm text-muted mt-1">Aucun.</p> :
-            <div className="flex flex-wrap gap-1.5 mt-2">{derived.map((t) => <span key={t.slug} className="text-xs bg-gold-soft text-[#7a5a17] border border-[#e6d3a3] rounded-full px-2.5 py-0.5">{t.nom}</span>)}</div>}
+            <div className="flex flex-wrap gap-1.5 mt-2">{derived.map((t) => <span key={t.slug} className="text-xs bg-accent-soft text-[#7a5a17] border border-[#e6d3a3] rounded-full px-2.5 py-0.5">{t.nom}</span>)}</div>}
         </div>
       </section>
 
       <div className="fixed bottom-0 left-0 md:left-[230px] right-0 flex items-center gap-3 px-6 py-3.5 bg-ivory/95 backdrop-blur border-t border-line">
-        {ok && <span className="inline-flex items-center gap-1.5 text-green-deep text-sm font-medium"><Check className="w-4 h-4" /> Enregistré</span>}
+        {ok && <span className="inline-flex items-center gap-1.5 text-ink text-sm font-medium"><Check className="w-4 h-4" /> Enregistré</span>}
         {error && <span className="inline-flex items-center gap-1.5 text-red-600 text-sm"><AlertTriangle className="w-4 h-4" /> {error}</span>}
         <div className="ml-auto flex items-center gap-2.5">
           {editId && <DeleteEntryButton kind="parole" id={editId} label={f.sujet} redirectTo="/admin/paroles" />}
           <Link to="/admin/paroles" className="text-muted text-sm px-3 py-2">Annuler</Link>
-          {!editId && <button disabled={busy || !canSave} onClick={() => save(true)} className="rounded-lg border border-line bg-surface text-green-deep font-semibold px-4 py-2.5 disabled:opacity-50">Enregistrer & nouveau</button>}
+          {!editId && <button disabled={busy || !canSave} onClick={() => save(true)} className="rounded-lg border border-line bg-surface text-ink font-semibold px-4 py-2.5 disabled:opacity-50">Enregistrer & nouveau</button>}
           <button disabled={busy || !canSave} onClick={() => save(false)} className="inline-flex items-center gap-2 rounded-lg bg-green text-white font-semibold px-5 py-2.5 hover:bg-green-deep transition-colors disabled:opacity-50">
             {busy && <Loader2 className="w-4 h-4 animate-spin" />} Enregistrer
           </button>

@@ -12,9 +12,9 @@ const EMPTY: SearchResults = { hadiths: [], paroles: [], invocations: [], verset
 const Hit: React.FC<{ to: string; icon: React.ReactNode; titre: string; sous?: string | null; extrait?: string | null }> = ({ to, icon, titre, sous, extrait }) => (
   <li>
     <Link to={to} className="flex gap-3 rounded-card border border-line bg-surface p-3.5 hover:border-green transition-colors">
-      <span className="w-9 h-9 rounded-lg bg-green-soft text-green grid place-items-center shrink-0">{icon}</span>
+      <span className="w-9 h-9 rounded-lg bg-glass-tint text-green grid place-items-center shrink-0">{icon}</span>
       <span className="min-w-0">
-        <span className="block font-display font-semibold text-green-deep leading-tight">{titre}</span>
+        <span className="block font-display font-semibold text-ink leading-tight">{titre}</span>
         {sous && <span className="block text-[12.5px] text-muted">{sous}</span>}
         {extrait && <span className="block text-[13.5px] text-ink/80 mt-0.5 line-clamp-2">{extrait}</span>}
       </span>
@@ -77,7 +77,7 @@ export const Recherche: React.FC = () => {
           <div className="space-y-8">
             {results.hadiths.length > 0 && (
               <section>
-                <h2 className="font-display font-semibold text-green-deep text-xl mb-3">{compteur(results.hadiths.length, 'hadith')}</h2>
+                <h2 className="font-display font-semibold text-ink text-xl mb-3">{compteur(results.hadiths.length, 'hadith')}</h2>
                 <ul className="grid gap-2.5 sm:grid-cols-2">
                   {results.hadiths.map((h) => <Hit key={h.id} to={`/hadiths/${h.id}/${h.slug ?? ''}`} icon={<Book className="w-4 h-4" />} titre={h.sujet ?? 'Hadith'} extrait={h.extrait} />)}
                 </ul>
@@ -85,7 +85,7 @@ export const Recherche: React.FC = () => {
             )}
             {results.paroles.length > 0 && (
               <section>
-                <h2 className="font-display font-semibold text-green-deep text-xl mb-3">{compteur(results.paroles.length, 'parole')}</h2>
+                <h2 className="font-display font-semibold text-ink text-xl mb-3">{compteur(results.paroles.length, 'parole')}</h2>
                 <ul className="grid gap-2.5 sm:grid-cols-2">
                   {results.paroles.map((p) => <Hit key={p.id} to={p.slug ? `/paroles/${p.slug}` : '/savants/paroles'} icon={<Quote className="w-4 h-4" />} titre={p.sujet ?? 'Parole'} sous={p.savant} extrait={p.extrait} />)}
                 </ul>
@@ -93,7 +93,7 @@ export const Recherche: React.FC = () => {
             )}
             {results.versets.length > 0 && (
               <section>
-                <h2 className="font-display font-semibold text-green-deep text-xl mb-3">{compteur(results.versets.length, 'verset')}</h2>
+                <h2 className="font-display font-semibold text-ink text-xl mb-3">{compteur(results.versets.length, 'verset')}</h2>
                 <ul className="grid gap-2.5 sm:grid-cols-2">
                   {results.versets.map((c) => <Hit key={c.id} to="/coran" icon={<BookOpen className="w-4 h-4" />} titre={c.sujet ?? 'Verset'} sous={c.sourate} extrait={c.extrait} />)}
                 </ul>
@@ -101,7 +101,7 @@ export const Recherche: React.FC = () => {
             )}
             {results.invocations.length > 0 && (
               <section>
-                <h2 className="font-display font-semibold text-green-deep text-xl mb-3">{compteur(results.invocations.length, 'invocation')}</h2>
+                <h2 className="font-display font-semibold text-ink text-xl mb-3">{compteur(results.invocations.length, 'invocation')}</h2>
                 <ul className="grid gap-2.5 sm:grid-cols-2">
                   {results.invocations.map((i) => <Hit key={i.id} to="/invocations" icon={<Heart className="w-4 h-4" />} titre={i.sujet ?? 'Invocation'} sous={invLabel(i)} extrait={i.extrait} />)}
                 </ul>
@@ -109,11 +109,11 @@ export const Recherche: React.FC = () => {
             )}
             {results.themes.length > 0 && (
               <section>
-                <h2 className="font-display font-semibold text-green-deep text-xl mb-3">{compteur(results.themes.length, 'theme')}</h2>
+                <h2 className="font-display font-semibold text-ink text-xl mb-3">{compteur(results.themes.length, 'theme')}</h2>
                 <ul className="flex flex-wrap gap-2">
                   {results.themes.map((t) => (
                     <li key={t.slug}>
-                      <Link to={`/themes/${t.slug}`} className="inline-flex items-center gap-1.5 rounded-full border border-green-line bg-green-soft text-green-deep px-3.5 py-1.5 text-sm hover:border-green"><Tag className="w-3.5 h-3.5" /> {t.nom}</Link>
+                      <Link to={`/themes/${t.slug}`} className="inline-flex items-center gap-1.5 rounded-full border border-green-line bg-glass-tint text-ink px-3.5 py-1.5 text-sm hover:border-green"><Tag className="w-3.5 h-3.5" /> {t.nom}</Link>
                     </li>
                   ))}
                 </ul>

@@ -70,9 +70,9 @@ export const ExposeBody: React.FC<{ contenuMd: string | null; citations: ExposeC
               <a
                 href={`#sec-${i + 1}`}
                 onClick={(e) => { e.preventDefault(); scrollToId(`sec-${i + 1}`); }}
-                className="flex items-baseline gap-2 px-2.5 py-1.5 rounded-lg text-sm text-ink hover:bg-green-soft hover:text-green-deep focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green"
+                className="flex items-baseline gap-2 px-2.5 py-1.5 rounded-lg text-sm text-ink hover:bg-glass-tint hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green"
               >
-                <span className="font-display font-semibold text-gold text-[13px]">{i + 1}</span>{s.title}
+                <span className="font-display font-semibold text-accent text-[13px]">{i + 1}</span>{s.title}
               </a>
             </li>
           ))}
@@ -82,8 +82,8 @@ export const ExposeBody: React.FC<{ contenuMd: string | null; citations: ExposeC
       <div>
         {sections.map((s, i) => (
           <section key={i} id={`sec-${i + 1}`} className="mb-9" style={{ scrollMarginTop: 20 }}>
-            <h2 className="font-display font-semibold text-green-deep text-[22px] mb-3 flex items-center gap-2.5">
-              <span className="w-[26px] h-[26px] rounded-full bg-green-soft text-green grid place-items-center text-sm shrink-0 font-display">{i + 1}</span>
+            <h2 className="font-display font-semibold text-ink text-[22px] mb-3 flex items-center gap-2.5">
+              <span className="w-[26px] h-[26px] rounded-full bg-glass-tint text-green grid place-items-center text-sm shrink-0 font-display">{i + 1}</span>
               {s.title}
             </h2>
             <Markdown>{s.body}</Markdown>
@@ -93,7 +93,7 @@ export const ExposeBody: React.FC<{ contenuMd: string | null; citations: ExposeC
 
         {generalCit.length > 0 && (
           <section className="mb-9">
-            <h2 className="font-display font-semibold text-green-deep text-[22px] mb-3">Preuves</h2>
+            <h2 className="font-display font-semibold text-ink text-[22px] mb-3">Preuves</h2>
             {renderCitations(generalCit)}
           </section>
         )}

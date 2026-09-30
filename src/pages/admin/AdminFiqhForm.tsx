@@ -52,12 +52,12 @@ export const AdminFiqhForm: React.FC = () => {
 
   return (
     <div className="max-w-3xl px-6 py-8 pb-28">
-      <p className="text-xs text-muted"><Link to="/admin/fiqh" className="hover:text-green-deep">Fiqh</Link> · {editId ? 'Modifier' : 'Nouveau'}</p>
-      <h1 className="font-display font-semibold text-green-deep text-3xl mt-1 mb-1">{editId ? 'Modifier le point de fiqh' : 'Nouveau point de fiqh'}</h1>
+      <p className="text-xs text-muted"><Link to="/admin/fiqh" className="hover:text-ink">Fiqh</Link> · {editId ? 'Modifier' : 'Nouveau'}</p>
+      <h1 className="font-display font-semibold text-ink text-3xl mt-1 mb-1">{editId ? 'Modifier le point de fiqh' : 'Nouveau point de fiqh'}</h1>
       <p className="text-muted text-sm mb-6">Un point = une entrée dans un chapitre d’une école. Le texte arabe est enregistré tel quel (UTF-8).</p>
 
       <section className="rounded-card border border-line bg-surface p-5 mb-4">
-        <h2 className="font-display font-semibold text-green-deep text-lg mb-4">1 · Classement</h2>
+        <h2 className="font-display font-semibold text-ink text-lg mb-4">1 · Classement</h2>
         <div className="grid sm:grid-cols-2 gap-3.5">
           <div><label className={label}>École <span className="text-red-600">*</span></label>
             <select className={field} value={f.ecole} onChange={set('ecole')}>{ECOLES.map((e) => <option key={e} value={e}>{e}</option>)}</select></div>
@@ -69,7 +69,7 @@ export const AdminFiqhForm: React.FC = () => {
       </section>
 
       <section className="rounded-card border border-line bg-surface p-5 mb-4">
-        <h2 className="font-display font-semibold text-green-deep text-lg mb-4">2 · Le point</h2>
+        <h2 className="font-display font-semibold text-ink text-lg mb-4">2 · Le point</h2>
         <div className="grid sm:grid-cols-2 gap-3.5 mb-3.5">
           <div><label className={label}>Sujet</label><input className={field} value={f.sujet} onChange={set('sujet')} placeholder="Ex. Les conditions des ablutions" /></div>
           <div><label className={label}>Type <span className="text-muted font-normal">(optionnel)</span></label><input className={field} value={f.type} onChange={set('type')} /></div>
@@ -84,12 +84,12 @@ export const AdminFiqhForm: React.FC = () => {
       </section>
 
       <div className="fixed bottom-0 left-0 md:left-[230px] right-0 flex items-center gap-3 px-6 py-3.5 bg-ivory/95 backdrop-blur border-t border-line">
-        {ok && <span className="inline-flex items-center gap-1.5 text-green-deep text-sm font-medium"><Check className="w-4 h-4" /> Enregistré</span>}
+        {ok && <span className="inline-flex items-center gap-1.5 text-ink text-sm font-medium"><Check className="w-4 h-4" /> Enregistré</span>}
         {error && <span className="inline-flex items-center gap-1.5 text-red-600 text-sm"><AlertTriangle className="w-4 h-4" /> {error}</span>}
         <div className="ml-auto flex items-center gap-2.5">
           {editId && <DeleteEntryButton kind="fiqh" id={editId} label={f.sujet || f.chapitre} redirectTo="/admin/fiqh" />}
           <Link to="/admin/fiqh" className="text-muted text-sm px-3 py-2">Annuler</Link>
-          {!editId && <button disabled={busy || !canSave} onClick={() => save(true)} className="rounded-lg border border-line bg-surface text-green-deep font-semibold px-4 py-2.5 disabled:opacity-50">Enregistrer & nouveau</button>}
+          {!editId && <button disabled={busy || !canSave} onClick={() => save(true)} className="rounded-lg border border-line bg-surface text-ink font-semibold px-4 py-2.5 disabled:opacity-50">Enregistrer & nouveau</button>}
           <button disabled={busy || !canSave} onClick={() => save(false)} className="inline-flex items-center gap-2 rounded-lg bg-green text-white font-semibold px-5 py-2.5 hover:bg-green-deep transition-colors disabled:opacity-50">
             {busy && <Loader2 className="w-4 h-4 animate-spin" />} Enregistrer
           </button>

@@ -35,13 +35,13 @@ export const ComprendreEquivoques: React.FC = () => {
     <div className="min-h-screen bg-ground">
       <main className="max-w-5xl mx-auto px-5 py-7 pb-16">
         <nav aria-label="Fil d'Ariane" className="text-xs text-muted mb-1.5">
-          <Link to="/" className="hover:text-green-deep">Accueil</Link> <span aria-hidden>·</span>{' '}
-          <Link to="/croyance" className="hover:text-green-deep">Croyance</Link> <span aria-hidden>·</span>{' '}
-          <Link to="/croyance/versets-hadiths-equivoques" className="hover:text-green-deep">Versets et hadiths équivoques</Link>
+          <Link to="/" className="hover:text-ink">Accueil</Link> <span aria-hidden>·</span>{' '}
+          <Link to="/croyance" className="hover:text-ink">Croyance</Link> <span aria-hidden>·</span>{' '}
+          <Link to="/croyance/versets-hadiths-equivoques" className="hover:text-ink">Versets et hadiths équivoques</Link>
         </nav>
 
-        <p className="text-[11.5px] font-semibold uppercase tracking-[0.2em] text-gold mb-1">À lire en premier</p>
-        <h1 className="font-display font-semibold text-green-deep leading-tight" style={{ fontSize: 'clamp(26px,4vw,38px)' }}>
+        <p className="text-[11.5px] font-semibold uppercase tracking-[0.2em] text-accent mb-1">À lire en premier</p>
+        <h1 className="font-display font-semibold text-ink leading-tight" style={{ fontSize: 'clamp(26px,4vw,38px)' }}>
           {expose?.titre || 'Comprendre les textes équivoques'}
         </h1>
         <p className="text-muted text-[15px] mt-2 max-w-[64ch]">
@@ -52,13 +52,13 @@ export const ComprendreEquivoques: React.FC = () => {
         {/* Verset fondateur (optionnel) */}
         {(expose?.verset_arabe || expose?.verset_ref) && (
           <div className="rounded-panel border border-line bg-surface p-6 sm:p-7 mt-5 text-center shadow-card">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-gold mb-3">Le texte fondateur</p>
+            <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-accent mb-3">Le texte fondateur</p>
             {expose?.verset_arabe && (
-              <p className="font-arabic text-green-deep leading-[2.05]" dir="rtl" lang="ar" style={{ fontSize: 'clamp(22px,3.6vw,30px)' }}>{expose.verset_arabe}</p>
+              <p className="font-arabic text-ink leading-[2.05]" dir="rtl" lang="ar" style={{ fontSize: 'clamp(22px,3.6vw,30px)' }}>{expose.verset_arabe}</p>
             )}
             {expose?.verset_traduction && <p className="text-[16px] text-ink mt-4 max-w-[60ch] mx-auto">{expose.verset_traduction}</p>}
             {expose?.verset_phonetique && <p className="text-[13px] text-muted italic mt-2 [unicode-bidi:plaintext]">{expose.verset_phonetique}</p>}
-            {expose?.verset_ref && <p className="text-xs uppercase tracking-[0.06em] text-gold font-semibold mt-3">{expose.verset_ref}</p>}
+            {expose?.verset_ref && <p className="text-xs uppercase tracking-[0.06em] text-accent font-semibold mt-3">{expose.verset_ref}</p>}
           </div>
         )}
 
@@ -69,7 +69,7 @@ export const ComprendreEquivoques: React.FC = () => {
         {/* Subtilité de la langue : cartes d'exemples */}
         {exemples.length > 0 && (
           <section className="mt-2">
-            <h2 className="font-display font-semibold text-green-deep text-xl mb-1.5">La subtilité de la langue arabe</h2>
+            <h2 className="font-display font-semibold text-ink text-xl mb-1.5">La subtilité de la langue arabe</h2>
             <p className="text-[15px] text-muted mb-4 max-w-[64ch]">
               Un mot a souvent un sens propre et un sens figuré ; le contexte impose lequel retenir. Au sujet d'Allah,
               c'est toujours le sens digne de Allah qui est visé.
@@ -77,7 +77,7 @@ export const ComprendreEquivoques: React.FC = () => {
             <div className="grid gap-3 sm:grid-cols-2">
               {exemples.map((ex) => (
                 <div key={ex.id} className="rounded-card border border-line bg-surface p-4">
-                  <p className="font-arabic-name text-green-deep text-3xl text-center leading-snug" dir="rtl" lang="ar">{ex.mot_arabe}</p>
+                  <p className="font-arabic-name text-ink text-3xl text-center leading-snug" dir="rtl" lang="ar">{ex.mot_arabe}</p>
                   {ex.translitteration && <p className="text-center text-[12.5px] text-muted italic mt-0.5 mb-3">{ex.translitteration}</p>}
                   {ex.sens_apparent && (
                     <p className="flex items-start gap-2 text-sm text-muted">
@@ -88,7 +88,7 @@ export const ComprendreEquivoques: React.FC = () => {
                   {ex.sens_vise && (
                     <p className="flex items-start gap-2 text-sm text-ink mt-1.5">
                       <Check className="w-4 h-4 shrink-0 mt-0.5 text-green" aria-hidden />
-                      <span>Sens visé : <b className="text-green-deep">{ex.sens_vise}</b></span>
+                      <span>Sens visé : <b className="text-ink">{ex.sens_vise}</b></span>
                     </p>
                   )}
                 </div>
