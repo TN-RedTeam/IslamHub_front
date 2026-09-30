@@ -3,6 +3,7 @@ import { DeleteEntryButton } from '../../components/admin/DeleteEntryButton';
 import { useNavigate, useParams, Link } from 'react-router-dom';
 import { Loader2, Check, AlertTriangle } from 'lucide-react';
 import { adminRecits, type RecitRow } from '../../services/AdminService';
+import { PublishToggle } from '../../components/admin/PublishToggle';
 import { slugify } from '../../utils/slug';
 import type { RecitCategorie } from '../../types';
 
@@ -19,8 +20,8 @@ export const AdminRecitForm: React.FC = () => {
   const [ok, setOk] = useState(false);
   const [slugTouched, setSlugTouched] = useState(false);
 
-  const [f, setF] = useState<{ titre: string; categorie: RecitCategorie; slug: string; contenu_md: string; image_url: string; ordre: string }>(
-    { titre: '', categorie: 'prophetes', slug: '', contenu_md: '', image_url: '', ordre: '0' });
+  const [f, setF] = useState<{ titre: string; categorie: RecitCategorie; slug: string; contenu_md: string; image_url: string; ordre: string; published: boolean }>(
+    { titre: '', categorie: 'prophetes', slug: '', contenu_md: '', image_url: '', ordre: '0', published: true });
   const [parent, setParent] = useState('');          // parent_recit_id (string) ou '' = récit principal
   const [parents, setParents] = useState<RecitRow[]>([]);
 
@@ -33,7 +34,7 @@ export const AdminRecitForm: React.FC = () => {
     if (!editId) return;
     adminRecits.get(editId).then((r) => {
       if (!r) { setError('Récit introuvable.'); return; }
-      setF({ titre: r.titre, categorie: r.categorie, slug: r.slug, contenu_md: r.contenu_md ?? '', image_url: r.image_url ?? '', ordre: String(r.ordre ?? 0) });
+      setF({ titre: r.titre, categorie: r.categorie, slug: r.slug, contenu_md: r.contenu_md ?? '', image_url: r.image_url ?? '', ordre: String(r.ordre ?? 0), published: r.published ?? true });
       setParent(r.parent_recit_id != null ? String(r.parent_recit_id) : '');
       setSlugTouched(true);
     }).catch(() => setError('Récit introuvable.')).finally(() => setLoading(false));
@@ -44,7 +45,7 @@ export const AdminRecitForm: React.FC = () => {
   const save = async () => {
     setBusy(true); setError(null); setOk(false);
     try {
-      const newId = await adminRecits.save({ id: editId ?? undefined, titre: f.titre, categorie: f.categorie, slug: autoSlug, contenu_md: f.contenu_md, image_url: f.image_url, ordre: Number(f.ordre) || 0, parent_recit_id: parent ? Number(parent) : null });
+      const newId = await adminRecits.save({ id: editId ?? undefined, titre: f.titre, categorie: f.categorie, slug: autoSlug, contenu_md: f.contenu_md, image_url: f.image_url, ordre: Number(f.ordre) || 0, parent_recit_id: parent ? Number(parent) : null, published: f.published });
       setOk(true); navigate(`/admin/recits/${newId}`, { replace: true }); setTimeout(() => setOk(false), 2500);
     } catch (e) {
       const msg = (e as Error).message || 'Erreur.';
@@ -80,6 +81,8 @@ export const AdminRecitForm: React.FC = () => {
         <div><label className={label}>Image (URL, optionnel)</label><input className={field} value={f.image_url} onChange={(e) => setF({ ...f, image_url: e.target.value })} placeholder="https://…/references/….webp" /></div>
         <div><label className={label}>Contenu <span className="text-muted font-normal">(Markdown)</span></label><textarea className={`${field} min-h-[220px]`} value={f.contenu_md} onChange={(e) => setF({ ...f, contenu_md: e.target.value })} placeholder="Le récit, en Markdown…" /></div>
       </section>
+
+      <PublishToggle checked={f.published} onChange={(v) => setF({ ...f, published: v })} />
 
       <div className="fixed bottom-0 left-0 md:left-[230px] right-0 flex items-center gap-3 px-6 py-3.5 bg-ivory/95 backdrop-blur border-t border-line">
         {ok && <span className="inline-flex items-center gap-1.5 text-ink text-sm font-medium"><Check className="w-4 h-4" /> Enregistré</span>}

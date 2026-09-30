@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { BlocEditor } from '../../components/admin/BlocEditor';
+import { PublishToggle } from '../../components/admin/PublishToggle';
 import { DeleteEntryButton } from '../../components/admin/DeleteEntryButton';
 import { useNavigate, useParams, Link } from 'react-router-dom';
 import { Loader2, Plus, Trash2, Check, AlertTriangle, ArrowUp, ArrowDown } from 'lucide-react';
@@ -14,7 +15,7 @@ const rid = () => Math.random().toString(36).slice(2);
 type Cit = { key: string; section: string; type: CitationType; ref_id: string; arabe: string; phonetique: string; signification: string; ref: string; accordeon: boolean };
 const emptyCit = (): Cit => ({ key: rid(), section: '', type: 'verset', ref_id: '', arabe: '', phonetique: '', signification: '', ref: '', accordeon: false });
 const move = <T,>(a: T[], i: number, d: -1 | 1): T[] => { const j = i + d; if (j < 0 || j >= a.length) return a; const b = [...a]; [b[i], b[j]] = [b[j], b[i]]; return b; };
-const blank = { titre: '', contenu_md: '', verset_arabe: '', verset_traduction: '', verset_phonetique: '', verset_ref: '' };
+const blank = { titre: '', contenu_md: '', verset_arabe: '', verset_traduction: '', verset_phonetique: '', verset_ref: '', published: true };
 
 export const AdminExposeForm: React.FC = () => {
   const { slug: routeSlug } = useParams();
@@ -42,7 +43,7 @@ export const AdminExposeForm: React.FC = () => {
     adminService.getExposeForEdit(editSlug).then((e) => {
       if (!e) { setError('Exposé introuvable.'); return; }
       setSlug(e.slug); setSlugTouched(true);
-      setF({ titre: e.titre ?? '', contenu_md: e.contenu_md ?? '', verset_arabe: e.verset_arabe ?? '', verset_traduction: e.verset_traduction ?? '', verset_phonetique: e.verset_phonetique ?? '', verset_ref: e.verset_ref ?? '' });
+      setF({ titre: e.titre ?? '', contenu_md: e.contenu_md ?? '', verset_arabe: e.verset_arabe ?? '', verset_traduction: e.verset_traduction ?? '', verset_phonetique: e.verset_phonetique ?? '', verset_ref: e.verset_ref ?? '', published: e.published ?? true });
       setCits(e.citations.map((c) => ({ key: rid(), section: c.section != null ? String(c.section) : '', type: c.type, ref_id: c.ref_id != null ? String(c.ref_id) : '', arabe: c.arabe ?? '', phonetique: c.phonetique ?? '', signification: c.signification ?? '', ref: c.ref ?? '', accordeon: !!c.accordeon })));
     }).catch(() => setError('Exposé introuvable.')).finally(() => setLoading(false));
   }, [editSlug]);
@@ -54,6 +55,7 @@ export const AdminExposeForm: React.FC = () => {
   const buildPayload = (): ExposeFormData => ({
     slug: autoSlug || null, titre: f.titre.trim(), contenu_md: f.contenu_md,
     verset_arabe: f.verset_arabe, verset_traduction: f.verset_traduction, verset_phonetique: f.verset_phonetique, verset_ref: f.verset_ref,
+    published: f.published,
     citations: cits
       .filter((c) => c.ref_id || c.arabe.trim() || c.signification.trim())
       .map<ExposeCitationInput>((c, i) => ({
@@ -158,6 +160,8 @@ export const AdminExposeForm: React.FC = () => {
           ? <BlocEditor parentType="expose" parentId={editSlug} />
           : <p className="text-sm text-muted italic">Enregistre d’abord l’exposé, puis reviens ici pour composer l’article.</p>}
       </section>
+
+      <PublishToggle checked={f.published} onChange={(v) => setF((p) => ({ ...p, published: v }))} />
 
       <div className="fixed bottom-0 left-0 md:left-[230px] right-0 flex items-center gap-3 px-6 py-3.5 bg-ivory/95 backdrop-blur border-t border-line">
         {ok && <span className="inline-flex items-center gap-1.5 text-ink text-sm font-medium"><Check className="w-4 h-4" /> Enregistré</span>}

@@ -13,6 +13,10 @@ const SECTIONS: { categorie: string; titre: string; sous_titre: string }[] = [
 
 const byOrdre = (a: RecitRow, b: RecitRow) => (a.ordre - b.ordre) || (a.id - b.id);
 
+const Brouillon: React.FC = () => (
+  <span className="text-[10px] font-semibold text-warn bg-warn/10 border border-warn/40 rounded-full px-1.5 py-0.5 shrink-0">Brouillon</span>
+);
+
 export const AdminRecitsList: React.FC = () => {
   const [items, setItems] = useState<RecitRow[]>([]);
   const [loading, setLoading] = useState(true);
@@ -97,7 +101,7 @@ export const AdminRecitsList: React.FC = () => {
                             <div className="aspect-[16/9] grid place-items-center bg-glass-tint text-accent/40"><ScrollText className="w-8 h-8" /></div>
                           )}
                           <div className="p-4">
-                            <div className="flex items-center gap-2 mb-1"><IdTag id={t.id} />{kids.length > 0 && <span className="text-[11px] text-muted">· {kids.length} sous-texte{kids.length > 1 ? 's' : ''}</span>}</div>
+                            <div className="flex items-center gap-2 mb-1"><IdTag id={t.id} />{!t.published && <Brouillon />}{kids.length > 0 && <span className="text-[11px] text-muted">· {kids.length} sous-texte{kids.length > 1 ? 's' : ''}</span>}</div>
                             <h3 className="font-display font-bold text-ink leading-snug group-hover:text-accent">{t.titre}</h3>
                           </div>
                         </Link>
@@ -111,6 +115,7 @@ export const AdminRecitsList: React.FC = () => {
                                   <Arrows siblings={kids} index={ki} />
                                   <IdTag id={k.id} />
                                   <Link to={`/admin/recits/${k.id}`} className="min-w-0 flex-1 text-[13.5px] text-ink truncate hover:text-accent">{k.titre}</Link>
+                                  {!k.published && <Brouillon />}
                                 </li>
                               ))}
                             </ul>
