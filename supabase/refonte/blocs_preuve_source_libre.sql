@@ -89,3 +89,11 @@ AS $function$
     where cb.parent_type = p_parent_type and cb.parent_id = p_parent_id
   ) b;
 $function$;
+
+-- 5) Assouplir la contrainte CHECK : une preuve accepte une source OU une
+--    saisie libre (sinon elle exigeait citation_id).
+alter table public.contenu_blocs drop constraint if exists contenu_blocs_preuve_chk;
+alter table public.contenu_blocs add constraint contenu_blocs_preuve_chk check (
+  type <> 'preuve'
+  or (citation_type is not null and (citation_id is not null or libre_arabe is not null or libre_traduction is not null))
+);
