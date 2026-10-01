@@ -12,18 +12,17 @@
    --surface, --ink, --green, --gold…) sont ALIASÉS sur la nouvelle palette :
    toute l'app bascule sans réécrire chaque composant. Rien en dur : tout ici. */
 :root {
-    /* ESSAI — beige adouci (grisé / légèrement rosé) en thème clair : moins
-       jaune que la v2, un soupçon de rose pour s'accorder au hero violet.
-       Accent teal conservé, cartes blanches, thème sombre inchangé. */
-    --bg1: #f5efeb; --bg2: #efe8e4; --bg-glow: #f3ebe9;
-    --tx: #1f2420; --mut: #6b6a6a;
+    /* ESSAI — fond beige (reprise de la v2) en thème clair ; accent teal
+       conservé, cartes blanches, thème sombre inchangé. Revert = ce bloc. */
+    --bg1: #f6f0e3; --bg2: #f2ebdd; --bg-glow: #f6f1e6;
+    --tx: #1b2620; --mut: #6a746a;
     --acc: #0e8f80; --acc2: #0b6b62; --accdeep: #0e8f80;
-    --glass: #ffffff; --glass-b: #e6ded8; --glass2: #dcf1ee;
+    --glass: #ffffff; --glass-b: #e5dccb; --glass2: #dcf1ee;
     --ok: #1f7d62; --warn: #a9791f; --low: #9c4f45;
     --dome: #2f8d63; --dome2: #1c6142;
-    /* Voile beige grisé-rosé très doux en haut. */
-    --shell: linear-gradient(180deg, #f5efeb 0%, #f1eae6 45%, #efe8e4 100%);
-    --hero-fade: #efe8e4; /* couleur de fondu du bas du hero (= --bg2) */
+    /* Voile beige très doux en haut. */
+    --shell: linear-gradient(180deg, #f6f0e3 0%, #f3ecdf 45%, #f2ebdd 100%);
+    --hero-fade: #f2ebdd; /* couleur de fondu du bas du hero (= --bg2) */
     color-scheme: light;
     /* Alias historiques → palette Nuit Teal */
     --ground: var(--bg2); --surface: var(--glass); --ivory: var(--glass);
