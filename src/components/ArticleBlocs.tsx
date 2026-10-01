@@ -125,7 +125,11 @@ export const ArticleBlocs: React.FC<{ blocs: Bloc[]; showToc?: boolean }> = ({ b
         <ol className="list-none m-0 p-0">
           {toc.map((t) => (
             <li key={t.id}>
-              <a href={`#${t.id}`} className="block text-[13.5px] text-muted hover:text-ink border-l-2 border-line hover:border-gold pl-3 py-1.5 leading-snug">{t.label}</a>
+              <a
+                href={`#${t.id}`}
+                onClick={(e) => { e.preventDefault(); document.getElementById(t.id)?.scrollIntoView({ behavior: 'smooth', block: 'start' }); }}
+                className="block text-[13.5px] text-muted hover:text-ink border-l-2 border-line hover:border-gold pl-3 py-1.5 leading-snug"
+              >{t.label}</a>
             </li>
           ))}
         </ol>
