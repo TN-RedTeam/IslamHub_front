@@ -614,7 +614,7 @@ export type BlocCitationType = 'verset' | 'hadith' | 'parole';
 
 /** Source résolue d'un bloc preuve (lue en direct depuis hadiths/paroles/coran). */
 export interface BlocRef {
-  id: number;
+  id?: number;
   slug?: string | null;
   sujet?: string | null;
   sourate?: string | null;
@@ -627,6 +627,9 @@ export interface BlocRef {
   texte_francais?: string | null;
   'phonétique'?: string | null;
   explication?: string | null;
+  // Preuve en saisie libre (pas de source en base).
+  libre?: boolean;
+  ref?: string | null;
 }
 
 /** Bloc rendu (lecture publique via get_blocs). */

@@ -32,15 +32,16 @@ function badgeText(citation: Bloc['citation_type'], ref: BlocRef): string | null
 const Proof: React.FC<{ b: Bloc }> = ({ b }) => {
   const ref = b.ref;
   if (!ref) return null;
+  const isLibre = !!ref.libre;
   const kind = b.citation_type === 'hadith' ? 'Hadith' : b.citation_type === 'parole' ? 'Parole de savant' : 'Coran';
-  const href = sourceLink(b.citation_type, ref);
-  const badge = badgeText(b.citation_type, ref);
+  const href = isLibre ? null : sourceLink(b.citation_type, ref);
+  const badge = isLibre ? null : badgeText(b.citation_type, ref);
   return (
     <div className="my-5 rounded-r-card border border-line border-l-[3px] border-l-gold bg-surface px-5 py-4 shadow-card">
       <div className="flex items-center gap-2 mb-2.5 text-[10.5px] uppercase tracking-[0.12em] text-muted">
         <span className="text-accent font-bold">Preuve</span>
         <span>· {kind}</span>
-        <span className="ml-auto normal-case tracking-normal">réutilisée depuis la rubrique {b.source_rubrique}</span>
+        <span className="ml-auto normal-case tracking-normal">{isLibre ? 'saisie manuelle' : `réutilisée depuis la rubrique ${b.source_rubrique}`}</span>
       </div>
 
       {b.citation_type === 'parole' && (ref.savant || ref.sujet) && (
@@ -58,6 +59,8 @@ const Proof: React.FC<{ b: Bloc }> = ({ b }) => {
           {b.citation_type !== 'parole' && badge && <span className="ml-2 align-middle text-[10px] font-bold uppercase text-accent bg-glass-tint border border-gold rounded-full px-2 py-0.5">{badge}</span>}
         </p>
       )}
+
+      {isLibre && ref.ref && <p className="mt-2 text-[12.5px] font-semibold text-accent">— {ref.ref}</p>}
 
       {href && (
         <Link to={href} className="inline-flex items-center gap-1.5 mt-2.5 text-[12.5px] font-semibold text-green hover:text-ink">
