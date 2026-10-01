@@ -41,7 +41,7 @@ const Proof: React.FC<{ b: Bloc }> = ({ b }) => {
       <div className="flex items-center gap-2 mb-2.5 text-[10.5px] uppercase tracking-[0.12em] text-muted">
         <span className="text-accent font-bold">Preuve</span>
         <span>· {kind}</span>
-        <span className="ml-auto normal-case tracking-normal">{isLibre ? 'saisie manuelle' : `réutilisée depuis la rubrique ${b.source_rubrique}`}</span>
+        {!isLibre && <span className="ml-auto normal-case tracking-normal">réutilisée depuis la rubrique {b.source_rubrique}</span>}
       </div>
 
       {b.citation_type === 'parole' && (ref.savant || ref.sujet) && (
