@@ -436,6 +436,10 @@ export interface BlocInput {
   citation_type?: BlocCitationType | null;
   citation_id?: number | null;
   commentaire_md?: string | null;
+  // Preuve « saisie libre » (source absente de la base) : texte tapé à la main.
+  libre_arabe?: string | null;
+  libre_traduction?: string | null;
+  libre_ref?: string | null;
 }
 
 // ---- Fiqh ----

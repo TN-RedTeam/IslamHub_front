@@ -14,8 +14,8 @@ const label = 'block text-[13px] font-semibold text-ink mb-1.5';
 const field = 'w-full rounded-lg border border-line bg-surface px-3 py-2.5 text-[15px] text-ink focus:outline-none focus:ring-2 focus:ring-green';
 const rid = () => Math.random().toString(36).slice(2);
 
-type Row = { key: string; type: BlocType; texte_md: string; citation_type: BlocCitationType; citation_id: string; commentaire_md: string; filter: string };
-const empty = (type: BlocType): Row => ({ key: rid(), type, texte_md: '', citation_type: 'hadith', citation_id: '', commentaire_md: '', filter: '' });
+type Row = { key: string; type: BlocType; texte_md: string; citation_type: BlocCitationType; citation_id: string; commentaire_md: string; filter: string; libre_arabe: string; libre_traduction: string; libre_ref: string };
+const empty = (type: BlocType): Row => ({ key: rid(), type, texte_md: '', citation_type: 'hadith', citation_id: '', commentaire_md: '', filter: '', libre_arabe: '', libre_traduction: '', libre_ref: '' });
 
 const CIT_LABEL: Record<BlocCitationType, string> = { verset: 'Verset (Coran)', hadith: 'Hadith', parole: 'Parole de savant' };
 
@@ -37,6 +37,7 @@ export const BlocEditor: React.FC<{ parentType: string; parentId: string | numbe
           citation_type: (b.citation_type ?? 'hadith') as BlocCitationType,
           citation_id: b.citation_id != null ? String(b.citation_id) : '',
           commentaire_md: b.commentaire_md ?? '', filter: '',
+          libre_arabe: b.libre_arabe ?? '', libre_traduction: b.libre_traduction ?? '', libre_ref: b.libre_ref ?? '',
         })));
       })
       .catch(() => setError('Impossible de charger les blocs.'))
@@ -51,9 +52,18 @@ export const BlocEditor: React.FC<{ parentType: string; parentId: string | numbe
     setBusy(true); setError(null); setOk(false);
     try {
       const blocs: BlocInput[] = rows
-        .filter((r) => (r.type === 'preuve' ? r.citation_id : r.texte_md.trim()))
+        .filter((r) => (r.type === 'preuve'
+          ? (r.citation_id || r.libre_arabe.trim() || r.libre_traduction.trim())
+          : r.texte_md.trim()))
         .map((r) => r.type === 'preuve'
-          ? { type: 'preuve', citation_type: r.citation_type, citation_id: Number(r.citation_id) || null, commentaire_md: r.commentaire_md.trim() || null }
+          ? {
+              type: 'preuve', citation_type: r.citation_type,
+              citation_id: r.citation_id ? Number(r.citation_id) || null : null,
+              commentaire_md: r.commentaire_md.trim() || null,
+              libre_arabe: r.citation_id ? null : (r.libre_arabe.trim() || null),
+              libre_traduction: r.citation_id ? null : (r.libre_traduction.trim() || null),
+              libre_ref: r.citation_id ? null : (r.libre_ref.trim() || null),
+            }
           : { type: r.type, texte_md: r.texte_md });
       await adminService.saveBlocs(parentType, parentId, blocs);
       setOk(true); setTimeout(() => setOk(false), 2500);
@@ -97,16 +107,29 @@ export const BlocEditor: React.FC<{ parentType: string; parentId: string | numbe
                       <input className={`${field} pl-9`} value={r.filter} onChange={(e) => patch(i, { filter: e.target.value })} placeholder="Filtrer par sujet…" /></div>
                   </div>
                 </div>
-                <div><label className={label}>Choisir la source <span className="text-red-600">*</span></label>
+                <div><label className={label}>Choisir la source <span className="text-muted font-normal">(facultatif — laisse vide pour saisir à la main)</span></label>
                   <select className={field} value={r.citation_id} onChange={(e) => patch(i, { citation_id: e.target.value })}>
-                    <option value="">—</option>
+                    <option value="">— (aucune : saisie manuelle ci-dessous)</option>
                     {optionsFor(r.citation_type)
                       .filter((o) => !r.filter.trim() || o.label.toLowerCase().includes(r.filter.trim().toLowerCase()))
                       .map((o) => <option key={o.id} value={o.id}>{o.label}</option>)}
                   </select></div>
+
+                {!r.citation_id && (
+                  <div className="rounded-lg border border-dashed border-glass-border bg-glass p-3 space-y-2.5">
+                    <p className="text-[11px] uppercase tracking-[0.1em] text-muted font-semibold">Saisie manuelle <span className="normal-case tracking-normal font-normal">— si la source n'est pas (encore) en base</span></p>
+                    <div><label className={label}>Texte arabe</label>
+                      <textarea dir="rtl" lang="ar" className={`${field} font-arabic text-xl leading-loose text-right min-h-[64px]`} value={r.libre_arabe} onChange={(e) => patch(i, { libre_arabe: e.target.value })} placeholder="Colle le verset / hadith en arabe…" /></div>
+                    <div><label className={label}>Traduction / signification</label>
+                      <textarea className={`${field} min-h-[50px]`} value={r.libre_traduction} onChange={(e) => patch(i, { libre_traduction: e.target.value })} placeholder="ce qui signifie : « … »" /></div>
+                    <div><label className={label}>Référence</label>
+                      <input className={field} value={r.libre_ref} onChange={(e) => patch(i, { libre_ref: e.target.value })} placeholder={r.citation_type === 'hadith' ? 'Ex. Rapporté par al-Bukhārī' : r.citation_type === 'parole' ? 'Ex. Auteur, ouvrage' : 'Ex. Sourate Ibrāhīm / 18'} /></div>
+                  </div>
+                )}
+
                 <div><label className={label}>Commentaire de la preuve <span className="text-muted font-normal">(optionnel, Markdown)</span></label>
                   <textarea className={`${field} min-h-[60px]`} value={r.commentaire_md} onChange={(e) => patch(i, { commentaire_md: e.target.value })} placeholder="Pourquoi cette preuve, ce qu’elle établit…" /></div>
-                <p className="text-[12px] text-muted italic">La preuve n’est pas recopiée : le texte, la référence et les scans sont lus depuis la source à l’affichage.</p>
+                <p className="text-[12px] text-muted italic">Avec une source choisie, le texte et les scans sont lus depuis la base ; sinon, c'est ta saisie manuelle qui s'affiche.</p>
               </div>
             )}
           </div>
