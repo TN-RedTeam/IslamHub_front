@@ -1,45 +1,43 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Loader2, Plus, Search, GitMerge, Trash2, Check, AlertTriangle, ChevronRight } from 'lucide-react';
-import { adminService, type TagOverviewRow, type ContentRef } from '../../services/AdminService';
+import { Loader2, Search, GitMerge, Trash2, Check, AlertTriangle, ChevronRight } from 'lucide-react';
+import { adminService, type SujetOverviewRow, type ContentRef } from '../../services/AdminService';
 import { CountBadge } from '../../components/admin/AdminListUI';
 
 const norm = (s: string) => s.normalize('NFD').replace(/\p{Diacritic}/gu, '').toLowerCase();
 const RUB_LABEL: Record<string, string> = { hadiths: 'Hadiths', paroles: 'Paroles', coran: 'Coran', invocations: 'Invocations', fiqh: 'Fiqh' };
-
 const field = 'rounded-lg border border-line bg-surface px-3 py-2 text-[15px] text-ink focus:outline-none focus:ring-2 focus:ring-green';
 
-export const AdminTagsList: React.FC = () => {
-  const [rows, setRows] = useState<TagOverviewRow[]>([]);
+export const AdminSujetsList: React.FC = () => {
+  const [rows, setRows] = useState<SujetOverviewRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState(false);
   const [q, setQ] = useState('');
   const [sel, setSel] = useState<Set<string>>(new Set());
   const [target, setTarget] = useState('');
-  const [newTag, setNewTag] = useState('');
   const [msg, setMsg] = useState<string | null>(null);
   const [err, setErr] = useState<string | null>(null);
   const [open, setOpen] = useState<string | null>(null);
   const [contents, setContents] = useState<ContentRef[]>([]);
   const [cLoading, setCLoading] = useState(false);
 
-  const openTag = async (t: string) => {
+  const openSujet = async (t: string) => {
     if (open === t) { setOpen(null); return; }
     setOpen(t); setContents([]); setCLoading(true);
-    try { setContents(await adminService.tagContents(t)); }
+    try { setContents(await adminService.sujetContents(t)); }
     catch { setContents([]); }
     finally { setCLoading(false); }
   };
 
-  const load = () => adminService.tagsOverview().then(setRows).catch(() => setRows([]));
+  const load = () => adminService.sujetsOverview().then(setRows).catch(() => setRows([]));
   useEffect(() => { load().finally(() => setLoading(false)); }, []);
 
   const filtered = useMemo(() => {
     const term = norm(q.trim());
-    return term ? rows.filter((r) => norm(r.tag).includes(term)) : rows;
+    return term ? rows.filter((r) => norm(r.sujet).includes(term)) : rows;
   }, [rows, q]);
 
-  const allTags = useMemo(() => rows.map((r) => r.tag), [rows]);
+  const allSujets = useMemo(() => rows.map((r) => r.sujet), [rows]);
   const toggle = (t: string) => setSel((s) => { const n = new Set(s); if (n.has(t)) n.delete(t); else n.add(t); return n; });
   const selected = [...sel];
 
@@ -54,22 +52,17 @@ export const AdminTagsList: React.FC = () => {
     const tgt = target.trim();
     if (!selected.length || !tgt) return;
     run(async () => {
-      const n = await adminService.mergeTags(selected, tgt);
+      const n = await adminService.mergeSujets(selected, tgt);
       setSel(new Set()); setTarget('');
       return selected.length > 1
-        ? `${selected.length} tags fusionnés dans « ${tgt} » (${n} fiches mises à jour).`
-        : `Renommé en « ${tgt} » (${n} fiches mises à jour).`;
+        ? `${selected.length} sujets fusionnés dans « ${tgt} » (${n} fiches).`
+        : `Renommé en « ${tgt} » (${n} fiches).`;
     });
   };
   const doDelete = () => {
     if (!selected.length) return;
-    if (!window.confirm(`Supprimer ${selected.length} tag(s) de toutes les fiches ? (irréversible)`)) return;
-    run(async () => { const n = await adminService.mergeTags(selected, ''); setSel(new Set()); return `${selected.length} tag(s) supprimé(s) (${n} fiches).`; });
-  };
-  const doAdd = () => {
-    const nom = newTag.trim();
-    if (!nom) return;
-    run(async () => { await adminService.addTag(nom); setNewTag(''); return `Tag « ${nom} » ajouté au vocabulaire.`; });
+    if (!window.confirm(`Vider le sujet de ${selected.length} groupe(s) de fiches ? (le sujet sera retiré)`)) return;
+    run(async () => { const n = await adminService.mergeSujets(selected, ''); setSel(new Set()); return `Sujet vidé sur ${n} fiche(s).`; });
   };
 
   const Num: React.FC<{ n: number }> = ({ n }) => <span className={n ? 'text-ink tabular-nums' : 'text-muted/40 tabular-nums'}>{n || '·'}</span>;
@@ -77,29 +70,25 @@ export const AdminTagsList: React.FC = () => {
   return (
     <div className="max-w-5xl px-6 py-8">
       <div className="flex items-center gap-3 flex-wrap mb-1.5">
-        <h1 className="font-display font-semibold text-ink text-3xl">Tags &amp; mots-clés</h1>
+        <h1 className="font-display font-semibold text-ink text-3xl">Sujets</h1>
         <CountBadge n={loading ? null : rows.length} />
       </div>
-      <p className="text-sm text-muted mb-5">Tout le vocabulaire en un coup d'œil. Coche des tags pour les <b>fusionner</b> (uniformiser les doublons) ou les supprimer ; l'action réécrit toutes les fiches concernées.</p>
+      <p className="text-sm text-muted mb-5">Le « sujet » (titre) de chaque fiche, tous contenus confondus. Coche des variantes pour les <b>fusionner</b> (ex. casse/accents) ou les vider ; l'action réécrit les fiches concernées.</p>
 
-      {/* Ajouter au vocabulaire */}
       <div className="flex flex-wrap items-center gap-2 mb-3">
-        <input className={`${field} w-56`} value={newTag} onChange={(e) => setNewTag(e.target.value)} onKeyDown={(e) => { if (e.key === 'Enter') doAdd(); }} placeholder="Nouveau tag (ex. savants)" />
-        <button type="button" disabled={busy || !newTag.trim()} onClick={doAdd} className="inline-flex items-center gap-1.5 rounded-lg bg-accent-deep text-white font-semibold px-3.5 py-2 text-sm hover:brightness-110 disabled:opacity-50"><Plus className="w-4 h-4" /> Ajouter</button>
         <div className="relative ml-auto">
           <Search className="w-4 h-4 text-muted absolute left-3 top-1/2 -translate-y-1/2" />
           <input className={`${field} pl-9 w-64`} value={q} onChange={(e) => setQ(e.target.value)} placeholder="Filtrer…" />
         </div>
       </div>
 
-      {/* Barre d'action sur la sélection */}
       {selected.length > 0 && (
         <div className="flex flex-wrap items-center gap-2 mb-3 rounded-lg border border-glass-border bg-glass-tint px-3 py-2.5">
           <span className="text-sm font-semibold text-ink">{selected.length} sélectionné{selected.length > 1 ? 's' : ''}</span>
-          <input list="tags-vocab" className={`${field} w-56`} value={target} onChange={(e) => setTarget(e.target.value)} placeholder={selected.length > 1 ? 'Fusionner dans… (tag cible)' : 'Renommer en…'} />
-          <datalist id="tags-vocab">{allTags.map((t) => <option key={t} value={t} />)}</datalist>
+          <input list="sujets-vocab" className={`${field} w-72`} value={target} onChange={(e) => setTarget(e.target.value)} placeholder={selected.length > 1 ? 'Fusionner dans… (sujet cible)' : 'Renommer en…'} />
+          <datalist id="sujets-vocab">{allSujets.map((t) => <option key={t} value={t} />)}</datalist>
           <button type="button" disabled={busy || !target.trim()} onClick={doMerge} className="inline-flex items-center gap-1.5 rounded-lg bg-accent-deep text-white font-semibold px-3.5 py-2 text-sm hover:brightness-110 disabled:opacity-50"><GitMerge className="w-4 h-4" /> {selected.length > 1 ? 'Fusionner' : 'Renommer'}</button>
-          <button type="button" disabled={busy} onClick={doDelete} className="inline-flex items-center gap-1.5 rounded-lg border border-low/40 text-low font-semibold px-3.5 py-2 text-sm hover:bg-low/10 disabled:opacity-50"><Trash2 className="w-4 h-4" /> Supprimer</button>
+          <button type="button" disabled={busy} onClick={doDelete} className="inline-flex items-center gap-1.5 rounded-lg border border-low/40 text-low font-semibold px-3.5 py-2 text-sm hover:bg-low/10 disabled:opacity-50"><Trash2 className="w-4 h-4" /> Vider</button>
           <button type="button" onClick={() => setSel(new Set())} className="text-muted text-sm px-2">Annuler</button>
         </div>
       )}
@@ -118,7 +107,7 @@ export const AdminTagsList: React.FC = () => {
             <thead>
               <tr className="text-[11px] uppercase tracking-[0.08em] text-muted border-b border-glass-border">
                 <th className="w-9 py-2.5"></th>
-                <th className="text-left font-semibold py-2.5">Tag</th>
+                <th className="text-left font-semibold py-2.5">Sujet</th>
                 <th className="text-right font-semibold px-2">Total</th>
                 <th className="text-right font-semibold px-2">Hadiths</th>
                 <th className="text-right font-semibold px-2">Paroles</th>
@@ -129,15 +118,14 @@ export const AdminTagsList: React.FC = () => {
             </thead>
             <tbody>
               {filtered.map((r) => (
-                <React.Fragment key={r.tag}>
-                  <tr className={`border-b border-glass-border/60 hover:bg-glass-tint/50 ${sel.has(r.tag) ? 'bg-glass-tint' : ''}`}>
-                    <td className="py-2 text-center"><input type="checkbox" className="w-4 h-4 accent-green" checked={sel.has(r.tag)} onChange={() => toggle(r.tag)} /></td>
+                <React.Fragment key={r.sujet}>
+                  <tr className={`border-b border-glass-border/60 hover:bg-glass-tint/50 ${sel.has(r.sujet) ? 'bg-glass-tint' : ''}`}>
+                    <td className="py-2 text-center"><input type="checkbox" className="w-4 h-4 accent-green" checked={sel.has(r.sujet)} onChange={() => toggle(r.sujet)} /></td>
                     <td className="py-2">
-                      <button type="button" onClick={() => openTag(r.tag)} className="inline-flex items-center gap-1.5 text-left">
-                        <ChevronRight className={`w-3.5 h-3.5 shrink-0 text-muted transition-transform ${open === r.tag ? 'rotate-90' : ''}`} />
-                        <span className="font-medium text-ink hover:text-accent">{r.tag}</span>
+                      <button type="button" onClick={() => openSujet(r.sujet)} className="inline-flex items-center gap-1.5 text-left">
+                        <ChevronRight className={`w-3.5 h-3.5 shrink-0 text-muted transition-transform ${open === r.sujet ? 'rotate-90' : ''}`} />
+                        <span className="font-medium text-ink hover:text-accent">{r.sujet}</span>
                       </button>
-                      {r.total === 0 && <span className="ml-2 text-[10px] font-semibold text-muted bg-glass-tint border border-glass-border rounded-full px-1.5 py-0.5">vocabulaire</span>}
                     </td>
                     <td className="text-right px-2 font-semibold"><Num n={r.total} /></td>
                     <td className="text-right px-2"><Num n={r.hadiths} /></td>
@@ -146,14 +134,14 @@ export const AdminTagsList: React.FC = () => {
                     <td className="text-right px-2"><Num n={r.invocations} /></td>
                     <td className="text-right px-2 pr-4"><Num n={r.fiqh} /></td>
                   </tr>
-                  {open === r.tag && (
+                  {open === r.sujet && (
                     <tr className="bg-glass-tint/40">
                       <td></td>
                       <td colSpan={7} className="py-2 pr-4">
                         {cLoading ? (
                           <span className="inline-flex items-center gap-1.5 text-sm text-muted"><Loader2 className="w-4 h-4 animate-spin" /> Chargement…</span>
                         ) : contents.length === 0 ? (
-                          <span className="text-sm text-muted italic">Aucun contenu (tag au vocabulaire uniquement).</span>
+                          <span className="text-sm text-muted italic">Aucun contenu.</span>
                         ) : (
                           <ul className="flex flex-wrap gap-2">
                             {contents.map((c) => (
@@ -171,7 +159,7 @@ export const AdminTagsList: React.FC = () => {
                   )}
                 </React.Fragment>
               ))}
-              {filtered.length === 0 && <tr><td colSpan={8} className="py-8 text-center text-muted italic">Aucun tag.</td></tr>}
+              {filtered.length === 0 && <tr><td colSpan={8} className="py-8 text-center text-muted italic">Aucun sujet.</td></tr>}
             </tbody>
           </table>
         </div>
@@ -180,4 +168,4 @@ export const AdminTagsList: React.FC = () => {
   );
 };
 
-export default AdminTagsList;
+export default AdminSujetsList;

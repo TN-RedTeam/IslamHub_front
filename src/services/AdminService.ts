@@ -233,6 +233,33 @@ class AdminService {
     const { error } = await supabase.rpc('admin_add_tag', { p_nom: nom });
     if (error) throw error;
   }
+  /** Contenus rattachés à un tag (drill-down). */
+  async tagContents(tag: string): Promise<ContentRef[]> {
+    const { data, error } = await supabase.rpc('admin_tag_contents', { p_tag: tag });
+    if (error) throw error; return (data ?? []) as ContentRef[];
+  }
+
+  // ---- Sujets (gestionnaire) ----
+  async sujetsOverview(): Promise<SujetOverviewRow[]> {
+    const { data, error } = await supabase.rpc('admin_sujets_overview');
+    if (error) throw error; return (data ?? []) as SujetOverviewRow[];
+  }
+  async sujetsVocabulary(): Promise<string[]> {
+    const { data, error } = await supabase.rpc('admin_sujets_vocabulary');
+    if (error) throw error; return (data ?? []) as string[];
+  }
+  async mergeSujets(sources: string[], target: string): Promise<number> {
+    const { data, error } = await supabase.rpc('admin_merge_sujets', { p_sources: sources, p_target: target });
+    if (error) throw error; return (data as number) ?? 0;
+  }
+  async deleteSujet(token: string): Promise<number> {
+    return this.mergeSujets([token], '');
+  }
+  /** Contenus portant un sujet donné (drill-down). */
+  async sujetContents(sujet: string): Promise<ContentRef[]> {
+    const { data, error } = await supabase.rpc('admin_sujet_contents', { p_sujet: sujet });
+    if (error) throw error; return (data ?? []) as ContentRef[];
+  }
 
   // ---- Fiqh ----
   async getFiqhForEdit(id: number): Promise<FiqhEditShape | null> {
@@ -448,6 +475,16 @@ export interface TagOverviewRow {
   hadiths: number; paroles: number; coran: number; invocations: number; fiqh: number;
   in_vocab: boolean;
 }
+
+/** Ligne de la vue d'ensemble des sujets (valeur unique par fiche). */
+export interface SujetOverviewRow {
+  sujet: string;
+  total: number;
+  hadiths: number; paroles: number; coran: number; invocations: number; fiqh: number;
+}
+
+/** Contenu rattaché à un tag / sujet (drill-down admin). */
+export interface ContentRef { rubrique: string; id: number; titre: string; }
 
 // ---- Suppression admin (Phase 4.6) ----
 export type DeletableKind =

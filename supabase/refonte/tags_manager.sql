@@ -111,3 +111,24 @@ begin
     ) d
   ), '[]'::json);
 end $$;
+
+-- Contenus rattachés à un tag (drill-down depuis le gestionnaire).
+create or replace function public.admin_tag_contents(p_tag text)
+returns json language plpgsql security definer set search_path to 'public','pg_temp' as $$
+begin
+  if not public.is_admin() then raise exception 'Réservé à l''administrateur.'; end if;
+  return coalesce((
+    select json_agg(row_to_json(x) order by x.rubrique, x.titre) from (
+      select 'hadiths' rubrique, id, coalesce(nullif(btrim(sujet),''),'(sans sujet)') titre from public.hadiths
+        where exists (select 1 from unnest(string_to_array(tag,',')) t where btrim(t)=btrim(p_tag))
+      union all select 'paroles', id, coalesce(nullif(btrim(sujet),''),'(sans sujet)') from public.paroles
+        where exists (select 1 from unnest(string_to_array(tag,',')) t where btrim(t)=btrim(p_tag))
+      union all select 'coran', id, coalesce(nullif(btrim(sujet),''),'(verset)') from public.coran
+        where exists (select 1 from unnest(string_to_array(tag,',')) t where btrim(t)=btrim(p_tag))
+      union all select 'invocations', id, coalesce(nullif(btrim(sujet),''),'(invocation)') from public.invocations
+        where exists (select 1 from unnest(string_to_array(tag,',')) t where btrim(t)=btrim(p_tag))
+      union all select 'fiqh', id, coalesce(nullif(btrim(sujet),''),'(fiqh)') from public.fiqh
+        where exists (select 1 from unnest(string_to_array(tag,',')) t where btrim(t)=btrim(p_tag))
+    ) x
+  ), '[]'::json);
+end $$;
