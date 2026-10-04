@@ -400,7 +400,7 @@ const Malikite: React.FC = () => {
                 </m.section>
 
                 {/* Jurisprudence (fiqh) de l'école — contenu dynamique depuis Supabase */}
-                <EcoleFiqhSection ecole="Malikite" titre="Jurisprudence de l'école Malikite" />
+                <EcoleFiqhSection ecole="Malikite" titre="Jurisprudence de l'école malikite" />
 
                 {/* Autres écoles */}
                 <RelatedSchools current="maliki" />
