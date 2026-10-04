@@ -13,13 +13,13 @@ const ACCENT: Record<string, { filet: string; text: string; soft: string; ring: 
 };
 
 const ECOLES = [
-  { name: 'Ḥanafī',  path: '/ecoles/Hanafi',   founder: 'Imam Abū Ḥanīfa',      accent: 'hanafi',
+  { name: 'Hanafite',  path: '/ecoles/Hanafi',   founder: 'Imam Abū Ḥanīfa',      accent: 'hanafi',
     desc: "L'école de la raison et de l'opinion, répandue en Turquie, dans les Balkans, en Asie centrale et dans le sous-continent indien." },
-  { name: 'Mālikī',  path: '/ecoles/Malikite', founder: 'Imam Mālik ibn Anas',  accent: 'maliki',
+  { name: 'Malikite',  path: '/ecoles/Malikite', founder: 'Imam Mālik ibn Anas',  accent: 'maliki',
     desc: "L'école de la pratique médinoise, prédominante en Afrique du Nord et en Afrique de l'Ouest." },
-  { name: 'Shāfiʿī', path: '/ecoles/Shafii',   founder: 'Imam Ash-Shāfiʿī',     accent: 'shafii',
+  { name: 'Chaféite', path: '/ecoles/Shafii',   founder: 'Imam Ash-Shāfiʿī',     accent: 'shafii',
     desc: "L'école de l'équilibre des sources, répandue en Égypte, en Afrique de l'Est et en Asie du Sud-Est." },
-  { name: 'Ḥanbalī', path: '/ecoles/Hanbalite', founder: 'Imam Aḥmad ibn Ḥanbal', accent: 'hanbali',
+  { name: 'Hanbalite', path: '/ecoles/Hanbalite', founder: 'Imam Aḥmad ibn Ḥanbal', accent: 'hanbali',
     desc: "L'école attachée au hadith, prédominante dans la péninsule Arabique." },
 ];
 

@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
+import { SujetField } from '../../components/admin/SujetField';
 import { DeleteEntryButton } from '../../components/admin/DeleteEntryButton';
 import { useNavigate, useParams, Link } from 'react-router-dom';
 import { Loader2, Check, AlertTriangle } from 'lucide-react';
@@ -6,7 +7,13 @@ import { adminService, type FiqhFormData } from '../../services/AdminService';
 
 const label = 'block text-[13px] font-semibold text-ink mb-1.5';
 const field = 'w-full rounded-lg border border-line bg-surface px-3 py-2.5 text-[15px] text-ink focus:outline-none focus:ring-2 focus:ring-green';
-const ECOLES = ['Hanafi', 'Malikite', 'Shafii', 'Hanbalite'];
+// value = clé de matching (fiqh.ecole / pages d'école) inchangée ; label = nom affiché.
+const ECOLES = [
+  { value: 'Hanafi', label: 'hanafite' },
+  { value: 'Malikite', label: 'malikite' },
+  { value: 'Shafii', label: 'chaféite' },
+  { value: 'Hanbalite', label: 'hanbalite' },
+];
 const blank = { ecole: 'Hanafi', chapitre: '', sujet: '', type: '', texte: '', texte_arabe: '', source: '', tag: '', ordre: '0' };
 
 export const AdminFiqhForm: React.FC = () => {
@@ -60,7 +67,7 @@ export const AdminFiqhForm: React.FC = () => {
         <h2 className="font-display font-semibold text-ink text-lg mb-4">1 · Classement</h2>
         <div className="grid sm:grid-cols-2 gap-3.5">
           <div><label className={label}>École <span className="text-red-600">*</span></label>
-            <select className={field} value={f.ecole} onChange={set('ecole')}>{ECOLES.map((e) => <option key={e} value={e}>{e}</option>)}</select></div>
+            <select className={field} value={f.ecole} onChange={set('ecole')}>{ECOLES.map((e) => <option key={e.value} value={e.value}>{e.label}</option>)}</select></div>
           <div><label className={label}>Ordre <span className="text-muted font-normal">(dans le chapitre)</span></label><input className={field} type="number" value={f.ordre} onChange={set('ordre')} /></div>
         </div>
         <div className="mt-3.5"><label className={label}>Chapitre <span className="text-red-600">*</span></label>
@@ -71,7 +78,7 @@ export const AdminFiqhForm: React.FC = () => {
       <section className="rounded-card border border-line bg-surface p-5 mb-4">
         <h2 className="font-display font-semibold text-ink text-lg mb-4">2 · Le point</h2>
         <div className="grid sm:grid-cols-2 gap-3.5 mb-3.5">
-          <div><label className={label}>Sujet</label><input className={field} value={f.sujet} onChange={set('sujet')} placeholder="Ex. Les conditions des ablutions" /></div>
+          <div><label className={label}>Sujet</label><SujetField className={field} value={f.sujet} onChange={set('sujet')} placeholder="Ex. Les conditions des ablutions" /></div>
           <div><label className={label}>Type <span className="text-muted font-normal">(optionnel)</span></label><input className={field} value={f.type} onChange={set('type')} /></div>
         </div>
         <div className="mb-3.5"><label className={label}>Texte <span className="text-muted font-normal">(Markdown)</span></label><textarea className={`${field} min-h-[160px]`} value={f.texte} onChange={set('texte')} /></div>

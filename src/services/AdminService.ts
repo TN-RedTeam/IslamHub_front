@@ -373,10 +373,12 @@ export interface VersetEditShape {
 export interface CoranFormData {
   id?: number | null;
   sujet: string; sourate: string; texte_arabe: string; texte_francais: string; phonetique: string; explication: string; tag: string;
+  is_equivoque?: boolean; // marque aussi le verset dans « Versets et hadiths équivoques »
 }
 export interface CoranEditShape {
   id: number; sujet: string; sourate: string | null; texte_arabe: string;
   texte_francais: string | null; phonetique: string | null; explication: string | null; tag: string | null;
+  is_equivoque: boolean; equivoque_id: number | null; equivoque_slug: string | null;
 }
 export interface CoranRow { id: number; sujet: string; sourate: string | null; }
 
