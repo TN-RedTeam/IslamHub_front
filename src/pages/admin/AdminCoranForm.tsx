@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
+import { SujetField } from '../../components/admin/SujetField';
 import { DeleteEntryButton } from '../../components/admin/DeleteEntryButton';
 import { useNavigate, useParams, Link } from 'react-router-dom';
 import { Loader2, Check, AlertTriangle } from 'lucide-react';
@@ -66,7 +67,7 @@ export const AdminCoranForm: React.FC = () => {
       {/* 1. Le verset */}
       <section className="rounded-card border border-line bg-surface p-5 mb-4">
         <h2 className="font-display font-semibold text-ink text-lg mb-4">1 · Le verset</h2>
-        <div className="mb-3.5"><label className={label}>Sujet <span className="text-red-600">*</span></label><input className={field} value={f.sujet} onChange={set('sujet')} placeholder="Ex. L’unicité d’Allah" /></div>
+        <div className="mb-3.5"><label className={label}>Sujet <span className="text-red-600">*</span></label><SujetField className={field} value={f.sujet} onChange={set('sujet')} placeholder="Ex. L’unicité d’Allah" /></div>
         <div className="mb-3.5"><label className={label}>Texte arabe <span className="text-red-600">*</span></label>
           <textarea dir="rtl" lang="ar" className={`${field} font-arabic text-2xl leading-loose text-right min-h-[90px]`} value={f.texte_arabe} onChange={set('texte_arabe')} onFocus={caretBetween(AR_TEMPLATE.coran)} placeholder="Colle ici le verset (vocalisé)…" /></div>
         <div className="grid sm:grid-cols-2 gap-3.5">
