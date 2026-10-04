@@ -72,9 +72,9 @@ const Hanbalite: React.FC = () => {
             <div className="border-t-[3px] border-ecole-hanbali">
                 <PageHeader
                     eyebrow="École juridique"
-                    title="École Hanbalite"
+                    title="École hanbalite"
                     subtitle="L'école du texte et de la tradition — Fondée par l'Imam Ahmad ibn Hanbal (780-855 EC)"
-                    crumbs={[{ label: 'Accueil', to: '/' }, { label: 'Écoles', to: '/ecoles' }, { label: 'École Hanbalite' }]}
+                    crumbs={[{ label: 'Accueil', to: '/' }, { label: 'Écoles', to: '/ecoles' }, { label: 'École hanbalite' }]}
                 />
             </div>
 
@@ -611,7 +611,7 @@ const Hanbalite: React.FC = () => {
                     className="mb-16"
                 >
                     <h3 className="text-2xl font-bold text-ink mb-8 font-display text-center">
-                        Caractéristiques de l'École Hanbalite
+                        Caractéristiques de l'École hanbalite
                     </h3>
                     <div className="grid md:grid-cols-3 gap-6">
                         <div className="bg-white/80 /80 rounded-xl p-6 shadow-lg border border-line">

@@ -150,9 +150,9 @@ const Shafii: React.FC = () => {
             <div className="border-t-[3px] border-ecole-shafii">
                 <PageHeader
                     eyebrow="École juridique"
-                    title="École Shafi'ite"
+                    title="École chaféite"
                     subtitle="L'école équilibrée entre texte et raison — Fondée par l'Imam Mouhammad fils de Idris Ach-Chafi^iyy (150 H - 204 H / 767-820 EC)"
-                    crumbs={[{ label: 'Accueil', to: '/' }, { label: 'Écoles', to: '/ecoles' }, { label: "École Shafi'ite" }]}
+                    crumbs={[{ label: 'Accueil', to: '/' }, { label: 'Écoles', to: '/ecoles' }, { label: "École chaféite" }]}
                 />
             </div>
 
@@ -524,7 +524,7 @@ const Shafii: React.FC = () => {
                     className="mb-16"
                 >
                     <h3 className="text-2xl font-bold text-ink mb-8 font-display text-center">
-                        Hiérarchie des Sources selon l'École Shafi'ite
+                        Hiérarchie des Sources selon l'école chaféite
                     </h3>
                     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                         {sources.map((source, index) => (
@@ -588,7 +588,7 @@ const Shafii: React.FC = () => {
                     className="mb-16"
                 >
                     <h3 className="text-2xl font-bold text-ink mb-8 font-display text-center">
-                        Particularités de l'École Shafi'ite
+                        Particularités de l'école chaféite
                     </h3>
                     <div className="grid md:grid-cols-3 gap-6">
                         <div className="bg-ivory rounded-xl p-6 shadow-lg border border-line">

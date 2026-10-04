@@ -105,9 +105,9 @@ const Hanafi: React.FC = () => {
             <div className="border-t-[3px] border-ecole-hanafi">
                 <PageHeader
                     eyebrow="École juridique"
-                    title="École Hanafite"
+                    title="École hanafite"
                     subtitle="L'école de la raison et de l'opinion — Fondée par l'Imam Abou Hanifa an-Nou'man"
-                    crumbs={[{ label: 'Accueil', to: '/' }, { label: 'Écoles', to: '/ecoles' }, { label: 'École Hanafite' }]}
+                    crumbs={[{ label: 'Accueil', to: '/' }, { label: 'Écoles', to: '/ecoles' }, { label: 'École hanafite' }]}
                 />
             </div>
 
@@ -622,7 +622,7 @@ const Hanafi: React.FC = () => {
                     className="mb-16"
                 >
                     <h3 className="text-2xl font-bold text-ink mb-8 font-display text-center">
-                        Sources et Méthodologie de l'École Hanafite
+                        Sources et Méthodologie de l'École hanafite
                     </h3>
                     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                         {principles.map((principle, index) => (
@@ -656,7 +656,7 @@ const Hanafi: React.FC = () => {
                     className="mb-16"
                 >
                     <h3 className="text-2xl font-bold text-ink mb-8 font-display text-center">
-                        Particularités de l'École Hanafite
+                        Particularités de l'École hanafite
                     </h3>
                     <div className="grid md:grid-cols-2 gap-6">
                         <div className="bg-ivory rounded-xl p-6 shadow-lg border border-line">
