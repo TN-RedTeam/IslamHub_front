@@ -654,7 +654,7 @@ const Hanbalite: React.FC = () => {
                 </m.section>
 
                 {/* Jurisprudence (fiqh) de l'école — contenu dynamique depuis Supabase */}
-                <EcoleFiqhSection ecole="Hanbalite" titre="Jurisprudence de l'école Hanbali" />
+                <EcoleFiqhSection ecole="Hanbalite" titre="Jurisprudence de l'école hanbalite" />
 
                 {/* Autres écoles */}
                 <RelatedSchools current="hanbali" />
