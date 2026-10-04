@@ -16,6 +16,7 @@ const ENTITIES: { to: string; label: string; soon?: boolean }[] = [
   { to: '/admin/fiqh', label: 'Fiqh' },
   { to: '/admin/femmes', label: 'La femme musulmane' },
   { to: '/admin/recits', label: 'Récits' },
+  { to: '/admin/tags', label: 'Tags & mots-clés' },
 ];
 
 /** Shell de l'espace admin : garde d'accès (admin only) + barre latérale. */

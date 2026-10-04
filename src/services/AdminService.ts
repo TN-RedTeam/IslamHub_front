@@ -210,6 +210,30 @@ class AdminService {
     return { hadiths: d.hadiths ?? [], paroles: d.paroles ?? [] };
   }
 
+  // ---- Tags & mots-clés (gestionnaire) ----
+  async tagsOverview(): Promise<TagOverviewRow[]> {
+    const { data, error } = await supabase.rpc('admin_tags_overview');
+    if (error) throw error; return (data ?? []) as TagOverviewRow[];
+  }
+  async tagsVocabulary(): Promise<string[]> {
+    const { data, error } = await supabase.rpc('admin_tags_vocabulary');
+    if (error) throw error; return (data ?? []) as string[];
+  }
+  /** Fusionne/renomme : réécrit `sources` → `target` partout (+ vocabulaire). */
+  async mergeTags(sources: string[], target: string): Promise<number> {
+    const { data, error } = await supabase.rpc('admin_merge_tags', { p_sources: sources, p_target: target });
+    if (error) throw error; return (data as number) ?? 0;
+  }
+  /** Supprime un tag partout. */
+  async deleteTag(token: string): Promise<number> {
+    return this.mergeTags([token], '');
+  }
+  /** Ajoute un tag au vocabulaire (sans le rattacher). */
+  async addTag(nom: string): Promise<void> {
+    const { error } = await supabase.rpc('admin_add_tag', { p_nom: nom });
+    if (error) throw error;
+  }
+
   // ---- Fiqh ----
   async getFiqhForEdit(id: number): Promise<FiqhEditShape | null> {
     const { data, error } = await supabase.rpc('admin_get_fiqh', { p_id: id });
@@ -416,6 +440,14 @@ export interface ExposeEditShape {
                phonetique: string | null; signification: string | null; ref: string | null; accordeon: boolean; ordre: number | null }[];
 }
 export interface ExposeListRow { slug: string; titre: string | null; published?: boolean; }
+
+/** Ligne de la vue d'ensemble des tags (gestionnaire admin). */
+export interface TagOverviewRow {
+  tag: string;
+  total: number;
+  hadiths: number; paroles: number; coran: number; invocations: number; fiqh: number;
+  in_vocab: boolean;
+}
 
 // ---- Suppression admin (Phase 4.6) ----
 export type DeletableKind =
