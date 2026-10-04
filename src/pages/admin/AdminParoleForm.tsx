@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { DeleteEntryButton } from '../../components/admin/DeleteEntryButton';
+import { TagPicker } from '../../components/admin/TagPicker';
 import { useNavigate, useParams, Link } from 'react-router-dom';
 import { Loader2, Plus, Trash2, Check, AlertTriangle } from 'lucide-react';
 import { adminService, type SavantRow, type ParoleFormData, type ParoleImageInput, type RefOption } from '../../services/AdminService';
@@ -32,6 +33,8 @@ export const AdminParoleForm: React.FC = () => {
   const [paroles, setParoles] = useState<RefOption[]>([]);
   const [images, setImages] = useState<Img[]>([]);
   const [derived, setDerived] = useState<ThemeRef[]>([]);
+  const [tagVocab, setTagVocab] = useState<string[]>([]);
+  useEffect(() => { adminService.tagsVocabulary().then(setTagVocab).catch(() => {}); }, []);
 
   useEffect(() => {
     adminService.listSavants().then(setSavants).catch(() => setError('Impossible de charger les savants.')).finally(() => setLoading(false));
@@ -163,7 +166,12 @@ export const AdminParoleForm: React.FC = () => {
       <section className="rounded-card border border-line bg-surface p-5 mb-4">
         <h2 className="font-display font-semibold text-ink text-lg mb-4">4 · Thèmes & mots-clés</h2>
         <label className={label}>Tags <span className="text-muted font-normal">(séparés par des virgules)</span></label>
-        <input className={field} value={f.tag} onChange={set('tag')} placeholder="croyance, attributs" />
+        <TagPicker
+          suggestions={tagVocab}
+          value={f.tag ? f.tag.split(',').map((s) => s.trim()).filter(Boolean) : []}
+          onChange={(tags) => setF((p) => ({ ...p, tag: tags.join(', ') }))}
+          placeholder="croyance, attributs…"
+        />
         <div className="mt-3.5 rounded-lg border border-line bg-ground/40 p-3">
           <p className="text-[11px] uppercase tracking-[0.12em] text-accent font-semibold">Thèmes déduits</p>
           {derived.length === 0 ? <p className="text-sm text-muted mt-1">Aucun.</p> :

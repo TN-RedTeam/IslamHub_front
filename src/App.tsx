@@ -47,6 +47,7 @@ import { AdminParoleForm } from './pages/admin/AdminParoleForm';
 import { AdminParolesList } from './pages/admin/AdminParolesList';
 import { AdminRecitForm } from './pages/admin/AdminRecitForm';
 import { AdminRecitsList } from './pages/admin/AdminRecitsList';
+import { AdminTagsList } from './pages/admin/AdminTagsList';
 import { AdminEquivoqueForm } from './pages/admin/AdminEquivoqueForm';
 import { AdminEquivoquesList } from './pages/admin/AdminEquivoquesList';
 import { AdminCoranForm } from './pages/admin/AdminCoranForm';
@@ -175,6 +176,7 @@ function App() {
                 <Route path="paroles/nouveau" element={<AdminParoleForm />} />
                 <Route path="paroles/:id" element={<AdminParoleForm />} />
                 <Route path="recits" element={<AdminRecitsList />} />
+                <Route path="tags" element={<AdminTagsList />} />
                 <Route path="recits/nouveau" element={<AdminRecitForm />} />
                 <Route path="recits/:id" element={<AdminRecitForm />} />
                 <Route path="equivoques" element={<AdminEquivoquesList />} />
