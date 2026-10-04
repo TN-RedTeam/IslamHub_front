@@ -40,6 +40,7 @@ export interface Hadith extends BaseText {
 /** Verset du Coran */
 export interface Coran extends BaseText {
   sourate: string | null;
+  equivoque?: { theme: string; slug: string; sens_juste: string | null } | null; // fiche « équivoque » liée (si publiée)
 }
 
 /** Dhikr - Évocation/Rappel */

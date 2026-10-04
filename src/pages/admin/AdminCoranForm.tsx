@@ -23,12 +23,16 @@ export const AdminCoranForm: React.FC = () => {
   const [f, setF] = useState(blank);
   const set = (k: keyof typeof f) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => setF((p) => ({ ...p, [k]: e.target.value }));
   const [derived, setDerived] = useState<ThemeRef[]>([]);
+  const [isEquivoque, setIsEquivoque] = useState(false);
+  const [equivoqueId, setEquivoqueId] = useState<number | null>(null);
 
   useEffect(() => {
     if (!editId) return;
     adminService.getCoranForEdit(editId).then((c) => {
       if (!c) { setError('Verset introuvable.'); return; }
       setF({ sujet: c.sujet ?? '', sourate: c.sourate ?? '', texte_arabe: c.texte_arabe ?? '', texte_francais: c.texte_francais ?? '', phonetique: c.phonetique ?? '', explication: c.explication ?? '', tag: c.tag ?? '' });
+      setIsEquivoque(!!c.is_equivoque);
+      setEquivoqueId(c.equivoque_id ?? null);
     }).catch(() => setError('Verset introuvable.')).finally(() => setLoading(false));
   }, [editId]);
 
@@ -41,14 +45,14 @@ export const AdminCoranForm: React.FC = () => {
   }, [f.tag]);
 
   const canSave = useMemo(() => f.sujet.trim() && f.texte_arabe.trim(), [f.sujet, f.texte_arabe]);
-  const buildPayload = (): CoranFormData => ({ id: editId, ...f, texte_arabe: normalizeBracketSpaces(f.texte_arabe) });
+  const buildPayload = (): CoranFormData => ({ id: editId, ...f, texte_arabe: normalizeBracketSpaces(f.texte_arabe), is_equivoque: isEquivoque });
 
   const save = async (andNew: boolean) => {
     setBusy(true); setError(null); setOk(false);
     try {
       const newId = await adminService.saveCoran(buildPayload());
       setOk(true);
-      if (andNew) { setF(blank); setDerived([]); window.scrollTo({ top: 0 }); setTimeout(() => setOk(false), 2500); }
+      if (andNew) { setF(blank); setDerived([]); setIsEquivoque(false); setEquivoqueId(null); window.scrollTo({ top: 0 }); setTimeout(() => setOk(false), 2500); }
       else { navigate(`/admin/coran/${newId}`, { replace: true }); setTimeout(() => setOk(false), 2500); }
     } catch (e) {
       const msg = (e as Error).message || 'Erreur à l’enregistrement.';
@@ -93,6 +97,24 @@ export const AdminCoranForm: React.FC = () => {
           {derived.length === 0 ? <p className="text-sm text-muted mt-1">Aucun.</p> :
             <div className="flex flex-wrap gap-1.5 mt-2">{derived.map((t) => <span key={t.slug} className="text-xs bg-glass-tint text-accent border border-glass-border rounded-full px-2.5 py-0.5">{t.nom}</span>)}</div>}
         </div>
+      </section>
+
+      {/* 4. Verset équivoque */}
+      <section className="rounded-card border border-line bg-surface p-5 mb-4">
+        <h2 className="font-display font-semibold text-ink text-lg mb-1">4 · Verset équivoque</h2>
+        <p className="text-xs text-muted mb-3.5">Coche si ce verset prête à confusion sur Allah&nbsp;: il apparaîtra <b>aussi</b> dans « Versets et hadiths équivoques », où tu saisis les arguments (sens juste, objection, réponse, blocs). Ces arguments seront alors visibles depuis la page « Versets par thème ».</p>
+        <label className="flex items-center gap-2.5 cursor-pointer">
+          <input type="checkbox" checked={isEquivoque} onChange={(e) => setIsEquivoque(e.target.checked)} className="w-4 h-4 accent-green" />
+          <span className="text-[15px] text-ink font-medium">Ce verset est équivoque</span>
+        </label>
+        {isEquivoque && editId && equivoqueId && (
+          <Link to={`/admin/equivoques/${equivoqueId}`} className="mt-3 inline-flex items-center gap-1.5 rounded-lg border border-green-line bg-glass-tint text-ink font-semibold px-3.5 py-2 text-sm hover:border-green transition-colors">
+            Ajouter / éditer les arguments dans Équivoques →
+          </Link>
+        )}
+        {isEquivoque && editId && !equivoqueId && (
+          <p className="text-xs text-muted mt-3">Enregistre pour créer la fiche équivoque liée, puis reviens ici pour saisir les arguments.</p>
+        )}
       </section>
 
       <div className="fixed bottom-0 left-0 md:left-[230px] right-0 flex items-center gap-3 px-6 py-3.5 bg-ivory/95 backdrop-blur border-t border-line">

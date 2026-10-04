@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, Link } from 'react-router-dom';
 import { m, AnimatePresence } from 'framer-motion';
 import {
   Search, Filter, X, Star, Loader,
-  Tags, Hash, Eye, List as ListIcon, Grid3x3
+  Tags, Hash, Eye, List as ListIcon, Grid3x3,
+  AlertTriangle, ChevronRight
 } from 'lucide-react';
 import { dataService } from '../services/DataService';
 import { FilterSelect } from '../components/FilterSelect';
@@ -93,6 +94,13 @@ const CoranCard: React.FC<{
           </div>
         )}
       </div>
+
+      {coran.equivoque && (
+        <span className="inline-flex items-center gap-1.5 self-start rounded-full border border-gold/40 bg-accent/10 px-3 py-1 text-xs font-semibold text-accent">
+          <AlertTriangle className="h-3.5 w-3.5" aria-hidden />
+          Verset équivoque
+        </span>
+      )}
 
       {tags.length > 0 && (
         <div className="flex flex-wrap gap-2">
@@ -186,6 +194,29 @@ const CoranModal: React.FC<{
             <div className="bg-glass-tint p-6 rounded-lg">
               <p className="text-lg font-bold text-ink mb-3">Explication:</p>
               <p className="text-ink whitespace-pre-wrap [unicode-bidi:plaintext]">{coran.explication}</p>
+            </div>
+          )}
+
+          {coran.equivoque && (
+            <div className="rounded-xl border border-gold/40 bg-accent/5 p-5">
+              <div className="flex items-center gap-2 mb-2">
+                <AlertTriangle className="h-5 w-5 shrink-0 text-accent" aria-hidden />
+                <p className="font-bold text-ink">Ce verset est équivoque</p>
+              </div>
+              {coran.equivoque.theme && <p className="text-sm font-semibold text-ink mb-1">{coran.equivoque.theme}</p>}
+              {coran.equivoque.sens_juste && (
+                <p className="text-sm text-ink/70 leading-relaxed mb-3">
+                  {coran.equivoque.sens_juste.replace(/[*_>#`]/g, '').replace(/\s+/g, ' ').trim().slice(0, 180)}
+                  {coran.equivoque.sens_juste.length > 180 ? '…' : ''}
+                </p>
+              )}
+              <Link
+                to={`/croyance/versets-hadiths-equivoques/${coran.equivoque.slug}`}
+                onClick={onClose}
+                className="inline-flex items-center gap-1.5 rounded-lg bg-accent text-white font-semibold px-4 py-2 text-sm hover:brightness-95 transition"
+              >
+                Voir l'explication complète <ChevronRight className="h-4 w-4" />
+              </Link>
             </div>
           )}
 
