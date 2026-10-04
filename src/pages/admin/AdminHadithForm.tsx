@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { DeleteEntryButton } from '../../components/admin/DeleteEntryButton';
+import { TagPicker } from '../../components/admin/TagPicker';
 import { useNavigate, useParams, Link } from 'react-router-dom';
 import { Loader2, Plus, Trash2, Check, AlertTriangle, X } from 'lucide-react';
 import { adminService, type NarrateurRow, type RecueilRow, type SavantRow, type HadithFormData, type HadithSourceInput } from '../../services/AdminService';
@@ -109,6 +110,8 @@ export const AdminHadithForm: React.FC = () => {
   const [newNarr, setNewNarr] = useState({ nom: '', generation: 'sahabi', role: '', sexe: 'm' });
   const [sources, setSources] = useState<Src[]>([emptySrc()]);
   const [derived, setDerived] = useState<ThemeRef[]>([]);
+  const [tagVocab, setTagVocab] = useState<string[]>([]);
+  useEffect(() => { adminService.tagsVocabulary().then(setTagVocab).catch(() => {}); }, []);
   const [isEquivoque, setIsEquivoque] = useState(false);
   const [equivoqueId, setEquivoqueId] = useState<number | null>(null);
 
@@ -283,8 +286,13 @@ export const AdminHadithForm: React.FC = () => {
       {/* 5. Thèmes */}
       <section className="rounded-card border border-line bg-surface p-5 mb-4">
         <h2 className="font-display font-semibold text-ink text-lg mb-4">5 · Thèmes & mots-clés</h2>
-        <label className={label}>Tags <span className="text-muted font-normal">(séparés par des virgules — les thèmes se déduisent automatiquement)</span></label>
-        <input className={field} value={f.tag} onChange={set('tag')} placeholder="exemption, croyance" />
+        <label className={label}>Tags <span className="text-muted font-normal">(choisis dans la liste ou tape + Entrée — les thèmes se déduisent automatiquement)</span></label>
+        <TagPicker
+          suggestions={tagVocab}
+          value={f.tag ? f.tag.split(',').map((s) => s.trim()).filter(Boolean) : []}
+          onChange={(tags) => setF((p) => ({ ...p, tag: tags.join(', ') }))}
+          placeholder="exemption, croyance…"
+        />
         <div className="mt-3.5 rounded-lg border border-line bg-ground/40 p-3">
           <p className="text-[11px] uppercase tracking-[0.12em] text-accent font-semibold">Thèmes déduits</p>
           {derived.length === 0 ? (
