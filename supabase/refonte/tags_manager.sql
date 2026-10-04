@@ -27,9 +27,10 @@ $$;
 -- p_target vide = suppression. Renommer = merge([ancien], nouveau).
 create or replace function public.admin_merge_tags(p_sources text[], p_target text)
 returns integer language plpgsql security definer set search_path to 'public','pg_temp' as $$
-declare n int := 0; v int; tbl text;
+declare n int := 0; v int; tbl text; v_target_id bigint; src_id bigint;
 begin
   if not public.is_admin() then raise exception 'Réservé à l''administrateur.'; end if;
+  -- 1) Colonnes libres (source de vérité principale)
   foreach tbl in array array['hadiths','paroles','coran','invocations','fiqh'] loop
     execute format(
       'update public.%I set tag = public.admin_rewrite_tags(tag, $1, $2)
@@ -39,12 +40,34 @@ begin
       using p_sources, p_target;
     get diagnostics v = row_count; n := n + v;
   end loop;
-  delete from public.tags where btrim(nom) = any (select btrim(s) from unnest(p_sources) s);
-  if nullif(btrim(p_target),'') is not null
-     and not exists (select 1 from public.tags where lower(btrim(nom)) = lower(btrim(p_target))) then
+
+  -- 2) Système normalisé `tags` / `hadith_tags` : repointer AVANT de supprimer
+  --    (sinon la FK hadith_tags_tag_id_fkey bloque).
+  if nullif(btrim(p_target),'') is not null then
     insert into public.tags (nom, slug)
-    values (btrim(p_target), trim(both '-' from lower(regexp_replace(public.unaccent(btrim(p_target)),'[^a-zA-Z0-9]+','-','g'))));
+    select btrim(p_target), trim(both '-' from lower(regexp_replace(public.unaccent(btrim(p_target)),'[^a-zA-Z0-9]+','-','g')))
+    where not exists (select 1 from public.tags where lower(btrim(nom)) = lower(btrim(p_target)));
+    select id into v_target_id from public.tags where lower(btrim(nom)) = lower(btrim(p_target)) limit 1;
+
+    for src_id in
+      select id from public.tags
+      where btrim(nom) = any (select btrim(s) from unnest(p_sources) s) and id <> v_target_id
+    loop
+      insert into public.hadith_tags (hadith_id, tag_id)
+        select hadith_id, v_target_id from public.hadith_tags where tag_id = src_id
+        on conflict do nothing;
+      delete from public.hadith_tags where tag_id = src_id;
+      delete from public.tags where id = src_id;
+    end loop;
+  else
+    for src_id in
+      select id from public.tags where btrim(nom) = any (select btrim(s) from unnest(p_sources) s)
+    loop
+      delete from public.hadith_tags where tag_id = src_id;
+      delete from public.tags where id = src_id;
+    end loop;
   end if;
+
   return n;
 end $$;
 
