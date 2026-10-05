@@ -325,7 +325,7 @@ class DataService {
     const { data, error } = await supabase.rpc('search_all', { q, p_limit: limit });
     if (error) throw error;
     const d = (data ?? {}) as Partial<SearchResults>;
-    return { hadiths: d.hadiths ?? [], paroles: d.paroles ?? [], invocations: d.invocations ?? [], versets: d.versets ?? [], themes: d.themes ?? [] };
+    return { hadiths: d.hadiths ?? [], paroles: d.paroles ?? [], invocations: d.invocations ?? [], versets: d.versets ?? [], fiqh: d.fiqh ?? [], themes: d.themes ?? [] };
   }
 
   // ================= Paroles =================

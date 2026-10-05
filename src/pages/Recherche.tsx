@@ -1,13 +1,20 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
-import { Loader2, Search, Book, Quote, Heart, BookOpen, Tag } from 'lucide-react';
+import { Loader2, Search, Book, Quote, Heart, BookOpen, Tag, Landmark } from 'lucide-react';
 import { dataService } from '../services/DataService';
+import { ecoleRoute } from '../components/EcoleBadge';
 import { PageHeader } from '../components/PageHeader';
 import { useSeo } from '../hooks/useSeo';
 import { compteur } from '../utils/compteur';
 import type { SearchResults, SearchHit } from '../types';
 
-const EMPTY: SearchResults = { hadiths: [], paroles: [], invocations: [], versets: [], themes: [] };
+const EMPTY: SearchResults = { hadiths: [], paroles: [], invocations: [], versets: [], fiqh: [], themes: [] };
+
+// Lien profond vers la page d'école ouvrant le point de fiqh (DocReader ?sujet=).
+const fiqhLink = (h: SearchHit): string => {
+  const route = ecoleRoute(h.ecole);
+  return route ? `/ecoles/${route}?sujet=${h.id}` : '/ecoles';
+};
 
 const Hit: React.FC<{ to: string; icon: React.ReactNode; titre: string; sous?: string | null; extrait?: string | null }> = ({ to, icon, titre, sous, extrait }) => (
   <li>
@@ -50,7 +57,7 @@ export const Recherche: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [input]);
 
-  const total = useMemo(() => results.hadiths.length + results.paroles.length + results.invocations.length + results.versets.length + results.themes.length, [results]);
+  const total = useMemo(() => results.hadiths.length + results.paroles.length + results.invocations.length + results.versets.length + results.fiqh.length + results.themes.length, [results]);
   const invLabel = (h: SearchHit) => (h.type_id === 2 ? 'Évocation' : 'Invocation');
 
   return (
@@ -104,6 +111,23 @@ export const Recherche: React.FC = () => {
                 <h2 className="font-display font-semibold text-ink text-xl mb-3">{compteur(results.invocations.length, 'invocation')}</h2>
                 <ul className="grid gap-2.5 sm:grid-cols-2">
                   {results.invocations.map((i) => <Hit key={i.id} to="/invocations" icon={<Heart className="w-4 h-4" />} titre={i.sujet ?? 'Invocation'} sous={invLabel(i)} extrait={i.extrait} />)}
+                </ul>
+              </section>
+            )}
+            {results.fiqh.length > 0 && (
+              <section>
+                <h2 className="font-display font-semibold text-ink text-xl mb-3">{compteur(results.fiqh.length, 'fiqh')}</h2>
+                <ul className="grid gap-2.5 sm:grid-cols-2">
+                  {results.fiqh.map((f) => (
+                    <Hit
+                      key={`fiqh-${f.id}`}
+                      to={fiqhLink(f)}
+                      icon={<Landmark className="w-4 h-4" />}
+                      titre={f.sujet ?? 'Point de fiqh'}
+                      sous={[f.ecole ? `École ${f.ecole}` : null, f.chapitre].filter(Boolean).join(' · ') || null}
+                      extrait={f.extrait}
+                    />
+                  ))}
                 </ul>
               </section>
             )}

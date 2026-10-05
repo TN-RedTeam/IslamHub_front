@@ -622,7 +622,7 @@ const Shafii: React.FC = () => {
                 </m.section>
 
                 {/* Jurisprudence (fiqh) de l'école — contenu dynamique depuis Supabase */}
-                <EcoleFiqhSection ecole="Shafii" titre="Jurisprudence de l'école chaféite" />
+                <EcoleFiqhSection ecole="Chaféite" titre="Jurisprudence de l'école chaféite" />
 
                 {/* Autres écoles */}
                 <RelatedSchools current="shafii" />

@@ -12,12 +12,17 @@ export const ECOLE_ROUTE: Record<string, string> = {
   // Anciens libellés conservés en repli (données non encore migrées)
   'Hanafite': 'Hanafi',
   'Malikite': 'Malikite',
+  'Chaféite': 'Shafii',
   'Shafiite': 'Shafii',
   'Hanbalite': 'Hanbalite',
   'Hanafi': 'Hanafi',
   'Ach-Chafi^iyy': 'Shafii',
   'Hanbali': 'Hanbalite',
 };
+
+/** Segment d'URL de la page d'une école, quel que soit l'orthographe stockée. */
+export const ecoleRoute = (ecole?: string | null): string | null =>
+  ecole ? (ECOLE_ROUTE[ecole] ?? ECOLE_ROUTE[ecole.toLowerCase()] ?? null) : null;
 
 /** Badge « École X » cliquable -> page de l'école (si connue). */
 export const EcoleBadge: React.FC<{ ecole: string; onClick?: (e: React.MouseEvent) => void }> = ({ ecole, onClick }) => {

@@ -8,11 +8,12 @@ import type { FiqhChapitre } from '../types';
  * Section de jurisprudence (fiqh) pour UNE école.
  * À insérer dans une page école : <EcoleFiqhSection ecole="Hanafi" />
  *
- * Correspondance route -> valeur `ecole` en base :
- *   /ecoles/Hanafi    -> "Hanafi"
+ * La prop `ecole` doit correspondre à la valeur stockée dans `fiqh.ecole`
+ * (comparaison insensible à la casse). Noms uniformisés en base :
+ *   /ecoles/Hanafi    -> "Hanafite"
  *   /ecoles/Malikite  -> "Malikite"
- *   /ecoles/Shafii    -> "Ach-Chafi^iyy"
- *   /ecoles/Hanbalite -> "Hanbali"
+ *   /ecoles/Shafii    -> "Chaféite"
+ *   /ecoles/Hanbalite -> "Hanbalite"
  */
 export const EcoleFiqhSection: React.FC<{ ecole: string; titre?: string }> = ({ ecole, titre }) => {
   const [chapitres, setChapitres] = useState<FiqhChapitre[]>([]);

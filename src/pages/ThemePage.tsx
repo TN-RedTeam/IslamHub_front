@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { Loader2, Search, BookOpen, ScrollText, Quote, ArrowRight } from 'lucide-react';
+import { Loader2, Search, BookOpen, ScrollText, Quote, ArrowRight, Landmark } from 'lucide-react';
 import { dataService } from '../services/DataService';
 import { BadgeGeneration } from '../components/BadgeGeneration';
-import { EcoleBadge } from '../components/EcoleBadge';
+import { EcoleBadge, ecoleRoute } from '../components/EcoleBadge';
 import { useSeo } from '../hooks/useSeo';
 import { compteur } from '../utils/compteur';
-import type { ThemeDetail, ThemeCoranItem, ThemeHadithItem, ThemeParoleItem } from '../types';
+import type { ThemeDetail, ThemeCoranItem, ThemeHadithItem, ThemeParoleItem, ThemeFiqhItem } from '../types';
 
 const PREVIEW = 4;
 
@@ -45,6 +45,32 @@ const HadithCard: React.FC<{ h: ThemeHadithItem }> = ({ h }) => {
   );
 };
 
+const stripMd = (s: string | null, max = 180) => {
+  const t = (s ?? '').replace(/[*_>#`]/g, '').replace(/\s+/g, ' ').trim();
+  return t.length > max ? `${t.slice(0, max).trimEnd()}…` : t;
+};
+
+const FiqhCard: React.FC<{ f: ThemeFiqhItem }> = ({ f }) => {
+  const route = ecoleRoute(f.ecole);
+  const to = route ? `/ecoles/${route}?sujet=${f.id}` : null;
+  return (
+    <div className="rounded-card border border-line bg-surface p-4 shadow-card">
+      <div className="flex items-center gap-2 flex-wrap">
+        {f.ecole && <EcoleBadge ecole={f.ecole} />}
+        {f.chapitre && <span className="text-xs text-muted">{f.chapitre}</span>}
+      </div>
+      {f.sujet && <p className="font-display font-semibold text-ink mt-2">{f.sujet}</p>}
+      {f.texte_arabe && <p className="font-arabic text-[20px] leading-[1.9] text-right text-ink mt-1.5" dir="rtl" lang="ar">{f.texte_arabe}</p>}
+      {f.texte && <p className="text-sm text-ink/90 mt-1.5 line-clamp-3 [unicode-bidi:plaintext]">{stripMd(f.texte)}</p>}
+      {to && (
+        <Link to={to} className="inline-flex items-center gap-1.5 mt-2.5 text-green text-[13px] font-semibold hover:underline">
+          Voir le point de fiqh <ArrowRight className="w-3.5 h-3.5" />
+        </Link>
+      )}
+    </div>
+  );
+};
+
 const ParoleCard: React.FC<{ p: ThemeParoleItem }> = ({ p }) => (
   <div className="rounded-card border border-green-line bg-ivory p-4 shadow-card">
     <div className="flex items-center gap-2 flex-wrap">
@@ -68,7 +94,7 @@ export const ThemePage: React.FC = () => {
   const [data, setData] = useState<ThemeDetail | null>(null);
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
-  const [expand, setExpand] = useState<{ coran: boolean; hadiths: boolean; paroles: boolean }>({ coran: false, hadiths: false, paroles: false });
+  const [expand, setExpand] = useState<{ coran: boolean; hadiths: boolean; paroles: boolean; fiqh: boolean }>({ coran: false, hadiths: false, paroles: false, fiqh: false });
 
   const nom = data?.theme.nom;
   useSeo({
@@ -98,10 +124,12 @@ export const ThemePage: React.FC = () => {
   }
 
   const { coran, hadiths, paroles } = data;
+  const fiqh = data.fiqh ?? [];
   const counts: string[] = [];
   if (coran.length) counts.push(compteur(coran.length, 'verset'));
   if (hadiths.length) counts.push(compteur(hadiths.length, 'hadith'));
   if (paroles.length) counts.push(`${compteur(paroles.length, 'parole')} de savants`);
+  if (fiqh.length) counts.push(compteur(fiqh.length, 'fiqh'));
 
   return (
     <div className="min-h-screen">
@@ -160,7 +188,19 @@ export const ThemePage: React.FC = () => {
           </section>
         )}
 
-        {coran.length === 0 && hadiths.length === 0 && paroles.length === 0 && (
+        {fiqh.length > 0 && (
+          <section className="mt-8">
+            <SectionHead icon={<Landmark className="w-[18px] h-[18px]" />} titre="En jurisprudence (fiqh)" n={fiqh.length} />
+            <div className="grid gap-3.5 sm:grid-cols-2">
+              {(expand.fiqh ? fiqh : fiqh.slice(0, PREVIEW)).map((f) => <FiqhCard key={f.id} f={f} />)}
+            </div>
+            {fiqh.length > PREVIEW && !expand.fiqh && (
+              <button onClick={() => setExpand((e) => ({ ...e, fiqh: true }))} className="mt-3 text-[13.5px] font-semibold text-green hover:underline">Voir les {fiqh.length} points de fiqh →</button>
+            )}
+          </section>
+        )}
+
+        {coran.length === 0 && hadiths.length === 0 && paroles.length === 0 && fiqh.length === 0 && (
           <p className="mt-8 text-muted italic">Aucun contenu rattaché à ce thème pour l'instant.</p>
         )}
       </main>
