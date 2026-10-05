@@ -3,7 +3,7 @@
 
 type CompteurType =
   | 'verset' | 'hadith' | 'parole' | 'invocation' | 'evocation'
-  | 'video' | 'savant' | 'recit' | 'theme' | 'sourate' | 'preuve' | 'scan';
+  | 'video' | 'savant' | 'recit' | 'theme' | 'sourate' | 'preuve' | 'scan' | 'fiqh';
 
 const LABELS: Record<CompteurType, [string, string]> = {
   verset: ['verset', 'versets'],
@@ -18,6 +18,7 @@ const LABELS: Record<CompteurType, [string, string]> = {
   sourate: ['sourate', 'sourates'],
   preuve: ['preuve', 'preuves'],
   scan: ['scan', 'scans'],
+  fiqh: ['point de fiqh', 'points de fiqh'],
 };
 
 /** « 11 versets », « 1 hadith » — accord automatique (0 et 1 → singulier). */

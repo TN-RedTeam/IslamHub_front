@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Loader2, Search, Users } from 'lucide-react';
+import { Loader2, Search, Users, Crown, Star, BookOpen, GraduationCap, type LucideIcon } from 'lucide-react';
 import { dataService } from '../services/DataService';
 import { useSeo } from '../hooks/useSeo';
 import { BadgeGeneration } from '../components/BadgeGeneration';
@@ -18,10 +18,29 @@ const epoque = (s: SavantInfo) => {
   const n = parseInt((s.naissance ?? '').replace(/\D/g, ''), 10);
   return Number.isFinite(n) ? n : Number.MAX_SAFE_INTEGER;
 };
-// Rang honorifique : califes bien-guidés, puis mères des croyants, puis autres
-// Compagnons, puis les savants (non-compagnons).
-const rang = (s: SavantInfo) =>
-  s.role === 'calife_rachidoun' ? 0 : s.role === 'epouse_prophete' ? 1 : s.is_compagnon ? 2 : 3;
+// Rang honorifique (ordre de mérite) : califes bien-guidés → mères des croyants
+// → Compagnons → Salaf → autres savants. Chaque tier a son icône.
+type Tier = 'califes' | 'meres' | 'compagnons' | 'salaf' | 'autres';
+const SALAF_GENS = new Set(['salaf', 'tabii', 'tabi_tabii']);
+const tierOf = (s: SavantInfo): Tier =>
+  s.role === 'calife_rachidoun' ? 'califes'
+    : s.role === 'epouse_prophete' ? 'meres'
+      : s.is_compagnon ? 'compagnons'
+        : SALAF_GENS.has(s.generation ?? '') ? 'salaf'
+          : 'autres';
+
+const SECTIONS: { key: Tier; titre: string; desc: string; icon: LucideIcon; badge: string; honor?: string }[] = [
+  { key: 'califes', titre: 'Les califes bien-guidés', icon: Crown, badge: 'bg-green text-white border-green',
+    desc: "Les quatre successeurs du Prophète ﷺ qui ont dirigé la communauté avec justice, les meilleurs de cette Oumma après les prophètes.", honor: 'رضي الله عنهم' },
+  { key: 'meres', titre: 'Les mères des croyants', icon: Star, badge: 'bg-accent text-white border-gold',
+    desc: "Les épouses pures du Prophète ﷺ, que le Coran nomme « mères des croyants ».", honor: 'رضي الله عنهنّ' },
+  { key: 'compagnons', titre: 'Les Compagnons du Prophète ﷺ', icon: Users, badge: 'bg-glass-tint text-accent border-glass-border',
+    desc: "Ceux qui ont vu le Prophète ﷺ en étant croyants : les meilleurs de cette communauté, dont on rapporte les hadiths.", honor: 'رضي الله عنهم' },
+  { key: 'salaf', titre: 'Les Salaf', icon: BookOpen, badge: 'bg-glass-tint text-green border-green-line',
+    desc: "Les pieux prédécesseurs des trois premières générations (Tābiʿīn et suivants) qui ont transmis et expliqué la religion après les Compagnons." },
+  { key: 'autres', titre: 'Les autres savants', icon: GraduationCap, badge: 'bg-glass-tint text-muted border-line',
+    desc: "Les savants de Ahlou s-Sounnah qui ont transmis, jugé et expliqué la religion au fil des siècles." },
+];
 
 export const Savants: React.FC = () => {
   useSeo({
@@ -57,9 +76,8 @@ export const Savants: React.FC = () => {
       return next;
     });
 
-  // Filtrage, puis séparation Compagnons / Savants (les Compagnons en premier,
-  // classés par rang honorifique).
-  const { compagnons, autres, total } = useMemo(() => {
+  // Filtrage, puis regroupement par tier honorifique (ordre de mérite).
+  const { groups, total } = useMemo(() => {
     const term = norm(q.trim());
     const raw = q.trim();
     const sel = [...domaines];
@@ -79,9 +97,13 @@ export const Savants: React.FC = () => {
       if (sel.length && !sel.every((d) => (s.domaines ?? []).includes(d))) return false;
       return true;
     });
-    const comp = out.filter((s) => s.is_compagnon).sort((a, b) => rang(a) - rang(b) || sortCmp(a, b));
-    const sav = out.filter((s) => !s.is_compagnon).sort(sortCmp);
-    return { compagnons: comp, autres: sav, total: comp.length + sav.length };
+    const map = new Map<Tier, SavantInfo[]>();
+    for (const s of out) {
+      const t = tierOf(s);
+      (map.get(t) ?? map.set(t, []).get(t)!).push(s);
+    }
+    for (const arr of map.values()) arr.sort(sortCmp);
+    return { groups: map, total: out.length };
   }, [savants, q, ecole, gen, sort, domaines]);
 
   const renderCard = (s: SavantInfo) => {
@@ -236,38 +258,29 @@ export const Savants: React.FC = () => {
           </div>
         ) : (
           <div className="space-y-10">
-            {compagnons.length > 0 && (
-              <section aria-labelledby="sec-compagnons">
-                <div className="flex items-center gap-2.5 mb-1">
-                  <h2 id="sec-compagnons" className="font-display text-2xl font-bold text-ink">
-                    Les Compagnons du Prophète&nbsp;{'ﷺ'}
-                  </h2>
-                  <span className="text-xs font-semibold text-accent bg-glass-tint border border-glass-border rounded-full px-2.5 py-0.5 tabular-nums">{compagnons.length}</span>
-                </div>
-                <p className="text-sm text-muted mb-4 max-w-2xl">
-                  Ceux qui ont vu le Prophète&nbsp;{'ﷺ'} en étant croyants&nbsp;: les meilleurs de cette communauté, dont on rapporte les hadiths.
-                  <span className="font-arabic-name text-ink ms-1.5" lang="ar" dir="rtl">{'رضي الله عنهم'}</span>
-                </p>
-                <div className="grid grid-cols-[repeat(auto-fill,minmax(260px,1fr))] gap-4">
-                  {compagnons.map(renderCard)}
-                </div>
-              </section>
-            )}
-
-            {autres.length > 0 && (
-              <section aria-labelledby="sec-savants">
-                <div className="flex items-center gap-2.5 mb-1">
-                  <h2 id="sec-savants" className="font-display text-2xl font-bold text-ink">Les Savants</h2>
-                  <span className="text-xs font-semibold text-ink bg-glass-tint border border-green-line rounded-full px-2.5 py-0.5 tabular-nums">{autres.length}</span>
-                </div>
-                <p className="text-sm text-muted mb-4 max-w-2xl">
-                  Les savants de Ahlou s-Sounnah qui ont transmis, jugé et expliqué la religion après les Compagnons.
-                </p>
-                <div className="grid grid-cols-[repeat(auto-fill,minmax(260px,1fr))] gap-4">
-                  {autres.map(renderCard)}
-                </div>
-              </section>
-            )}
+            {SECTIONS.map((sec) => {
+              const list = groups.get(sec.key) ?? [];
+              if (list.length === 0) return null;
+              const Icon = sec.icon;
+              return (
+                <section key={sec.key} aria-labelledby={`sec-${sec.key}`}>
+                  <div className="flex items-center gap-2.5 mb-1">
+                    <span className={`inline-grid place-items-center w-8 h-8 rounded-full border ${sec.badge}`} aria-hidden>
+                      <Icon className="w-4 h-4" />
+                    </span>
+                    <h2 id={`sec-${sec.key}`} className="font-display text-2xl font-bold text-ink">{sec.titre}</h2>
+                    <span className="text-xs font-semibold text-accent bg-glass-tint border border-glass-border rounded-full px-2.5 py-0.5 tabular-nums">{list.length}</span>
+                  </div>
+                  <p className="text-sm text-muted mb-4 max-w-2xl">
+                    {sec.desc}
+                    {sec.honor && <span className="font-arabic-name text-ink ms-1.5" lang="ar" dir="rtl">{sec.honor}</span>}
+                  </p>
+                  <div className="grid grid-cols-[repeat(auto-fill,minmax(260px,1fr))] gap-4">
+                    {list.map(renderCard)}
+                  </div>
+                </section>
+              );
+            })}
           </div>
         )}
       </div>

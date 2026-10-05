@@ -1,4 +1,5 @@
 import React from 'react';
+import { Crown, Star, Users, BookOpen, GraduationCap, type LucideIcon } from 'lucide-react';
 
 /**
  * Badge de génération / rôle d'un savant ou narrateur.
@@ -31,19 +32,19 @@ const HONOR: Record<HonorLevel, { m: string; f: string }> = {
   },
 };
 
-type Entry = { label: string; cls: string; honor: HonorLevel };
+type Entry = { label: string; cls: string; honor: HonorLevel; icon: LucideIcon };
 
 const GEN: Record<Gen, Entry> = {
-  sahabi:     { label: 'Compagnon', cls: 'bg-glass-tint text-accent border-glass-border', honor: 'sahabi' },
-  salaf:      { label: 'Salaf',     cls: 'bg-glass-tint text-ink border-green-line', honor: 'default' },
-  tabii:      { label: 'Salaf',     cls: 'bg-glass-tint text-ink border-green-line', honor: 'default' },
-  tabi_tabii: { label: 'Salaf',     cls: 'bg-glass-tint text-ink border-green-line', honor: 'default' },
-  khalaf:     { label: 'Khalaf',    cls: 'bg-transparent text-muted border-line',           honor: 'default' },
+  sahabi:     { label: 'Compagnon', cls: 'bg-glass-tint text-accent border-glass-border', honor: 'sahabi', icon: Users },
+  salaf:      { label: 'Salaf',     cls: 'bg-glass-tint text-ink border-green-line', honor: 'default', icon: BookOpen },
+  tabii:      { label: 'Salaf',     cls: 'bg-glass-tint text-ink border-green-line', honor: 'default', icon: BookOpen },
+  tabi_tabii: { label: 'Salaf',     cls: 'bg-glass-tint text-ink border-green-line', honor: 'default', icon: BookOpen },
+  khalaf:     { label: 'Khalaf',    cls: 'bg-transparent text-muted border-line',           honor: 'default', icon: GraduationCap },
 };
 
 const ROLE: Record<Role, Entry> = {
-  epouse_prophete:  { label: 'Mère des croyants', cls: 'bg-accent text-white border-gold',   honor: 'sahabi' },
-  calife_rachidoun: { label: 'Calife bien-guidé',  cls: 'bg-green text-white border-green', honor: 'sahabi' },
+  epouse_prophete:  { label: 'Mère des croyants', cls: 'bg-accent text-white border-gold',   honor: 'sahabi', icon: Star },
+  calife_rachidoun: { label: 'Calife bien-guidé',  cls: 'bg-green text-white border-green', honor: 'sahabi', icon: Crown },
 };
 
 /** Le rôle prime sur la génération ; sinon on retombe sur la génération. */
@@ -74,9 +75,11 @@ export const BadgeGeneration: React.FC<{
   const e = resolve(generation, role);
   if (!e) return null;
   const honor = HONOR[e.honor][sexe === 'f' ? 'f' : 'm'];
+  const RankIcon = e.icon;
   return (
     <span className={`inline-flex items-center gap-2 ${className}`}>
-      <span className={`inline-block text-[11px] font-semibold tracking-[0.02em] px-2.5 py-0.5 rounded-full border ${e.cls}`}>
+      <span className={`inline-flex items-center gap-1 text-[11px] font-semibold tracking-[0.02em] px-2.5 py-0.5 rounded-full border ${e.cls}`}>
+        <RankIcon className="w-3 h-3" aria-hidden />
         {e.label}
       </span>
       {withHonorific && (

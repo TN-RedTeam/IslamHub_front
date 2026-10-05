@@ -128,12 +128,17 @@ export interface ThemeParoleItem {
   id: number; slug: string | null; sujet: string | null; texte_arabe: string | null; texte_francais: string | null;
   savant: string | null; savant_slug: string | null; generation: string | null; ecole: string | null;
 }
+export interface ThemeFiqhItem {
+  id: number; sujet: string | null; chapitre: string | null; ecole: string | null;
+  texte_arabe: string | null; texte: string | null;
+}
 /** Vue unifiée d'un thème (page /themes/:slug). */
 export interface ThemeDetail {
   theme: { slug: string; nom: string; famille: ThemeFamille };
   coran: ThemeCoranItem[];
   hadiths: ThemeHadithItem[];
   paroles: ThemeParoleItem[];
+  fiqh: ThemeFiqhItem[];
 }
 
 /** Catégorie d'un récit. */
@@ -659,11 +664,12 @@ export interface RelatedItem {
 export interface SearchHit {
   id: number; slug?: string | null; sujet: string | null; extrait?: string | null;
   savant?: string | null; sourate?: string | null; type_id?: number;
+  chapitre?: string | null; ecole?: string | null; // fiqh
 }
 export interface SearchThemeHit { slug: string; nom: string; famille: string; }
 export interface SearchResults {
   hadiths: SearchHit[]; paroles: SearchHit[]; invocations: SearchHit[];
-  versets: SearchHit[]; themes: SearchThemeHit[];
+  versets: SearchHit[]; fiqh: SearchHit[]; themes: SearchThemeHit[];
 }
 
 /** Élément d'index d'un dossier thématique (liste publique). */
