@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Loader2, Search, Plus } from 'lucide-react';
+import { Loader2, Search, Plus, ChevronRight } from 'lucide-react';
 import { dataService } from '../../services/DataService';
 import { CountBadge, Pagination, IdTag } from '../../components/admin/AdminListUI';
+import { InlineSujetTagEditor } from '../../components/admin/InlineSujetTagEditor';
 import type { Hadith } from '../../types';
 
 const PAGE_SIZE = 50;
@@ -13,6 +14,8 @@ export const AdminHadithsList: React.FC = () => {
   const [total, setTotal] = useState<number | null>(null);
   const [page, setPage] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [open, setOpen] = useState<Set<number>>(new Set());
+  const toggle = (id: number) => setOpen((s) => { const n = new Set(s); if (n.has(id)) n.delete(id); else n.add(id); return n; });
 
   // Toute nouvelle recherche repart de la première page.
   useEffect(() => { setPage(0); }, [q]);
@@ -54,12 +57,25 @@ export const AdminHadithsList: React.FC = () => {
           <ul className="divide-y divide-line rounded-card border border-line bg-surface overflow-hidden">
             {items.map((h) => (
               <li key={h.id}>
-                <Link to={`/admin/hadiths/${h.id}`} className="flex items-center gap-3 px-4 py-3 hover:bg-glass-tint transition-colors">
-                  <IdTag id={h.id} />
-                  <span className="text-ink font-medium">{h.sujet || `Hadith #${h.id}`}</span>
-                  {h.statut && <span className="text-[11px] px-2 py-0.5 rounded-full bg-glass-tint text-ink border border-green-line">{h.statut}</span>}
-                  <span className="ml-auto text-muted text-sm">Modifier →</span>
-                </Link>
+                <div className="flex items-center gap-3 px-4 py-3 hover:bg-glass-tint transition-colors">
+                  <button type="button" onClick={() => toggle(h.id)} className="inline-flex items-center gap-2 flex-1 min-w-0 text-left" aria-expanded={open.has(h.id)}>
+                    <ChevronRight className={`w-4 h-4 shrink-0 text-muted transition-transform ${open.has(h.id) ? 'rotate-90' : ''}`} />
+                    <IdTag id={h.id} />
+                    <span className="text-ink font-medium truncate">{h.sujet || `Hadith #${h.id}`}</span>
+                    {h.statut && <span className="text-[11px] px-2 py-0.5 rounded-full bg-glass-tint text-ink border border-green-line shrink-0">{h.statut}</span>}
+                  </button>
+                  <Link to={`/admin/hadiths/${h.id}`} className="ml-auto text-muted text-sm hover:text-accent shrink-0">Modifier →</Link>
+                </div>
+                {open.has(h.id) && (
+                  <div className="px-4 pb-3 pt-1 bg-glass-tint/40">
+                    <InlineSujetTagEditor
+                      rubrique="hadiths" id={h.id}
+                      sujet={h.sujet} tag={h.tag}
+                      texteArabe={h.texte_arabe} texteFrancais={h.texte_francais}
+                      onSaved={(ns, nt) => setItems((prev) => prev.map((x) => x.id === h.id ? { ...x, sujet: ns, tag: nt } : x))}
+                    />
+                  </div>
+                )}
               </li>
             ))}
           </ul>

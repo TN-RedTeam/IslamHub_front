@@ -261,6 +261,12 @@ class AdminService {
     if (error) throw error; return (data ?? []) as ContentRef[];
   }
 
+  /** Édition inline du sujet + tag d'une fiche (toutes rubriques), resynchronise les thèmes. */
+  async updateSujetTag(rubrique: string, id: number, sujet: string, tag: string): Promise<void> {
+    const { error } = await supabase.rpc('admin_update_sujet_tag', { p_rubrique: rubrique, p_id: id, p_sujet: sujet, p_tag: tag });
+    if (error) throw error;
+  }
+
   // ---- Fiqh ----
   async getFiqhForEdit(id: number): Promise<FiqhEditShape | null> {
     const { data, error } = await supabase.rpc('admin_get_fiqh', { p_id: id });
@@ -485,8 +491,12 @@ export interface SujetOverviewRow {
   hadiths: number; paroles: number; coran: number; invocations: number; fiqh: number;
 }
 
-/** Contenu rattaché à un tag / sujet (drill-down admin). */
-export interface ContentRef { rubrique: string; id: number; titre: string; }
+/** Contenu rattaché à un tag / sujet (drill-down admin) — aperçu + édition inline. */
+export interface ContentRef {
+  rubrique: string; id: number; titre: string;
+  sujet?: string | null; tag?: string | null;
+  texte_arabe?: string | null; texte_francais?: string | null;
+}
 
 // ---- Suppression admin (Phase 4.6) ----
 export type DeletableKind =

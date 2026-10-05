@@ -1,11 +1,10 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { Link } from 'react-router-dom';
 import { Loader2, Plus, Search, GitMerge, Trash2, Check, AlertTriangle, ChevronRight } from 'lucide-react';
 import { adminService, type TagOverviewRow, type ContentRef } from '../../services/AdminService';
 import { CountBadge } from '../../components/admin/AdminListUI';
+import { InlineSujetTagEditor } from '../../components/admin/InlineSujetTagEditor';
 
 const norm = (s: string) => s.normalize('NFD').replace(/\p{Diacritic}/gu, '').toLowerCase();
-const RUB_LABEL: Record<string, string> = { hadiths: 'Hadiths', paroles: 'Paroles', coran: 'Coran', invocations: 'Invocations', fiqh: 'Fiqh' };
 
 const field = 'rounded-lg border border-line bg-surface px-3 py-2 text-[15px] text-ink focus:outline-none focus:ring-2 focus:ring-green';
 
@@ -155,16 +154,17 @@ export const AdminTagsList: React.FC = () => {
                         ) : contents.length === 0 ? (
                           <span className="text-sm text-muted italic">Aucun contenu (tag au vocabulaire uniquement).</span>
                         ) : (
-                          <ul className="flex flex-wrap gap-2">
-                            {contents.map((c) => (
-                              <li key={`${c.rubrique}-${c.id}`}>
-                                <Link to={`/admin/${c.rubrique}/${c.id}`} className="inline-flex items-center gap-1.5 rounded-lg border border-glass-border bg-glass px-2.5 py-1 text-[13px] hover:border-accent/60">
-                                  <span className="text-[10px] uppercase tracking-wide text-accent">{RUB_LABEL[c.rubrique] ?? c.rubrique}</span>
-                                  <span className="text-ink truncate max-w-[280px]">{c.titre}</span>
-                                </Link>
-                              </li>
+                          <div className="grid gap-2.5 lg:grid-cols-2">
+                            {contents.map((c, i) => (
+                              <InlineSujetTagEditor
+                                key={`${c.rubrique}-${c.id}`}
+                                rubrique={c.rubrique} id={c.id}
+                                sujet={c.sujet ?? c.titre} tag={c.tag ?? ''}
+                                texteArabe={c.texte_arabe} texteFrancais={c.texte_francais}
+                                onSaved={(ns, nt) => { setContents((prev) => prev.map((x, j) => j === i ? { ...x, sujet: ns, tag: nt } : x)); load(); }}
+                              />
                             ))}
-                          </ul>
+                          </div>
                         )}
                       </td>
                     </tr>
