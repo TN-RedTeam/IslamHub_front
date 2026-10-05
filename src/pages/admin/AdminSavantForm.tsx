@@ -16,11 +16,33 @@ const GENERATIONS: { v: string; l: string }[] = [
   { v: 'tabi_tabii', l: 'Successeur des successeurs' },
   { v: 'khalaf', l: 'Khalaf (postérieur)' },
 ];
-const ROLES: { v: string; l: string }[] = [
-  { v: '', l: '— aucun' },
-  { v: 'calife_rachidoun', l: 'Calife bien-guidé' },
-  { v: 'epouse_prophete', l: 'Mère des croyants' },
+// Rang honorifique affiché sur le site (section). Pilote (generation, role).
+type Rang = 'calife' | 'mere' | 'compagnon' | 'salaf' | 'autre';
+const RANGS: { v: Rang; l: string }[] = [
+  { v: 'calife', l: '👑 Calife bien-guidé' },
+  { v: 'mere', l: '⭐ Mère des croyants' },
+  { v: 'compagnon', l: '👥 Compagnon' },
+  { v: 'salaf', l: '📖 Salaf (prédécesseur)' },
+  { v: 'autre', l: '🎓 Autre savant' },
 ];
+const SALAF_GENS = ['salaf', 'tabii', 'tabi_tabii'];
+// (generation, role) -> rang affiché
+const rangFrom = (generation: string, role: string): Rang =>
+  role === 'calife_rachidoun' ? 'calife'
+    : role === 'epouse_prophete' ? 'mere'
+      : generation === 'sahabi' ? 'compagnon'
+        : SALAF_GENS.includes(generation) ? 'salaf'
+          : 'autre';
+// rang choisi -> (generation, role) ; conserve la précision de génération si compatible
+const applyRang = (r: Rang, gen: string): { generation: string; role: string } => {
+  switch (r) {
+    case 'calife': return { generation: 'sahabi', role: 'calife_rachidoun' };
+    case 'mere': return { generation: 'sahabi', role: 'epouse_prophete' };
+    case 'compagnon': return { generation: 'sahabi', role: '' };
+    case 'salaf': return { generation: SALAF_GENS.includes(gen) ? gen : 'salaf', role: '' };
+    default: return { generation: gen === 'khalaf' ? 'khalaf' : '', role: '' };
+  }
+};
 const blank = { nom: '', nom_arabe: '', slug: '', ecole_id: '', generation: '', naissance: '', deces: '', resume: '', biographie: '', domaines: '', role: '' };
 
 export const AdminSavantForm: React.FC = () => {
@@ -36,6 +58,7 @@ export const AdminSavantForm: React.FC = () => {
   const [slugTouched, setSlugTouched] = useState(Boolean(editId));
   const [f, setF] = useState(blank);
   const set = (k: keyof typeof f) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => setF((p) => ({ ...p, [k]: e.target.value }));
+  const setRang = (e: React.ChangeEvent<HTMLSelectElement>) => setF((p) => ({ ...p, ...applyRang(e.target.value as Rang, p.generation) }));
 
   useEffect(() => {
     adminService.listEcoles().then(setEcoles).catch(() => setEcoles([])).finally(() => { if (!editId) setLoading(false); });
@@ -102,15 +125,17 @@ export const AdminSavantForm: React.FC = () => {
               <option value="">—</option>
               {ecoles.map((e) => <option key={e.id} value={e.id}>{e.nom}</option>)}
             </select></div>
-          <div><label className={label}>Génération</label>
+          <div><label className={label}>Rang <span className="text-muted font-normal">(section sur le site)</span></label>
+            <select className={field} value={rangFrom(f.generation, f.role)} onChange={setRang}>
+              {RANGS.map((r) => <option key={r.v} value={r.v}>{r.l}</option>)}
+            </select>
+            <p className="text-xs text-muted mt-1">Détermine la section où la fiche apparaît dans « Savants », par ordre de mérite.</p>
+          </div>
+          <div><label className={label}>Génération <span className="text-muted font-normal">(précision)</span></label>
             <select className={field} value={f.generation} onChange={set('generation')}>
               {GENERATIONS.map((g) => <option key={g.v} value={g.v}>{g.l}</option>)}
-            </select></div>
-          <div><label className={label}>Rôle honorifique <span className="text-muted font-normal">(Compagnons)</span></label>
-            <select className={field} value={f.role} onChange={set('role')}>
-              {ROLES.map((r) => <option key={r.v} value={r.v}>{r.l}</option>)}
             </select>
-            <p className="text-xs text-muted mt-1">Classe la fiche dans « Compagnons » sur le site. Choisis la génération <b>Compagnon</b> pour qu'elle y apparaisse même sans rôle.</p>
+            <p className="text-xs text-muted mt-1">Affine l'époque (badge). Ex. Salaf → Successeur (Tābiʿī).</p>
           </div>
         </div>
         <div className="grid sm:grid-cols-2 gap-3.5 mt-3.5">
