@@ -4,9 +4,12 @@ import { VitePWA } from 'vite-plugin-pwa';
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  // './' works for both GitHub Pages (HashRouter) and Capacitor Android WebView.
-  // '/IslamHub_front/' would break all asset paths inside the Android WebView.
-  base: './',
+  // Base des assets :
+  //   • défaut './' → chemins relatifs, compatibles WebView Capacitor Android
+  //     ET démos servies en sous-dossier (/v2, /v3). À utiliser avec HashRouter.
+  //   • VITE_BASE='/IslamHub_front/' (build prod web) → base absolue, requise par
+  //     BrowserRouter pour que les assets se chargent sur les liens profonds.
+  base: process.env.VITE_BASE || './',
   plugins: [
     react(),
     VitePWA({

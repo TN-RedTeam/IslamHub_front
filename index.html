@@ -5,6 +5,21 @@
     <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta name="theme-color" content="#241a33" />
+
+    <!-- Restauration du chemin après le fallback 404.html (BrowserRouter sur
+         GitHub Pages). N'agit QUE si l'URL contient le motif « /?/… » ; sinon
+         no-op (donc inoffensif en mode HashRouter). Doit s'exécuter avant l'app. -->
+    <script>
+      (function () {
+        var l = window.location;
+        if (l.search[1] === '/') {
+          var decoded = l.search.slice(1).split('&').map(function (s) {
+            return s.replace(/~and~/g, '&');
+          }).join('?');
+          window.history.replaceState(null, null, l.pathname.slice(0, -1) + decoded + l.hash);
+        }
+      })();
+    </script>
     <link rel="apple-touch-icon" href="./apple-touch-icon.png" />
 
     <!-- SEO -->

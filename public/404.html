@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <title>IslamHub</title>
+    <!--
+      Fallback SPA pour GitHub Pages (technique rafgraph/spa-github-pages).
+      GitHub Pages sert ce fichier pour toute URL profonde inconnue
+      (ex. /IslamHub_front/hadiths/123). On ré-encode le chemin dans la query
+      puis on redirige vers index.html, qui le restaure (voir index.html).
+
+      pathSegmentsToKeep = 1 : on conserve le 1er segment (« IslamHub_front »,
+      le nom du dépôt). Passer à 0 si le site est servi à la racine d'un domaine.
+    -->
+    <script>
+      (function () {
+        var pathSegmentsToKeep = 1;
+        var l = window.location;
+        l.replace(
+          l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
+          l.pathname.split('/').slice(0, 1 + pathSegmentsToKeep).join('/') + '/?/' +
+          l.pathname.slice(1).split('/').slice(pathSegmentsToKeep).join('/').replace(/&/g, '~and~') +
+          (l.search ? '&' + l.search.slice(1).replace(/&/g, '~and~') : '') +
+          l.hash
+        );
+      })();
+    </script>
+  </head>
+  <body></body>
+</html>
