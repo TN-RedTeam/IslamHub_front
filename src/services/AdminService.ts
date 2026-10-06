@@ -24,6 +24,10 @@ export interface HadithFormData {
   tag: string;
   sources: HadithSourceInput[];
   is_equivoque?: boolean; // marque aussi le hadith dans « Versets et hadiths équivoques »
+  segments?: HadithSegmentInput[]; // suite du hadith en dialogue
+}
+export interface HadithSegmentInput {
+  intro: string; texte_arabe: string; phonetique: string; texte_francais: string; explication: string;
 }
 export interface HadithEditShape {
   id: number; sujet: string | null; texte_arabe: string | null; texte_francais: string | null;
@@ -32,6 +36,7 @@ export interface HadithEditShape {
   rapporteur_ids: number[]; narrateur_ids: number[];
   is_equivoque: boolean; equivoque_id: number | null; equivoque_slug: string | null;
   tag: string | null; sources: { recueil_id: number; numero: string | null; chapitre: string | null }[];
+  segments: { intro: string | null; texte_arabe: string | null; phonetique: string | null; texte_francais: string | null; explication: string | null }[];
 }
 
 class AdminService {

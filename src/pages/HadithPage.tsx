@@ -153,6 +153,31 @@ export const HadithPage: React.FC = () => {
           )}
         </div>
 
+        {hadith.segments && hadith.segments.length > 0 && hadith.segments.map((sg, i) => (
+          <div key={i} className="bg-glass rounded-card p-6 shadow border border-green-line space-y-5">
+            {sg.intro && <p className="text-ink/80 italic [unicode-bidi:plaintext]">{sg.intro}</p>}
+            {sg.texte_arabe && <p className="text-3xl leading-loose text-right font-arabic text-ink whitespace-pre-wrap">{sg.texte_arabe}</p>}
+            {sg.phonetique && (
+              <div className="bg-glass-tint rounded-lg p-4">
+                <p className="text-sm text-ink mb-1">Phonétique :</p>
+                <p className="text-ink whitespace-pre-wrap [unicode-bidi:plaintext]">{sg.phonetique}</p>
+              </div>
+            )}
+            {sg.texte_francais && (
+              <div className="pl-4 border-l-4 border-green">
+                <p className="text-sm text-green mb-1">Traduction :</p>
+                <Markdown className="[unicode-bidi:plaintext]">{sg.texte_francais}</Markdown>
+              </div>
+            )}
+            {sg.explication && (
+              <div className="bg-glass-tint rounded-lg p-4">
+                <p className="text-sm font-bold text-ink mb-1">Explication :</p>
+                <Markdown className="[unicode-bidi:plaintext]">{sg.explication}</Markdown>
+              </div>
+            )}
+          </div>
+        ))}
+
         {hadith.sources && hadith.sources.length > 0 && (
           <section>
             <h2 className="text-[11px] uppercase tracking-[0.16em] text-muted font-semibold mb-2">

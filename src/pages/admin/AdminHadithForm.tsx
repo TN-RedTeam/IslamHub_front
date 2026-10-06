@@ -115,6 +115,15 @@ export const AdminHadithForm: React.FC = () => {
   useEffect(() => { adminService.tagsVocabulary().then(setTagVocab).catch(() => {}); }, []);
   const [isEquivoque, setIsEquivoque] = useState(false);
   const [equivoqueId, setEquivoqueId] = useState<number | null>(null);
+  // Segments de dialogue (suite du hadith).
+  type Seg = { intro: string; texte_arabe: string; phonetique: string; texte_francais: string; explication: string };
+  const emptySeg = (): Seg => ({ intro: '', texte_arabe: '', phonetique: '', texte_francais: '', explication: '' });
+  const [segments, setSegments] = useState<Seg[]>([]);
+  const setSeg = (i: number, k: keyof Seg, v: string) => setSegments((p) => p.map((s, j) => (j === i ? { ...s, [k]: v } : s)));
+  const moveSeg = (i: number, d: -1 | 1) => setSegments((p) => {
+    const j = i + d; if (j < 0 || j >= p.length) return p;
+    const n = [...p]; [n[i], n[j]] = [n[j], n[i]]; return n;
+  });
 
   useEffect(() => {
     Promise.all([adminService.listNarrateurs(), adminService.listRecueils(), adminService.listSavants()])
@@ -136,6 +145,10 @@ export const AdminHadithForm: React.FC = () => {
       setNarrateurIds(h.narrateur_ids ?? []);
       setIsEquivoque(!!h.is_equivoque);
       setEquivoqueId(h.equivoque_id ?? null);
+      setSegments((h.segments ?? []).map((s) => ({
+        intro: s.intro ?? '', texte_arabe: s.texte_arabe ?? '', phonetique: s.phonetique ?? '',
+        texte_francais: s.texte_francais ?? '', explication: s.explication ?? '',
+      })));
       setSources(h.sources.length ? h.sources.map((s) => ({ ...emptySrc(), recueil_id: String(s.recueil_id), numero: s.numero ?? '', chapitre: s.chapitre ?? '' })) : [emptySrc()]);
     }).catch(() => setError("Hadith introuvable."));
   }, [editId]);
@@ -159,6 +172,7 @@ export const AdminHadithForm: React.FC = () => {
     rapporteur_ids: rapporteurIds,
     narrateur_ids: narrateurIds,
     is_equivoque: isEquivoque,
+    segments: segments.filter((s) => s.texte_arabe.trim() || s.texte_francais.trim() || s.intro.trim() || s.explication.trim()),
     new_narrateur: addingNarr && newNarr.nom.trim() ? newNarr : null,
     sources: sources.map<HadithSourceInput>((s) => s.recueil_id === NEW
       ? { new_recueil: { titre: s.new_titre.trim(), savant_id: s.new_savant ? Number(s.new_savant) : null }, numero: s.numero || null, chapitre: s.chapitre || null }
@@ -174,7 +188,7 @@ export const AdminHadithForm: React.FC = () => {
       if (andNew) {
         setF({ sujet: '', texte_arabe: AR_TEMPLATE.hadith, texte_francais: '', phonetique: '', explication: '', degre_authenticite: 'Sahih', type_hadith: '', juge_par: '', tag: '' });
         setRapporteurIds([]); setNarrateurIds([]); setAddingNarr(false); setNewNarr({ nom: '', generation: 'sahabi', role: '', sexe: 'm' });
-        setIsEquivoque(false); setEquivoqueId(null);
+        setIsEquivoque(false); setEquivoqueId(null); setSegments([]);
         setSources([emptySrc()]); setTimeout(() => setOk(false), 2500);
       } else {
         navigate(`/admin/hadiths/${newId}`, { replace: true });
@@ -302,6 +316,39 @@ export const AdminHadithForm: React.FC = () => {
             <div className="flex flex-wrap gap-1.5 mt-2">{derived.map((t) => <span key={t.slug} className="text-xs bg-glass-tint text-accent border border-glass-border rounded-full px-2.5 py-0.5">{t.nom}</span>)}</div>
           )}
         </div>
+      </section>
+
+      {/* Dialogue — suite du hadith (optionnel) */}
+      <section className="rounded-card border border-line bg-surface p-5 mb-4">
+        <h2 className="font-display font-semibold text-ink text-lg mb-1">Dialogue — suite du hadith <span className="text-muted font-normal">(optionnel)</span></h2>
+        <p className="text-xs text-muted mb-3.5">Pour un hadith sous forme d'échange (question → réponse → précision…). Le texte principal ci-dessus est le <b>1er passage</b> ; ajoute ici les passages suivants, dans l'ordre. L'<b>intro</b> est la narration qui précède (ex. «&nbsp;Les compagnons ont répondu&nbsp;:&nbsp;»).</p>
+
+        {segments.map((sg, i) => (
+          <div key={i} className="rounded-lg border border-line bg-ground/40 p-3.5 mb-3">
+            <div className="flex items-center gap-2 mb-2.5">
+              <span className="text-xs font-semibold text-accent">Passage {i + 2}</span>
+              <div className="ml-auto flex items-center gap-1">
+                <button type="button" onClick={() => moveSeg(i, -1)} disabled={i === 0} className="px-2 py-1 text-xs rounded border border-line text-muted hover:text-ink disabled:opacity-40" aria-label="Monter">↑</button>
+                <button type="button" onClick={() => moveSeg(i, 1)} disabled={i === segments.length - 1} className="px-2 py-1 text-xs rounded border border-line text-muted hover:text-ink disabled:opacity-40" aria-label="Descendre">↓</button>
+                <button type="button" onClick={() => setSegments((p) => p.filter((_, j) => j !== i))} className="px-2 py-1 text-xs rounded border border-low/40 text-low hover:bg-low/10 inline-flex items-center gap-1"><Trash2 className="w-3.5 h-3.5" /></button>
+              </div>
+            </div>
+            <div className="mb-2.5"><label className={label}>Intro / narration <span className="text-muted font-normal">(optionnel)</span></label>
+              <input className={field} value={sg.intro} onChange={(e) => setSeg(i, 'intro', e.target.value)} placeholder="Ex. Les compagnons ont répondu :" /></div>
+            <div className="mb-2.5"><label className={label}>Texte arabe</label>
+              <textarea dir="rtl" lang="ar" className={`${field} font-arabic text-2xl leading-loose text-right min-h-[80px]`} value={sg.texte_arabe} onChange={(e) => setSeg(i, 'texte_arabe', e.target.value)} /></div>
+            <div className="grid sm:grid-cols-2 gap-2.5 mb-2.5">
+              <div><label className={label}>Phonétique</label><input className={field} value={sg.phonetique} onChange={(e) => setSeg(i, 'phonetique', e.target.value)} /></div>
+              <div><label className={label}>Traduction</label><input className={field} value={sg.texte_francais} onChange={(e) => setSeg(i, 'texte_francais', e.target.value)} /></div>
+            </div>
+            <div><label className={label}>Explication <span className="text-muted font-normal">(Markdown)</span></label>
+              <textarea className={`${field} min-h-[60px]`} value={sg.explication} onChange={(e) => setSeg(i, 'explication', e.target.value)} /></div>
+          </div>
+        ))}
+
+        <button type="button" onClick={() => setSegments((p) => [...p, emptySeg()])} className="inline-flex items-center gap-1.5 rounded-lg border border-line bg-surface text-ink font-semibold px-3.5 py-2 text-sm hover:border-green">
+          <Plus className="w-4 h-4" /> Ajouter un passage
+        </button>
       </section>
 
       {/* 6. Texte équivoque */}
