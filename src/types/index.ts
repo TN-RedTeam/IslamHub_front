@@ -26,7 +26,17 @@ export interface HadithSource {
 }
 
 /** Hadith - Parole du Prophète (ﷺ) */
+/** Segment d'un hadith « dialogue » (propos → réponse → propos…). */
+export interface HadithSegment {
+  ordre: number;
+  intro: string | null;          // narration avant le segment (« Les compagnons ont répondu : »)
+  texte_arabe: string | null;
+  phonetique: string | null;
+  texte_francais: string | null;
+  explication: string | null;
+}
 export interface Hadith extends BaseText {
+  segments?: HadithSegment[];    // suite du hadith en dialogue (optionnel)
   rapporteur: string | null;
   narrateur: string | null;
   statut: string | null;
@@ -237,6 +247,7 @@ export interface HadithDetail {
   recueils: string | null;
   sources?: HadithSource[];   // source structurée (groupée par rapporteur)
   themes?: ThemeRef[];        // thèmes transverses (puces)
+  segments?: HadithSegment[]; // suite du hadith en dialogue
   equivoque?: { slug: string; id: number; theme?: string; sens_juste?: string | null } | null; // fiche « équivoque » liée (si publiée)
 }
 
