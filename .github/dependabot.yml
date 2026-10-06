@@ -1,0 +1,52 @@
+# Configuration Dependabot — regroupe les mises à jour pour éviter les bumps
+# PARTIELS qui cassent le build (ex. @capacitor/android monté seul en v8 sans
+# core/cli ; tailwindcss monté en v4 sans migration).
+#
+# NB : pour que ce regroupement s'applique aussi aux mises à jour de SÉCURITÉ,
+# activer « Grouped security updates » dans
+#   Settings → Code security and analysis → Dependabot.
+version: 2
+updates:
+  # ---- Dépendances npm (racine) ----
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 5
+    groups:
+      # Capacitor : core + cli + android DOIVENT bouger ensemble (peer deps).
+      capacitor:
+        patterns:
+          - "@capacitor/*"
+        update-types:
+          - "major"
+          - "minor"
+          - "patch"
+      # Toutes les montées MAJEURES (hors capacitor) dans UNE seule PR, à relire
+      # et tester ensemble car potentiellement cassantes (ex. Tailwind v4, Vite…).
+      majors:
+        patterns:
+          - "*"
+        exclude-patterns:
+          - "@capacitor/*"
+        update-types:
+          - "major"
+      # Le reste (mineures + correctifs, hors capacitor) regroupé pour limiter le bruit.
+      minor-and-patch:
+        patterns:
+          - "*"
+        exclude-patterns:
+          - "@capacitor/*"
+        update-types:
+          - "minor"
+          - "patch"
+
+  # ---- Actions GitHub (workflows CI/déploiement) ----
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    groups:
+      github-actions:
+        patterns:
+          - "*"
