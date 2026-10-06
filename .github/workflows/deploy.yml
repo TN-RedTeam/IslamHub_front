@@ -33,10 +33,10 @@ jobs:
       VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
     steps:
       - name: Récupérer le code (main)
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Installer Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version: 22
           cache: npm
@@ -59,7 +59,7 @@ jobs:
 
       # --- Démo « ancienne charte » : refonte/architecture-v2 → /v2/ ---
       - name: Récupérer la branche v2
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           ref: refonte/architecture-v2
           path: _demo_v2
@@ -73,7 +73,7 @@ jobs:
 
       # --- Démo « Nuit Teal » : refonte/architecture-v3 → /v3/ ---
       - name: Récupérer la branche v3
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           ref: refonte/architecture-v3
           path: _demo_v3
@@ -86,7 +86,7 @@ jobs:
           cp -r dist/. "$GITHUB_WORKSPACE/dist/v3/"
 
       - name: Préparer l'artefact Pages
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v5
         with:
           path: dist
 
@@ -100,4 +100,4 @@ jobs:
     steps:
       - name: Publier sur GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
