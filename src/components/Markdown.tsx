@@ -74,6 +74,9 @@ const mdComponents: Components = {
     return <a className="text-green underline" target="_blank" rel="noopener noreferrer" {...props} />;
   },
   hr: (props) => <hr className="my-4 border-line" {...props} />,
+  // Images embarquées (scans de livres…) : chargées à la demande pour ne pas
+  // peser sur le premier rendu.
+  img: (props) => <img {...props} loading="lazy" decoding="async" className="max-w-full h-auto rounded-lg my-3" alt={(props as { alt?: string }).alt ?? ''} />,
   sup: (props) => <sup className="text-xs text-green font-semibold" {...props} />,
   // La section des notes de bas de page (className="footnotes") est stylée
   // globalement dans index.css : plus petite, grisée, avec trait de séparation.

@@ -6,13 +6,13 @@ import { FilterSelect } from '../components/FilterSelect';
 import { VideoCard } from '../components/VideoCard';
 import { PageHeader } from '../components/PageHeader';
 import type { Multimedia as MultimediaType, MultimediaCategory } from '../types';
-import { usePageTitle } from '../hooks/usePageTitle';
+import { useSeo } from '../hooks/useSeo';
 import { Icon, IconBadge } from '../components/Icon';
 
 const PAGE_SIZE = 12;
 
 export const Multimedia: React.FC = () => {
-  usePageTitle('Multimédia');
+  useSeo({ title: 'Multimédia', description: "Vidéos et contenus multimédias islamiques : cours, rappels et explications en français." });
   const [videos, setVideos]               = useState<MultimediaType[]>([]);
   const [categories, setCategories]       = useState<MultimediaCategory[]>([]);
   const [searchTerm, setSearchTerm]       = useState('');

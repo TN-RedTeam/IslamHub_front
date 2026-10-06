@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ChevronRight } from 'lucide-react';
-import { usePageTitle } from '../hooks/usePageTitle';
+import { useSeo } from '../hooks/useSeo';
 import { MADHHAB_AR } from '../constants/madhaheb';
 
 // Classes littérales par école (Tailwind doit les voir en entier pour les générer).
@@ -24,7 +24,7 @@ const ECOLES = [
 ];
 
 export const Madhaheb: React.FC = () => {
-  usePageTitle('Écoles');
+  useSeo({ title: 'Écoles', description: "Les quatre écoles juridiques sunnites — hanafite, malikite, chaféite et hanbalite : fondateurs, méthodes et jurisprudence." });
 
   return (
     <div className="min-h-screen">

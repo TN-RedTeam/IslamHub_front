@@ -4,7 +4,7 @@ import { Loader2 } from 'lucide-react';
 import { dataService } from '../../services/DataService';
 import { ExposeBody } from '../../components/ExposeBody';
 import { ArticleBlocs } from '../../components/ArticleBlocs';
-import { usePageTitle } from '../../hooks/usePageTitle';
+import { useSeo } from '../../hooks/useSeo';
 import type { Expose, ExposeCitation, Bloc } from '../../types';
 
 /**
@@ -14,7 +14,7 @@ import type { Expose, ExposeCitation, Bloc } from '../../types';
  * article composable (blocs) s'il existe, sinon prose Markdown + preuves.
  */
 export const JugementRationnel: React.FC = () => {
-  usePageTitle('Le jugement rationnel');
+  useSeo({ title: 'Le jugement rationnel', description: "Le rôle de la raison dans la croyance musulmane : ce que la raison établit, admet ou rejette, preuves à l'appui." });
   const [expose, setExpose] = useState<Expose | null>(null);
   const [citations, setCitations] = useState<ExposeCitation[]>([]);
   const [blocs, setBlocs] = useState<Bloc[]>([]);

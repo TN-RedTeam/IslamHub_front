@@ -11,7 +11,7 @@ import { FilterSelect } from '../components/FilterSelect';
 import { PageHeader } from '../components/PageHeader';
 import { CoranTabs } from '../components/CoranTabs';
 import type { Coran as CoranType } from '../types';
-import { usePageTitle } from '../hooks/usePageTitle';
+import { useSeo } from '../hooks/useSeo';
 import { Icon, IconBadge } from '../components/Icon';
 
 interface Coran extends CoranType {
@@ -246,7 +246,7 @@ const CoranModal: React.FC<{
 const ITEMS_PER_PAGE = 20;
 
 export const Corans: React.FC = () => {
-  usePageTitle('Versets par thème');
+  useSeo({ title: 'Versets par thème', description: "Les versets du Coran classés par thème, avec traduction française et explication." });
   const [corans, setCorans] = useState<Coran[]>([]);
   const [hasSearched, setHasSearched] = useState(false);
   const [isLoading, setIsLoading] = useState(false);

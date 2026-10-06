@@ -3,7 +3,7 @@ import { Loader } from 'lucide-react';
 import { PageHeader } from '../../components/PageHeader';
 import { Markdown } from '../../components/Markdown';
 import { dataService } from '../../services/DataService';
-import { usePageTitle } from '../../hooks/usePageTitle';
+import { useSeo } from '../../hooks/useSeo';
 
 /**
  * Exposé « Les piliers de la foi » — contenu Markdown piloté par la base
@@ -11,7 +11,7 @@ import { usePageTitle } from '../../hooks/usePageTitle';
  * Supabase, la page suit.
  */
 export const PiliersDeLaFoi: React.FC = () => {
-  usePageTitle('Les piliers de la foi');
+  useSeo({ title: 'Les piliers de la foi', description: "Les six piliers de la foi (īmān) en islam, expliqués un à un avec leurs preuves." });
   const [contenu, setContenu] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 

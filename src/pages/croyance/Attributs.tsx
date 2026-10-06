@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { PageHeader } from '../../components/PageHeader';
 import { BadgeGeneration } from '../../components/BadgeGeneration';
 import { dataService } from '../../services/DataService';
-import { usePageTitle } from '../../hooks/usePageTitle';
+import { useSeo } from '../../hooks/useSeo';
 import type { Attribut, AttributCitation } from '../../types';
 
 /**
@@ -68,7 +68,7 @@ const scrollToAttribut = (slug: string) => {
 };
 
 export const Attributs: React.FC = () => {
-  usePageTitle("Les Attributs de Allah");
+  useSeo({ title: "Les Attributs de Allah", description: "Les attributs d'Allah selon la croyance sunnite : sens, preuves et clarification des textes équivoques." });
   const [items, setItems] = useState<Attribut[]>([]);
   const [loading, setLoading] = useState(true);
 

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Sous HashRouter, seule l'URL racine est une page réellement indexable
+     (les routes #/... pointent toutes vers ce même document). Un sitemap par
+     rubrique n'aura de sens qu'après migration en BrowserRouter. Mettre à jour
+     "loc" lors du passage à un vrai domaine. -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://sou55i.github.io/IslamHub_front/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+</urlset>

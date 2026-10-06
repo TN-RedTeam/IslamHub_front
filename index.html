@@ -19,7 +19,7 @@
     <meta name="twitter:card" content="summary" />
 
     <!-- Security headers (en prod, préférer de vrais headers HTTP côté hébergeur) -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline'; font-src 'self'; connect-src 'self' https: wss: http://localhost:* ws://localhost:*; img-src 'self' data: https:; frame-src https://www.youtube.com https://www.youtube-nocookie.com; object-src 'none'; base-uri 'self'; form-action 'self';" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self'; connect-src 'self' https: wss: http://localhost:* ws://localhost:*; img-src 'self' data: https:; frame-src https://www.youtube.com https://www.youtube-nocookie.com; object-src 'none'; base-uri 'self'; form-action 'self';" />
     <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin" />
     <meta http-equiv="X-Content-Type-Options" content="nosniff" />
 
@@ -28,14 +28,35 @@
     <script src="./theme-init.js"></script>
 
     <title>IslamHub - Hadiths, Coran, Douaas et savoir islamique</title>
+
+    <!-- Données structurées globales (Organization + WebSite). Mettre à jour
+         "url" lors du passage à un vrai domaine. -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Organization",
+          "name": "IslamHub",
+          "url": "https://sou55i.github.io/IslamHub_front/",
+          "logo": "https://sou55i.github.io/IslamHub_front/pwa-512x512.png"
+        },
+        {
+          "@type": "WebSite",
+          "name": "IslamHub",
+          "url": "https://sou55i.github.io/IslamHub_front/",
+          "inLanguage": "fr-FR"
+        }
+      ]
+    }
+    </script>
   </head>
   <body>
     <div id="root"></div>
     <script type="module" src="./src/main.tsx"></script>
 
-    <!-- Cloudflare Web Analytics — REMPLACE le token ci-dessous par le tien
-         (Cloudflare -> Web Analytics -> Add a site -> copie la valeur "token"). -->
-    <script defer src="https://static.cloudflareinsights.com/beacon.min.js"
-            data-cf-beacon='{"token": "REMPLACE_PAR_TON_TOKEN_CLOUDFLARE"}'></script>
+    <!-- Analytics : si tu actives Cloudflare Web Analytics, ré-ajoute ici le
+         <script> beacon avec ton vrai token, et remets
+         https://static.cloudflareinsights.com dans script-src de la CSP. -->
   </body>
 </html>

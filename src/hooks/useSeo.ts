@@ -23,12 +23,33 @@ function setCanonical(url: string) {
   el.setAttribute('href', url);
 }
 
+/** Injecte (ou met à jour / retire) un bloc JSON-LD spécifique à la page. */
+function setJsonLd(data: object | object[] | undefined) {
+  const id = 'seo-jsonld-page';
+  let el = document.getElementById(id) as HTMLScriptElement | null;
+  if (!data) { el?.remove(); return; }
+  if (!el) {
+    el = document.createElement('script');
+    el.type = 'application/ld+json';
+    el.id = id;
+    document.head.appendChild(el);
+  }
+  el.textContent = JSON.stringify(data);
+}
+
 /**
- * Balises SEO par page : <title>, meta description, canonical, Open Graph.
+ * Balises SEO par page : <title>, meta description, canonical, Open Graph,
+ * et données structurées JSON-LD optionnelles.
  * Client-side (Google exécute le JS). Utile aussi pour le partage social.
  */
-export function useSeo(opts: { title?: string; description?: string }): void {
-  const { title, description } = opts;
+export function useSeo(opts: {
+  title?: string;
+  description?: string;
+  image?: string; // URL absolue pour og:image (sinon : valeur par défaut d'index.html)
+  type?: string;  // og:type — 'website' (défaut) | 'article'
+  jsonLd?: object | object[];
+}): void {
+  const { title, description, image, type, jsonLd } = opts;
   useEffect(() => {
     document.title = title ? `${title} | ${SITE_NAME}` : SITE_NAME;
     if (title) upsertMeta('property', 'og:title', `${title} | ${SITE_NAME}`);
@@ -37,9 +58,15 @@ export function useSeo(opts: { title?: string; description?: string }): void {
       upsertMeta('name', 'description', d);
       upsertMeta('property', 'og:description', d);
     }
+    if (image) upsertMeta('property', 'og:image', image);
+    upsertMeta('property', 'og:type', type ?? 'website');
     const url = window.location.href;
     upsertMeta('property', 'og:url', url);
     setCanonical(url);
-    return () => { document.title = SITE_NAME; };
-  }, [title, description]);
+    setJsonLd(jsonLd);
+    return () => {
+      document.title = SITE_NAME;
+      setJsonLd(undefined);
+    };
+  }, [title, description, image, type, jsonLd]);
 }
