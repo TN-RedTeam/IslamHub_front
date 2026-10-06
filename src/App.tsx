@@ -28,6 +28,7 @@ const Invocations = lazy(() => import('./pages/Invocations').then((m) => ({ defa
 const Paroles = lazy(() => import('./pages/Paroles').then((m) => ({ default: m.Paroles })));
 const ParolePage = lazy(() => import('./pages/ParolePage').then((m) => ({ default: m.ParolePage })));
 const Savants = lazy(() => import('./pages/Savants').then((m) => ({ default: m.Savants })));
+const Compagnons = lazy(() => import('./pages/Compagnons').then((m) => ({ default: m.Compagnons })));
 const SavantPage = lazy(() => import('./pages/SavantPage').then((m) => ({ default: m.SavantPage })));
 const Corans = lazy(() => import('./pages/Coran').then((m) => ({ default: m.Corans })));
 const SouratesIndex = lazy(() => import('./pages/SouratesIndex').then((m) => ({ default: m.SouratesIndex })));
@@ -132,6 +133,7 @@ function PublicShell() {
                 <Route path="/dhikrs" element={<Navigate to="/invocations" replace />} />
                 {/* Rubrique « Savants » : répertoire (défaut) + toutes les paroles */}
                 <Route path="/savants" element={<Savants />} />
+                <Route path="/compagnons" element={<Compagnons />} />
                 <Route path="/savants/paroles" element={<Paroles />} />
                 <Route path="/savants/:slug" element={<SavantPage />} />
                 {/* Pages de parole dédiées + redirection de l'ancienne rubrique */}

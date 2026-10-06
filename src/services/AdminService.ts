@@ -426,12 +426,13 @@ export interface SavantFormData {
   generation: string; naissance: string; deces: string; resume: string; biographie: string;
   domaines: string[];
   role: string; // '' | 'calife_rachidoun' | 'epouse_prophete'
+  est_savant: boolean; est_narrateur: boolean;
 }
 export interface SavantEditShape {
   id: number; nom: string; nom_arabe: string | null; slug: string | null; ecole_id: number | null;
   generation: string | null; naissance: string | null; deces: string | null;
   resume: string | null; biographie: string | null; domaines: string[] | null;
-  role: string | null;
+  role: string | null; est_savant: boolean | null; est_narrateur: boolean | null;
 }
 export interface SavantFullRow { id: number; nom: string; slug: string | null; generation: string | null; ecole_id: number | null; }
 

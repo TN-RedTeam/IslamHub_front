@@ -43,7 +43,15 @@ const applyRang = (r: Rang, gen: string): { generation: string; role: string } =
     default: return { generation: gen === 'khalaf' ? 'khalaf' : '', role: '' };
   }
 };
-const blank = { nom: '', nom_arabe: '', slug: '', ecole_id: '', generation: '', naissance: '', deces: '', resume: '', biographie: '', domaines: '', role: '' };
+// Profil : savant (science propre), narrateur (transmetteur), ou les deux.
+const PROFILS = [
+  { v: 'savant', l: 'Savant (science propre)' },
+  { v: 'narrateur', l: 'Narrateur (transmetteur)' },
+  { v: 'les_deux', l: 'Les deux' },
+];
+const profilFrom = (s: boolean, n: boolean) => (s && n ? 'les_deux' : n ? 'narrateur' : 'savant');
+
+const blank = { nom: '', nom_arabe: '', slug: '', ecole_id: '', generation: '', naissance: '', deces: '', resume: '', biographie: '', domaines: '', role: '', est_savant: true, est_narrateur: false };
 
 export const AdminSavantForm: React.FC = () => {
   const { id } = useParams();
@@ -59,6 +67,10 @@ export const AdminSavantForm: React.FC = () => {
   const [f, setF] = useState(blank);
   const set = (k: keyof typeof f) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => setF((p) => ({ ...p, [k]: e.target.value }));
   const setRang = (e: React.ChangeEvent<HTMLSelectElement>) => setF((p) => ({ ...p, ...applyRang(e.target.value as Rang, p.generation) }));
+  const setProfil = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const v = e.target.value;
+    setF((p) => ({ ...p, est_savant: v === 'savant' || v === 'les_deux', est_narrateur: v === 'narrateur' || v === 'les_deux' }));
+  };
 
   useEffect(() => {
     adminService.listEcoles().then(setEcoles).catch(() => setEcoles([])).finally(() => { if (!editId) setLoading(false); });
@@ -72,6 +84,7 @@ export const AdminSavantForm: React.FC = () => {
         nom: s.nom ?? '', nom_arabe: s.nom_arabe ?? '', slug: s.slug ?? '', ecole_id: s.ecole_id != null ? String(s.ecole_id) : '',
         generation: s.generation ?? '', naissance: s.naissance ?? '', deces: s.deces ?? '', resume: s.resume ?? '', biographie: s.biographie ?? '',
         domaines: (s.domaines ?? []).join(', '), role: s.role ?? '',
+        est_savant: !!s.est_savant, est_narrateur: !!s.est_narrateur,
       });
     }).catch(() => setError('Savant introuvable.')).finally(() => setLoading(false));
   }, [editId]);
@@ -84,6 +97,7 @@ export const AdminSavantForm: React.FC = () => {
     ecole_id: f.ecole_id ? Number(f.ecole_id) : null, generation: f.generation,
     naissance: f.naissance, deces: f.deces, resume: f.resume, biographie: f.biographie,
     domaines: f.domaines.split(',').map((d) => d.trim()).filter(Boolean), role: f.role,
+    est_savant: f.est_savant, est_narrateur: f.est_narrateur,
   });
 
   const save = async () => {
@@ -137,6 +151,12 @@ export const AdminSavantForm: React.FC = () => {
             </select>
             <p className="text-xs text-muted mt-1">Affine l'époque (badge). Ex. Salaf → Successeur (Tābiʿī).</p>
           </div>
+        </div>
+        <div className="mt-3.5"><label className={label}>Profil</label>
+          <select className={field} value={profilFrom(f.est_savant, f.est_narrateur)} onChange={setProfil}>
+            {PROFILS.map((p) => <option key={p.v} value={p.v}>{p.l}</option>)}
+          </select>
+          <p className="text-xs text-muted mt-1">« Narrateur » = transmetteur de hadiths (la plupart des compagnons) ; « Savant » = a une science propre (paroles). Les califes/compagnons qui ont aussi des paroles (Ali, Abou Bakr, Omar, Aïcha…) sont « Les deux ».</p>
         </div>
         <div className="grid sm:grid-cols-2 gap-3.5 mt-3.5">
           <div><label className={label}>Naissance</label><input className={field} value={f.naissance} onChange={set('naissance')} placeholder="150 H / 767" /></div>
