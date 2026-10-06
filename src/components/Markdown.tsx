@@ -37,14 +37,17 @@ function isArabic(node: React.ReactNode): boolean {
  *       s'affiche automatiquement en bas du bloc.
  */
 const mdComponents: Components = {
-  h1: ({ children }) => <h3 lang={isArabic(children) ? 'ar' : undefined} className="text-xl font-bold text-ink mt-4 mb-2 font-display">{children}</h3>,
+  // Échelle de titres distincte (le corps contient du gras : un titre doit
+  // clairement ressortir). ###  = titre de section, souligné d'un filet.
+  h1: ({ children }) => <h3 lang={isArabic(children) ? 'ar' : undefined} className="text-2xl font-bold text-ink mt-6 mb-3 font-display">{children}</h3>,
   h2: ({ children, id }) =>
     // remark-gfm génère un <h2 id="footnote-label"> pour le titre des notes :
     // on le garde masqué (sr-only) au lieu d'afficher "Footnotes".
     id === 'footnote-label'
       ? <h2 className="sr-only">{children}</h2>
-      : <h4 lang={isArabic(children) ? 'ar' : undefined} className="text-lg font-bold text-ink mt-4 mb-2 font-display">{children}</h4>,
-  h3: ({ children }) => <h4 lang={isArabic(children) ? 'ar' : undefined} className="text-lg font-bold text-ink mt-4 mb-2 font-display">{children}</h4>,
+      : <h4 lang={isArabic(children) ? 'ar' : undefined} className="text-xl font-bold text-ink mt-5 mb-2.5 font-display">{children}</h4>,
+  h3: ({ children }) => <h5 lang={isArabic(children) ? 'ar' : undefined} className="text-lg font-bold text-accent mt-5 mb-2 pb-1 border-b border-line font-display">{children}</h5>,
+  h4: ({ children }) => <h6 lang={isArabic(children) ? 'ar' : undefined} className="text-base font-bold text-ink mt-4 mb-1.5 font-display">{children}</h6>,
   p: ({ children }) => isArabic(children)
     ? <p lang="ar" dir="rtl" className="text-xl leading-loose my-3 text-ink">{children}</p>
     : <p className="text-ink leading-relaxed mb-3">{children}</p>,
