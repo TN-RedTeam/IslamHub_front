@@ -15,7 +15,7 @@ packageable en application **Android** via Capacitor.
 | UI             | React 18 + TypeScript |
 | Build          | Vite 8 (+ `vite-plugin-pwa`) |
 | Styles         | Tailwind CSS 3 (design system « Nuit Teal » par tokens CSS) |
-| Routing        | React Router 7 en **HashRouter** (compatible hébergement statique) |
+| Routing        | React Router 7 — routeur choisi au build (`VITE_ROUTER`) : BrowserRouter en prod web, HashRouter par défaut (Android, démos) |
 | Animations     | Framer Motion |
 | Icônes         | lucide-react |
 | Markdown       | react-markdown + remark-gfm |
@@ -125,7 +125,7 @@ Fichiers récents utiles :
 
 ## Administration
 
-- Accès via la route `#/admin` (HashRouter). Authentification Supabase par
+- Accès via la route `/admin` (`#/admin` en mode HashRouter). Authentification Supabase par
   e-mail / mot de passe ; seul le compte administrateur (défini dans
   `AuthContext` et aligné sur `public.is_admin()` côté base) peut écrire.
 - Chaque rubrique (Hadiths, Paroles, Coran, Invocations, Fiqh, Récits, Dossiers,
@@ -143,9 +143,28 @@ Les couleurs sont définies en tokens CSS sur `:root` dans `src/index.css`
 sombre, puis mappées dans `tailwind.config.js` (`accent`, `glass`, `dome`…).
 Thème clair beige, thème sombre crépuscule teal → violet.
 
-> **Note HashRouter :** le site utilise `HashRouter`. Pour une ancre interne,
-> ne pas utiliser `href="#id"` (cela casse le routage) mais un `onClick` avec
-> `preventDefault()` + `scrollIntoView()`.
+## Routeur & SEO
+
+Le routeur est choisi **au build** via deux variables d'environnement :
+
+| Cible | `VITE_ROUTER` | `VITE_BASE` | Routeur |
+|-------|---------------|-------------|---------|
+| Prod web (GitHub Pages racine) | `browser` | `/IslamHub_front/` | BrowserRouter (URLs propres, indexables) |
+| Android (Capacitor) / démos /v2 /v3 / défaut | *(absent)* | *(défaut `./`)* | HashRouter (`#/…`) |
+
+- **BrowserRouter** exige une base **absolue** (sinon les assets cassent sur les
+  liens profonds) et un **fallback `public/404.html`** (déjà en place) : GitHub
+  Pages sert `404.html` pour toute URL profonde, qui ré-encode le chemin et le
+  restaure via un script dans `index.html`.
+- **HashRouter** reste le défaut car c'est le seul compatible avec la WebView
+  **Capacitor Android** (servie à la racine) et les **démos** en sous-dossier.
+- Le build de prod active automatiquement BrowserRouter (voir `deploy.yml`,
+  étape « site principal »). Sur un **domaine personnalisé**, mettre `VITE_BASE=/`
+  et passer `pathSegmentsToKeep` à `0` dans `public/404.html`.
+
+> **Ancres internes :** elles utilisent un `onClick` avec `preventDefault()` +
+> `scrollIntoView()` — compatible avec les deux routeurs (ne pas revenir à
+> `href="#id"`, qui casserait le routage sous HashRouter).
 
 ---
 

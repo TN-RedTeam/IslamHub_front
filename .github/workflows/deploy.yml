@@ -49,6 +49,13 @@ jobs:
         # Les clés Supabase sont injectées au build depuis les secrets du dépôt
         # (Settings → Secrets and variables → Actions). Sans elles, le site
         # déployé n'aurait pas d'accès à la base.
+        #
+        # Site principal servi sur https://<user>.github.io/IslamHub_front/ :
+        # BrowserRouter (URLs propres indexables) + base absolue + 404.html.
+        # Les démos /v2 et /v3 ci-dessous gardent le défaut (HashRouter, base './').
+        env:
+          VITE_ROUTER: browser
+          VITE_BASE: /IslamHub_front/
 
       # --- Démo « ancienne charte » : refonte/architecture-v2 → /v2/ ---
       - name: Récupérer la branche v2

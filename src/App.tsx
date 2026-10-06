@@ -1,6 +1,17 @@
 import { lazy, Suspense } from 'react';
-import { HashRouter as Router, Routes, Route, Navigate, useParams } from 'react-router-dom';
+import { BrowserRouter, HashRouter, Routes, Route, Navigate, useParams } from 'react-router-dom';
 import { LazyMotion, domAnimation } from 'framer-motion';
+
+// Routeur choisi au build :
+//   • VITE_ROUTER=browser → BrowserRouter (URLs propres, indexables par Google) ;
+//     requiert une base absolue (VITE_BASE) + un fallback 404.html (GitHub Pages).
+//   • défaut → HashRouter (#/...), seul compatible avec la WebView Capacitor
+//     Android et les démos servies en sous-dossier (base relative './').
+const USE_BROWSER_ROUTER = import.meta.env.VITE_ROUTER === 'browser';
+const Router = USE_BROWSER_ROUTER ? BrowserRouter : HashRouter;
+// base '/IslamHub_front/' → basename '/IslamHub_front' ; base '/' → '/'.
+const BASENAME = (import.meta.env.BASE_URL || '/').replace(/\/+$/, '') || '/';
+const routerProps = USE_BROWSER_ROUTER ? { basename: BASENAME } : {};
 import { Loader2 } from 'lucide-react';
 import { Navigation } from './components/Navigation';
 import { PwaUpdater } from './components/PwaUpdater';
@@ -179,7 +190,7 @@ function App() {
         {/* LazyMotion fournit les animations aux composants `m.` de framer-motion.
             Mode NON strict : les pages encore en `motion.` continuent de fonctionner. */}
         <LazyMotion features={domAnimation}>
-          <Router>
+          <Router {...routerProps}>
             <Suspense fallback={<PageFallback />}>
               <Routes>
                 {/* Espace d'administration (hors shell public, auth requise) */}
