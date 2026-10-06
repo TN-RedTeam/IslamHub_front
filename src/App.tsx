@@ -1,80 +1,94 @@
+import { lazy, Suspense } from 'react';
 import { HashRouter as Router, Routes, Route, Navigate, useParams } from 'react-router-dom';
 import { LazyMotion, domAnimation } from 'framer-motion';
+import { Loader2 } from 'lucide-react';
 import { Navigation } from './components/Navigation';
 import { PwaUpdater } from './components/PwaUpdater';
 import { SiteFooter } from './components/SiteFooter';
 import { BottomNav } from './components/BottomNav';
-import { Home } from './pages/Home';
-import { Hadiths } from './pages/Hadiths';
-import { HadithPage } from './pages/HadithPage';
-import { Invocations } from './pages/Invocations';
-import { Paroles } from './pages/Paroles';
-import { ParolePage } from './pages/ParolePage';
-import { Savants } from './pages/Savants';
-import { SavantPage } from './pages/SavantPage';
-import { Corans } from './pages/Coran';
-import { SouratesIndex } from './pages/SouratesIndex';
-import { SouratePage } from './pages/SouratePage';
-import { Multimedia } from './pages/Multimedia';
-import { ThemesIndex } from './pages/ThemesIndex';
-import { ThemePage } from './pages/ThemePage';
-import { Recherche } from './pages/Recherche';
-import { ExposePage } from './pages/ExposePage';
-import { Recits } from './pages/Recits';
-import { RecitPage } from './pages/RecitPage';
-import { Femmes } from './pages/Femmes';
 import { ThemeProvider } from './context/ThemeContext';
-import { Madhaheb } from './pages/Madhaheb';
-import { Croyance } from './pages/Croyance';
-import { Attributs } from './pages/croyance/Attributs';
-import { PiliersDeLaFoi } from './pages/croyance/PiliersDeLaFoi';
-import { VersetsEquivoques } from './pages/croyance/VersetsEquivoques';
-import { VersetEquivoque } from './pages/croyance/VersetEquivoque';
-import { ComprendreEquivoques } from './pages/croyance/ComprendreEquivoques';
-import { JugementRationnel } from './pages/croyance/JugementRationnel';
-import { NomsDAllah } from './pages/croyance/NomsDAllah';
-import { DossierThematique } from './pages/DossierThematique';
-import { DossiersIndex } from './pages/DossiersIndex';
-import { NotFound } from './pages/NotFound';
 import { AuthProvider } from './context/AuthContext';
-import { AdminLogin } from './pages/admin/AdminLogin';
-import { AdminLayout } from './pages/admin/AdminLayout';
-import { AdminHome } from './pages/admin/AdminHome';
-import { AdminRecherche } from './pages/admin/AdminRecherche';
-import { AdminHadithForm } from './pages/admin/AdminHadithForm';
-import { AdminHadithsList } from './pages/admin/AdminHadithsList';
-import { AdminParoleForm } from './pages/admin/AdminParoleForm';
-import { AdminParolesList } from './pages/admin/AdminParolesList';
-import { AdminRecitForm } from './pages/admin/AdminRecitForm';
-import { AdminRecitsList } from './pages/admin/AdminRecitsList';
-import { AdminTagsList } from './pages/admin/AdminTagsList';
-import { AdminSujetsList } from './pages/admin/AdminSujetsList';
-import { AdminEquivoqueForm } from './pages/admin/AdminEquivoqueForm';
-import { AdminEquivoquesList } from './pages/admin/AdminEquivoquesList';
-import { AdminCoranForm } from './pages/admin/AdminCoranForm';
-import { AdminCoranList } from './pages/admin/AdminCoranList';
-import { AdminSourateForm } from './pages/admin/AdminSourateForm';
-import { AdminSouratesList } from './pages/admin/AdminSouratesList';
-import { AdminInvocationForm } from './pages/admin/AdminInvocationForm';
-import { AdminInvocationsList } from './pages/admin/AdminInvocationsList';
-import { AdminSavantForm } from './pages/admin/AdminSavantForm';
-import { AdminSavantsList } from './pages/admin/AdminSavantsList';
-import { AdminDossierForm } from './pages/admin/AdminDossierForm';
-import { AdminDossiersList } from './pages/admin/AdminDossiersList';
-import { AdminExposeForm } from './pages/admin/AdminExposeForm';
-import { AdminExposesList } from './pages/admin/AdminExposesList';
-import { AdminFiqhForm } from './pages/admin/AdminFiqhForm';
-import { AdminFiqhList } from './pages/admin/AdminFiqhList';
-import { AdminFemmeForm } from './pages/admin/AdminFemmeForm';
-import { AdminFemmesList } from './pages/admin/AdminFemmesList';
 
-// Import des écoles
-import {
-  Hanafi,
-  Malikite,
-  Shafii,
-  Hanbalite,
-} from './pages/ecoles';
+// Pages publiques — chargées à la demande (code-splitting par route).
+const Home = lazy(() => import('./pages/Home').then((m) => ({ default: m.Home })));
+const Hadiths = lazy(() => import('./pages/Hadiths').then((m) => ({ default: m.Hadiths })));
+const HadithPage = lazy(() => import('./pages/HadithPage').then((m) => ({ default: m.HadithPage })));
+const Invocations = lazy(() => import('./pages/Invocations').then((m) => ({ default: m.Invocations })));
+const Paroles = lazy(() => import('./pages/Paroles').then((m) => ({ default: m.Paroles })));
+const ParolePage = lazy(() => import('./pages/ParolePage').then((m) => ({ default: m.ParolePage })));
+const Savants = lazy(() => import('./pages/Savants').then((m) => ({ default: m.Savants })));
+const SavantPage = lazy(() => import('./pages/SavantPage').then((m) => ({ default: m.SavantPage })));
+const Corans = lazy(() => import('./pages/Coran').then((m) => ({ default: m.Corans })));
+const SouratesIndex = lazy(() => import('./pages/SouratesIndex').then((m) => ({ default: m.SouratesIndex })));
+const SouratePage = lazy(() => import('./pages/SouratePage').then((m) => ({ default: m.SouratePage })));
+const Multimedia = lazy(() => import('./pages/Multimedia').then((m) => ({ default: m.Multimedia })));
+const ThemesIndex = lazy(() => import('./pages/ThemesIndex').then((m) => ({ default: m.ThemesIndex })));
+const ThemePage = lazy(() => import('./pages/ThemePage').then((m) => ({ default: m.ThemePage })));
+const Recherche = lazy(() => import('./pages/Recherche').then((m) => ({ default: m.Recherche })));
+const ExposePage = lazy(() => import('./pages/ExposePage').then((m) => ({ default: m.ExposePage })));
+const Recits = lazy(() => import('./pages/Recits').then((m) => ({ default: m.Recits })));
+const RecitPage = lazy(() => import('./pages/RecitPage').then((m) => ({ default: m.RecitPage })));
+const Femmes = lazy(() => import('./pages/Femmes').then((m) => ({ default: m.Femmes })));
+const Madhaheb = lazy(() => import('./pages/Madhaheb').then((m) => ({ default: m.Madhaheb })));
+const Croyance = lazy(() => import('./pages/Croyance').then((m) => ({ default: m.Croyance })));
+const Attributs = lazy(() => import('./pages/croyance/Attributs').then((m) => ({ default: m.Attributs })));
+const PiliersDeLaFoi = lazy(() => import('./pages/croyance/PiliersDeLaFoi').then((m) => ({ default: m.PiliersDeLaFoi })));
+const VersetsEquivoques = lazy(() => import('./pages/croyance/VersetsEquivoques').then((m) => ({ default: m.VersetsEquivoques })));
+const VersetEquivoque = lazy(() => import('./pages/croyance/VersetEquivoque').then((m) => ({ default: m.VersetEquivoque })));
+const ComprendreEquivoques = lazy(() => import('./pages/croyance/ComprendreEquivoques').then((m) => ({ default: m.ComprendreEquivoques })));
+const JugementRationnel = lazy(() => import('./pages/croyance/JugementRationnel').then((m) => ({ default: m.JugementRationnel })));
+const NomsDAllah = lazy(() => import('./pages/croyance/NomsDAllah').then((m) => ({ default: m.NomsDAllah })));
+const DossierThematique = lazy(() => import('./pages/DossierThematique').then((m) => ({ default: m.DossierThematique })));
+const DossiersIndex = lazy(() => import('./pages/DossiersIndex').then((m) => ({ default: m.DossiersIndex })));
+const NotFound = lazy(() => import('./pages/NotFound').then((m) => ({ default: m.NotFound })));
+
+// Écoles (madhāhib)
+const Hanafi = lazy(() => import('./pages/ecoles').then((m) => ({ default: m.Hanafi })));
+const Malikite = lazy(() => import('./pages/ecoles').then((m) => ({ default: m.Malikite })));
+const Shafii = lazy(() => import('./pages/ecoles').then((m) => ({ default: m.Shafii })));
+const Hanbalite = lazy(() => import('./pages/ecoles').then((m) => ({ default: m.Hanbalite })));
+
+// Espace d'administration — chunk séparé, jamais chargé pour les visiteurs publics.
+const AdminLogin = lazy(() => import('./pages/admin/AdminLogin').then((m) => ({ default: m.AdminLogin })));
+const AdminLayout = lazy(() => import('./pages/admin/AdminLayout').then((m) => ({ default: m.AdminLayout })));
+const AdminHome = lazy(() => import('./pages/admin/AdminHome').then((m) => ({ default: m.AdminHome })));
+const AdminRecherche = lazy(() => import('./pages/admin/AdminRecherche').then((m) => ({ default: m.AdminRecherche })));
+const AdminHadithForm = lazy(() => import('./pages/admin/AdminHadithForm').then((m) => ({ default: m.AdminHadithForm })));
+const AdminHadithsList = lazy(() => import('./pages/admin/AdminHadithsList').then((m) => ({ default: m.AdminHadithsList })));
+const AdminParoleForm = lazy(() => import('./pages/admin/AdminParoleForm').then((m) => ({ default: m.AdminParoleForm })));
+const AdminParolesList = lazy(() => import('./pages/admin/AdminParolesList').then((m) => ({ default: m.AdminParolesList })));
+const AdminRecitForm = lazy(() => import('./pages/admin/AdminRecitForm').then((m) => ({ default: m.AdminRecitForm })));
+const AdminRecitsList = lazy(() => import('./pages/admin/AdminRecitsList').then((m) => ({ default: m.AdminRecitsList })));
+const AdminTagsList = lazy(() => import('./pages/admin/AdminTagsList').then((m) => ({ default: m.AdminTagsList })));
+const AdminSujetsList = lazy(() => import('./pages/admin/AdminSujetsList').then((m) => ({ default: m.AdminSujetsList })));
+const AdminEquivoqueForm = lazy(() => import('./pages/admin/AdminEquivoqueForm').then((m) => ({ default: m.AdminEquivoqueForm })));
+const AdminEquivoquesList = lazy(() => import('./pages/admin/AdminEquivoquesList').then((m) => ({ default: m.AdminEquivoquesList })));
+const AdminCoranForm = lazy(() => import('./pages/admin/AdminCoranForm').then((m) => ({ default: m.AdminCoranForm })));
+const AdminCoranList = lazy(() => import('./pages/admin/AdminCoranList').then((m) => ({ default: m.AdminCoranList })));
+const AdminSourateForm = lazy(() => import('./pages/admin/AdminSourateForm').then((m) => ({ default: m.AdminSourateForm })));
+const AdminSouratesList = lazy(() => import('./pages/admin/AdminSouratesList').then((m) => ({ default: m.AdminSouratesList })));
+const AdminInvocationForm = lazy(() => import('./pages/admin/AdminInvocationForm').then((m) => ({ default: m.AdminInvocationForm })));
+const AdminInvocationsList = lazy(() => import('./pages/admin/AdminInvocationsList').then((m) => ({ default: m.AdminInvocationsList })));
+const AdminSavantForm = lazy(() => import('./pages/admin/AdminSavantForm').then((m) => ({ default: m.AdminSavantForm })));
+const AdminSavantsList = lazy(() => import('./pages/admin/AdminSavantsList').then((m) => ({ default: m.AdminSavantsList })));
+const AdminDossierForm = lazy(() => import('./pages/admin/AdminDossierForm').then((m) => ({ default: m.AdminDossierForm })));
+const AdminDossiersList = lazy(() => import('./pages/admin/AdminDossiersList').then((m) => ({ default: m.AdminDossiersList })));
+const AdminExposeForm = lazy(() => import('./pages/admin/AdminExposeForm').then((m) => ({ default: m.AdminExposeForm })));
+const AdminExposesList = lazy(() => import('./pages/admin/AdminExposesList').then((m) => ({ default: m.AdminExposesList })));
+const AdminFiqhForm = lazy(() => import('./pages/admin/AdminFiqhForm').then((m) => ({ default: m.AdminFiqhForm })));
+const AdminFiqhList = lazy(() => import('./pages/admin/AdminFiqhList').then((m) => ({ default: m.AdminFiqhList })));
+const AdminFemmeForm = lazy(() => import('./pages/admin/AdminFemmeForm').then((m) => ({ default: m.AdminFemmeForm })));
+const AdminFemmesList = lazy(() => import('./pages/admin/AdminFemmesList').then((m) => ({ default: m.AdminFemmesList })));
+
+/** Repli pendant le chargement d'un chunk de page. */
+function PageFallback() {
+  return (
+    <div className="grid place-items-center py-24" aria-busy="true" aria-live="polite">
+      <Loader2 className="w-9 h-9 text-accent animate-spin" />
+      <span className="sr-only">Chargement…</span>
+    </div>
+  );
+}
 
 // Redirige l'ancienne fiche /croyance/versets-equivoques/:slug vers la nouvelle URL.
 function OldVersetRedirect() {
@@ -89,7 +103,8 @@ function PublicShell() {
       <Navigation />
       <PwaUpdater />
       <main className="flex-1">
-        <Routes>
+        <Suspense fallback={<PageFallback />}>
+          <Routes>
                 {/* Pages principales */}
                 <Route path="/" element={<Home />} />
                 <Route path="/coran" element={<Corans />} />
@@ -148,7 +163,8 @@ function PublicShell() {
 
                 {/* 404 */}
                 <Route path="*" element={<NotFound />} />
-        </Routes>
+          </Routes>
+        </Suspense>
       </main>
       <SiteFooter />
       <BottomNav />
@@ -164,54 +180,56 @@ function App() {
             Mode NON strict : les pages encore en `motion.` continuent de fonctionner. */}
         <LazyMotion features={domAnimation}>
           <Router>
-            <Routes>
-              {/* Espace d'administration (hors shell public, auth requise) */}
-              <Route path="/admin/login" element={<AdminLogin />} />
-              <Route path="/admin" element={<AdminLayout />}>
-                <Route index element={<AdminHome />} />
-                <Route path="recherche" element={<AdminRecherche />} />
-                <Route path="hadiths" element={<AdminHadithsList />} />
-                <Route path="hadiths/nouveau" element={<AdminHadithForm />} />
-                <Route path="hadiths/:id" element={<AdminHadithForm />} />
-                <Route path="paroles" element={<AdminParolesList />} />
-                <Route path="paroles/nouveau" element={<AdminParoleForm />} />
-                <Route path="paroles/:id" element={<AdminParoleForm />} />
-                <Route path="recits" element={<AdminRecitsList />} />
-                <Route path="tags" element={<AdminTagsList />} />
-                <Route path="sujets" element={<AdminSujetsList />} />
-                <Route path="recits/nouveau" element={<AdminRecitForm />} />
-                <Route path="recits/:id" element={<AdminRecitForm />} />
-                <Route path="equivoques" element={<AdminEquivoquesList />} />
-                <Route path="equivoques/nouveau" element={<AdminEquivoqueForm />} />
-                <Route path="equivoques/:id" element={<AdminEquivoqueForm />} />
-                <Route path="coran" element={<AdminCoranList />} />
-                <Route path="coran/nouveau" element={<AdminCoranForm />} />
-                <Route path="coran/:id" element={<AdminCoranForm />} />
-                <Route path="sourates" element={<AdminSouratesList />} />
-                <Route path="sourates/nouveau" element={<AdminSourateForm />} />
-                <Route path="sourates/:id" element={<AdminSourateForm />} />
-                <Route path="invocations" element={<AdminInvocationsList />} />
-                <Route path="invocations/nouveau" element={<AdminInvocationForm />} />
-                <Route path="invocations/:id" element={<AdminInvocationForm />} />
-                <Route path="savants" element={<AdminSavantsList />} />
-                <Route path="savants/nouveau" element={<AdminSavantForm />} />
-                <Route path="savants/:id" element={<AdminSavantForm />} />
-                <Route path="dossiers" element={<AdminDossiersList />} />
-                <Route path="dossiers/nouveau" element={<AdminDossierForm />} />
-                <Route path="dossiers/:id" element={<AdminDossierForm />} />
-                <Route path="exposes" element={<AdminExposesList />} />
-                <Route path="exposes/nouveau" element={<AdminExposeForm />} />
-                <Route path="exposes/:slug" element={<AdminExposeForm />} />
-                <Route path="fiqh" element={<AdminFiqhList />} />
-                <Route path="fiqh/nouveau" element={<AdminFiqhForm />} />
-                <Route path="fiqh/:id" element={<AdminFiqhForm />} />
-                <Route path="femmes" element={<AdminFemmesList />} />
-                <Route path="femmes/nouveau" element={<AdminFemmeForm />} />
-                <Route path="femmes/:id" element={<AdminFemmeForm />} />
-              </Route>
-              {/* Site public */}
-              <Route path="/*" element={<PublicShell />} />
-            </Routes>
+            <Suspense fallback={<PageFallback />}>
+              <Routes>
+                {/* Espace d'administration (hors shell public, auth requise) */}
+                <Route path="/admin/login" element={<AdminLogin />} />
+                <Route path="/admin" element={<AdminLayout />}>
+                  <Route index element={<AdminHome />} />
+                  <Route path="recherche" element={<AdminRecherche />} />
+                  <Route path="hadiths" element={<AdminHadithsList />} />
+                  <Route path="hadiths/nouveau" element={<AdminHadithForm />} />
+                  <Route path="hadiths/:id" element={<AdminHadithForm />} />
+                  <Route path="paroles" element={<AdminParolesList />} />
+                  <Route path="paroles/nouveau" element={<AdminParoleForm />} />
+                  <Route path="paroles/:id" element={<AdminParoleForm />} />
+                  <Route path="recits" element={<AdminRecitsList />} />
+                  <Route path="tags" element={<AdminTagsList />} />
+                  <Route path="sujets" element={<AdminSujetsList />} />
+                  <Route path="recits/nouveau" element={<AdminRecitForm />} />
+                  <Route path="recits/:id" element={<AdminRecitForm />} />
+                  <Route path="equivoques" element={<AdminEquivoquesList />} />
+                  <Route path="equivoques/nouveau" element={<AdminEquivoqueForm />} />
+                  <Route path="equivoques/:id" element={<AdminEquivoqueForm />} />
+                  <Route path="coran" element={<AdminCoranList />} />
+                  <Route path="coran/nouveau" element={<AdminCoranForm />} />
+                  <Route path="coran/:id" element={<AdminCoranForm />} />
+                  <Route path="sourates" element={<AdminSouratesList />} />
+                  <Route path="sourates/nouveau" element={<AdminSourateForm />} />
+                  <Route path="sourates/:id" element={<AdminSourateForm />} />
+                  <Route path="invocations" element={<AdminInvocationsList />} />
+                  <Route path="invocations/nouveau" element={<AdminInvocationForm />} />
+                  <Route path="invocations/:id" element={<AdminInvocationForm />} />
+                  <Route path="savants" element={<AdminSavantsList />} />
+                  <Route path="savants/nouveau" element={<AdminSavantForm />} />
+                  <Route path="savants/:id" element={<AdminSavantForm />} />
+                  <Route path="dossiers" element={<AdminDossiersList />} />
+                  <Route path="dossiers/nouveau" element={<AdminDossierForm />} />
+                  <Route path="dossiers/:id" element={<AdminDossierForm />} />
+                  <Route path="exposes" element={<AdminExposesList />} />
+                  <Route path="exposes/nouveau" element={<AdminExposeForm />} />
+                  <Route path="exposes/:slug" element={<AdminExposeForm />} />
+                  <Route path="fiqh" element={<AdminFiqhList />} />
+                  <Route path="fiqh/nouveau" element={<AdminFiqhForm />} />
+                  <Route path="fiqh/:id" element={<AdminFiqhForm />} />
+                  <Route path="femmes" element={<AdminFemmesList />} />
+                  <Route path="femmes/nouveau" element={<AdminFemmeForm />} />
+                  <Route path="femmes/:id" element={<AdminFemmeForm />} />
+                </Route>
+                {/* Site public */}
+                <Route path="/*" element={<PublicShell />} />
+              </Routes>
+            </Suspense>
           </Router>
         </LazyMotion>
       </AuthProvider>
