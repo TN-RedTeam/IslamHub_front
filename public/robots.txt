@@ -1,5 +1,5 @@
 User-agent: *
 Allow: /
 
-# À ajouter lors du passage au vrai domaine :
-# Sitemap: https://votre-domaine.com/sitemap.xml
+Sitemap: https://sou55i.github.io/IslamHub_front/sitemap.xml
+# Mettre à jour l'URL du Sitemap lors du passage à un vrai domaine.

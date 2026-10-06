@@ -4,7 +4,7 @@ import { Search, Loader, X } from 'lucide-react';
 import { dataService } from '../../services/DataService';
 import { PageHeader } from '../../components/PageHeader';
 import { Markdown } from '../../components/Markdown';
-import { usePageTitle } from '../../hooks/usePageTitle';
+import { useSeo } from '../../hooks/useSeo';
 import type { NomAllah } from '../../types';
 
 // Recherche insensible aux diacritiques (côté client).
@@ -48,7 +48,7 @@ const NomModal: React.FC<{ nom: NomAllah; onClose: () => void }> = ({ nom, onClo
 };
 
 export const NomsDAllah: React.FC = () => {
-  usePageTitle("Les 99 Noms d'Allah");
+  useSeo({ title: "Les 99 Noms d'Allah", description: "Les 99 plus beaux noms d'Allah (al-asmāʾ al-ḥusnā) avec leur sens en français." });
   const [noms, setNoms] = useState<NomAllah[]>([]);
   const [loading, setLoading] = useState(true);
   const [q, setQ] = useState('');

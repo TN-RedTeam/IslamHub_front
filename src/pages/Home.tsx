@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Book, BookOpen, Heart, GraduationCap, Video, Moon, Sun, Sparkles, Loader2 } from 'lucide-react';
 import { dataService } from '../services/DataService';
-import { usePageTitle } from '../hooks/usePageTitle';
+import { useSeo } from '../hooks/useSeo';
 import { slugify } from '../utils/slug';
 import { GlassCard, SectionHeader, Tile } from '../components/ui/Nuit';
 import type { Hadith, Invocation, Coran } from '../types';
@@ -23,7 +23,7 @@ const getDayOfYear = (): number => {
 };
 
 export const Home: React.FC = () => {
-  usePageTitle();
+  useSeo({ description: "Hadiths authentiques, versets du Coran traduits, invocations, paroles de savants et croyance (ʿaqīda) — le savoir islamique sunnite en français." });
   const [stats, setStats] = useState<SiteStats>({ hadiths: 0, paroles: 0, douaas: 0, dhikrs: 0, videos: 0, coran: 0 });
   const [dailyHadith, setDailyHadith] = useState<Hadith | null>(null);
   const [dailyDouaa, setDailyDouaa] = useState<Invocation | null>(null);

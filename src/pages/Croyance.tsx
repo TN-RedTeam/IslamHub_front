@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Layers, GraduationCap } from 'lucide-react';
 import { Icon, type IconName } from '../components/Icon';
-import { usePageTitle } from '../hooks/usePageTitle';
+import { useSeo } from '../hooks/useSeo';
 import { dataService } from '../services/DataService';
 import type { DossierListItem } from '../types';
 
@@ -32,7 +32,7 @@ const EXPOSE_ROUTE: Record<string, string> = {
 const routeForExpose = (slug: string) => EXPOSE_ROUTE[slug] ?? `/exposes/${slug}`;
 
 export const Croyance: React.FC = () => {
-  usePageTitle('Croyance');
+  useSeo({ title: 'Croyance', description: "La croyance musulmane (ʿaqīda) : les piliers de la foi, les attributs d'Allah, les textes équivoques et le jugement rationnel, expliqués simplement." });
   const [dossiers, setDossiers] = useState<DossierListItem[]>([]);
   const [exposes, setExposes] = useState<{ slug: string; titre: string }[]>([]);
   useEffect(() => { dataService.getDossiers().then(setDossiers).catch(() => setDossiers([])); }, []);

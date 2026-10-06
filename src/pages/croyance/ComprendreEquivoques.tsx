@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Loader2, ArrowRight, X, Check } from 'lucide-react';
 import { dataService } from '../../services/DataService';
 import { ExposeBody } from '../../components/ExposeBody';
-import { usePageTitle } from '../../hooks/usePageTitle';
+import { useSeo } from '../../hooks/useSeo';
 import type { Expose, ExposeCitation, MutashabihExemple } from '../../types';
 
 /**
@@ -13,7 +13,7 @@ import type { Expose, ExposeCitation, MutashabihExemple } from '../../types';
  * preuves via `expose_citations` (mécanisme réutilisable, paroles → /paroles/:slug).
  */
 export const ComprendreEquivoques: React.FC = () => {
-  usePageTitle('Comprendre les textes équivoques');
+  useSeo({ title: 'Comprendre les textes équivoques', description: "Comprendre les textes équivoques (mutashābih) : la méthode des savants pour les interpréter sans anthropomorphisme." });
   const [expose, setExpose] = useState<Expose | null>(null);
   const [exemples, setExemples] = useState<MutashabihExemple[]>([]);
   const [citations, setCitations] = useState<ExposeCitation[]>([]);

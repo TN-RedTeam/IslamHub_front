@@ -3,11 +3,11 @@ import { Loader2 } from 'lucide-react';
 import { dataService } from '../services/DataService';
 import { FemmesReader } from '../components/FemmesReader';
 import { PageHeader } from '../components/PageHeader';
-import { usePageTitle } from '../hooks/usePageTitle';
+import { useSeo } from '../hooks/useSeo';
 import type { FemmesChapitre } from '../types';
 
 export const Femmes: React.FC = () => {
-  usePageTitle('La femme musulmane');
+  useSeo({ title: 'La femme musulmane', description: "La femme musulmane : fiqh, croyance et conduite, expliqués à partir du Coran et de la Sunna." });
   const [chapitres, setChapitres] = useState<FemmesChapitre[]>([]);
   const [loading, setLoading] = useState(true);
 

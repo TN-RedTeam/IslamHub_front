@@ -7,7 +7,7 @@ import { FilterSelect } from '../components/FilterSelect';
 import { PageHeader } from '../components/PageHeader';
 import { Markdown } from '../components/Markdown';
 import type { Invocation as InvocationType, InvocationType as TypeId } from '../types';
-import { usePageTitle } from '../hooks/usePageTitle';
+import { useSeo } from '../hooks/useSeo';
 import { IconBadge, type IconName } from '../components/Icon';
 
 interface Item extends Omit<InvocationType, 'tag'> {
@@ -144,7 +144,7 @@ const InvocationModal: React.FC<{ item: Item; onClose: () => void; onTagClick?: 
 // ─── Composant principal ────────────────────────────────────────────────────────
 
 export const Invocations: React.FC = () => {
-    usePageTitle('Invocations & Évocations');
+    useSeo({ title: 'Invocations & Évocations', description: "Invocations (duʿāʾ) et évocations (dhikr) authentiques, en arabe, phonétique et traduction française." });
     const [activeType, setActiveType] = useState<TypeId>(1);
     const [items, setItems] = useState<Item[]>([]);
     const [hasSearched, setHasSearched] = useState(false);

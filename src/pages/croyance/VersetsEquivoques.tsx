@@ -4,7 +4,7 @@ import { m } from 'framer-motion';
 import { Search, Loader, ArrowRight } from 'lucide-react';
 import { dataService } from '../../services/DataService';
 import { FilterSelect } from '../../components/FilterSelect';
-import { usePageTitle } from '../../hooks/usePageTitle';
+import { useSeo } from '../../hooks/useSeo';
 import type { VersetEquivoqueCard } from '../../types';
 
 // Aperçu texte : retire le markdown léger et tronque.
@@ -21,7 +21,7 @@ const TYPE_TABS = [
 ];
 
 export const VersetsEquivoques: React.FC = () => {
-  usePageTitle('Versets et hadiths équivoques');
+  useSeo({ title: 'Versets et hadiths équivoques', description: "Versets et hadiths équivoques (mutashābih) au sujet d'Allah : le sens juste, les objections et les réponses des savants." });
   const [items, setItems] = useState<VersetEquivoqueCard[]>([]);
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(true);

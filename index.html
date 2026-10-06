@@ -28,6 +28,28 @@
     <script src="./theme-init.js"></script>
 
     <title>IslamHub - Hadiths, Coran, Douaas et savoir islamique</title>
+
+    <!-- Données structurées globales (Organization + WebSite). Mettre à jour
+         "url" lors du passage à un vrai domaine. -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Organization",
+          "name": "IslamHub",
+          "url": "https://sou55i.github.io/IslamHub_front/",
+          "logo": "https://sou55i.github.io/IslamHub_front/pwa-512x512.png"
+        },
+        {
+          "@type": "WebSite",
+          "name": "IslamHub",
+          "url": "https://sou55i.github.io/IslamHub_front/",
+          "inLanguage": "fr-FR"
+        }
+      ]
+    }
+    </script>
   </head>
   <body>
     <div id="root"></div>
