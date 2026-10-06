@@ -17,6 +17,7 @@ const mainItems = [
 ];
 // Regroupées sous le menu déroulant « Ressources ».
 const resItems = [
+  { to: '/compagnons', label: 'Compagnons & famille' },
   { to: '/themes', label: 'Thèmes' },
   { to: '/dossiers', label: 'Dossiers thématiques' },
   { to: '/ecoles', label: 'Écoles' },
