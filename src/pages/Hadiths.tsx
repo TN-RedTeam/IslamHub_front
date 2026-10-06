@@ -9,7 +9,7 @@ import { Markdown } from '../components/Markdown';
 import { BadgeGeneration } from '../components/BadgeGeneration';
 import { HadithSources } from '../components/HadithSources';
 import { slugify } from '../utils/slug';
-import type { Hadith as HadithType } from '../types';
+import type { Hadith as HadithType, HadithSegment } from '../types';
 import { IconBadge } from '../components/Icon';
 
 interface Hadith extends HadithType {
@@ -96,7 +96,16 @@ const HadithCard: React.FC<{ hadith: Hadith; onClick: () => void }> = ({ hadith,
     </m.div>
 );
 
-const HadithModal: React.FC<{ hadith: Hadith; onClose: () => void }> = ({ hadith, onClose }) => (
+const HadithModal: React.FC<{ hadith: Hadith; onClose: () => void }> = ({ hadith, onClose }) => {
+  // Chargement à la demande des segments (hadith « dialogue ») — pas de surcharge
+  // de la liste : on ne les récupère qu'à l'ouverture de la fiche.
+  const [segments, setSegments] = useState<HadithSegment[]>([]);
+  useEffect(() => {
+    let alive = true;
+    dataService.getHadith(hadith.id).then((d) => { if (alive) setSegments(d?.segments ?? []); }).catch(() => {});
+    return () => { alive = false; };
+  }, [hadith.id]);
+  return (
     <m.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -172,6 +181,32 @@ const HadithModal: React.FC<{ hadith: Hadith; onClose: () => void }> = ({ hadith
               </div>
           )}
 
+          {/* Dialogue : passages suivants affichés à la suite, dans la modale. */}
+          {segments.map((sg, i) => (
+            <div key={i} className="bg-glass-tint p-6 rounded-lg space-y-4">
+              {sg.intro && <p className="text-ink/80 italic [unicode-bidi:plaintext]">{sg.intro}</p>}
+              {sg.texte_arabe && <p className="text-3xl text-ink font-arabic leading-loose text-right whitespace-pre-wrap">{sg.texte_arabe}</p>}
+              {sg.phonetique && (
+                <div className="bg-glass p-4 rounded">
+                  <p className="text-sm text-ink mb-1">Phonétique :</p>
+                  <p className="text-ink whitespace-pre-wrap [unicode-bidi:plaintext]">{sg.phonetique}</p>
+                </div>
+              )}
+              {sg.texte_francais && (
+                <div className="pl-4 border-l-4 border-green">
+                  <p className="text-sm text-green mb-1">Traduction :</p>
+                  <Markdown className="[unicode-bidi:plaintext]">{sg.texte_francais}</Markdown>
+                </div>
+              )}
+              {sg.explication && (
+                <div className="bg-glass p-4 rounded">
+                  <p className="text-sm font-bold text-ink mb-1">Explication :</p>
+                  <Markdown className="[unicode-bidi:plaintext]">{sg.explication}</Markdown>
+                </div>
+              )}
+            </div>
+          ))}
+
           {hadith.sources && hadith.sources.length > 0 && (
               <div>
                 <p className="text-[11px] uppercase tracking-[0.16em] text-muted font-semibold mb-2">
@@ -204,7 +239,8 @@ const HadithModal: React.FC<{ hadith: Hadith; onClose: () => void }> = ({ hadith
         </div>
       </m.div>
     </m.div>
-);
+  );
+};
 
 const ITEMS_PER_PAGE = 20;
 
