@@ -18,9 +18,9 @@
     "deploy": "gh-pages -d dist"
   },
   "dependencies": {
-    "@capacitor/android": "^7.4.3",
-    "@capacitor/cli": "^7.4.3",
-    "@capacitor/core": "^7.4.3",
+    "@capacitor/android": "^7.6.9",
+    "@capacitor/cli": "^7.6.9",
+    "@capacitor/core": "^7.6.9",
     "@emotion/is-prop-valid": "^1.4.0",
     "@supabase/supabase-js": "^2.93.3",
     "framer-motion": "^11.0.8",
@@ -58,6 +58,7 @@
     "vitest": "^5.0.1"
   },
   "overrides": {
-    "js-yaml": "^4.3.2"
+    "js-yaml": "^4.3.2",
+    "source-map-js": "^1.2.2"
   }
 }
