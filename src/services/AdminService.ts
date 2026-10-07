@@ -14,7 +14,7 @@ export interface HadithSourceInput {
 }
 export interface HadithFormData {
   id?: number | null;
-  sujet: string; texte_arabe: string; texte_francais: string; phonetique: string; explication: string;
+  sujet: string; intro: string; texte_arabe: string; texte_francais: string; phonetique: string; explication: string;
   degre_authenticite: string; type_hadith: string; juge_par: string;
   // Liaisons = source de vérité. On envoie les identifiants ; le texte rapporteur/narrateur
   // est régénéré côté base par un trigger (agrégation triée des noms).
@@ -30,7 +30,7 @@ export interface HadithSegmentInput {
   intro: string; texte_arabe: string; phonetique: string; texte_francais: string; explication: string;
 }
 export interface HadithEditShape {
-  id: number; sujet: string | null; texte_arabe: string | null; texte_francais: string | null;
+  id: number; sujet: string | null; intro: string | null; texte_arabe: string | null; texte_francais: string | null;
   phonetique: string | null; explication: string | null; degre_authenticite: string | null;
   type_hadith: string | null; juge_par: string | null; rapporteur: string | null; narrateur: string | null;
   rapporteur_ids: number[]; narrateur_ids: number[];

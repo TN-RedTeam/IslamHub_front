@@ -98,7 +98,7 @@ export const AdminHadithForm: React.FC = () => {
 
   // Champs
   const [f, setF] = useState({
-    sujet: '', texte_arabe: AR_TEMPLATE.hadith, texte_francais: '', phonetique: '', explication: '',
+    sujet: '', intro: '', texte_arabe: AR_TEMPLATE.hadith, texte_francais: '', phonetique: '', explication: '',
     degre_authenticite: 'Sahih', type_hadith: '', juge_par: '', tag: '',
   });
   const set = (k: keyof typeof f) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) =>
@@ -137,7 +137,7 @@ export const AdminHadithForm: React.FC = () => {
     adminService.getHadithForEdit(editId).then((h) => {
       if (!h) return;
       setF({
-        sujet: h.sujet ?? '', texte_arabe: h.texte_arabe ?? '', texte_francais: h.texte_francais ?? '',
+        sujet: h.sujet ?? '', intro: h.intro ?? '', texte_arabe: h.texte_arabe ?? '', texte_francais: h.texte_francais ?? '',
         phonetique: h.phonetique ?? '', explication: h.explication ?? '', degre_authenticite: h.degre_authenticite ?? '',
         type_hadith: h.type_hadith ?? '', juge_par: h.juge_par ?? '', tag: h.tag ?? '',
       });
@@ -186,7 +186,7 @@ export const AdminHadithForm: React.FC = () => {
       const newId = await adminService.saveHadith(buildPayload());
       setOk(true);
       if (andNew) {
-        setF({ sujet: '', texte_arabe: AR_TEMPLATE.hadith, texte_francais: '', phonetique: '', explication: '', degre_authenticite: 'Sahih', type_hadith: '', juge_par: '', tag: '' });
+        setF({ sujet: '', intro: '', texte_arabe: AR_TEMPLATE.hadith, texte_francais: '', phonetique: '', explication: '', degre_authenticite: 'Sahih', type_hadith: '', juge_par: '', tag: '' });
         setRapporteurIds([]); setNarrateurIds([]); setAddingNarr(false); setNewNarr({ nom: '', generation: 'sahabi', role: '', sexe: 'm' });
         setIsEquivoque(false); setEquivoqueId(null); setSegments([]);
         setSources([emptySrc()]); setTimeout(() => setOk(false), 2500);
@@ -212,6 +212,10 @@ export const AdminHadithForm: React.FC = () => {
       <section className="rounded-card border border-line bg-surface p-5 mb-4">
         <h2 className="font-display font-semibold text-ink text-lg mb-4">1 · Le texte</h2>
         <div className="mb-3.5"><label className={label}>Sujet <span className="text-red-600">*</span></label><SujetField className={field} value={f.sujet} onChange={set('sujet')} placeholder="Ex. Allah existe sans endroit" /></div>
+        <div className="mb-3.5"><label className={label}>Intro / narration <span className="text-muted font-normal">(optionnel)</span></label>
+          <textarea className={`${field} min-h-[60px]`} value={f.intro} onChange={set('intro')} placeholder="Narration de contexte avant le texte arabe. Ex. « Le Prophète demanda à ses compagnons : »" />
+          <p className="text-xs text-muted mt-1">Pour un hadith sous forme de dialogue : le propos qui introduit le texte arabe ci-dessous.</p>
+        </div>
         <div className="mb-3.5"><label className={label}>Texte arabe <span className="text-red-600">*</span></label>
           <textarea dir="rtl" lang="ar" className={`${field} font-arabic text-2xl leading-loose text-right min-h-[90px]`} value={f.texte_arabe} onChange={set('texte_arabe')} onFocus={caretBetween(AR_TEMPLATE.hadith)} placeholder="Colle ici le texte arabe (vocalisé)…" />
           <p className="text-xs text-muted mt-1">Unicité vérifiée automatiquement (pas de doublon).</p>

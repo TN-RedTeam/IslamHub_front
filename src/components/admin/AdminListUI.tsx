@@ -47,6 +47,20 @@ export const Pagination: React.FC<{
         <button type="button" disabled={page === 0} onClick={() => onPage(page - 1)} className={btn}>
           <ChevronLeft className="w-4 h-4" /> Précédent
         </button>
+        {/* Saut direct à une page (évite d'enchaîner « Suivant »). */}
+        <label className="inline-flex items-center gap-1.5 text-sm text-muted">
+          <span className="sr-only sm:not-sr-only">Aller à</span>
+          <select
+            aria-label="Aller à la page"
+            value={page}
+            onChange={(e) => onPage(Number(e.target.value))}
+            className="rounded-lg border border-line bg-surface text-ink font-medium px-2.5 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green"
+          >
+            {Array.from({ length: pages }, (_, i) => (
+              <option key={i} value={i}>{i + 1}</option>
+            ))}
+          </select>
+        </label>
         <button type="button" disabled={page + 1 >= pages} onClick={() => onPage(page + 1)} className={btn}>
           Suivant <ChevronRight className="w-4 h-4" />
         </button>

@@ -125,6 +125,7 @@ export const HadithPage: React.FC = () => {
         </div>
 
         <div className="bg-glass rounded-card p-6 shadow border border-green-line space-y-5">
+          {hadith.intro && <p className="text-ink/80 italic [unicode-bidi:plaintext]">{hadith.intro}</p>}
           <p className="text-3xl leading-loose text-right font-arabic text-ink whitespace-pre-wrap">{hadith.texte_arabe}</p>
           {hadith['phonétique'] && (
             <div className="bg-glass-tint rounded-lg p-4">
