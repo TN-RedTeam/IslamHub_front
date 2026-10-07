@@ -331,17 +331,26 @@ class DataService {
 
   // ================= Paroles =================
   async getParoles(params?: PaginationParams): Promise<PaginatedResponse<Parole>> {
-    return rpcSearch<Parole>('search_paroles', '', null, 'tag_filter', params ?? LOAD_ALL);
+    // Les 6 arguments sont toujours transmis pour lever toute ambiguïté de résolution RPC.
+    return rpcSearch<Parole>('search_paroles', '', null, 'tag_filter', params ?? LOAD_ALL, {
+      savant_filter: '', source_filter: '',
+    });
   }
   async searchParoles(
     searchTerm: string,
     tag?: string | null,
     params?: PaginationParams,
     savant?: string,
+    source?: string,
   ): Promise<PaginatedResponse<Parole>> {
     return rpcSearch<Parole>('search_paroles', searchTerm, tag ?? null, 'tag_filter', params ?? LOAD_ALL, {
       savant_filter: savant ?? '',
+      source_filter: source ?? '',
     });
+  }
+  /** Liste des recueils / sources distincts (menu déroulant paroles). */
+  async getParoleSources(): Promise<string[]> {
+    return rpcTags('sources_paroles');
   }
   async getParoleTags(): Promise<string[]> {
     return rpcTags('tags_paroles');
