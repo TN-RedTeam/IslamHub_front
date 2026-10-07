@@ -7,13 +7,13 @@ import { Link, useLocation } from 'react-router-dom';
  *  - « Toutes les paroles » → la recherche de paroles (/savants/paroles)
  */
 const TABS = [
-  { to: '/savants', label: 'Par savant' },
+  { to: '/biographies', label: 'Par personne' },
   { to: '/savants/paroles', label: 'Toutes les paroles' },
 ];
 
 export const SavantsTabs: React.FC<{ className?: string }> = ({ className = '' }) => {
   const { pathname } = useLocation();
-  const active = pathname.startsWith('/savants/paroles') ? '/savants/paroles' : '/savants';
+  const active = pathname.startsWith('/savants/paroles') ? '/savants/paroles' : '/biographies';
   return (
     <div role="tablist" aria-label="Savants" className={`inline-flex gap-1 rounded-full border border-line bg-surface p-1 ${className}`}>
       {TABS.map((t) => {

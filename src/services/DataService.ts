@@ -26,6 +26,7 @@ import type {
   SavantInfo,
   SavantMini,
   SavantDetail,
+  PersonneHub,
   HadithDetail,
   SourateInfo,
   SourateDetail,
@@ -396,6 +397,12 @@ class DataService {
     const { data, error } = await supabase.rpc('savants_all');
     if (error) throw error;
     return (data ?? []) as SavantInfo[];
+  }
+  /** Hub « Biographies » : toutes les personnes publiées (Phase 10). */
+  async getPersonnes(): Promise<PersonneHub[]> {
+    const { data, error } = await supabase.rpc('personnes_published');
+    if (error) throw error;
+    return (data ?? []) as PersonneHub[];
   }
   async getSavantsMini(): Promise<SavantMini[]> {
     const { data, error } = await supabase.rpc('savants_mini');

@@ -27,8 +27,7 @@ const HadithPage = lazy(() => import('./pages/HadithPage').then((m) => ({ defaul
 const Invocations = lazy(() => import('./pages/Invocations').then((m) => ({ default: m.Invocations })));
 const Paroles = lazy(() => import('./pages/Paroles').then((m) => ({ default: m.Paroles })));
 const ParolePage = lazy(() => import('./pages/ParolePage').then((m) => ({ default: m.ParolePage })));
-const Savants = lazy(() => import('./pages/Savants').then((m) => ({ default: m.Savants })));
-const Compagnons = lazy(() => import('./pages/Compagnons').then((m) => ({ default: m.Compagnons })));
+const Biographies = lazy(() => import('./pages/Biographies').then((m) => ({ default: m.Biographies })));
 const SavantPage = lazy(() => import('./pages/SavantPage').then((m) => ({ default: m.SavantPage })));
 const Corans = lazy(() => import('./pages/Coran').then((m) => ({ default: m.Corans })));
 const SouratesIndex = lazy(() => import('./pages/SouratesIndex').then((m) => ({ default: m.SouratesIndex })));
@@ -132,8 +131,10 @@ function PublicShell() {
                 <Route path="/douaas" element={<Navigate to="/invocations" replace />} />
                 <Route path="/dhikrs" element={<Navigate to="/invocations" replace />} />
                 {/* Rubrique « Savants » : répertoire (défaut) + toutes les paroles */}
-                <Route path="/savants" element={<Savants />} />
-                <Route path="/compagnons" element={<Compagnons />} />
+                {/* Phase 10 : hub unique « Biographies » (ex-Savants + ex-Compagnons). */}
+                <Route path="/biographies" element={<Biographies />} />
+                <Route path="/savants" element={<Navigate to="/biographies" replace />} />
+                <Route path="/compagnons" element={<Navigate to="/biographies" replace />} />
                 <Route path="/savants/paroles" element={<Paroles />} />
                 <Route path="/savants/:slug" element={<SavantPage />} />
                 {/* Pages de parole dédiées + redirection de l'ancienne rubrique */}

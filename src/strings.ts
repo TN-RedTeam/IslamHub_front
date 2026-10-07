@@ -15,6 +15,7 @@ export const UI = {
     coran: 'Coran',
     croyance: 'Croyance',
     savants: 'Savants',
+    biographies: 'Biographies',
     search: 'Rechercher',
   },
 } as const;

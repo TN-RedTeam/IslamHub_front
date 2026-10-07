@@ -50,6 +50,7 @@ export const AdminSavantsList: React.FC = () => {
                 <Link to={`/admin/savants/${s.id}`} className="flex items-center gap-3 px-4 py-3 hover:bg-glass-tint transition-colors">
                   <IdTag id={s.id} />
                   <span className="text-ink font-medium min-w-0 truncate">{s.nom}</span>
+                  {s.publiee === false && <span className="text-[11px] px-2 py-0.5 rounded-full bg-low/10 text-low border border-low/40 shrink-0">Masquée</span>}
                   {ecoleName(s.ecole_id) && <span className="text-[11px] px-2 py-0.5 rounded-full bg-glass-tint text-ink border border-green-line shrink-0">{ecoleName(s.ecole_id)}</span>}
                   {s.generation && GEN_LABEL[s.generation] && <span className="text-[11px] px-2 py-0.5 rounded-full bg-ground text-muted border border-line shrink-0">{GEN_LABEL[s.generation]}</span>}
                   <span className="ml-auto text-muted text-sm shrink-0">Modifier →</span>
