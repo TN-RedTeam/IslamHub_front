@@ -12,12 +12,11 @@ const mainItems = [
   { to: '/coran', label: 'Coran' },
   { to: '/croyance', label: 'Croyance' },
   { to: '/hadiths', label: 'Hadiths' },
-  { to: '/savants', label: 'Savants' },
+  { to: '/biographies', label: 'Biographies' },
   { to: '/invocations', label: 'Invocations & Évocations' },
 ];
 // Regroupées sous le menu déroulant « Ressources ».
 const resItems = [
-  { to: '/compagnons', label: 'Compagnons & famille' },
   { to: '/themes', label: 'Thèmes' },
   { to: '/dossiers', label: 'Dossiers thématiques' },
   { to: '/ecoles', label: 'Écoles' },

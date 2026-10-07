@@ -192,6 +192,30 @@ export interface SavantInfo {
   est_narrateur?: boolean;    // transmetteur de hadiths
 }
 
+/** Personne du hub « Biographies » (Phase 10) — publiée uniquement. */
+export type PersonneCategorie = 'prophete' | 'calife' | 'compagnon' | 'femme' | 'savant';
+export interface PersonneHub {
+  id: number;
+  nom: string;
+  nom_arabe: string | null;
+  slug: string;
+  categorie: PersonneCategorie;
+  sous_categorie: string | null;   // mere_croyants | femme_vertueuse | null
+  sexe: string | null;             // f | m | null
+  naissance: string | null;
+  deces: string | null;
+  resume: string | null;
+  generation: string | null;
+  role: string | null;             // calife_rachidoun | epouse_prophete | null
+  ordre: number;
+  est_savant: boolean;
+  est_narrateur: boolean;
+  domaines: string[];
+  ecole: string | null;
+  ecole_slug: string | null;
+  nb_paroles: number;
+}
+
 /** Coran — exégèse (Phase 8). */
 export interface SourateInfo {
   numero: number;
