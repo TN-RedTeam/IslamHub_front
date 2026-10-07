@@ -4,7 +4,6 @@ import { Loader2, Search, Users, Crown, Star, GraduationCap, Sparkles, BookOpen,
 import { dataService } from '../services/DataService';
 import { useSeo } from '../hooks/useSeo';
 import { BadgeGeneration } from '../components/BadgeGeneration';
-import { SavantsTabs } from '../components/SavantsTabs';
 import type { PersonneHub, PersonneCategorie, RecitCard } from '../types';
 
 const norm = (s: string) => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
@@ -204,7 +203,6 @@ export const Biographies: React.FC = () => {
           <nav aria-label="Fil d'Ariane" className="text-xs text-muted mb-2"><Link to="/" className="hover:text-ink">Accueil</Link> <span aria-hidden>·</span> Biographies</nav>
           <h1 className="text-4xl md:text-5xl font-bold text-ink font-display">Biographies</h1>
           <p className="text-muted mt-2 max-w-2xl">Les figures de l'Islam — prophètes, califes bien-guidés, Compagnons, femmes et savants — présentées par ordre de mérite.</p>
-          <SavantsTabs className="mt-5" />
         </header>
 
         <div role="search" className="sticky top-0 z-10 flex flex-wrap items-center gap-3 rounded-xl border border-line bg-glass-tint /80 backdrop-blur px-3 py-3">

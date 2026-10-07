@@ -7,7 +7,7 @@ import { FilterSelect } from '../components/FilterSelect';
 import { EcoleBadge } from '../components/EcoleBadge';
 import { SavantHover } from '../components/SavantHover';
 import { PageHeader } from '../components/PageHeader';
-import { SavantsTabs } from '../components/SavantsTabs';
+import { HadithsParolesTabs } from '../components/HadithsParolesTabs';
 import type { Parole } from '../types';
 import { IconBadge } from '../components/Icon';
 
@@ -88,8 +88,9 @@ const ParoleCard: React.FC<{ parole: Parole }> = ({ parole }) => {
 const ITEMS_PER_PAGE = 20;
 
 export const Paroles: React.FC = () => {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [selectedTag, setSelectedTag] = useState<string | null>(null); // sujet
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchTerm, setSearchTerm] = useState(() => searchParams.get('q') ?? '');
+  const [selectedTag, setSelectedTag] = useState<string | null>(() => searchParams.get('sujet')); // sujet
   const [selectedSavant, setSelectedSavant] = useState('');
   const [showAll, setShowAll] = useState(false);
 
@@ -106,7 +107,6 @@ export const Paroles: React.FC = () => {
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const [searchParams] = useSearchParams();
   const loadMoreRef = useRef<HTMLDivElement>(null);
   const debounceRef = useRef<ReturnType<typeof setTimeout>>();
 
@@ -170,6 +170,15 @@ export const Paroles: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [hasMore, isLoadingMore, isLoading, hasSearched, currentPage, searchTerm, selectedTag, selectedSavant]);
 
+  // Synchro URL partagée (q + sujet) : partageable et conservée au basculement.
+  useEffect(() => {
+    const p = new URLSearchParams(searchParams);
+    if (searchTerm.trim()) p.set('q', searchTerm.trim()); else p.delete('q');
+    if (selectedTag) p.set('sujet', selectedTag); else p.delete('sujet');
+    if (p.toString() !== searchParams.toString()) setSearchParams(p, { replace: true });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchTerm, selectedTag]);
+
   const handleResetFilters = () => {
     setSearchTerm(''); setSelectedTag(null); setSelectedSavant(''); setShowAll(false);
   };
@@ -191,12 +200,12 @@ export const Paroles: React.FC = () => {
   return (
       <div className="min-h-screen">
         <PageHeader
-            eyebrow="Savants"
-            title="Toutes les paroles"
-            subtitle="Explorez les paroles des savants de Ahlu s-Sounnah par thème ou mot-clé"
-            crumbs={[{ label: 'Accueil', to: '/' }, { label: 'Savants', to: '/savants' }, { label: 'Toutes les paroles' }]}
+            eyebrow="Preuves"
+            title="Hadiths & paroles"
+            subtitle="Les paroles des savants de Ahlu s-Sounnah par thème ou mot-clé"
+            crumbs={[{ label: 'Accueil', to: '/' }, { label: 'Hadiths & paroles', to: '/hadiths' }, { label: 'Paroles de savants' }]}
         >
-          <SavantsTabs />
+          <HadithsParolesTabs active="paroles" />
         </PageHeader>
 
         <main className="container mx-auto px-4 py-12 relative z-10">

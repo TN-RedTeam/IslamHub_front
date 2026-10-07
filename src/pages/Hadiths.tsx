@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { m, AnimatePresence } from 'framer-motion';
 import { Search, X, Star, ChevronRight, Loader, SlidersHorizontal } from 'lucide-react';
 import { dataService } from '../services/DataService';
 import { FilterSelect } from '../components/FilterSelect';
 import { PageHeader } from '../components/PageHeader';
+import { HadithsParolesTabs } from '../components/HadithsParolesTabs';
 import { Markdown } from '../components/Markdown';
 import { BadgeGeneration } from '../components/BadgeGeneration';
 import { HadithSources } from '../components/HadithSources';
@@ -252,8 +253,9 @@ const AQIDA_THEMES = [
 ];
 
 export const Hadiths: React.FC = () => {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [selectedTag, setSelectedTag] = useState<string | null>(null); // sujet
+  const [sp, setSp] = useSearchParams();
+  const [searchTerm, setSearchTerm] = useState(() => sp.get('q') ?? '');
+  const [selectedTag, setSelectedTag] = useState<string | null>(() => sp.get('sujet')); // sujet
   const [selectedStatut, setSelectedStatut] = useState('');
   const [selectedRapporteur, setSelectedRapporteur] = useState('');
   const [selectedNarrateur, setSelectedNarrateur] = useState('');
@@ -343,6 +345,15 @@ export const Hadiths: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [hasMore, isLoadingMore, isLoading, hasSearched, currentPage, searchTerm, selectedTag, selectedStatut, selectedRapporteur, selectedNarrateur]);
 
+  // Synchro URL partagée (q + sujet) : partageable et conservée au basculement.
+  useEffect(() => {
+    const p = new URLSearchParams(sp);
+    if (searchTerm.trim()) p.set('q', searchTerm.trim()); else p.delete('q');
+    if (selectedTag) p.set('sujet', selectedTag); else p.delete('sujet');
+    if (p.toString() !== sp.toString()) setSp(p, { replace: true });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchTerm, selectedTag]);
+
   const handleResetFilters = () => {
     setSearchTerm(''); setSelectedTag(null);
     setSelectedStatut(''); setSelectedRapporteur(''); setSelectedNarrateur('');
@@ -369,11 +380,13 @@ export const Hadiths: React.FC = () => {
   return (
       <div className="min-h-screen">
         <PageHeader
-            eyebrow="Sunna"
-            title={<>Hadiths du Prophète <span className="font-arabic align-middle text-[0.85em]" lang="ar">{'\uFDFA'}</span></>}
-            subtitle="Explorez les Hadiths à travers cette page"
-            crumbs={[{ label: 'Accueil', to: '/' }, { label: 'Hadiths' }]}
-        />
+            eyebrow="Preuves"
+            title="Hadiths & paroles"
+            subtitle="Les hadiths du Prophète et les paroles des savants, par sujet"
+            crumbs={[{ label: 'Accueil', to: '/' }, { label: 'Hadiths & paroles' }]}
+        >
+          <HadithsParolesTabs active="hadiths" />
+        </PageHeader>
 
         <main className="container mx-auto px-4 py-12 relative z-10">
           <m.section
