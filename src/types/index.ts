@@ -36,6 +36,7 @@ export interface HadithSegment {
   explication: string | null;
 }
 export interface Hadith extends BaseText {
+  intro?: string | null;         // narration de contexte avant le texte arabe (hadith-dialogue)
   segments?: HadithSegment[];    // suite du hadith en dialogue (optionnel)
   rapporteur: string | null;
   narrateur: string | null;
@@ -80,6 +81,8 @@ export interface Parole extends BaseText {
   savant: string;
   slug?: string | null;  // segment d'URL de la page /paroles/:slug
   ecole?: string | null; // école du savant (dénormalisée) : Hanafi, Malikite...
+  source_livre?: string | null; // recueil / ouvrage source
+  page?: string | null;         // page(s) dans l'ouvrage
 }
 
 /** Un scan de livre rattaché à une parole (table `parole_images`). */
@@ -255,6 +258,7 @@ export interface HadithDetail {
   id: number;
   sujet: string;
   slug: string | null;
+  intro?: string | null;      // narration de contexte avant le texte arabe (hadith-dialogue)
   texte_arabe: string;
   texte_francais: string | null;
   'phonétique'?: string | null;

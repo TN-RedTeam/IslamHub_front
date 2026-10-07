@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { m, AnimatePresence } from 'framer-motion';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { Search, X, Star, ChevronRight, Loader, GraduationCap as SavantIcon } from 'lucide-react';
+import { Search, X, Star, ChevronRight, Loader, GraduationCap as SavantIcon, BookOpen } from 'lucide-react';
 import { dataService } from '../services/DataService';
 import { FilterSelect } from '../components/FilterSelect';
 import { EcoleBadge } from '../components/EcoleBadge';
@@ -63,6 +63,15 @@ const ParoleCard: React.FC<{ parole: Parole }> = ({ parole }) => {
         )}
       </div>
 
+      {parole.source_livre && (
+          <p className="flex items-center gap-1.5 text-xs text-muted">
+            <BookOpen className="h-3.5 w-3.5 shrink-0 text-green" />
+            <span className="[unicode-bidi:plaintext]">
+              {parole.source_livre}{parole.page ? `, p. ${parole.page}` : ''}
+            </span>
+          </p>
+      )}
+
       <div className="flex flex-wrap gap-2">
         {(parole.tag || '').split(',').filter(Boolean).map(tag => (
             <m.span
@@ -92,10 +101,12 @@ export const Paroles: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState(() => searchParams.get('q') ?? '');
   const [selectedTag, setSelectedTag] = useState<string | null>(() => searchParams.get('sujet')); // sujet
   const [selectedSavant, setSelectedSavant] = useState('');
+  const [selectedSource, setSelectedSource] = useState(() => searchParams.get('source') ?? ''); // recueil/source
   const [showAll, setShowAll] = useState(false);
 
   const [allTags, setAllTags] = useState<string[]>([]); // sujets
   const [savants, setSavants] = useState<string[]>([]);
+  const [sources, setSources] = useState<string[]>([]); // recueils / ouvrages
   const [totalCount, setTotalCount] = useState(0); // total en base
 
   const [paroles, setParoles] = useState<Parole[]>([]);
@@ -110,12 +121,13 @@ export const Paroles: React.FC = () => {
   const loadMoreRef = useRef<HTMLDivElement>(null);
   const debounceRef = useRef<ReturnType<typeof setTimeout>>();
 
-  const hasQuery = !!(searchTerm.trim() || selectedTag || selectedSavant);
+  const hasQuery = !!(searchTerm.trim() || selectedTag || selectedSavant || selectedSource);
 
-  // Listes (sujets + savants) + total, sans charger les paroles.
+  // Listes (sujets + savants + recueils) + total, sans charger les paroles.
   useEffect(() => {
     dataService.getParoleSujets().then(setAllTags).catch(() => {});
     dataService.getParoleNames().then(setSavants).catch(() => {});
+    dataService.getParoleSources().then(setSources).catch(() => {});
     dataService.searchParoles('', null, { page: 0, pageSize: 1 })
       .then((r) => setTotalCount(r.count ?? 0)).catch(() => {});
   }, []);
@@ -127,11 +139,11 @@ export const Paroles: React.FC = () => {
   }, [searchParams]);
 
   const doSearch = useCallback(async (
-    q: string, tag: string | null, savant: string, page: number, append: boolean,
+    q: string, tag: string | null, savant: string, source: string, page: number, append: boolean,
   ) => {
     if (page === 0) { setIsLoading(true); setError(null); } else setIsLoadingMore(true);
     try {
-      const res = await dataService.searchParoles(q, tag, { page, pageSize: ITEMS_PER_PAGE }, savant);
+      const res = await dataService.searchParoles(q, tag, { page, pageSize: ITEMS_PER_PAGE }, savant, source);
       const items = (res.data ?? []) as Parole[];
       const tot = res.count ?? 0;
       setParoles((prev) => (append ? [...prev, ...items] : items));
@@ -154,33 +166,35 @@ export const Paroles: React.FC = () => {
       return;
     }
     clearTimeout(debounceRef.current);
-    debounceRef.current = setTimeout(() => doSearch(searchTerm, selectedTag, selectedSavant, 0, false), 300);
+    debounceRef.current = setTimeout(() => doSearch(searchTerm, selectedTag, selectedSavant, selectedSource, 0, false), 300);
     return () => clearTimeout(debounceRef.current);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchTerm, selectedTag, selectedSavant, showAll]);
+  }, [searchTerm, selectedTag, selectedSavant, selectedSource, showAll]);
 
   useEffect(() => {
     const el = loadMoreRef.current;
     if (!el || !hasMore || isLoadingMore || isLoading || !hasSearched) return;
     const obs = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting) doSearch(searchTerm, selectedTag, selectedSavant, currentPage + 1, true);
+      if (entry.isIntersecting) doSearch(searchTerm, selectedTag, selectedSavant, selectedSource, currentPage + 1, true);
     }, { threshold: 0.1, rootMargin: '200px' });
     obs.observe(el);
     return () => obs.disconnect();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [hasMore, isLoadingMore, isLoading, hasSearched, currentPage, searchTerm, selectedTag, selectedSavant]);
+  }, [hasMore, isLoadingMore, isLoading, hasSearched, currentPage, searchTerm, selectedTag, selectedSavant, selectedSource]);
 
-  // Synchro URL partagée (q + sujet) : partageable et conservée au basculement.
+  // Synchro URL partagée. q + sujet sont communs aux deux onglets (portés par le
+  // toggle Hadiths/Paroles) ; source est un filtre secondaire propre aux paroles.
   useEffect(() => {
     const p = new URLSearchParams(searchParams);
     if (searchTerm.trim()) p.set('q', searchTerm.trim()); else p.delete('q');
     if (selectedTag) p.set('sujet', selectedTag); else p.delete('sujet');
+    if (selectedSource) p.set('source', selectedSource); else p.delete('source');
     if (p.toString() !== searchParams.toString()) setSearchParams(p, { replace: true });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchTerm, selectedTag]);
+  }, [searchTerm, selectedTag, selectedSource]);
 
   const handleResetFilters = () => {
-    setSearchTerm(''); setSelectedTag(null); setSelectedSavant(''); setShowAll(false);
+    setSearchTerm(''); setSelectedTag(null); setSelectedSavant(''); setSelectedSource(''); setShowAll(false);
   };
 
   if (error) {
@@ -190,7 +204,7 @@ export const Paroles: React.FC = () => {
             <IconBadge name="sad" />
             <h3 className="text-xl font-bold text-low mb-2">Une erreur est survenue</h3>
             <p className="text-muted mb-6">{error}</p>
-            <button onClick={() => doSearch(searchTerm, selectedTag, selectedSavant, 0, false)}
+            <button onClick={() => doSearch(searchTerm, selectedTag, selectedSavant, selectedSource, 0, false)}
                 className="px-6 py-2 bg-accent-deep hover:brightness-110 text-white rounded-lg transition-colors">Réessayer</button>
           </div>
         </div>
@@ -237,15 +251,22 @@ export const Paroles: React.FC = () => {
                     value={selectedSavant} onChange={setSelectedSavant}
                     options={savants} allLabel="Tous les savants" ariaLabel="Filtrer par savant" icon={SavantIcon} />
               )}
+
+              {sources.length > 0 && (
+                <FilterSelect
+                    value={selectedSource} onChange={setSelectedSource}
+                    options={sources} allLabel="Tous les recueils" ariaLabel="Filtrer par recueil ou source" icon={BookOpen} />
+              )}
             </div>
 
-            {(selectedTag || selectedSavant) && (
+            {(selectedTag || selectedSavant || selectedSource) && (
                 <m.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}
                     className="mt-4 flex items-center justify-between bg-glass-tint rounded-lg px-4 py-2">
                   <span className="font-medium text-ink flex flex-wrap items-center gap-2">
                     Filtres :
                     {selectedTag && <span className="px-2 py-0.5 bg-glass-tint rounded-full text-sm">{selectedTag}</span>}
                     {selectedSavant && <span className="px-2 py-0.5 bg-glass-tint rounded-full text-sm">{selectedSavant}</span>}
+                    {selectedSource && <span className="px-2 py-0.5 bg-glass-tint rounded-full text-sm">{selectedSource}</span>}
                   </span>
                   <button onClick={handleResetFilters} aria-label="Retirer les filtres"
                       className="text-green hover:text-ink p-1 shrink-0">
