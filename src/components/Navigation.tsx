@@ -11,7 +11,7 @@ const mainItems = [
   { to: '/', label: 'Accueil', exact: true },
   { to: '/coran', label: 'Coran' },
   { to: '/croyance', label: 'Croyance' },
-  { to: '/hadiths', label: 'Hadiths' },
+  { to: '/hadiths', label: 'Hadiths & paroles' },
   { to: '/biographies', label: 'Biographies' },
   { to: '/invocations', label: 'Invocations & Évocations' },
 ];

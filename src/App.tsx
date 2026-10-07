@@ -135,11 +135,11 @@ function PublicShell() {
                 <Route path="/biographies" element={<Biographies />} />
                 <Route path="/savants" element={<Navigate to="/biographies" replace />} />
                 <Route path="/compagnons" element={<Navigate to="/biographies" replace />} />
-                <Route path="/savants/paroles" element={<Paroles />} />
+                <Route path="/savants/paroles" element={<Navigate to="/paroles" replace />} />
                 <Route path="/savants/:slug" element={<SavantPage />} />
                 {/* Pages de parole dédiées + redirection de l'ancienne rubrique */}
                 <Route path="/paroles/:slug" element={<ParolePage />} />
-                <Route path="/paroles" element={<Navigate to="/savants/paroles" replace />} />
+                <Route path="/paroles" element={<Paroles />} />
                 <Route path="/multimedia" element={<Multimedia />} />
                 {/* Thèmes transverses (Coran / Sunna / Paroles) */}
                 <Route path="/themes" element={<ThemesIndex />} />
