@@ -167,7 +167,7 @@ class AdminService {
     if (error) throw error; return data as number;
   }
   async listSavantsFull(): Promise<SavantFullRow[]> {
-    const { data, error } = await supabase.from('savants').select('id,nom,slug,generation,ecole_id').order('nom');
+    const { data, error } = await supabase.from('savants').select('id,nom,slug,generation,ecole_id,publiee').order('nom');
     if (error) throw error; return (data ?? []) as SavantFullRow[];
   }
   async listEcoles(): Promise<EcoleRow[]> {
@@ -432,14 +432,16 @@ export interface SavantFormData {
   domaines: string[];
   role: string; // '' | 'calife_rachidoun' | 'epouse_prophete'
   est_savant: boolean; est_narrateur: boolean;
+  publiee: boolean; // Phase 10 : visible en carte dans le hub Biographies
 }
 export interface SavantEditShape {
   id: number; nom: string; nom_arabe: string | null; slug: string | null; ecole_id: number | null;
   generation: string | null; naissance: string | null; deces: string | null;
   resume: string | null; biographie: string | null; domaines: string[] | null;
   role: string | null; est_savant: boolean | null; est_narrateur: boolean | null;
+  publiee: boolean | null;
 }
-export interface SavantFullRow { id: number; nom: string; slug: string | null; generation: string | null; ecole_id: number | null; }
+export interface SavantFullRow { id: number; nom: string; slug: string | null; generation: string | null; ecole_id: number | null; publiee: boolean | null; }
 
 // ---- Dossiers thématiques ----
 export type DossierPreuveType = 'hadith' | 'parole' | 'verset';

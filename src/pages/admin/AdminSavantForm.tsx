@@ -51,7 +51,7 @@ const PROFILS = [
 ];
 const profilFrom = (s: boolean, n: boolean) => (s && n ? 'les_deux' : n ? 'narrateur' : 'savant');
 
-const blank = { nom: '', nom_arabe: '', slug: '', ecole_id: '', generation: '', naissance: '', deces: '', resume: '', biographie: '', domaines: '', role: '', est_savant: true, est_narrateur: false };
+const blank = { nom: '', nom_arabe: '', slug: '', ecole_id: '', generation: '', naissance: '', deces: '', resume: '', biographie: '', domaines: '', role: '', est_savant: true, est_narrateur: false, publiee: true };
 
 export const AdminSavantForm: React.FC = () => {
   const { id } = useParams();
@@ -84,7 +84,7 @@ export const AdminSavantForm: React.FC = () => {
         nom: s.nom ?? '', nom_arabe: s.nom_arabe ?? '', slug: s.slug ?? '', ecole_id: s.ecole_id != null ? String(s.ecole_id) : '',
         generation: s.generation ?? '', naissance: s.naissance ?? '', deces: s.deces ?? '', resume: s.resume ?? '', biographie: s.biographie ?? '',
         domaines: (s.domaines ?? []).join(', '), role: s.role ?? '',
-        est_savant: !!s.est_savant, est_narrateur: !!s.est_narrateur,
+        est_savant: !!s.est_savant, est_narrateur: !!s.est_narrateur, publiee: s.publiee ?? true,
       });
     }).catch(() => setError('Savant introuvable.')).finally(() => setLoading(false));
   }, [editId]);
@@ -97,7 +97,7 @@ export const AdminSavantForm: React.FC = () => {
     ecole_id: f.ecole_id ? Number(f.ecole_id) : null, generation: f.generation,
     naissance: f.naissance, deces: f.deces, resume: f.resume, biographie: f.biographie,
     domaines: f.domaines.split(',').map((d) => d.trim()).filter(Boolean), role: f.role,
-    est_savant: f.est_savant, est_narrateur: f.est_narrateur,
+    est_savant: f.est_savant, est_narrateur: f.est_narrateur, publiee: f.publiee,
   });
 
   const save = async () => {
@@ -128,6 +128,10 @@ export const AdminSavantForm: React.FC = () => {
         </div>
         <div className="mt-3.5"><label className={label}>Slug (URL) <span className="text-muted font-normal">— généré depuis le nom</span></label>
           <input className={field} value={autoSlug} onChange={(e) => { setSlugTouched(true); setF((p) => ({ ...p, slug: e.target.value })); }} placeholder="al-shafii" /></div>
+        <label className="mt-3.5 flex items-start gap-2.5 cursor-pointer rounded-lg border border-line bg-ground/40 p-3">
+          <input type="checkbox" checked={f.publiee} onChange={(e) => setF((p) => ({ ...p, publiee: e.target.checked }))} className="w-4 h-4 accent-green mt-0.5" />
+          <span className="text-[13px] text-ink"><b>Publier la fiche</b> dans « Biographies » <span className="text-muted">— décoche pour masquer la carte tant que la bio n'est pas prête. Le nom reste affiché dans l'attribution des hadiths.</span></span>
+        </label>
       </section>
 
       {/* 2. Repères */}
