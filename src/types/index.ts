@@ -35,9 +35,20 @@ export interface HadithSegment {
   texte_francais: string | null;
   explication: string | null;
 }
+/** Variante d'un hadith : autre version/wording du même hadith (optionnel). */
+export interface HadithVariant {
+  ordre: number;
+  intro: string | null;          // lead-in (« Dans une version rapportée par Mouslim : »)
+  texte_arabe: string | null;
+  phonetique: string | null;
+  texte_francais: string | null;
+  explication: string | null;
+  source: string | null;         // référence libre (recueil / narrateur de cette variante)
+}
 export interface Hadith extends BaseText {
   intro?: string | null;         // narration de contexte avant le texte arabe (hadith-dialogue)
   segments?: HadithSegment[];    // suite du hadith en dialogue (optionnel)
+  variants?: HadithVariant[];    // autres versions du même hadith (optionnel)
   rapporteur: string | null;
   narrateur: string | null;
   statut: string | null;
@@ -276,6 +287,7 @@ export interface HadithDetail {
   sources?: HadithSource[];   // source structurée (groupée par rapporteur)
   themes?: ThemeRef[];        // thèmes transverses (puces)
   segments?: HadithSegment[]; // suite du hadith en dialogue
+  variants?: HadithVariant[]; // autres versions du même hadith
   equivoque?: { slug: string; id: number; theme?: string; sens_juste?: string | null } | null; // fiche « équivoque » liée (si publiée)
 }
 

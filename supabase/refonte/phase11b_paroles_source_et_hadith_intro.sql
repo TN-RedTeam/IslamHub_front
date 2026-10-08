@@ -1,17 +1,21 @@
 -- ============================================================================
--- Phase 11b — Filtre « recueil/source » des paroles + Intro de hadith
+-- Phase 11b — Filtre « recueil/source » des paroles
+--              + Intro de hadith + Variantes de hadith
 -- ============================================================================
--- Deux évolutions indépendantes regroupées ici :
+-- Évolutions regroupées ici :
 --   A. Paroles : filtre secondaire par recueil/source (11.2).
---   B. Hadiths : champ « intro / narration » sur le hadith principal (hadith-dialogue).
+--   B. Hadiths : champ « intro / narration » sur le hadith principal.
+--   C. Hadiths : « variantes » (autres versions du même hadith).
 --
 -- Migration NON destructive : aucun DROP TABLE, aucune colonne supprimée.
 --
 -- NOTE D'APPLICATION
---   • Les fonctions de LECTURE (LANGUAGE sql STABLE) et l'ALTER ADD COLUMN ont
---     déjà été appliquées via le MCP Supabase (elles passent sans souci).
+--   • Les fonctions de LECTURE (LANGUAGE sql STABLE), l'ALTER ADD COLUMN et la
+--     création de table/policy ont déjà été appliquées via le MCP Supabase.
 --   • La fonction d'ÉCRITURE `admin_save_hadith` (SECURITY DEFINER) expire
 --     systématiquement via le MCP → à exécuter manuellement ici (SQL Editor).
+--     ⚠️ Cette version remplace toute version précédente : elle gère à la fois
+--        l'intro, les segments (dialogue) ET les variantes.
 --   Ce fichier est idempotent : tout relancer ne casse rien.
 -- ============================================================================
 
@@ -31,9 +35,9 @@ as $function$
 $function$;
 
 -- A.2 search_paroles : nouveau paramètre source_filter + source_livre/page dans les données.
---     On AJOUTE une surcharge à 6 arguments (l'ancienne à 5 args reste inoffensive :
---     côté client on transmet toujours les 6 arguments nommés, la résolution PostgREST
---     est donc sans ambiguïté). Pour nettoyer l'ancienne surcharge, décommenter :
+--     Surcharge à 6 arguments (l'ancienne à 5 args reste inoffensive : le client
+--     transmet toujours les 6 args nommés, résolution PostgREST sans ambiguïté).
+--     Pour nettoyer l'ancienne surcharge, décommenter :
 -- drop function if exists public.search_paroles(text, text, integer, integer, text);
 create or replace function public.search_paroles(
   q text default ''::text,
@@ -74,7 +78,38 @@ $function$;
 -- B.1 Colonne.  [déjà appliqué]
 alter table public.hadiths add column if not exists intro text;
 
--- B.2 Lecture admin.  [déjà appliqué]
+
+-- ----------------------------------------------------------------------------
+-- C. HADITHS — variantes (autres versions du même hadith)
+-- ----------------------------------------------------------------------------
+
+-- C.1 Table + RLS lecture publique (écriture via la fonction SECURITY DEFINER). [déjà appliqué]
+create table if not exists public.hadith_variants (
+  id bigserial primary key,
+  hadith_id bigint not null references public.hadiths(id) on delete cascade,
+  ordre integer not null default 0,
+  intro text,
+  texte_arabe text,
+  phonetique text,
+  texte_francais text,
+  explication text,
+  source text,
+  created_at timestamptz default now()
+);
+create index if not exists hadith_variants_hadith_id_idx on public.hadith_variants(hadith_id);
+alter table public.hadith_variants enable row level security;
+do $$ begin
+  if not exists (select 1 from pg_policies where schemaname='public' and tablename='hadith_variants' and policyname='hadith_variants_read') then
+    create policy hadith_variants_read on public.hadith_variants for select to public using (true);
+  end if;
+end $$;
+
+
+-- ----------------------------------------------------------------------------
+-- Lecture (intro + segments + variantes)
+-- ----------------------------------------------------------------------------
+
+-- Lecture admin.  [déjà appliqué]
 create or replace function public.admin_get_hadith(p_id bigint)
  returns json language sql stable set search_path to 'public','pg_temp'
 as $function$
@@ -90,13 +125,17 @@ as $function$
                                                         'phonetique', s.phonetique, 'texte_francais', s.texte_francais,
                                                         'explication', s.explication) order by s.ordre, s.id)
                      from public.hadith_segments s where s.hadith_id = h.id), '[]'::json) as segments,
+           coalesce((select json_agg(json_build_object('ordre', va.ordre, 'intro', va.intro, 'texte_arabe', va.texte_arabe,
+                                                        'phonetique', va.phonetique, 'texte_francais', va.texte_francais,
+                                                        'explication', va.explication, 'source', va.source) order by va.ordre, va.id)
+                     from public.hadith_variants va where va.hadith_id = h.id), '[]'::json) as variants,
            coalesce((select json_agg(json_build_object('recueil_id', hs.recueil_id, 'numero', hs.numero, 'chapitre', hs.chapitre) order by hs.recueil_id)
                      from public.hadith_sources hs where hs.hadith_id = h.id), '[]'::json) as sources
     from public.hadiths h where h.id = p_id
   ) x;
 $function$;
 
--- B.3 Lecture publique (fiche + carte dépliée).  [déjà appliqué]
+-- Lecture publique.  [déjà appliqué]
 create or replace function public.get_hadith(hadith_id integer)
  returns json language sql stable set search_path to 'public','pg_temp'
 as $function$
@@ -120,6 +159,12 @@ as $function$
                 from public.hadith_segments s where s.hadith_id = h.id
               ), '[]'::json) as segments,
               coalesce((
+                select json_agg(json_build_object('ordre', va.ordre, 'intro', va.intro, 'texte_arabe', va.texte_arabe,
+                                                   'phonetique', va.phonetique, 'texte_francais', va.texte_francais,
+                                                   'explication', va.explication, 'source', va.source) order by va.ordre, va.id)
+                from public.hadith_variants va where va.hadith_id = h.id
+              ), '[]'::json) as variants,
+              coalesce((
                 select json_agg(json_build_object('slug', th.slug, 'nom', th.nom) order by th.famille, th.ordre)
                 from public.hadith_themes ht join public.themes th on th.slug = ht.theme_slug
                 where ht.hadith_id = h.id
@@ -127,7 +172,7 @@ as $function$
        from public.hadiths h where h.id = hadith_id) x) end;
 $function$;
 
--- B.4 Lecture liste (search_hadiths) : intro renvoyé pour l'affichage carte.  [déjà appliqué]
+-- Lecture liste (search_hadiths) : intro renvoyé pour l'affichage carte.  [déjà appliqué]
 create or replace function public.search_hadiths(q text default ''::text, tag_filter text default ''::text, page_num integer default 0, page_size integer default 20, statut_filter text default ''::text, rapporteur_filter text default ''::text, narrateur_filter text default ''::text)
  returns json language sql stable set search_path to 'public','pg_temp'
 as $function$
@@ -161,7 +206,11 @@ as $function$
         from filtered order by id limit page_size offset page_num*page_size) d), '[]'::json));
 $function$;
 
--- B.5 ÉCRITURE — persiste `intro`.  ⚠️ À EXÉCUTER MANUELLEMENT (le MCP expire sur ce type de fonction).
+
+-- ----------------------------------------------------------------------------
+-- ÉCRITURE — persiste intro + segments + variantes.
+-- ⚠️ À EXÉCUTER MANUELLEMENT (le MCP expire sur ce type de fonction SECURITY DEFINER).
+-- ----------------------------------------------------------------------------
 CREATE OR REPLACE FUNCTION public.admin_save_hadith(p jsonb)
  RETURNS bigint LANGUAGE plpgsql SECURITY DEFINER SET search_path TO 'public','pg_temp'
 AS $function$
@@ -258,6 +307,7 @@ begin
   join public.theme_tags tt on regexp_replace(lower(btrim(tt.tag_token)),'\s+',' ','g') = regexp_replace(lower(btrim(raw.tok)),'\s+',' ','g')
   where btrim(raw.tok) <> '' on conflict do nothing;
 
+  -- Segments de dialogue (suite du hadith) : remplacés en bloc si envoyés.
   if p ? 'segments' then
     delete from public.hadith_segments where hadith_id = v_id;
     insert into public.hadith_segments (hadith_id, ordre, intro, texte_arabe, phonetique, texte_francais, explication)
@@ -268,6 +318,20 @@ begin
     from jsonb_array_elements(coalesce(p->'segments','[]'::jsonb)) with ordinality as e(val, ord)
     where coalesce(btrim(e.val->>'texte_arabe'),'') <> '' or coalesce(btrim(e.val->>'texte_francais'),'') <> ''
           or coalesce(btrim(e.val->>'intro'),'') <> '' or coalesce(btrim(e.val->>'explication'),'') <> '';
+  end if;
+
+  -- Variantes (autres versions du même hadith) : remplacées en bloc si envoyées.
+  if p ? 'variants' then
+    delete from public.hadith_variants where hadith_id = v_id;
+    insert into public.hadith_variants (hadith_id, ordre, intro, texte_arabe, phonetique, texte_francais, explication, source)
+    select v_id, (e.ord)::int,
+           nullif(btrim(e.val->>'intro'),''), nullif(btrim(e.val->>'texte_arabe'),''),
+           nullif(btrim(e.val->>'phonetique'),''), nullif(btrim(e.val->>'texte_francais'),''),
+           nullif(btrim(e.val->>'explication'),''), nullif(btrim(e.val->>'source'),'')
+    from jsonb_array_elements(coalesce(p->'variants','[]'::jsonb)) with ordinality as e(val, ord)
+    where coalesce(btrim(e.val->>'texte_arabe'),'') <> '' or coalesce(btrim(e.val->>'texte_francais'),'') <> ''
+          or coalesce(btrim(e.val->>'intro'),'') <> '' or coalesce(btrim(e.val->>'explication'),'') <> ''
+          or coalesce(btrim(e.val->>'source'),'') <> '';
   end if;
 
   if v_has_eq_flag then
