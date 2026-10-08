@@ -65,9 +65,11 @@ const HadithCard: React.FC<{ hadith: Hadith; onClick: () => void }> = ({ hadith,
 
       <div className="bg-glass-tint p-4 rounded-lg border border-line flex-grow">
         {hadith.intro && <p className="mb-2 text-sm text-ink/70 italic line-clamp-2 [unicode-bidi:plaintext]">{hadith.intro}</p>}
-        <p className="text-2xl text-ink font-arabic leading-loose text-right line-clamp-3 whitespace-pre-wrap">
-          {hadith.texte_arabe}
-        </p>
+        {hadith.texte_arabe && (
+          <p className="text-2xl text-ink font-arabic leading-loose text-right line-clamp-3 whitespace-pre-wrap">
+            {hadith.texte_arabe}
+          </p>
+        )}
 
         {hadith.texte_francais && (
             <div className="mt-4 pl-4 border-l-4 border-glass-border line-clamp-2">
@@ -159,9 +161,11 @@ const HadithModal: React.FC<{ hadith: Hadith; onClose: () => void }> = ({ hadith
 
           <div className="bg-glass-tint p-6 rounded-lg">
             {hadith.intro && <p className="mb-4 text-ink/80 italic [unicode-bidi:plaintext]">{hadith.intro}</p>}
-            <p className="text-3xl text-ink font-arabic leading-loose text-right whitespace-pre-wrap">
-              {hadith.texte_arabe}
-            </p>
+            {hadith.texte_arabe && (
+              <p className="text-3xl text-ink font-arabic leading-loose text-right whitespace-pre-wrap">
+                {hadith.texte_arabe}
+              </p>
+            )}
 
             {hadith.phonétique && (
                 <div className="mt-6 bg-glass-tint p-4 rounded">

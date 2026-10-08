@@ -106,6 +106,29 @@ end $$;
 
 
 -- ----------------------------------------------------------------------------
+-- D. HADITHS — texte arabe optionnel  [déjà appliqué]
+-- ----------------------------------------------------------------------------
+-- Le texte arabe du hadith principal n'est plus obligatoire. Le hash (index
+-- unique anti-doublon) devient NULL quand le texte arabe est vide/absent, afin
+-- d'autoriser plusieurs hadiths sans arabe (plusieurs NULL ne violent pas
+-- l'unicité). La déduplication reste active pour tout texte arabe non vide.
+alter table public.hadiths alter column texte_arabe drop not null;
+
+create or replace function public.set_arabe_hash()
+ returns trigger language plpgsql set search_path to 'public','pg_temp'
+as $function$
+begin
+  if NEW.texte_arabe is null or btrim(NEW.texte_arabe) = '' then
+    NEW.arabe_hash := null;
+  else
+    NEW.arabe_hash := md5(trim(regexp_replace(NEW.texte_arabe, '\s+', ' ', 'g')));
+  end if;
+  return NEW;
+end;
+$function$;
+
+
+-- ----------------------------------------------------------------------------
 -- Lecture (intro + segments + variantes)
 -- ----------------------------------------------------------------------------
 
@@ -248,7 +271,7 @@ begin
     if v_slug = '' then v_slug := 'hadith'; end if;
     insert into public.hadiths (sujet, intro, texte_arabe, texte_francais, phonetique, explication,
         degre_authenticite, type_hadith, juge_par, rapporteur, narrateur, statut, tag, slug)
-    values (nullif(btrim(p->>'sujet'),''), nullif(btrim(p->>'intro'),''), btrim(p->>'texte_arabe'), nullif(p->>'texte_francais',''),
+    values (nullif(btrim(p->>'sujet'),''), nullif(btrim(p->>'intro'),''), nullif(btrim(p->>'texte_arabe'),''), nullif(p->>'texte_francais',''),
         nullif(p->>'phonetique',''), nullif(p->>'explication',''), nullif(p->>'degre_authenticite',''),
         nullif(p->>'type_hadith',''), nullif(p->>'juge_par',''),
         case when v_has_rapp then null else nullif(p->>'rapporteur','') end,
@@ -257,7 +280,7 @@ begin
     returning id into v_id;
   else
     update public.hadiths set
-      sujet=nullif(btrim(p->>'sujet'),''), intro=nullif(btrim(p->>'intro'),''), texte_arabe=btrim(p->>'texte_arabe'),
+      sujet=nullif(btrim(p->>'sujet'),''), intro=nullif(btrim(p->>'intro'),''), texte_arabe=nullif(btrim(p->>'texte_arabe'),''),
       texte_francais=nullif(p->>'texte_francais',''), phonetique=nullif(p->>'phonetique',''),
       explication=nullif(p->>'explication',''), degre_authenticite=nullif(p->>'degre_authenticite',''),
       type_hadith=nullif(p->>'type_hadith',''), juge_par=nullif(p->>'juge_par',''),
@@ -344,11 +367,11 @@ begin
         if v_eq_slug = '' then v_eq_slug := 'hadith-equivoque'; end if;
         if exists (select 1 from public.versets_equivoques where slug = v_eq_slug) then v_eq_slug := v_eq_slug||'-'||floor(random()*100000)::text; end if;
         insert into public.versets_equivoques (slug, theme, sourate, type, verset_arabe, verset_traduction, verset_phonetique, rapporteur, recueil, hadith_id, published)
-        values (v_eq_slug, v_eq_theme, '', 'hadith', btrim(p->>'texte_arabe'), nullif(p->>'texte_francais',''), nullif(p->>'phonetique',''),
+        values (v_eq_slug, v_eq_theme, '', 'hadith', coalesce(nullif(btrim(p->>'texte_arabe'),''),''), nullif(p->>'texte_francais',''), nullif(p->>'phonetique',''),
                 v_eq_rapp, public.recueils_for_hadith(v_id), v_id, false);
       else
         update public.versets_equivoques set theme=v_eq_theme, type='hadith',
-          verset_arabe=btrim(p->>'texte_arabe'), verset_traduction=nullif(p->>'texte_francais',''),
+          verset_arabe=coalesce(nullif(btrim(p->>'texte_arabe'),''),''), verset_traduction=nullif(p->>'texte_francais',''),
           verset_phonetique=nullif(p->>'phonetique',''), rapporteur=v_eq_rapp,
           recueil=public.recueils_for_hadith(v_id)
         where id=v_eq_id;
