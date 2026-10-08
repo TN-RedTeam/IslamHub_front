@@ -176,7 +176,12 @@ export const AdminHadithForm: React.FC = () => {
   }, [f.tag]);
 
   const recueilLabel = (r: RecueilRow) => `${r.auteur ? r.auteur + ' — ' : ''}${r.titre}`;
-  const canSave = useMemo(() => f.sujet.trim() && f.texte_arabe.trim(), [f.sujet, f.texte_arabe]);
+  // Texte arabe non obligatoire : on exige le sujet + au moins un contenu
+  // (arabe, traduction ou intro) pour éviter une fiche totalement vide.
+  const canSave = useMemo(
+    () => !!(f.sujet.trim() && (f.texte_arabe.trim() || f.texte_francais.trim() || f.intro.trim())),
+    [f.sujet, f.texte_arabe, f.texte_francais, f.intro],
+  );
 
   const buildPayload = (): HadithFormData => ({
     id: editId,
@@ -230,9 +235,9 @@ export const AdminHadithForm: React.FC = () => {
           <textarea className={`${field} min-h-[60px]`} value={f.intro} onChange={set('intro')} placeholder="Narration de contexte avant le texte arabe. Ex. « Le Prophète demanda à ses compagnons : »" />
           <p className="text-xs text-muted mt-1">Pour un hadith sous forme de dialogue : le propos qui introduit le texte arabe ci-dessous.</p>
         </div>
-        <div className="mb-3.5"><label className={label}>Texte arabe <span className="text-red-600">*</span></label>
+        <div className="mb-3.5"><label className={label}>Texte arabe <span className="text-muted font-normal">(optionnel)</span></label>
           <textarea dir="rtl" lang="ar" className={`${field} font-arabic text-2xl leading-loose text-right min-h-[90px]`} value={f.texte_arabe} onChange={set('texte_arabe')} onFocus={caretBetween(AR_TEMPLATE.hadith)} placeholder="Colle ici le texte arabe (vocalisé)…" />
-          <p className="text-xs text-muted mt-1">Unicité vérifiée automatiquement (pas de doublon).</p>
+          <p className="text-xs text-muted mt-1">Unicité vérifiée automatiquement quand renseigné (pas de doublon). Laisse vide si non pertinent.</p>
         </div>
         <div className="grid sm:grid-cols-2 gap-3.5">
           <div><label className={label}>Phonétique</label><input className={field} value={f.phonetique} onChange={set('phonetique')} /></div>
