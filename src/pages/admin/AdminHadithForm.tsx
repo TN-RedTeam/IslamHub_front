@@ -124,6 +124,15 @@ export const AdminHadithForm: React.FC = () => {
     const j = i + d; if (j < 0 || j >= p.length) return p;
     const n = [...p]; [n[i], n[j]] = [n[j], n[i]]; return n;
   });
+  // Variantes (autres versions du même hadith).
+  type Var = { intro: string; texte_arabe: string; phonetique: string; texte_francais: string; explication: string; source: string };
+  const emptyVar = (): Var => ({ intro: '', texte_arabe: '', phonetique: '', texte_francais: '', explication: '', source: '' });
+  const [variants, setVariants] = useState<Var[]>([]);
+  const setVar = (i: number, k: keyof Var, v: string) => setVariants((p) => p.map((s, j) => (j === i ? { ...s, [k]: v } : s)));
+  const moveVar = (i: number, d: -1 | 1) => setVariants((p) => {
+    const j = i + d; if (j < 0 || j >= p.length) return p;
+    const n = [...p]; [n[i], n[j]] = [n[j], n[i]]; return n;
+  });
 
   useEffect(() => {
     Promise.all([adminService.listNarrateurs(), adminService.listRecueils(), adminService.listSavants()])
@@ -149,6 +158,10 @@ export const AdminHadithForm: React.FC = () => {
         intro: s.intro ?? '', texte_arabe: s.texte_arabe ?? '', phonetique: s.phonetique ?? '',
         texte_francais: s.texte_francais ?? '', explication: s.explication ?? '',
       })));
+      setVariants((h.variants ?? []).map((v) => ({
+        intro: v.intro ?? '', texte_arabe: v.texte_arabe ?? '', phonetique: v.phonetique ?? '',
+        texte_francais: v.texte_francais ?? '', explication: v.explication ?? '', source: v.source ?? '',
+      })));
       setSources(h.sources.length ? h.sources.map((s) => ({ ...emptySrc(), recueil_id: String(s.recueil_id), numero: s.numero ?? '', chapitre: s.chapitre ?? '' })) : [emptySrc()]);
     }).catch(() => setError("Hadith introuvable."));
   }, [editId]);
@@ -173,6 +186,7 @@ export const AdminHadithForm: React.FC = () => {
     narrateur_ids: narrateurIds,
     is_equivoque: isEquivoque,
     segments: segments.filter((s) => s.texte_arabe.trim() || s.texte_francais.trim() || s.intro.trim() || s.explication.trim()),
+    variants: variants.filter((v) => v.texte_arabe.trim() || v.texte_francais.trim() || v.intro.trim() || v.explication.trim() || v.source.trim()),
     new_narrateur: addingNarr && newNarr.nom.trim() ? newNarr : null,
     sources: sources.map<HadithSourceInput>((s) => s.recueil_id === NEW
       ? { new_recueil: { titre: s.new_titre.trim(), savant_id: s.new_savant ? Number(s.new_savant) : null }, numero: s.numero || null, chapitre: s.chapitre || null }
@@ -188,7 +202,7 @@ export const AdminHadithForm: React.FC = () => {
       if (andNew) {
         setF({ sujet: '', intro: '', texte_arabe: AR_TEMPLATE.hadith, texte_francais: '', phonetique: '', explication: '', degre_authenticite: 'Sahih', type_hadith: '', juge_par: '', tag: '' });
         setRapporteurIds([]); setNarrateurIds([]); setAddingNarr(false); setNewNarr({ nom: '', generation: 'sahabi', role: '', sexe: 'm' });
-        setIsEquivoque(false); setEquivoqueId(null); setSegments([]);
+        setIsEquivoque(false); setEquivoqueId(null); setSegments([]); setVariants([]);
         setSources([emptySrc()]); setTimeout(() => setOk(false), 2500);
       } else {
         navigate(`/admin/hadiths/${newId}`, { replace: true });
@@ -352,6 +366,41 @@ export const AdminHadithForm: React.FC = () => {
 
         <button type="button" onClick={() => setSegments((p) => [...p, emptySeg()])} className="inline-flex items-center gap-1.5 rounded-lg border border-line bg-surface text-ink font-semibold px-3.5 py-2 text-sm hover:border-green">
           <Plus className="w-4 h-4" /> Ajouter un passage
+        </button>
+      </section>
+
+      {/* Variantes — autres versions du même hadith (optionnel) */}
+      <section className="rounded-card border border-line bg-surface p-5 mb-4">
+        <h2 className="font-display font-semibold text-ink text-lg mb-1">Variantes <span className="text-muted font-normal">(optionnel)</span></h2>
+        <p className="text-xs text-muted mb-3.5">Autre(s) version(s) du <b>même</b> hadith (wording ou narration différente). Chaque variante est affichée à part sur la fiche, sous «&nbsp;Autre version&nbsp;». L'<b>intro</b> introduit la variante (ex. «&nbsp;Dans une version rapportée par Mouslim&nbsp;:&nbsp;»), la <b>source</b> en précise la référence.</p>
+
+        {variants.map((vr, i) => (
+          <div key={i} className="rounded-lg border border-line bg-ground/40 p-3.5 mb-3">
+            <div className="flex items-center gap-2 mb-2.5">
+              <span className="text-xs font-semibold text-accent">Variante {i + 1}</span>
+              <div className="ml-auto flex items-center gap-1">
+                <button type="button" onClick={() => moveVar(i, -1)} disabled={i === 0} className="px-2 py-1 text-xs rounded border border-line text-muted hover:text-ink disabled:opacity-40" aria-label="Monter">↑</button>
+                <button type="button" onClick={() => moveVar(i, 1)} disabled={i === variants.length - 1} className="px-2 py-1 text-xs rounded border border-line text-muted hover:text-ink disabled:opacity-40" aria-label="Descendre">↓</button>
+                <button type="button" onClick={() => setVariants((p) => p.filter((_, j) => j !== i))} className="px-2 py-1 text-xs rounded border border-low/40 text-low hover:bg-low/10 inline-flex items-center gap-1"><Trash2 className="w-3.5 h-3.5" /></button>
+              </div>
+            </div>
+            <div className="mb-2.5"><label className={label}>Intro / narration <span className="text-muted font-normal">(optionnel)</span></label>
+              <input className={field} value={vr.intro} onChange={(e) => setVar(i, 'intro', e.target.value)} placeholder="Ex. Dans une version rapportée par Mouslim :" /></div>
+            <div className="mb-2.5"><label className={label}>Texte arabe</label>
+              <textarea dir="rtl" lang="ar" className={`${field} font-arabic text-2xl leading-loose text-right min-h-[80px]`} value={vr.texte_arabe} onChange={(e) => setVar(i, 'texte_arabe', e.target.value)} /></div>
+            <div className="grid sm:grid-cols-2 gap-2.5 mb-2.5">
+              <div><label className={label}>Phonétique</label><input className={field} value={vr.phonetique} onChange={(e) => setVar(i, 'phonetique', e.target.value)} /></div>
+              <div><label className={label}>Traduction</label><input className={field} value={vr.texte_francais} onChange={(e) => setVar(i, 'texte_francais', e.target.value)} /></div>
+            </div>
+            <div className="mb-2.5"><label className={label}>Source <span className="text-muted font-normal">(référence de cette variante)</span></label>
+              <input className={field} value={vr.source} onChange={(e) => setVar(i, 'source', e.target.value)} placeholder="Ex. Sahih Mouslim, n° 2564" /></div>
+            <div><label className={label}>Explication <span className="text-muted font-normal">(Markdown)</span></label>
+              <textarea className={`${field} min-h-[60px]`} value={vr.explication} onChange={(e) => setVar(i, 'explication', e.target.value)} /></div>
+          </div>
+        ))}
+
+        <button type="button" onClick={() => setVariants((p) => [...p, emptyVar()])} className="inline-flex items-center gap-1.5 rounded-lg border border-line bg-surface text-ink font-semibold px-3.5 py-2 text-sm hover:border-green">
+          <Plus className="w-4 h-4" /> Ajouter une variante
         </button>
       </section>
 

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { m, AnimatePresence } from 'framer-motion';
-import { Search, X, Star, ChevronRight, Loader, SlidersHorizontal } from 'lucide-react';
+import { Search, X, Star, ChevronRight, Loader, SlidersHorizontal, BookOpen } from 'lucide-react';
 import { dataService } from '../services/DataService';
 import { FilterSelect } from '../components/FilterSelect';
 import { PageHeader } from '../components/PageHeader';
@@ -10,7 +10,7 @@ import { Markdown } from '../components/Markdown';
 import { BadgeGeneration } from '../components/BadgeGeneration';
 import { HadithSources } from '../components/HadithSources';
 import { slugify } from '../utils/slug';
-import type { Hadith as HadithType, HadithSegment } from '../types';
+import type { Hadith as HadithType, HadithSegment, HadithVariant } from '../types';
 import { IconBadge } from '../components/Icon';
 
 interface Hadith extends HadithType {
@@ -102,9 +102,10 @@ const HadithModal: React.FC<{ hadith: Hadith; onClose: () => void }> = ({ hadith
   // Chargement à la demande des segments (hadith « dialogue ») — pas de surcharge
   // de la liste : on ne les récupère qu'à l'ouverture de la fiche.
   const [segments, setSegments] = useState<HadithSegment[]>([]);
+  const [variants, setVariants] = useState<HadithVariant[]>([]);
   useEffect(() => {
     let alive = true;
-    dataService.getHadith(hadith.id).then((d) => { if (alive) setSegments(d?.segments ?? []); }).catch(() => {});
+    dataService.getHadith(hadith.id).then((d) => { if (alive) { setSegments(d?.segments ?? []); setVariants(d?.variants ?? []); } }).catch(() => {});
     return () => { alive = false; };
   }, [hadith.id]);
   return (
@@ -206,6 +207,41 @@ const HadithModal: React.FC<{ hadith: Hadith; onClose: () => void }> = ({ hadith
                   <p className="text-sm font-bold text-ink mb-1">Explication :</p>
                   <Markdown className="[unicode-bidi:plaintext]">{sg.explication}</Markdown>
                 </div>
+              )}
+            </div>
+          ))}
+
+          {/* Variantes : autres versions du même hadith. */}
+          {variants.map((vr, i) => (
+            <div key={`var-${i}`} className="bg-glass-tint p-6 rounded-lg space-y-4">
+              <p className="text-[11px] uppercase tracking-[0.16em] text-accent font-semibold">
+                Autre version{variants.length > 1 ? ` ${i + 1}` : ''}
+              </p>
+              {vr.intro && <p className="text-ink/80 italic [unicode-bidi:plaintext]">{vr.intro}</p>}
+              {vr.texte_arabe && <p className="text-3xl text-ink font-arabic leading-loose text-right whitespace-pre-wrap">{vr.texte_arabe}</p>}
+              {vr.phonetique && (
+                <div className="bg-glass p-4 rounded">
+                  <p className="text-sm text-ink mb-1">Phonétique :</p>
+                  <p className="text-ink whitespace-pre-wrap [unicode-bidi:plaintext]">{vr.phonetique}</p>
+                </div>
+              )}
+              {vr.texte_francais && (
+                <div className="pl-4 border-l-4 border-green">
+                  <p className="text-sm text-green mb-1">Traduction :</p>
+                  <Markdown className="[unicode-bidi:plaintext]">{vr.texte_francais}</Markdown>
+                </div>
+              )}
+              {vr.explication && (
+                <div className="bg-glass p-4 rounded">
+                  <p className="text-sm font-bold text-ink mb-1">Explication :</p>
+                  <Markdown className="[unicode-bidi:plaintext]">{vr.explication}</Markdown>
+                </div>
+              )}
+              {vr.source && (
+                <p className="flex items-center gap-1.5 text-xs text-muted">
+                  <BookOpen className="h-3.5 w-3.5 shrink-0 text-green" />
+                  <span className="[unicode-bidi:plaintext]">{vr.source}</span>
+                </p>
               )}
             </div>
           ))}

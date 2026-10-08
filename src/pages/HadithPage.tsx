@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { m } from 'framer-motion';
-import { Loader2, ArrowLeft, Copy, Check, Share2, AlertTriangle, ChevronRight } from 'lucide-react';
+import { Loader2, ArrowLeft, Copy, Check, Share2, AlertTriangle, ChevronRight, BookOpen } from 'lucide-react';
 import { dataService } from '../services/DataService';
 import { BadgeGeneration } from '../components/BadgeGeneration';
 import { HadithSources } from '../components/HadithSources';
@@ -175,6 +175,40 @@ export const HadithPage: React.FC = () => {
                 <p className="text-sm font-bold text-ink mb-1">Explication :</p>
                 <Markdown className="[unicode-bidi:plaintext]">{sg.explication}</Markdown>
               </div>
+            )}
+          </div>
+        ))}
+
+        {hadith.variants && hadith.variants.length > 0 && hadith.variants.map((vr, i) => (
+          <div key={`var-${i}`} className="bg-glass rounded-card p-6 shadow border border-line space-y-5">
+            <p className="text-[11px] uppercase tracking-[0.16em] text-accent font-semibold">
+              Autre version{hadith.variants && hadith.variants.length > 1 ? ` ${i + 1}` : ''}
+            </p>
+            {vr.intro && <p className="text-ink/80 italic [unicode-bidi:plaintext]">{vr.intro}</p>}
+            {vr.texte_arabe && <p className="text-3xl leading-loose text-right font-arabic text-ink whitespace-pre-wrap">{vr.texte_arabe}</p>}
+            {vr.phonetique && (
+              <div className="bg-glass-tint rounded-lg p-4">
+                <p className="text-sm text-ink mb-1">Phonétique :</p>
+                <p className="text-ink whitespace-pre-wrap [unicode-bidi:plaintext]">{vr.phonetique}</p>
+              </div>
+            )}
+            {vr.texte_francais && (
+              <div className="pl-4 border-l-4 border-green">
+                <p className="text-sm text-green mb-1">Traduction :</p>
+                <Markdown className="[unicode-bidi:plaintext]">{vr.texte_francais}</Markdown>
+              </div>
+            )}
+            {vr.explication && (
+              <div className="bg-glass-tint rounded-lg p-4">
+                <p className="text-sm font-bold text-ink mb-1">Explication :</p>
+                <Markdown className="[unicode-bidi:plaintext]">{vr.explication}</Markdown>
+              </div>
+            )}
+            {vr.source && (
+              <p className="flex items-center gap-1.5 text-xs text-muted">
+                <BookOpen className="h-3.5 w-3.5 shrink-0 text-green" />
+                <span className="[unicode-bidi:plaintext]">{vr.source}</span>
+              </p>
             )}
           </div>
         ))}
