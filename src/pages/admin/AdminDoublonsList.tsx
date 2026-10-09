@@ -18,14 +18,21 @@ const KINDS: { key: DuplicateKind; label: string; editBase: string; metaLabel: s
 
 const Side: React.FC<{
   id: number; sujet: string | null; meta: string | null; arabe: string | null; trad: string | null;
-  src: number; strong: boolean; editBase: string; showSrc: boolean;
-}> = ({ id, sujet, meta, arabe, trad, src, strong, editBase, showSrc }) => (
+  src: number; refs: number; strong: boolean; editBase: string; showSrc: boolean;
+}> = ({ id, sujet, meta, arabe, trad, src, refs, strong, editBase, showSrc }) => (
   <div className={`flex-1 min-w-0 rounded-lg border p-3.5 ${strong ? 'border-green-line bg-glass-tint/40' : 'border-line bg-surface'}`}>
     <div className="flex items-center gap-2 mb-1.5 flex-wrap">
       <span className="text-[11px] font-mono text-muted">#{id}</span>
       {meta && <span className="text-[11px] px-2 py-0.5 rounded-full bg-glass-tint text-ink border border-green-line">{meta}</span>}
       {showSrc && <span className="text-[11px] text-muted">· {src} source{src > 1 ? 's' : ''}</span>}
       {showSrc && strong && <span className="text-[11px] text-green font-semibold">· mieux sourcé</span>}
+      {refs > 0 ? (
+        <span className="text-[11px] px-2 py-0.5 rounded-full bg-gold/15 text-accent border border-gold font-medium" title="Référencé comme preuve dans des dossiers / exposés / équivoques — à réattribuer avant suppression">
+          ⚠ {refs} référence{refs > 1 ? 's' : ''}
+        </span>
+      ) : (
+        <span className="text-[11px] text-muted">· libre</span>
+      )}
       <Link to={`${editBase}/${id}`} className="ml-auto inline-flex items-center gap-1 text-[13px] text-accent hover:underline shrink-0">
         Modifier <ExternalLink className="w-3.5 h-3.5" />
       </Link>
@@ -106,8 +113,8 @@ export const AdminDoublonsList: React.FC = () => {
                 </button>
               </div>
               <div className="flex flex-col md:flex-row gap-3">
-                <Side id={p.a_id} sujet={p.a_sujet} meta={p.a_meta} arabe={p.a_arabe} trad={p.a_trad} src={p.a_src} strong={cfg.showSrc && p.a_src >= p.b_src} editBase={cfg.editBase} showSrc={cfg.showSrc} />
-                <Side id={p.b_id} sujet={p.b_sujet} meta={p.b_meta} arabe={p.b_arabe} trad={p.b_trad} src={p.b_src} strong={cfg.showSrc && p.b_src > p.a_src} editBase={cfg.editBase} showSrc={cfg.showSrc} />
+                <Side id={p.a_id} sujet={p.a_sujet} meta={p.a_meta} arabe={p.a_arabe} trad={p.a_trad} src={p.a_src} refs={p.a_refs} strong={cfg.showSrc && p.a_src >= p.b_src} editBase={cfg.editBase} showSrc={cfg.showSrc} />
+                <Side id={p.b_id} sujet={p.b_sujet} meta={p.b_meta} arabe={p.b_arabe} trad={p.b_trad} src={p.b_src} refs={p.b_refs} strong={cfg.showSrc && p.b_src > p.a_src} editBase={cfg.editBase} showSrc={cfg.showSrc} />
               </div>
             </li>
           ))}
