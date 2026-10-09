@@ -30,10 +30,11 @@ export interface HadithFormData {
 export interface HadithSegmentInput {
   intro: string; texte_arabe: string; phonetique: string; texte_francais: string; explication: string;
 }
-export interface HadithDuplicatePair {
+export type DuplicateKind = 'hadith' | 'parole' | 'invocation';
+export interface DuplicatePair {
   a_id: number; b_id: number; sim: number;
   a_sujet: string | null; b_sujet: string | null;
-  a_rubrique: string | null; b_rubrique: string | null;
+  a_meta: string | null; b_meta: string | null; // rubrique (hadith) | savant (parole) | type (invocation)
   a_arabe: string | null; b_arabe: string | null;
   a_trad: string | null; b_trad: string | null;
   a_src: number; b_src: number;
@@ -86,10 +87,13 @@ class AdminService {
     const { data, error } = await supabase.rpc('rubriques_hadiths');
     if (error) throw error; return (data ?? []) as string[];
   }
-  /** Paires de hadiths proches (détection de doublons par similarité). */
-  async listHadithDuplicates(min = 0.6, limit = 100): Promise<HadithDuplicatePair[]> {
-    const { data, error } = await supabase.rpc('hadith_doublons_potentiels', { p_min: min, p_limit: limit });
-    if (error) throw error; return (data ?? []) as HadithDuplicatePair[];
+  /** Paires de contenus proches (détection de doublons par similarité). */
+  async listDuplicates(kind: DuplicateKind, min = 0.6, limit = 100): Promise<DuplicatePair[]> {
+    const fn = kind === 'parole' ? 'parole_doublons_potentiels'
+      : kind === 'invocation' ? 'invocation_doublons_potentiels'
+      : 'hadith_doublons_potentiels';
+    const { data, error } = await supabase.rpc(fn, { p_min: min, p_limit: limit });
+    if (error) throw error; return (data ?? []) as DuplicatePair[];
   }
   async themesForTag(tag: string): Promise<ThemeRef[]> {
     const { data, error } = await supabase.rpc('themes_for_tag', { p_tag: tag });
