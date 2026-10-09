@@ -38,6 +38,7 @@ export interface DuplicatePair {
   a_arabe: string | null; b_arabe: string | null;
   a_trad: string | null; b_trad: string | null;
   a_src: number; b_src: number;
+  a_refs: number; b_refs: number; // nb de contenus (dossier/exposé/équivoque/attribut) qui citent la fiche
 }
 export interface HadithVariantInput {
   intro: string; texte_arabe: string; phonetique: string; texte_francais: string; explication: string; source: string;
