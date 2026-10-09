@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { createPortal } from 'react-dom';
 import { useNavigate } from 'react-router-dom';
-import { Trash2, AlertTriangle, Loader2, X } from 'lucide-react';
-import { adminService, type DeletableKind, type EntryDeps } from '../../services/AdminService';
+import { Trash2, AlertTriangle, Loader2, X, ExternalLink } from 'lucide-react';
+import { adminService, type DeletableKind, type EntryDeps, type EntryReference } from '../../services/AdminService';
 
 /**
  * Suppression d'une entrée admin (Phase 4.6) avec garde-fou de dépendances.
@@ -21,14 +21,17 @@ export const DeleteEntryButton: React.FC<{
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [deps, setDeps] = useState<EntryDeps | null>(null);
+  const [refItems, setRefItems] = useState<EntryReference[]>([]);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [confirmText, setConfirmText] = useState('');
 
   const openPanel = async () => {
-    setOpen(true); setError(null); setDeps(null); setConfirmText('');
+    setOpen(true); setError(null); setDeps(null); setRefItems([]); setConfirmText('');
     try { setDeps(await adminService.entryDependencies(kind, id)); }
     catch { setDeps({ total: 0, refs: {} }); }
+    // Détail des références (titres + liens) — en complément des compteurs.
+    adminService.entryReferences(kind, id).then(setRefItems).catch(() => setRefItems([]));
   };
 
   const refs = deps?.refs ?? {};
@@ -74,10 +77,27 @@ export const DeleteEntryButton: React.FC<{
         ) : hasRefs ? (
           <div className="rounded-lg border border-gold bg-glass-tint px-3.5 py-3 mb-3">
             <p className="text-[13.5px] text-accent font-semibold mb-1.5">Cette entrée est utilisée comme preuve ailleurs :</p>
-            <ul className="text-[13px] text-ink list-disc pl-5 space-y-0.5">
-              {refLines.map(([k, n]) => <li key={k}>{n} {REF_LABEL[k] ?? k}</li>)}
-            </ul>
-            <p className="text-[12.5px] text-muted mt-2">La supprimer <b>retirera aussi</b> ces références (les articles concernés perdront ce bloc-preuve).</p>
+            {refItems.length > 0 ? (
+              <ul className="text-[13px] text-ink space-y-1 max-h-48 overflow-auto">
+                {refItems.map((r, i) => (
+                  <li key={i} className="flex items-center gap-2">
+                    <span className="text-[11px] px-1.5 py-0.5 rounded bg-bg1 border border-glass-border text-muted shrink-0">{r.categorie}</span>
+                    <span className="min-w-0 truncate">{r.titre}</span>
+                    {r.path && (
+                      <a href={`#${r.path}`} target="_blank" rel="noopener noreferrer"
+                        className="ml-auto inline-flex items-center gap-1 text-[12px] text-accent hover:underline shrink-0">
+                        Ouvrir <ExternalLink className="w-3.5 h-3.5" />
+                      </a>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <ul className="text-[13px] text-ink list-disc pl-5 space-y-0.5">
+                {refLines.map(([k, n]) => <li key={k}>{n} {REF_LABEL[k] ?? k}</li>)}
+              </ul>
+            )}
+            <p className="text-[12.5px] text-muted mt-2">La supprimer <b>retirera aussi</b> ces références (les contenus concernés perdront ce bloc-preuve). Pense à rattacher la fiche conservée à la place.</p>
           </div>
         ) : (
           <p className="text-sm text-muted mb-3">Cette action est irréversible.</p>
