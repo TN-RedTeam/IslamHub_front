@@ -14,7 +14,7 @@ export interface HadithSourceInput {
 }
 export interface HadithFormData {
   id?: number | null;
-  sujet: string; intro: string; texte_arabe: string; texte_francais: string; phonetique: string; explication: string;
+  sujet: string; rubrique: string; intro: string; texte_arabe: string; texte_francais: string; phonetique: string; explication: string;
   degre_authenticite: string; type_hadith: string; juge_par: string;
   // Liaisons = source de vérité. On envoie les identifiants ; le texte rapporteur/narrateur
   // est régénéré côté base par un trigger (agrégation triée des noms).
@@ -34,7 +34,7 @@ export interface HadithVariantInput {
   intro: string; texte_arabe: string; phonetique: string; texte_francais: string; explication: string; source: string;
 }
 export interface HadithEditShape {
-  id: number; sujet: string | null; intro: string | null; texte_arabe: string | null; texte_francais: string | null;
+  id: number; sujet: string | null; rubrique: string | null; intro: string | null; texte_arabe: string | null; texte_francais: string | null;
   phonetique: string | null; explication: string | null; degre_authenticite: string | null;
   type_hadith: string | null; juge_par: string | null; rapporteur: string | null; narrateur: string | null;
   rapporteur_ids: number[]; narrateur_ids: number[];
@@ -72,6 +72,11 @@ class AdminService {
   async getHadithForEdit(id: number): Promise<HadithEditShape | null> {
     const { data, error } = await supabase.rpc('admin_get_hadith', { p_id: id });
     if (error) throw error; return (data ?? null) as HadithEditShape | null;
+  }
+  /** Rubriques (séries) existantes, pour le sélecteur du formulaire hadith. */
+  async listRubriques(): Promise<string[]> {
+    const { data, error } = await supabase.rpc('rubriques_hadiths');
+    if (error) throw error; return (data ?? []) as string[];
   }
   async themesForTag(tag: string): Promise<ThemeRef[]> {
     const { data, error } = await supabase.rpc('themes_for_tag', { p_tag: tag });

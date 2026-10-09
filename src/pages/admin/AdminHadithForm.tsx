@@ -98,9 +98,11 @@ export const AdminHadithForm: React.FC = () => {
 
   // Champs
   const [f, setF] = useState({
-    sujet: '', intro: '', texte_arabe: AR_TEMPLATE.hadith, texte_francais: '', phonetique: '', explication: '',
+    sujet: '', rubrique: '', intro: '', texte_arabe: AR_TEMPLATE.hadith, texte_francais: '', phonetique: '', explication: '',
     degre_authenticite: 'Sahih', type_hadith: '', juge_par: '', tag: '',
   });
+  const [rubriques, setRubriques] = useState<string[]>([]);
+  useEffect(() => { adminService.listRubriques().then(setRubriques).catch(() => {}); }, []);
   const set = (k: keyof typeof f) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) =>
     setF((prev) => ({ ...prev, [k]: e.target.value }));
 
@@ -146,7 +148,7 @@ export const AdminHadithForm: React.FC = () => {
     adminService.getHadithForEdit(editId).then((h) => {
       if (!h) return;
       setF({
-        sujet: h.sujet ?? '', intro: h.intro ?? '', texte_arabe: h.texte_arabe ?? '', texte_francais: h.texte_francais ?? '',
+        sujet: h.sujet ?? '', rubrique: h.rubrique ?? '', intro: h.intro ?? '', texte_arabe: h.texte_arabe ?? '', texte_francais: h.texte_francais ?? '',
         phonetique: h.phonetique ?? '', explication: h.explication ?? '', degre_authenticite: h.degre_authenticite ?? '',
         type_hadith: h.type_hadith ?? '', juge_par: h.juge_par ?? '', tag: h.tag ?? '',
       });
@@ -205,7 +207,7 @@ export const AdminHadithForm: React.FC = () => {
       const newId = await adminService.saveHadith(buildPayload());
       setOk(true);
       if (andNew) {
-        setF({ sujet: '', intro: '', texte_arabe: AR_TEMPLATE.hadith, texte_francais: '', phonetique: '', explication: '', degre_authenticite: 'Sahih', type_hadith: '', juge_par: '', tag: '' });
+        setF({ sujet: '', rubrique: '', intro: '', texte_arabe: AR_TEMPLATE.hadith, texte_francais: '', phonetique: '', explication: '', degre_authenticite: 'Sahih', type_hadith: '', juge_par: '', tag: '' });
         setRapporteurIds([]); setNarrateurIds([]); setAddingNarr(false); setNewNarr({ nom: '', generation: 'sahabi', role: '', sexe: 'm' });
         setIsEquivoque(false); setEquivoqueId(null); setSegments([]); setVariants([]);
         setSources([emptySrc()]); setTimeout(() => setOk(false), 2500);
@@ -231,6 +233,11 @@ export const AdminHadithForm: React.FC = () => {
       <section className="rounded-card border border-line bg-surface p-5 mb-4">
         <h2 className="font-display font-semibold text-ink text-lg mb-4">1 · Le texte</h2>
         <div className="mb-3.5"><label className={label}>Sujet <span className="text-red-600">*</span></label><SujetField className={field} value={f.sujet} onChange={set('sujet')} placeholder="Ex. Allah existe sans endroit" /></div>
+        <div className="mb-3.5"><label className={label}>Rubrique / série <span className="text-muted font-normal">(optionnel)</span></label>
+          <input className={field} list="rubriques-list" value={f.rubrique} onChange={set('rubrique')} placeholder="Ex. Les Péchés de la langue — choisis-en une ou saisis-en une nouvelle" />
+          <datalist id="rubriques-list">{rubriques.map((r) => <option key={r} value={r} />)}</datalist>
+          <p className="text-xs text-muted mt-1">Regroupe les hadiths d'une même série&nbsp;: pilote le bloc «&nbsp;Sur le même thème&nbsp;». Laisse vide pour un hadith isolé.</p>
+        </div>
         <div className="mb-3.5"><label className={label}>Intro / narration <span className="text-muted font-normal">(optionnel)</span></label>
           <textarea className={`${field} min-h-[60px]`} value={f.intro} onChange={set('intro')} placeholder="Narration de contexte avant le texte arabe. Ex. « Le Prophète demanda à ses compagnons : »" />
           <p className="text-xs text-muted mt-1">Pour un hadith sous forme de dialogue : le propos qui introduit le texte arabe ci-dessous.</p>
