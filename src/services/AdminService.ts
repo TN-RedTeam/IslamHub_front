@@ -347,6 +347,11 @@ class AdminService {
     const { error } = await supabase.rpc('admin_delete_entry', { p: { kind, id: String(id), force } });
     if (error) throw error;
   }
+  /** Détail des contenus qui référencent cette entrée (titre + lien admin). */
+  async entryReferences(kind: DeletableKind, id: string | number): Promise<EntryReference[]> {
+    const { data, error } = await supabase.rpc('admin_entry_references', { p_kind: kind, p_id: String(id) });
+    if (error) throw error; return (data ?? []) as EntryReference[];
+  }
 
   // ---- Recherche d'occurrences → correction (tout mot, toutes rubriques) ----
   async searchOccurrences(q: string, limit = 150): Promise<OccurrenceHit[]> {
@@ -540,6 +545,11 @@ export type DeletableKind =
 export interface EntryDeps {
   total: number;
   refs: { articles?: number; equivoques?: number; dossiers?: number; exposes?: number; attributs?: number };
+}
+export interface EntryReference {
+  categorie: string;      // « Dossier (preuve) », « Exposé (citation) »…
+  titre: string;          // titre du contenu référent
+  path: string | null;    // lien d'édition admin (null si non éditable)
 }
 
 // ---- Contenu composable (blocs, Phase 3) ----
