@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { DeleteEntryButton } from '../../components/admin/DeleteEntryButton';
+import { ScanUploadButton } from '../../components/admin/ScanUploadButton';
 import { useNavigate, useParams, Link } from 'react-router-dom';
 import { Loader2, Check, AlertTriangle } from 'lucide-react';
 import { adminRecits, type RecitRow } from '../../services/AdminService';
@@ -78,7 +79,17 @@ export const AdminRecitForm: React.FC = () => {
           </select></div>
         <div><label className={label}>Slug (URL) <span className="text-muted font-normal">— généré depuis le titre</span></label>
           <input className={field} value={autoSlug} onChange={(e) => { setSlugTouched(true); setF({ ...f, slug: e.target.value }); }} placeholder="adam" /></div>
-        <div><label className={label}>Image (URL, optionnel)</label><input className={field} value={f.image_url} onChange={(e) => setF({ ...f, image_url: e.target.value })} placeholder="https://…/references/….webp" /></div>
+        <div><label className={label}>Image <span className="text-muted font-normal">(optionnel)</span></label>
+          {f.image_url && (
+            <a href={f.image_url} target="_blank" rel="noopener noreferrer" className="block mb-2">
+              <img src={f.image_url} alt="Aperçu" loading="lazy" className="max-h-40 rounded-lg border border-line object-contain bg-ground/40" />
+            </a>
+          )}
+          <div className="flex flex-col sm:flex-row gap-2 sm:items-center">
+            <input className={field} value={f.image_url} onChange={(e) => setF({ ...f, image_url: e.target.value })} placeholder="Téléverse ou colle une URL https://…/references/….webp" />
+            <ScanUploadButton onUploaded={(url) => setF({ ...f, image_url: url })} />
+          </div>
+        </div>
         <div><label className={label}>Contenu <span className="text-muted font-normal">(Markdown)</span></label><textarea className={`${field} min-h-[220px]`} value={f.contenu_md} onChange={(e) => setF({ ...f, contenu_md: e.target.value })} placeholder="Le récit, en Markdown…" /></div>
       </section>
 
