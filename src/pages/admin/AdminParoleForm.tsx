@@ -34,6 +34,7 @@ export const AdminParoleForm: React.FC = () => {
   const [commente, setCommente] = useState('');       // commente_parole_id (string)
   const [paroles, setParoles] = useState<RefOption[]>([]);
   const [images, setImages] = useState<Img[]>([]);
+  const moveImg = (i: number, d: -1 | 1) => setImages((p) => { const j = i + d; if (j < 0 || j >= p.length) return p; const n = [...p]; [n[i], n[j]] = [n[j], n[i]]; return n; });
   const [derived, setDerived] = useState<ThemeRef[]>([]);
   const [tagVocab, setTagVocab] = useState<string[]>([]);
   useEffect(() => { adminService.tagsVocabulary().then(setTagVocab).catch(() => {}); }, []);
@@ -152,7 +153,11 @@ export const AdminParoleForm: React.FC = () => {
         {images.map((im, i) => (
           <div key={im.key} className="rounded-lg border border-line p-3 mb-2.5">
             <div className="flex items-center gap-2 mb-2"><span className="text-sm font-semibold text-ink">Scan {i + 1}</span>
-              <button type="button" onClick={() => setImages((a) => a.filter((_, j) => j !== i))} className="ml-auto text-red-600" aria-label="Retirer"><Trash2 className="w-4 h-4" /></button></div>
+              <div className="ml-auto flex items-center gap-1">
+                <button type="button" onClick={() => moveImg(i, -1)} disabled={i === 0} className="px-2 py-1 text-xs rounded border border-line text-muted hover:text-ink disabled:opacity-40" aria-label="Monter">↑</button>
+                <button type="button" onClick={() => moveImg(i, 1)} disabled={i === images.length - 1} className="px-2 py-1 text-xs rounded border border-line text-muted hover:text-ink disabled:opacity-40" aria-label="Descendre">↓</button>
+                <button type="button" onClick={() => setImages((a) => a.filter((_, j) => j !== i))} className="text-red-600" aria-label="Retirer"><Trash2 className="w-4 h-4" /></button>
+              </div></div>
             {im.image_url && (
               <a href={im.image_url} target="_blank" rel="noopener noreferrer" className="block mb-2.5">
                 <img src={im.image_url} alt={im.alt || 'Aperçu du scan'} loading="lazy"
