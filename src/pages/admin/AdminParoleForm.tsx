@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { SujetField } from '../../components/admin/SujetField';
 import { DeleteEntryButton } from '../../components/admin/DeleteEntryButton';
 import { TagPicker } from '../../components/admin/TagPicker';
+import { ScanUploadButton } from '../../components/admin/ScanUploadButton';
 import { useNavigate, useParams, Link } from 'react-router-dom';
 import { Loader2, Plus, Trash2, Check, AlertTriangle } from 'lucide-react';
 import { adminService, type SavantRow, type ParoleFormData, type ParoleImageInput, type RefOption } from '../../services/AdminService';
@@ -147,12 +148,23 @@ export const AdminParoleForm: React.FC = () => {
       {/* 3. Scans */}
       <section className="rounded-card border border-line bg-surface p-5 mb-4">
         <h2 className="font-display font-semibold text-ink text-lg mb-1">3 · Scans du livre</h2>
-        <p className="text-xs text-muted mb-4">0 à N scans. Colle l’URL publique (bucket Storage <code>references</code>). L’<b>alt</b> décrit ce que montre la page.</p>
+        <p className="text-xs text-muted mb-4">0 à N scans. <b>Téléverse</b> directement l’image (WebP/JPEG/PNG, 5 Mo max) ou colle une URL publique. L’<b>alt</b> décrit ce que montre la page.</p>
         {images.map((im, i) => (
           <div key={im.key} className="rounded-lg border border-line p-3 mb-2.5">
             <div className="flex items-center gap-2 mb-2"><span className="text-sm font-semibold text-ink">Scan {i + 1}</span>
               <button type="button" onClick={() => setImages((a) => a.filter((_, j) => j !== i))} className="ml-auto text-red-600" aria-label="Retirer"><Trash2 className="w-4 h-4" /></button></div>
-            <div className="mb-2.5"><label className={label}>URL de l’image <span className="text-red-600">*</span></label><input className={field} value={im.image_url} onChange={(e) => setImages((a) => a.map((x, j) => j === i ? { ...x, image_url: e.target.value } : x))} placeholder="https://…/references/….webp" /></div>
+            {im.image_url && (
+              <a href={im.image_url} target="_blank" rel="noopener noreferrer" className="block mb-2.5">
+                <img src={im.image_url} alt={im.alt || 'Aperçu du scan'} loading="lazy"
+                  className="max-h-40 rounded-lg border border-line object-contain bg-ground/40" />
+              </a>
+            )}
+            <div className="mb-2.5"><label className={label}>Image <span className="text-red-600">*</span></label>
+              <div className="flex flex-col sm:flex-row gap-2 sm:items-center">
+                <input className={field} value={im.image_url} onChange={(e) => setImages((a) => a.map((x, j) => j === i ? { ...x, image_url: e.target.value } : x))} placeholder="Téléverse ou colle une URL https://…/references/….webp" />
+                <ScanUploadButton onUploaded={(url) => setImages((a) => a.map((x, j) => j === i ? { ...x, image_url: url } : x))} />
+              </div>
+            </div>
             <div className="mb-2.5"><label className={label}>Alt (description)</label><input className={field} value={im.alt} onChange={(e) => setImages((a) => a.map((x, j) => j === i ? { ...x, alt: e.target.value } : x))} placeholder="Scan de la page 88 de … montrant …" /></div>
             <div className="grid sm:grid-cols-2 gap-2.5">
               <div><label className={label}>Légende</label><input className={field} value={im.legende} onChange={(e) => setImages((a) => a.map((x, j) => j === i ? { ...x, legende: e.target.value } : x))} /></div>
@@ -160,7 +172,10 @@ export const AdminParoleForm: React.FC = () => {
             </div>
           </div>
         ))}
-        <button type="button" onClick={() => setImages((a) => [...a, emptyImg()])} className="mt-1 inline-flex items-center gap-1.5 rounded-lg border border-dashed border-green-line bg-glass-tint text-ink font-semibold px-3.5 py-2 text-sm"><Plus className="w-4 h-4" /> Ajouter un scan</button>
+        <div className="mt-1 flex flex-wrap items-center gap-2">
+          <button type="button" onClick={() => setImages((a) => [...a, emptyImg()])} className="inline-flex items-center gap-1.5 rounded-lg border border-dashed border-green-line bg-glass-tint text-ink font-semibold px-3.5 py-2 text-sm"><Plus className="w-4 h-4" /> Ajouter un scan</button>
+          <ScanUploadButton label="Téléverser un scan" onUploaded={(url) => setImages((a) => [...a, { ...emptyImg(), image_url: url }])} />
+        </div>
       </section>
 
       {/* 4. Thèmes */}
