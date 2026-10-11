@@ -67,6 +67,7 @@ const AdminRecherche = lazy(() => import('./pages/admin/AdminRecherche').then((m
 const AdminHadithForm = lazy(() => import('./pages/admin/AdminHadithForm').then((m) => ({ default: m.AdminHadithForm })));
 const AdminHadithsList = lazy(() => import('./pages/admin/AdminHadithsList').then((m) => ({ default: m.AdminHadithsList })));
 const AdminDoublonsList = lazy(() => import('./pages/admin/AdminDoublonsList').then((m) => ({ default: m.AdminDoublonsList })));
+const AdminThemesList = lazy(() => import('./pages/admin/AdminThemesList').then((m) => ({ default: m.AdminThemesList })));
 const AdminParoleForm = lazy(() => import('./pages/admin/AdminParoleForm').then((m) => ({ default: m.AdminParoleForm })));
 const AdminParolesList = lazy(() => import('./pages/admin/AdminParolesList').then((m) => ({ default: m.AdminParolesList })));
 const AdminRecitForm = lazy(() => import('./pages/admin/AdminRecitForm').then((m) => ({ default: m.AdminRecitForm })));
@@ -211,6 +212,7 @@ function App() {
                   <Route path="paroles/:id" element={<AdminParoleForm />} />
                   <Route path="recits" element={<AdminRecitsList />} />
                   <Route path="tags" element={<AdminTagsList />} />
+                  <Route path="themes" element={<AdminThemesList />} />
                   <Route path="sujets" element={<AdminSujetsList />} />
                   <Route path="recits/nouveau" element={<AdminRecitForm />} />
                   <Route path="recits/:id" element={<AdminRecitForm />} />
