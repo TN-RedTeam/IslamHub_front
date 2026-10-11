@@ -112,9 +112,9 @@ class AdminService {
     const { error } = await supabase.rpc('admin_theme_delete', { p_slug: slug });
     if (error) throw error;
   }
-  /** Contenus (hadiths/paroles/versets/invocations) portant un tag — aperçu avant mapping. */
-  async tagContents(tag: string, limit = 40): Promise<TagContent[]> {
-    const { data, error } = await supabase.rpc('admin_tag_contents', { p_tag: tag, p_limit: limit });
+  /** Aperçu des contenus (hadiths/paroles/versets/invocations) portant un tag — avant mapping. */
+  async tagContentsPreview(tag: string, limit = 40): Promise<TagContent[]> {
+    const { data, error } = await supabase.rpc('admin_tag_preview', { p_tag: tag, p_limit: limit });
     if (error) throw error; return (data ?? []) as TagContent[];
   }
   /** Paires de contenus proches (détection de doublons par similarité). */

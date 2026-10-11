@@ -33,7 +33,7 @@ export const AdminThemesList: React.FC = () => {
     setOpenTag(tag);
     if (!tagContent[tag]) {
       setLoadingTag(tag);
-      adminService.tagContents(tag).then((c) => setTagContent((p) => ({ ...p, [tag]: c }))).catch(() => setTagContent((p) => ({ ...p, [tag]: [] }))).finally(() => setLoadingTag(null));
+      adminService.tagContentsPreview(tag).then((c) => setTagContent((p) => ({ ...p, [tag]: c }))).catch(() => setTagContent((p) => ({ ...p, [tag]: [] }))).finally(() => setLoadingTag(null));
     }
   };
 
