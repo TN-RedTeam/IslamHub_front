@@ -17,6 +17,7 @@ const ENTITIES: { to: string; label: string; soon?: boolean }[] = [
   { to: '/admin/femmes', label: 'La femme musulmane' },
   { to: '/admin/recits', label: 'Récits' },
   { to: '/admin/tags', label: 'Tags & mots-clés' },
+  { to: '/admin/themes', label: 'Thèmes & mapping' },
   { to: '/admin/sujets', label: 'Sujets' },
 ];
 

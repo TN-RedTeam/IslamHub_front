@@ -88,6 +88,21 @@ class AdminService {
     const { data, error } = await supabase.rpc('rubriques_hadiths');
     if (error) throw error; return (data ?? []) as string[];
   }
+  /** Thèmes + leurs tags + tags utilisés sans thème (page « Thèmes & mapping »). */
+  async themesMapping(): Promise<ThemeMapping> {
+    const { data, error } = await supabase.rpc('admin_themes_mapping');
+    if (error) throw error;
+    const d = (data ?? {}) as Partial<ThemeMapping>;
+    return { themes: d.themes ?? [], unmapped: d.unmapped ?? [] };
+  }
+  async addThemeTag(tag: string, themeSlug: string): Promise<void> {
+    const { error } = await supabase.rpc('admin_theme_tag_add', { p_tag: tag, p_theme: themeSlug });
+    if (error) throw error;
+  }
+  async removeThemeTag(tag: string, themeSlug: string): Promise<void> {
+    const { error } = await supabase.rpc('admin_theme_tag_remove', { p_tag: tag, p_theme: themeSlug });
+    if (error) throw error;
+  }
   /** Paires de contenus proches (détection de doublons par similarité). */
   async listDuplicates(kind: DuplicateKind, min = 0.6, limit = 100): Promise<DuplicatePair[]> {
     const fn = kind === 'parole' ? 'parole_doublons_potentiels'
@@ -569,6 +584,8 @@ export interface EntryReference {
   titre: string;          // titre du contenu référent
   path: string | null;    // lien d'édition admin (null si non éditable)
 }
+export interface ThemeMappingRow { slug: string; nom: string; famille: string | null; ordre: number | null; tags: string[]; }
+export interface ThemeMapping { themes: ThemeMappingRow[]; unmapped: string[]; }
 
 // ---- Contenu composable (blocs, Phase 3) ----
 export type BlocType = 'texte' | 'commentaire' | 'preuve';
