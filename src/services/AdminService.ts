@@ -103,6 +103,15 @@ class AdminService {
     const { error } = await supabase.rpc('admin_theme_tag_remove', { p_tag: tag, p_theme: themeSlug });
     if (error) throw error;
   }
+  /** Créer (slug absent → généré) ou modifier (slug présent) un thème. Renvoie le slug. */
+  async saveTheme(payload: { slug?: string | null; nom: string; famille: string; ordre?: number | null }): Promise<string> {
+    const { data, error } = await supabase.rpc('admin_theme_save', { p: payload });
+    if (error) throw error; return data as string;
+  }
+  async deleteTheme(slug: string): Promise<void> {
+    const { error } = await supabase.rpc('admin_theme_delete', { p_slug: slug });
+    if (error) throw error;
+  }
   /** Paires de contenus proches (détection de doublons par similarité). */
   async listDuplicates(kind: DuplicateKind, min = 0.6, limit = 100): Promise<DuplicatePair[]> {
     const fn = kind === 'parole' ? 'parole_doublons_potentiels'
