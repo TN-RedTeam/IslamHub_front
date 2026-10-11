@@ -112,6 +112,11 @@ class AdminService {
     const { error } = await supabase.rpc('admin_theme_delete', { p_slug: slug });
     if (error) throw error;
   }
+  /** Contenus (hadiths/paroles/versets/invocations) portant un tag — aperçu avant mapping. */
+  async tagContents(tag: string, limit = 40): Promise<TagContent[]> {
+    const { data, error } = await supabase.rpc('admin_tag_contents', { p_tag: tag, p_limit: limit });
+    if (error) throw error; return (data ?? []) as TagContent[];
+  }
   /** Paires de contenus proches (détection de doublons par similarité). */
   async listDuplicates(kind: DuplicateKind, min = 0.6, limit = 100): Promise<DuplicatePair[]> {
     const fn = kind === 'parole' ? 'parole_doublons_potentiels'
@@ -613,6 +618,7 @@ export interface EntryReference {
 }
 export interface ThemeMappingRow { slug: string; nom: string; famille: string | null; ordre: number | null; tags: string[]; }
 export interface ThemeMapping { themes: ThemeMappingRow[]; unmapped: string[]; }
+export interface TagContent { kind: string; id: number; sujet: string | null; extrait: string | null; path: string; }
 
 // ---- Contenu composable (blocs, Phase 3) ----
 export type BlocType = 'texte' | 'commentaire' | 'preuve';
