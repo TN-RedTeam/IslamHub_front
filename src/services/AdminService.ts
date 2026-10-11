@@ -400,9 +400,16 @@ class AdminService {
     const { data, error } = await supabase.rpc('admin_search_occurrences', { q, p_limit: limit });
     if (error) throw error; return (data ?? []) as OccurrenceHit[];
   }
+  /** Remplacer un terme dans tout le site. apply=false → prévisualisation (comptage). */
+  async globalReplace(find: string, replace: string, apply: boolean, wholeWord: boolean): Promise<GlobalReplaceResult> {
+    const { data, error } = await supabase.rpc('admin_global_replace', { p_find: find, p_replace: replace, p_apply: apply, p_whole_word: wholeWord });
+    if (error) throw error; return data as GlobalReplaceResult;
+  }
 }
 
 export interface OccurrenceHit { kind: string; ref: string; label: string | null; extrait: string | null; path: string; }
+export interface GlobalReplaceDetail { rubrique: string; champ: string; fiches: number; }
+export interface GlobalReplaceResult { applied: boolean; whole_word: boolean; find: string; replace: string; total: number; details: GlobalReplaceDetail[]; }
 
 export interface ParoleImageInput { image_url: string; alt: string; legende?: string | null; source_livre?: string | null; source_livre_ar?: string | null; ordre?: number | null; }
 export interface ParoleFormData {
