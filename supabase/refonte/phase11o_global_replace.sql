@@ -75,3 +75,53 @@ begin
 
   return json_build_object('applied', p_apply, 'whole_word', p_whole_word, 'find', p_find, 'replace', p_replace, 'total', v_total, 'details', v_results);
 end $function$;
+
+-- ============================================================================
+-- Sauvegarde / annulation des remplacements
+-- ============================================================================
+-- Avant chaque application, admin_global_replace enregistre l'ancienne valeur
+-- de chaque cellule modifiée dans admin_replace_backups (clé = id, sauf exposes
+-- = slug). On peut annuler un lot complet via admin_replace_restore(batch).
+-- Tables/fonctions appliquées via le MCP. Testé : apply → restore OK.
+
+create table if not exists public.admin_replace_backups (
+  id bigserial primary key,
+  batch uuid not null,
+  created_at timestamptz not null default now(),
+  find text, replace text,
+  tbl text not null, col text not null,
+  key_col text not null, key_val text not null,
+  old_value text
+);
+create index if not exists admin_replace_backups_batch_idx on public.admin_replace_backups(batch);
+alter table public.admin_replace_backups enable row level security; -- accès via SECURITY DEFINER uniquement
+
+-- (admin_global_replace ci-dessus intègre déjà le snapshot avant update.)
+
+create or replace function public.admin_replace_restore(p_batch uuid)
+ returns json language plpgsql security definer set search_path to 'public'
+as $function$
+declare r record; v_cnt bigint := 0; n bigint;
+begin
+  if not public.is_admin() then raise exception 'Réservé à l''administrateur.'; end if;
+  for r in select distinct tbl, col, key_col from public.admin_replace_backups where batch=p_batch loop
+    execute format('update public.%I t set %I = b.old_value from public.admin_replace_backups b
+                    where b.batch=%L and b.tbl=%L and b.col=%L and (t.%I)::text = b.key_val',
+                   r.tbl, r.col, p_batch, r.tbl, r.col, r.key_col);
+    get diagnostics n = row_count; v_cnt := v_cnt + n;
+  end loop;
+  delete from public.admin_replace_backups where batch=p_batch;
+  return json_build_object('restored', v_cnt);
+end $function$;
+
+create or replace function public.admin_replace_batches(p_limit integer default 20)
+ returns json language plpgsql stable security definer set search_path to 'public'
+as $function$
+begin
+  if not public.is_admin() then raise exception 'Réservé à l''administrateur.'; end if;
+  return coalesce((select json_agg(row_to_json(x)) from (
+    select batch::text as batch, min(find) as find, min(replace) as replace,
+           min(created_at) as created_at, count(*) as cells
+    from public.admin_replace_backups group by batch order by min(created_at) desc limit p_limit
+  ) x), '[]'::json);
+end $function$;

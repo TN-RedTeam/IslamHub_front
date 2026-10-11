@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { Loader2, AlertTriangle, Check, Search, Replace } from 'lucide-react';
-import { adminService, type GlobalReplaceResult } from '../../services/AdminService';
+import React, { useState, useEffect, useCallback } from 'react';
+import { Loader2, AlertTriangle, Check, Search, Replace, Undo2 } from 'lucide-react';
+import { adminService, type GlobalReplaceResult, type ReplaceBatch } from '../../services/AdminService';
 
 const field = 'w-full rounded-lg border border-line bg-surface px-3 py-2.5 text-[15px] text-ink focus:outline-none focus:ring-2 focus:ring-green';
 
@@ -23,8 +23,20 @@ export const AdminRemplacer: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [done, setDone] = useState<GlobalReplaceResult | null>(null);
   const [confirmText, setConfirmText] = useState('');
+  const [batches, setBatches] = useState<ReplaceBatch[]>([]);
+  const [undoing, setUndoing] = useState<string | null>(null);
+
+  const loadBatches = useCallback(() => { adminService.replaceBatches(20).then(setBatches).catch(() => {}); }, []);
+  useEffect(() => { loadBatches(); }, [loadBatches]);
 
   const reset = () => { setPreview(null); setDone(null); setConfirmText(''); setError(null); };
+
+  const undo = async (batch: string) => {
+    setUndoing(batch); setError(null);
+    try { await adminService.restoreReplace(batch); setDone(null); loadBatches(); }
+    catch (e) { setError((e as Error).message || "Échec de l'annulation."); }
+    finally { setUndoing(null); }
+  };
 
   const doPreview = async () => {
     if (!find.trim()) return;
@@ -35,7 +47,7 @@ export const AdminRemplacer: React.FC = () => {
   };
   const doApply = async () => {
     setBusy('apply'); setError(null);
-    try { const r = await adminService.globalReplace(find, replace, true, wholeWord); setDone(r); setPreview(null); setConfirmText(''); }
+    try { const r = await adminService.globalReplace(find, replace, true, wholeWord); setDone(r); setPreview(null); setConfirmText(''); loadBatches(); }
     catch (e) { setError((e as Error).message || 'Échec du remplacement.'); }
     finally { setBusy(null); }
   };
@@ -111,8 +123,34 @@ export const AdminRemplacer: React.FC = () => {
           <p className="text-[14px] text-ink font-semibold inline-flex items-center gap-1.5">
             <Check className="w-4 h-4 text-green" /> Remplacement effectué : <b>{done.total}</b> fiche{done.total > 1 ? 's' : ''} mise{done.total > 1 ? 's' : ''} à jour.
           </p>
-          <p className="text-[12.5px] text-muted mt-1">« {done.find} » → « {done.replace} ». Pense à vérifier quelques fiches, et à redéployer n'est pas nécessaire (c'est en base).</p>
+          <p className="text-[12.5px] text-muted mt-1">« {done.find} » → « {done.replace} ». C'est en base (pas besoin de redéployer). Pense à vérifier quelques fiches.</p>
+          {done.batch && (
+            <button type="button" disabled={undoing === done.batch} onClick={() => undo(done.batch!)}
+              className="mt-3 inline-flex items-center gap-1.5 rounded-lg border border-line bg-surface text-ink font-semibold px-3.5 py-2 text-sm hover:border-green disabled:opacity-50">
+              {undoing === done.batch ? <Loader2 className="w-4 h-4 animate-spin" /> : <Undo2 className="w-4 h-4" />} Annuler ce remplacement
+            </button>
+          )}
         </div>
+      )}
+
+      {/* Historique annulable */}
+      {batches.length > 0 && (
+        <section className="rounded-card border border-line bg-surface p-5 mt-6">
+          <h2 className="font-display font-semibold text-ink text-lg mb-1">Remplacements récents <span className="text-muted font-normal">(annulables)</span></h2>
+          <p className="text-xs text-muted mb-3.5">Chaque remplacement est sauvegardé ligne par ligne et peut être annulé.</p>
+          <ul className="divide-y divide-line">
+            {batches.map((b) => (
+              <li key={b.batch} className="flex items-center gap-3 py-2.5 flex-wrap">
+                <span className="text-[14px] text-ink">« {b.find} » → « {b.replace} »</span>
+                <span className="text-[12px] text-muted">· {b.cells} champ{b.cells > 1 ? 's' : ''} · {new Date(b.created_at).toLocaleString('fr-FR')}</span>
+                <button type="button" disabled={undoing === b.batch} onClick={() => undo(b.batch)}
+                  className="ml-auto inline-flex items-center gap-1.5 rounded-lg border border-line bg-glass-tint text-ink font-semibold px-3 py-1.5 text-sm hover:border-green disabled:opacity-50">
+                  {undoing === b.batch ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Undo2 className="w-3.5 h-3.5" />} Annuler
+                </button>
+              </li>
+            ))}
+          </ul>
+        </section>
       )}
     </div>
   );
