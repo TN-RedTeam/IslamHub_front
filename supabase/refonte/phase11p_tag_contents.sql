@@ -4,9 +4,12 @@
 -- Dans « Tags sans thème », permet de déplier un tag pour voir les hadiths /
 -- paroles / versets / invocations qui le portent, avant de choisir le thème
 -- (ex. savoir si « al-ach'ari » parle de l'imam ou de ses suiveurs).
+--
+-- ⚠️ Fonction nommée admin_tag_preview (et PAS admin_tag_contents, qui existe
+--    déjà pour le drill-down de « Tags & mots-clés » avec une autre forme).
 -- Lecture admin → appliqué via le MCP.
 -- ============================================================================
-create or replace function public.admin_tag_contents(p_tag text, p_limit integer default 40)
+create or replace function public.admin_tag_preview(p_tag text, p_limit integer default 40)
  returns json language plpgsql stable security definer set search_path to 'public'
 as $function$
 declare v_tag text := lower(btrim(coalesce(p_tag,'')));
