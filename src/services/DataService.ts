@@ -129,6 +129,12 @@ class DataService {
       narrateur_filter: rubrics?.narrateur ?? '',
     });
   }
+  /** Recherche approximative (similarité) — repli quand la recherche exacte ne donne rien. */
+  async searchHadithsFuzzy(searchTerm: string, limit = 20): Promise<PaginatedResponse<Hadith>> {
+    const { data, error } = await supabase.rpc('search_hadiths_fuzzy', { q: sanitizeInput(searchTerm), p_limit: limit });
+    if (error) throw error;
+    return shapeResult<Hadith>(data, 0, limit);
+  }
   async getHadithTags(): Promise<string[]> {
     return rpcTags('tags_hadiths');
   }
@@ -328,6 +334,13 @@ class DataService {
     const d = (data ?? {}) as Partial<SearchResults>;
     return { hadiths: d.hadiths ?? [], paroles: d.paroles ?? [], invocations: d.invocations ?? [], versets: d.versets ?? [], fiqh: d.fiqh ?? [], themes: d.themes ?? [] };
   }
+  /** Recherche globale approximative (similarité) — repli quand l'exacte ne donne rien. */
+  async searchAllFuzzy(q: string, limit = 8): Promise<SearchResults> {
+    const { data, error } = await supabase.rpc('search_all_fuzzy', { q, p_limit: limit });
+    if (error) throw error;
+    const d = (data ?? {}) as Partial<SearchResults>;
+    return { hadiths: d.hadiths ?? [], paroles: d.paroles ?? [], invocations: d.invocations ?? [], versets: d.versets ?? [], fiqh: d.fiqh ?? [], themes: d.themes ?? [] };
+  }
 
   // ================= Paroles =================
   async getParoles(params?: PaginationParams): Promise<PaginatedResponse<Parole>> {
@@ -347,6 +360,12 @@ class DataService {
       savant_filter: savant ?? '',
       source_filter: source ?? '',
     });
+  }
+  /** Recherche approximative (similarité) — repli quand la recherche exacte ne donne rien. */
+  async searchParolesFuzzy(searchTerm: string, limit = 20): Promise<PaginatedResponse<Parole>> {
+    const { data, error } = await supabase.rpc('search_paroles_fuzzy', { q: sanitizeInput(searchTerm), p_limit: limit });
+    if (error) throw error;
+    return shapeResult<Parole>(data, 0, limit);
   }
   /** Liste des recueils / sources distincts (menu déroulant paroles). */
   async getParoleSources(): Promise<string[]> {

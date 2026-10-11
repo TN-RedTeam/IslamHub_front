@@ -314,6 +314,7 @@ export const Hadiths: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [hasMore, setHasMore] = useState(false);
   const [hasSearched, setHasSearched] = useState(false);
+  const [isApprox, setIsApprox] = useState(false); // résultats approchants (repli fuzzy)
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -345,13 +346,23 @@ export const Hadiths: React.FC = () => {
     if (page === 0) { setIsLoading(true); setError(null); } else setIsLoadingMore(true);
     try {
       const res = await dataService.searchHadiths(q, tag, { page, pageSize: ITEMS_PER_PAGE }, r);
-      const items = (res.data ?? []) as Hadith[];
-      const tot = res.count ?? 0;
+      let items = (res.data ?? []) as Hadith[];
+      let tot = res.count ?? 0;
+      let approx = false;
+      // Repli automatique : si l'exact ne donne rien, on tente l'approximatif (similarité).
+      if (page === 0 && tot === 0 && q.trim()) {
+        try {
+          const fz = await dataService.searchHadithsFuzzy(q, 12);
+          const fzItems = (fz.data ?? []) as Hadith[];
+          if (fzItems.length) { items = fzItems; tot = fz.count ?? fzItems.length; approx = true; }
+        } catch { /* on garde le résultat vide */ }
+      }
       setHadiths((prev) => (append ? [...prev, ...items] : items));
       setTotal(tot);
-      setHasMore((page + 1) * ITEMS_PER_PAGE < tot);
+      setHasMore(!approx && (page + 1) * ITEMS_PER_PAGE < tot);
       setCurrentPage(page);
       setHasSearched(true);
+      if (page === 0) setIsApprox(approx);
     } catch (err) {
       console.error('Error searching hadiths:', err);
       setError('Une erreur est survenue lors de la recherche. Veuillez réessayer.');
@@ -552,9 +563,15 @@ export const Hadiths: React.FC = () => {
               </m.div>
             ) : (
               <>
+                {isApprox && (
+                  <div className="mb-5 rounded-lg border border-gold bg-glass-tint px-4 py-3 text-sm text-ink">
+                    <b>Aucun résultat exact.</b> Voici les hadiths les plus proches (recherche approximative).
+                    Astuce : pour un texte arabe, cherche un court extrait distinctif.
+                  </div>
+                )}
                 <m.p initial={{ opacity: 0 }} animate={{ opacity: 1 }}
                     className="text-sm font-medium text-green mb-6">
-                  {hadiths.length}{total > hadiths.length ? ` / ${total}` : ''} hadith{total > 1 ? 's' : ''} trouvé{total > 1 ? 's' : ''}
+                  {hadiths.length}{total > hadiths.length ? ` / ${total}` : ''} hadith{total > 1 ? 's' : ''} {isApprox ? 'approchant' : 'trouvé'}{total > 1 ? 's' : ''}
                 </m.p>
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                   <AnimatePresence mode="popLayout">
