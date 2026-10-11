@@ -1,6 +1,8 @@
 import React, { useEffect, useMemo, useState, useCallback } from 'react';
-import { Loader2, X, Plus, AlertTriangle, Check, Pencil, Trash2 } from 'lucide-react';
-import { adminService, type ThemeMapping, type ThemeMappingRow } from '../../services/AdminService';
+import { Loader2, X, Plus, AlertTriangle, Check, Pencil, Trash2, Eye, ExternalLink, ChevronDown } from 'lucide-react';
+import { adminService, type ThemeMapping, type ThemeMappingRow, type TagContent } from '../../services/AdminService';
+
+const KIND_LABEL: Record<string, string> = { hadith: 'Hadith', parole: 'Parole', verset: 'Verset', invocation: 'Invocation' };
 
 const fieldCls = 'rounded-lg border border-line bg-surface text-ink px-2.5 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-green';
 
@@ -21,6 +23,19 @@ export const AdminThemesList: React.FC = () => {
   const [editForm, setEditForm] = useState({ nom: '', famille: '', ordre: '' });
   // Suppression (slug à confirmer)
   const [confirmDel, setConfirmDel] = useState<string | null>(null);
+  // Aperçu des contenus d'un tag non mappé
+  const [openTag, setOpenTag] = useState<string | null>(null);
+  const [tagContent, setTagContent] = useState<Record<string, TagContent[]>>({});
+  const [loadingTag, setLoadingTag] = useState<string | null>(null);
+
+  const toggleTag = (tag: string) => {
+    if (openTag === tag) { setOpenTag(null); return; }
+    setOpenTag(tag);
+    if (!tagContent[tag]) {
+      setLoadingTag(tag);
+      adminService.tagContents(tag).then((c) => setTagContent((p) => ({ ...p, [tag]: c }))).catch(() => setTagContent((p) => ({ ...p, [tag]: [] }))).finally(() => setLoadingTag(null));
+    }
+  };
 
   const load = useCallback(() => {
     setLoading(true);
@@ -111,18 +126,49 @@ export const AdminThemesList: React.FC = () => {
               <ul className="space-y-2">
                 {data.unmapped.map((tag) => {
                   const key = `add:${tag}`;
+                  const open = openTag === tag;
+                  const items = tagContent[tag];
                   return (
-                    <li key={tag} className="flex items-center gap-2 flex-wrap">
-                      <span className="px-2.5 py-1 rounded-full bg-glass-tint text-ink border border-line text-[13px]">{tag}</span>
-                      <span className="text-muted text-sm">→</span>
-                      <select value={pick[tag] ?? ''} onChange={(e) => setPick((p) => ({ ...p, [tag]: e.target.value }))} className={fieldCls}>
-                        <option value="">— choisir un thème —</option>
-                        {data.themes.map((t) => <option key={t.slug} value={t.slug}>{t.nom}</option>)}
-                      </select>
-                      <button type="button" disabled={!pick[tag] || busy === key} onClick={() => addTag(tag, pick[tag], key)}
-                        className="inline-flex items-center gap-1 rounded-lg bg-green text-white px-3 py-1.5 text-sm font-semibold disabled:opacity-50">
-                        {busy === key ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Plus className="w-3.5 h-3.5" />} Mapper
-                      </button>
+                    <li key={tag}>
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <button type="button" onClick={() => toggleTag(tag)}
+                          className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-glass-tint text-ink border border-line text-[13px] hover:border-green"
+                          title="Voir les contenus portant ce tag">
+                          <Eye className="w-3.5 h-3.5 text-muted" /> {tag}
+                          <ChevronDown className={`w-3.5 h-3.5 text-muted transition-transform ${open ? 'rotate-180' : ''}`} />
+                        </button>
+                        <span className="text-muted text-sm">→</span>
+                        <select value={pick[tag] ?? ''} onChange={(e) => setPick((p) => ({ ...p, [tag]: e.target.value }))} className={fieldCls}>
+                          <option value="">— choisir un thème —</option>
+                          {data.themes.map((t) => <option key={t.slug} value={t.slug}>{t.nom}</option>)}
+                        </select>
+                        <button type="button" disabled={!pick[tag] || busy === key} onClick={() => addTag(tag, pick[tag], key)}
+                          className="inline-flex items-center gap-1 rounded-lg bg-green text-white px-3 py-1.5 text-sm font-semibold disabled:opacity-50">
+                          {busy === key ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Plus className="w-3.5 h-3.5" />} Mapper
+                        </button>
+                      </div>
+                      {open && (
+                        <div className="mt-2 ml-1 pl-3 border-l-2 border-green-line">
+                          {loadingTag === tag ? (
+                            <p className="text-sm text-muted inline-flex items-center gap-1.5 py-1"><Loader2 className="w-3.5 h-3.5 animate-spin" /> Chargement…</p>
+                          ) : !items || items.length === 0 ? (
+                            <p className="text-sm text-muted italic py-1">Aucun contenu rattaché.</p>
+                          ) : (
+                            <ul className="space-y-1.5 py-1">
+                              {items.map((it) => (
+                                <li key={`${it.kind}-${it.id}`} className="text-[13px]">
+                                  <div className="flex items-center gap-2">
+                                    <span className="text-[11px] px-1.5 py-0.5 rounded bg-glass-tint border border-glass-border text-muted shrink-0">{KIND_LABEL[it.kind] ?? it.kind}</span>
+                                    <span className="text-ink font-medium truncate">{it.sujet || `#${it.id}`}</span>
+                                    <a href={`#${it.path}`} target="_blank" rel="noopener noreferrer" className="ml-auto inline-flex items-center gap-1 text-[12px] text-accent hover:underline shrink-0">Ouvrir <ExternalLink className="w-3 h-3" /></a>
+                                  </div>
+                                  {it.extrait && <p className="text-muted mt-0.5 line-clamp-2 [unicode-bidi:plaintext]">{it.extrait}</p>}
+                                </li>
+                              ))}
+                            </ul>
+                          )}
+                        </div>
+                      )}
                     </li>
                   );
                 })}
