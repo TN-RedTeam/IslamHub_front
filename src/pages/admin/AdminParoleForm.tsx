@@ -12,8 +12,8 @@ import type { ThemeRef } from '../../types';
 const NEW = '__new';
 const label = 'block text-[13px] font-semibold text-ink mb-1.5';
 const field = 'w-full rounded-lg border border-line bg-surface px-3 py-2.5 text-[15px] text-ink focus:outline-none focus:ring-2 focus:ring-green';
-type Img = { key: string; image_url: string; alt: string; legende: string; source_livre: string };
-const emptyImg = (): Img => ({ key: Math.random().toString(36).slice(2), image_url: '', alt: '', legende: '', source_livre: '' });
+type Img = { key: string; image_url: string; alt: string; legende: string; source_livre: string; source_livre_ar: string };
+const emptyImg = (): Img => ({ key: Math.random().toString(36).slice(2), image_url: '', alt: '', legende: '', source_livre: '', source_livre_ar: '' });
 
 export const AdminParoleForm: React.FC = () => {
   const { id } = useParams();
@@ -52,7 +52,7 @@ export const AdminParoleForm: React.FC = () => {
       setSavant(p.savant_id ? String(p.savant_id) : '');
       setRapporteur(p.rapporteur_savant_id ? String(p.rapporteur_savant_id) : '');
       setCommente(p.commente_parole_id ? String(p.commente_parole_id) : '');
-      setImages(p.images.map((im) => ({ ...emptyImg(), image_url: im.image_url ?? '', alt: im.alt ?? '', legende: im.legende ?? '', source_livre: im.source_livre ?? '' })));
+      setImages(p.images.map((im) => ({ ...emptyImg(), image_url: im.image_url ?? '', alt: im.alt ?? '', legende: im.legende ?? '', source_livre: im.source_livre ?? '', source_livre_ar: im.source_livre_ar ?? '' })));
     }).catch(() => setError('Parole introuvable.'));
   }, [editId]);
 
@@ -71,7 +71,7 @@ export const AdminParoleForm: React.FC = () => {
     rapporteur_savant_id: rapporteur ? Number(rapporteur) : null,
     commente_parole_id: commente ? Number(commente) : null,
     images: images.filter((im) => im.image_url.trim()).map<ParoleImageInput>((im, i) => ({
-      image_url: im.image_url.trim(), alt: im.alt.trim() || 'Scan du livre', legende: im.legende || null, source_livre: im.source_livre || null, ordre: i,
+      image_url: im.image_url.trim(), alt: im.alt.trim() || 'Scan du livre', legende: im.legende || null, source_livre: im.source_livre || null, source_livre_ar: im.source_livre_ar || null, ordre: i,
     })),
   });
 
@@ -175,6 +175,8 @@ export const AdminParoleForm: React.FC = () => {
               <div><label className={label}>Légende</label><input className={field} value={im.legende} onChange={(e) => setImages((a) => a.map((x, j) => j === i ? { ...x, legende: e.target.value } : x))} /></div>
               <div><label className={label}>Source (livre, p.)</label><input className={field} value={im.source_livre} onChange={(e) => setImages((a) => a.map((x, j) => j === i ? { ...x, source_livre: e.target.value } : x))} /></div>
             </div>
+            <div className="mt-2.5"><label className={label}>Nom du livre en arabe <span className="text-muted font-normal">(optionnel)</span></label>
+              <input dir="rtl" lang="ar" className={`${field} font-arabic text-lg text-right`} value={im.source_livre_ar} onChange={(e) => setImages((a) => a.map((x, j) => j === i ? { ...x, source_livre_ar: e.target.value } : x))} placeholder="اسم الكتاب بالعربية" /></div>
           </div>
         ))}
         <div className="mt-1 flex flex-wrap items-center gap-2">

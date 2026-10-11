@@ -133,7 +133,7 @@ export const ParolePage: React.FC = () => {
               {scans.map((s) => (
                 <figure key={s.id} className="rounded-card border border-line bg-surface overflow-hidden">
                   <button
-                    onClick={() => setZoomed({ image_url: s.image_url, alt: s.alt, legende: s.legende ?? undefined, source_livre: s.source_livre ?? reference ?? undefined })}
+                    onClick={() => setZoomed({ image_url: s.image_url, alt: s.alt, legende: s.legende ?? undefined, source_livre: s.source_livre ?? reference ?? undefined, source_livre_ar: s.source_livre_ar ?? undefined })}
                     className="block w-full hover:opacity-95 transition-opacity focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green"
                     aria-label={`Agrandir : ${s.alt}`}
                   >
@@ -144,9 +144,12 @@ export const ParolePage: React.FC = () => {
                       className="w-full max-h-[460px] object-contain bg-white"
                     />
                   </button>
-                  {(s.legende || s.source_livre) && (
+                  {(s.legende || s.source_livre || s.source_livre_ar) && (
                     <figcaption className="px-3 py-2 text-sm text-muted border-t border-line">
                       {s.legende}{s.legende && s.source_livre ? ' — ' : ''}{s.source_livre}
+                      {s.source_livre_ar && (
+                        <span dir="rtl" lang="ar" className="block font-arabic text-base text-ink mt-0.5">{s.source_livre_ar}</span>
+                      )}
                     </figcaption>
                   )}
                 </figure>
