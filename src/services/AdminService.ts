@@ -380,7 +380,7 @@ class AdminService {
 
 export interface OccurrenceHit { kind: string; ref: string; label: string | null; extrait: string | null; path: string; }
 
-export interface ParoleImageInput { image_url: string; alt: string; legende?: string | null; source_livre?: string | null; ordre?: number | null; }
+export interface ParoleImageInput { image_url: string; alt: string; legende?: string | null; source_livre?: string | null; source_livre_ar?: string | null; ordre?: number | null; }
 export interface ParoleFormData {
   id?: number | null;
   sujet: string; texte_arabe: string; texte_francais: string; phonetique: string; explication: string;
@@ -397,7 +397,7 @@ export interface ParoleEditShape {
   phonetique: string | null; explication: string | null; source_livre: string | null; page: string | null;
   ecole: string | null; savant_id: number | null; tag: string | null;
   rapporteur_savant_id: number | null; commente_parole_id: number | null; commente_livre: string | null;
-  images: { image_url: string; alt: string | null; legende: string | null; source_livre: string | null; ordre: number | null }[];
+  images: { image_url: string; alt: string | null; legende: string | null; source_livre: string | null; source_livre_ar: string | null; ordre: number | null }[];
 }
 
 export type VersetType = 'verset' | 'hadith';

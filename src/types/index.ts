@@ -103,6 +103,7 @@ export interface ParoleImage {
   legende: string | null;
   alt: string;
   source_livre: string | null;
+  source_livre_ar: string | null; // nom du livre en arabe (optionnel)
   ordre: number;
 }
 

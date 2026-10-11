@@ -6,6 +6,7 @@ export interface LightboxImage {
   alt: string;
   legende?: string | null;
   source_livre?: string | null;
+  source_livre_ar?: string | null;
 }
 
 /** Visionneuse plein écran, fermable au clic sur le fond et à la touche Échap. */
@@ -40,10 +41,11 @@ export const Lightbox: React.FC<{ image: LightboxImage | null; onClose: () => vo
       </button>
       <figure className="max-w-4xl w-full max-h-[90vh] flex flex-col items-center gap-3" onClick={(e) => e.stopPropagation()}>
         <img src={image.image_url} alt={image.alt} className="max-h-[80vh] w-auto rounded-lg object-contain" />
-        {(image.legende || image.source_livre) && (
+        {(image.legende || image.source_livre || image.source_livre_ar) && (
           <figcaption className="text-center text-sm text-white/80">
             {image.legende}
             {image.source_livre && <span className="block text-white/60 text-xs mt-0.5">{image.source_livre}</span>}
+            {image.source_livre_ar && <span dir="rtl" lang="ar" className="block font-arabic text-base text-white/90 mt-1">{image.source_livre_ar}</span>}
           </figcaption>
         )}
       </figure>
