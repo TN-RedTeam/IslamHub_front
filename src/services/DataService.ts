@@ -334,6 +334,13 @@ class DataService {
     const d = (data ?? {}) as Partial<SearchResults>;
     return { hadiths: d.hadiths ?? [], paroles: d.paroles ?? [], invocations: d.invocations ?? [], versets: d.versets ?? [], fiqh: d.fiqh ?? [], themes: d.themes ?? [] };
   }
+  /** Recherche globale approximative (similarité) — repli quand l'exacte ne donne rien. */
+  async searchAllFuzzy(q: string, limit = 8): Promise<SearchResults> {
+    const { data, error } = await supabase.rpc('search_all_fuzzy', { q, p_limit: limit });
+    if (error) throw error;
+    const d = (data ?? {}) as Partial<SearchResults>;
+    return { hadiths: d.hadiths ?? [], paroles: d.paroles ?? [], invocations: d.invocations ?? [], versets: d.versets ?? [], fiqh: d.fiqh ?? [], themes: d.themes ?? [] };
+  }
 
   // ================= Paroles =================
   async getParoles(params?: PaginationParams): Promise<PaginatedResponse<Parole>> {

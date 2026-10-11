@@ -36,6 +36,7 @@ export const Recherche: React.FC = () => {
   const [results, setResults] = useState<SearchResults>(EMPTY);
   const [loading, setLoading] = useState(false);
   const [searched, setSearched] = useState(false);
+  const [isApprox, setIsApprox] = useState(false);
   const timer = useRef<number | undefined>(undefined);
 
   useSeo({ title: q0 ? `Recherche : ${q0}` : 'Recherche', description: 'Recherchez dans les hadiths, paroles, invocations, versets et thèmes.' });
@@ -45,12 +46,23 @@ export const Recherche: React.FC = () => {
     window.clearTimeout(timer.current);
     const term = input.trim();
     setParams(term ? { q: term } : {}, { replace: true });
-    if (!term) { setResults(EMPTY); setSearched(false); return; }
+    if (!term) { setResults(EMPTY); setSearched(false); setIsApprox(false); return; }
     setLoading(true);
     timer.current = window.setTimeout(() => {
       dataService.searchAll(term, 12)
-        .then((r) => { setResults(r); setSearched(true); })
-        .catch(() => setResults(EMPTY))
+        .then(async (r) => {
+          const tot = r.hadiths.length + r.paroles.length + r.invocations.length + r.versets.length + r.fiqh.length + r.themes.length;
+          if (tot === 0) {
+            // Repli automatique : recherche approximative (similarité).
+            try {
+              const fz = await dataService.searchAllFuzzy(term, 12);
+              const ftot = fz.hadiths.length + fz.paroles.length + fz.invocations.length + fz.versets.length + fz.fiqh.length + fz.themes.length;
+              setResults(fz); setIsApprox(ftot > 0);
+            } catch { setResults(r); setIsApprox(false); }
+          } else { setResults(r); setIsApprox(false); }
+          setSearched(true);
+        })
+        .catch(() => { setResults(EMPTY); setIsApprox(false); })
         .finally(() => setLoading(false));
     }, 250);
     return () => window.clearTimeout(timer.current);
@@ -82,6 +94,12 @@ export const Recherche: React.FC = () => {
           <p className="text-muted py-10 text-center">Aucun résultat pour « {input.trim()} ». Essaie un autre terme (les accents et la casse sont ignorés).</p>
         ) : (
           <div className="space-y-8">
+            {isApprox && (
+              <div className="rounded-lg border border-gold bg-glass-tint px-4 py-3 text-sm text-ink">
+                <b>Aucun résultat exact.</b> Voici les contenus les plus proches (recherche approximative).
+                Astuce : pour un texte arabe, cherche un court extrait distinctif.
+              </div>
+            )}
             {results.hadiths.length > 0 && (
               <section>
                 <h2 className="font-display font-semibold text-ink text-xl mb-3">{compteur(results.hadiths.length, 'hadith')}</h2>

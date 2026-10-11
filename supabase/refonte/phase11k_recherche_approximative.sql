@@ -51,3 +51,52 @@ as $function$
       select p.id, p.slug, p.sujet, p.savant, p.ecole, p.texte_arabe, p.texte_francais, p."phonétique", p.explication, p.tag, p.source_livre, p.page
       from filtered f join public.paroles p on p.id=f.id order by f.score desc, f.id) d), '[]'::json));
 $function$;
+
+-- ----------------------------------------------------------------------------
+-- Loupe globale : repli approximatif sur les 6 catégories (même forme que search_all)
+-- ----------------------------------------------------------------------------
+create or replace function public.search_all_fuzzy(q text, p_limit integer default 8)
+ returns json language sql stable set search_path to 'public','pg_temp'
+as $function$
+  with p as (
+    select nullif(btrim(coalesce(q,'')),'') as raw,
+           public.normalize_ar(coalesce(q,'')) as arq,
+           public.unaccent(lower(coalesce(q,''))) as frq
+  )
+  select json_build_object(
+    'hadiths', (select coalesce(json_agg(row_to_json(x)),'[]'::json) from (
+        select h.id, h.slug, h.sujet, left(coalesce(h.texte_francais,''),140) as extrait,
+          greatest(similarity(public.normalize_ar(coalesce(h.texte_arabe,'')), (select arq from p)),
+                   similarity(public.unaccent(lower(coalesce(h.texte_francais,'')||' '||coalesce(h.sujet,''))), (select frq from p))) as score
+        from public.hadiths h, p where p.raw is not null
+        order by score desc, h.id limit p_limit) x where x.score >= 0.3),
+    'paroles', (select coalesce(json_agg(row_to_json(x)),'[]'::json) from (
+        select pa.id, pa.slug, pa.sujet, coalesce(sv.nom,pa.savant) as savant, left(coalesce(pa.texte_francais,''),140) as extrait,
+          greatest(similarity(public.normalize_ar(coalesce(pa.texte_arabe,'')), (select arq from p)),
+                   similarity(public.unaccent(lower(coalesce(pa.texte_francais,'')||' '||coalesce(pa.sujet,'')||' '||coalesce(sv.nom,pa.savant,''))), (select frq from p))) as score
+        from public.paroles pa left join public.savants sv on sv.id=pa.savant_id, p where p.raw is not null
+        order by score desc, pa.id limit p_limit) x where x.score >= 0.3),
+    'invocations', (select coalesce(json_agg(row_to_json(x)),'[]'::json) from (
+        select i.id, i.type_id, i.sujet, left(coalesce(i.texte_francais,''),140) as extrait,
+          greatest(similarity(public.normalize_ar(coalesce(i.texte_arabe,'')), (select arq from p)),
+                   similarity(public.unaccent(lower(coalesce(i.sujet,'')||' '||coalesce(i.texte_francais,'')||' '||coalesce(i.commentaire,''))), (select frq from p))) as score
+        from public.invocations i, p where p.raw is not null
+        order by score desc, i.id limit p_limit) x where x.score >= 0.3),
+    'versets', (select coalesce(json_agg(row_to_json(x)),'[]'::json) from (
+        select c.id, c.sujet, c.sourate, left(coalesce(c.texte_francais,''),140) as extrait,
+          greatest(similarity(public.normalize_ar(coalesce(c.texte_arabe,'')), (select arq from p)),
+                   similarity(public.unaccent(lower(coalesce(c.sujet,'')||' '||coalesce(c.texte_francais,'')||' '||coalesce(c.sourate,''))), (select frq from p))) as score
+        from public.coran c, p where p.raw is not null
+        order by score desc, c.id limit p_limit) x where x.score >= 0.3),
+    'fiqh', (select coalesce(json_agg(row_to_json(x)),'[]'::json) from (
+        select f.id, f.sujet, f.chapitre, f.ecole, left(coalesce(f.texte,''),140) as extrait,
+          greatest(similarity(public.normalize_ar(coalesce(f.texte_arabe,'')), (select arq from p)),
+                   similarity(public.unaccent(lower(coalesce(f.sujet,'')||' '||coalesce(f.texte,'')||' '||coalesce(f.chapitre,'')||' '||coalesce(f.tag,''))), (select frq from p))) as score
+        from public.fiqh f, p where p.raw is not null
+        order by score desc, f.id limit p_limit) x where x.score >= 0.3),
+    'themes', (select coalesce(json_agg(row_to_json(x)),'[]'::json) from (
+        select t.slug, t.nom, t.famille, similarity(public.unaccent(lower(t.nom)), (select frq from p)) as score
+        from public.themes t, p where p.raw is not null
+        order by score desc, t.ordre limit p_limit) x where x.score >= 0.3)
+  );
+$function$;
