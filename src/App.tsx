@@ -70,6 +70,7 @@ const AdminHadithsList = lazy(() => import('./pages/admin/AdminHadithsList').the
 const AdminDoublonsList = lazy(() => import('./pages/admin/AdminDoublonsList').then((m) => ({ default: m.AdminDoublonsList })));
 const AdminThemesList = lazy(() => import('./pages/admin/AdminThemesList').then((m) => ({ default: m.AdminThemesList })));
 const AdminRemplacer = lazy(() => import('./pages/admin/AdminRemplacer').then((m) => ({ default: m.AdminRemplacer })));
+const AdminOuvragesList = lazy(() => import('./pages/admin/AdminOuvragesList').then((m) => ({ default: m.AdminOuvragesList })));
 const AdminParoleForm = lazy(() => import('./pages/admin/AdminParoleForm').then((m) => ({ default: m.AdminParoleForm })));
 const AdminParolesList = lazy(() => import('./pages/admin/AdminParolesList').then((m) => ({ default: m.AdminParolesList })));
 const AdminRecitForm = lazy(() => import('./pages/admin/AdminRecitForm').then((m) => ({ default: m.AdminRecitForm })));
@@ -207,6 +208,7 @@ function App() {
                   <Route index element={<AdminHome />} />
                   <Route path="recherche" element={<AdminRecherche />} />
                   <Route path="doublons" element={<AdminDoublonsList />} />
+                  <Route path="ouvrages" element={<AdminOuvragesList />} />
                   <Route path="remplacer" element={<AdminRemplacer />} />
                   <Route path="hadiths" element={<AdminHadithsList />} />
                   <Route path="hadiths/nouveau" element={<AdminHadithForm />} />

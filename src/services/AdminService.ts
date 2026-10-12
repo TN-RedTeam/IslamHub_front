@@ -57,6 +57,8 @@ export interface HadithExtraRow {
   id: number; sujet: string | null; statut: string | null; tag: string | null;
   texte_arabe: string | null; texte_francais: string | null; n_seg: number; n_var: number;
 }
+export interface RecueilDupItem { id: number; titre: string; auteur: string | null; usages: number; }
+export interface RecueilDupGroup { cle: string; n: number; items: RecueilDupItem[]; }
 
 class AdminService {
   async listNarrateurs(): Promise<NarrateurRow[]> {
@@ -91,6 +93,18 @@ class AdminService {
   async listRubriques(): Promise<string[]> {
     const { data, error } = await supabase.rpc('rubriques_hadiths');
     if (error) throw error; return (data ?? []) as string[];
+  }
+  /** Groupes d'ouvrages (recueils) en doublon. */
+  async recueilsDoublons(): Promise<RecueilDupGroup[]> {
+    const { data, error } = await supabase.rpc('admin_recueils_doublons');
+    if (error) throw error; return (data ?? []) as RecueilDupGroup[];
+  }
+  /** Fusionne des recueils doublons dans un recueil gardé. */
+  async recueilMerge(keep: number, drop: number[]): Promise<{ moved: number; deleted: number }> {
+    const { data, error } = await supabase.rpc('admin_recueil_merge', { p_keep: keep, p_drop: drop });
+    if (error) throw error;
+    const d = (data ?? {}) as { moved?: number; deleted?: number };
+    return { moved: d.moved ?? 0, deleted: d.deleted ?? 0 };
   }
   /** Hadiths ayant un dialogue (segments) et/ou des variantes. */
   async hadithsExtras(mode: 'dialogue' | 'variante' | 'both' | 'any' | 'sans_source' | 'sans_arabe', q = ''): Promise<{ total: number; data: HadithExtraRow[] }> {

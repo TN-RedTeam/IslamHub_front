@@ -56,6 +56,7 @@ export const AdminLayout: React.FC = () => {
           <NavLink to="/admin/recherche" className={linkCls}>Recherche &amp; correction</NavLink>
           <NavLink to="/admin/remplacer" className={linkCls}>Remplacer partout</NavLink>
           <NavLink to="/admin/doublons" className={linkCls}>Doublons</NavLink>
+          <NavLink to="/admin/ouvrages" className={linkCls}>Ouvrages (doublons)</NavLink>
           <p className="text-[10.5px] uppercase tracking-[0.16em] text-muted font-semibold px-2 py-2 mt-2">Contenus</p>
           {ENTITIES.map((e) => (
             <NavLink key={e.to} to={e.to} className={linkCls}>

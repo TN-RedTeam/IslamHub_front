@@ -7,6 +7,7 @@ import { Loader2, Plus, Trash2, Check, AlertTriangle, X } from 'lucide-react';
 import { adminService, type NarrateurRow, type RecueilRow, type SavantRow, type HadithFormData, type HadithSourceInput } from '../../services/AdminService';
 import { AR_TEMPLATE, caretBetween, normalizeBracketSpaces } from '../../utils/arabicTemplate';
 import { rankNames } from '../../utils/nameSearch';
+import { NameSelect } from '../../components/admin/NameSelect';
 import type { ThemeRef } from '../../types';
 
 const DEGRES = ['Sahih', 'Hassan', "Da'if"];
@@ -177,6 +178,7 @@ export const AdminHadithForm: React.FC = () => {
   }, [f.tag]);
 
   const recueilLabel = (r: RecueilRow) => `${r.auteur ? r.auteur + ' — ' : ''}${r.titre}`;
+  const recueilOptions = useMemo(() => recueils.map((r) => ({ id: r.id, nom: recueilLabel(r) })), [recueils]);
   // Texte arabe non obligatoire : on exige le sujet + au moins un contenu
   // (arabe, traduction ou intro) pour éviter une fiche totalement vide.
   const canSave = useMemo(
@@ -307,11 +309,18 @@ export const AdminHadithForm: React.FC = () => {
           <div key={s.key} className="grid grid-cols-[1fr_84px_1fr_auto] gap-2.5 items-end mb-2.5">
             <div>
               {i === 0 && <label className={label}>Ouvrage</label>}
-              <select className={field} value={s.recueil_id} onChange={(e) => setSources((arr) => arr.map((x, j) => j === i ? { ...x, recueil_id: e.target.value } : x))}>
-                <option value="">—</option>
-                {recueils.map((r) => <option key={r.id} value={r.id}>{recueilLabel(r)}</option>)}
-                <option value={NEW}>＋ Nouvel ouvrage…</option>
-              </select>
+              {s.recueil_id === NEW ? (
+                <div className="flex items-center gap-2">
+                  <span className="text-sm text-ink">Nouvel ouvrage ↓</span>
+                  <button type="button" onClick={() => setSources((arr) => arr.map((x, j) => j === i ? { ...x, recueil_id: '', new_titre: '', new_savant: '' } : x))}
+                    className="ml-auto shrink-0 text-xs text-muted hover:text-ink border border-line rounded px-2 py-1">Annuler</button>
+                </div>
+              ) : (
+                <NameSelect options={recueilOptions} value={s.recueil_id ? Number(s.recueil_id) : null}
+                  onChange={(id) => setSources((arr) => arr.map((x, j) => j === i ? { ...x, recueil_id: id ? String(id) : '' } : x))}
+                  allowCreate createLabel="Nouvel ouvrage" onCreate={(titre) => setSources((arr) => arr.map((x, j) => j === i ? { ...x, recueil_id: NEW, new_titre: titre } : x))}
+                  placeholder="Chercher un ouvrage (titre, auteur…)" />
+              )}
             </div>
             <div>{i === 0 && <label className={label}>N°</label>}<input className={field} value={s.numero} onChange={(e) => setSources((arr) => arr.map((x, j) => j === i ? { ...x, numero: e.target.value } : x))} placeholder="3191" /></div>
             <div>{i === 0 && <label className={label}>Chapitre</label>}<input className={field} value={s.chapitre} onChange={(e) => setSources((arr) => arr.map((x, j) => j === i ? { ...x, chapitre: e.target.value } : x))} placeholder="(optionnel)" /></div>
