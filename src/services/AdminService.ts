@@ -53,6 +53,10 @@ export interface HadithEditShape {
   segments: { intro: string | null; texte_arabe: string | null; phonetique: string | null; texte_francais: string | null; explication: string | null }[];
   variants: { intro: string | null; texte_arabe: string | null; phonetique: string | null; texte_francais: string | null; explication: string | null; source: string | null }[];
 }
+export interface HadithExtraRow {
+  id: number; sujet: string | null; statut: string | null; tag: string | null;
+  texte_arabe: string | null; texte_francais: string | null; n_seg: number; n_var: number;
+}
 
 class AdminService {
   async listNarrateurs(): Promise<NarrateurRow[]> {
@@ -87,6 +91,13 @@ class AdminService {
   async listRubriques(): Promise<string[]> {
     const { data, error } = await supabase.rpc('rubriques_hadiths');
     if (error) throw error; return (data ?? []) as string[];
+  }
+  /** Hadiths ayant un dialogue (segments) et/ou des variantes. */
+  async hadithsExtras(mode: 'dialogue' | 'variante' | 'both' | 'any', q = ''): Promise<{ total: number; data: HadithExtraRow[] }> {
+    const { data, error } = await supabase.rpc('admin_hadiths_extras', { p_mode: mode, p_q: q });
+    if (error) throw error;
+    const d = (data ?? {}) as { total?: number; data?: HadithExtraRow[] };
+    return { total: d.total ?? 0, data: d.data ?? [] };
   }
   /** Thèmes + leurs tags + tags utilisés sans thème (page « Thèmes & mapping »). */
   async themesMapping(): Promise<ThemeMapping> {
