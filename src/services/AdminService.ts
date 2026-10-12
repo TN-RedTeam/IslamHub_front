@@ -93,7 +93,7 @@ class AdminService {
     if (error) throw error; return (data ?? []) as string[];
   }
   /** Hadiths ayant un dialogue (segments) et/ou des variantes. */
-  async hadithsExtras(mode: 'dialogue' | 'variante' | 'both' | 'any', q = ''): Promise<{ total: number; data: HadithExtraRow[] }> {
+  async hadithsExtras(mode: 'dialogue' | 'variante' | 'both' | 'any' | 'sans_source' | 'sans_arabe', q = ''): Promise<{ total: number; data: HadithExtraRow[] }> {
     const { data, error } = await supabase.rpc('admin_hadiths_extras', { p_mode: mode, p_q: q });
     if (error) throw error;
     const d = (data ?? {}) as { total?: number; data?: HadithExtraRow[] };

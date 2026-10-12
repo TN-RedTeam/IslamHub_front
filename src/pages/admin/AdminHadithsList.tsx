@@ -8,7 +8,7 @@ import { InlineSujetTagEditor } from '../../components/admin/InlineSujetTagEdito
 import type { Hadith } from '../../types';
 
 const PAGE_SIZE = 50;
-type Mode = 'all' | 'dialogue' | 'variante' | 'both';
+type Mode = 'all' | 'dialogue' | 'variante' | 'both' | 'sans_source' | 'sans_arabe';
 type Row = Hadith & { n_seg?: number; n_var?: number };
 
 const FILTERS: { v: Mode; label: string }[] = [
@@ -16,6 +16,8 @@ const FILTERS: { v: Mode; label: string }[] = [
   { v: 'dialogue', label: 'Avec dialogue' },
   { v: 'variante', label: 'Avec variante' },
   { v: 'both', label: 'Les deux' },
+  { v: 'sans_source', label: 'Sans source' },
+  { v: 'sans_arabe', label: 'Sans arabe' },
 ];
 
 export const AdminHadithsList: React.FC = () => {
