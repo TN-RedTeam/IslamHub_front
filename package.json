@@ -18,9 +18,9 @@
     "deploy": "gh-pages -d dist"
   },
   "dependencies": {
-    "@capacitor/android": "^8.5.2",
-    "@capacitor/cli": "^8.5.2",
-    "@capacitor/core": "^8.5.2",
+    "@capacitor/android": "^8.5.3",
+    "@capacitor/cli": "^8.5.3",
+    "@capacitor/core": "^8.5.3",
     "@emotion/is-prop-valid": "^1.4.0",
     "@supabase/supabase-js": "^2.117.2",
     "framer-motion": "^11.0.8",
