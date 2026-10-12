@@ -511,12 +511,12 @@ export interface SourateRow { id: number; numero: number; nom: string; slug: str
 export interface InvocationFormData {
   id?: number | null;
   type_id: number; sujet: string; texte_arabe: string; texte_francais: string;
-  phonetique: string; explication: string; commentaire: string; tag: string;
+  phonetique: string; explication: string; commentaire: string; tag: string; moments: string;
 }
 export interface InvocationEditShape {
   id: number; type_id: number; sujet: string; texte_arabe: string;
   texte_francais: string | null; phonetique: string | null; explication: string | null;
-  commentaire: string | null; tag: string | null;
+  commentaire: string | null; tag: string | null; moments: string | null;
 }
 export interface InvocationRow { id: number; type_id: number; sujet: string; tag: string | null; }
 
