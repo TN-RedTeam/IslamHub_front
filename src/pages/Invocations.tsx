@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, Link } from 'react-router-dom';
 import { m, AnimatePresence } from 'framer-motion';
-import { Search, Filter, X, Star, Loader, Tags, Hash } from 'lucide-react';
+import { Search, Filter, X, Star, Loader, Tags, Hash, Sunrise } from 'lucide-react';
 import { dataService } from '../services/DataService';
 import { FilterSelect } from '../components/FilterSelect';
 import { PageHeader } from '../components/PageHeader';
@@ -237,11 +237,17 @@ export const Invocations: React.FC = () => {
                 subtitle="« Invoquez-Moi, Je vous répondrai » — Sourate Ghafir, verset 60"
                 crumbs={[{ label: 'Accueil', to: '/' }, { label: 'Invocations & Évocations' }]}
             >
-                {hasSearched && (
-                    <span className="inline-flex items-center rounded-full bg-glass-tint px-3 py-1 text-sm text-ink tabular-nums">
-                        {totalCount} {meta.nounPlural}
-                    </span>
-                )}
+                <div className="flex items-center gap-3 flex-wrap">
+                    <Link to="/invocations/journee"
+                        className="inline-flex items-center gap-2 rounded-xl bg-accent-deep text-white font-semibold px-4 py-2.5 text-sm hover:brightness-110 transition">
+                        <Sunrise className="w-4 h-4" /> La journée du musulman
+                    </Link>
+                    {hasSearched && (
+                        <span className="inline-flex items-center rounded-full bg-glass-tint px-3 py-1 text-sm text-ink tabular-nums">
+                            {totalCount} {meta.nounPlural}
+                        </span>
+                    )}
+                </div>
             </PageHeader>
 
             <main className="container mx-auto px-4 py-10 relative z-10">

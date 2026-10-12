@@ -4,10 +4,11 @@ import { DeleteEntryButton } from '../../components/admin/DeleteEntryButton';
 import { useNavigate, useParams, Link } from 'react-router-dom';
 import { Loader2, Check, AlertTriangle } from 'lucide-react';
 import { adminService, type InvocationFormData } from '../../services/AdminService';
+import { MOMENTS, parseMoments } from '../../data/moments';
 
 const label = 'block text-[13px] font-semibold text-ink mb-1.5';
 const field = 'w-full rounded-lg border border-line bg-surface px-3 py-2.5 text-[15px] text-ink focus:outline-none focus:ring-2 focus:ring-green';
-const blank = { type_id: 1, sujet: '', texte_arabe: '', texte_francais: '', phonetique: '', explication: '', commentaire: '', tag: '' };
+const blank = { type_id: 1, sujet: '', texte_arabe: '', texte_francais: '', phonetique: '', explication: '', commentaire: '', tag: '', moments: '' };
 
 export const AdminInvocationForm: React.FC = () => {
   const { id } = useParams();
@@ -25,7 +26,7 @@ export const AdminInvocationForm: React.FC = () => {
     if (!editId) return;
     adminService.getInvocationForEdit(editId).then((d) => {
       if (!d) { setError('Élément introuvable.'); return; }
-      setF({ type_id: d.type_id ?? 1, sujet: d.sujet ?? '', texte_arabe: d.texte_arabe ?? '', texte_francais: d.texte_francais ?? '', phonetique: d.phonetique ?? '', explication: d.explication ?? '', commentaire: d.commentaire ?? '', tag: d.tag ?? '' });
+      setF({ type_id: d.type_id ?? 1, sujet: d.sujet ?? '', texte_arabe: d.texte_arabe ?? '', texte_francais: d.texte_francais ?? '', phonetique: d.phonetique ?? '', explication: d.explication ?? '', commentaire: d.commentaire ?? '', tag: d.tag ?? '', moments: d.moments ?? '' });
     }).catch(() => setError('Élément introuvable.')).finally(() => setLoading(false));
   }, [editId]);
 
@@ -81,6 +82,27 @@ export const AdminInvocationForm: React.FC = () => {
         <h2 className="font-display font-semibold text-ink text-lg mb-4">3 · Mots-clés</h2>
         <label className={label}>Tags <span className="text-muted font-normal">(séparés par des virgules)</span></label>
         <input className={field} value={f.tag} onChange={set('tag')} placeholder="matin, protection" />
+      </section>
+
+      <section className="rounded-card border border-line bg-surface p-5 mb-4">
+        <h2 className="font-display font-semibold text-ink text-lg mb-1">4 · Moments de la journée <span className="text-muted font-normal">(optionnel)</span></h2>
+        <p className="text-xs text-muted mb-3.5">Rattache cette invocation à un ou plusieurs moments. Elle apparaîtra dans le guide «&nbsp;La journée du musulman&nbsp;» (du réveil au coucher).</p>
+        <div className="flex flex-wrap gap-2">
+          {MOMENTS.map((m) => {
+            const active = parseMoments(f.moments).includes(m.key);
+            return (
+              <button key={m.key} type="button"
+                onClick={() => {
+                  const cur = parseMoments(f.moments);
+                  const next = active ? cur.filter((k) => k !== m.key) : [...cur, m.key];
+                  setF((p) => ({ ...p, moments: next.join(',') }));
+                }}
+                className={`px-3 py-1.5 rounded-full text-sm border transition-colors ${active ? 'bg-accent-deep text-white border-accent-deep' : 'bg-glass-tint text-ink border-line hover:border-green'}`}>
+                {m.label}
+              </button>
+            );
+          })}
+        </div>
       </section>
 
       <div className="fixed bottom-0 left-0 md:left-[230px] right-0 flex items-center gap-3 px-6 py-3.5 bg-ivory/95 backdrop-blur border-t border-line">

@@ -207,6 +207,12 @@ class DataService {
     if (error) throw error;
     return (data ?? null) as Invocation | null;
   }
+  /** Invocations/évocations rattachées à un moment de la journée (page « La journée du musulman »). */
+  async getJourneeInvocations(): Promise<Invocation[]> {
+    const { data, error } = await supabase.rpc('journee_invocations');
+    if (error) throw error;
+    return (data ?? []) as Invocation[];
+  }
 
   // ============ Versets équivoques (Phase 12.4) ============
   async searchVersetsEquivoques(

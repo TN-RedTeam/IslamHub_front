@@ -85,6 +85,7 @@ export type InvocationType = 1 | 2; // 1 = invocation (douʿā'), 2 = évocation
 export interface Invocation extends BaseText {
   type_id: InvocationType;
   commentaire: string | null;
+  moments?: string | null; // CSV des moments de la journée (réveil, matin, coucher…)
 }
 
 /** Parole de savant (table `paroles`) */

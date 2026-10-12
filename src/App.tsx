@@ -25,6 +25,7 @@ const Home = lazy(() => import('./pages/Home').then((m) => ({ default: m.Home })
 const Hadiths = lazy(() => import('./pages/Hadiths').then((m) => ({ default: m.Hadiths })));
 const HadithPage = lazy(() => import('./pages/HadithPage').then((m) => ({ default: m.HadithPage })));
 const Invocations = lazy(() => import('./pages/Invocations').then((m) => ({ default: m.Invocations })));
+const JourneeMusulman = lazy(() => import('./pages/JourneeMusulman').then((m) => ({ default: m.JourneeMusulman })));
 const Paroles = lazy(() => import('./pages/Paroles').then((m) => ({ default: m.Paroles })));
 const ParolePage = lazy(() => import('./pages/ParolePage').then((m) => ({ default: m.ParolePage })));
 const Biographies = lazy(() => import('./pages/Biographies').then((m) => ({ default: m.Biographies })));
@@ -130,6 +131,7 @@ function PublicShell() {
                 <Route path="/hadiths/:id/:slug" element={<HadithPage />} />
                 {/* Rubrique unifiée Invocations & Évocations (ex-douaas + ex-dhikrs) */}
                 <Route path="/invocations" element={<Invocations />} />
+                <Route path="/invocations/journee" element={<JourneeMusulman />} />
                 {/* Redirections des anciennes URL pour ne pas casser les liens */}
                 <Route path="/douaas" element={<Navigate to="/invocations" replace />} />
                 <Route path="/dhikrs" element={<Navigate to="/invocations" replace />} />
