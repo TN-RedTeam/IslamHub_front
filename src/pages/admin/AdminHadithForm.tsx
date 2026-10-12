@@ -6,6 +6,7 @@ import { useNavigate, useParams, Link } from 'react-router-dom';
 import { Loader2, Plus, Trash2, Check, AlertTriangle, X } from 'lucide-react';
 import { adminService, type NarrateurRow, type RecueilRow, type SavantRow, type HadithFormData, type HadithSourceInput } from '../../services/AdminService';
 import { AR_TEMPLATE, caretBetween, normalizeBracketSpaces } from '../../utils/arabicTemplate';
+import { rankNames } from '../../utils/nameSearch';
 import type { ThemeRef } from '../../types';
 
 const DEGRES = ['Sahih', 'Hassan', "Da'if"];
@@ -34,12 +35,10 @@ const MultiPicker: React.FC<{
   const [q, setQ] = useState('');
   const [open, setOpen] = useState(false);
   const byId = useMemo(() => new Map(options.map((o) => [o.id, o.nom])), [options]);
-  const filtered = useMemo(() => {
-    const needle = q.trim().toLowerCase();
-    return options
-      .filter((o) => !selected.includes(o.id) && (!needle || o.nom.toLowerCase().includes(needle)))
-      .slice(0, 40);
-  }, [options, selected, q]);
+  const filtered = useMemo(
+    () => rankNames(options.filter((o) => !selected.includes(o.id)), q, 40),
+    [options, selected, q],
+  );
   const add = (id: number) => { onChange([...selected, id]); setQ(''); };
   const remove = (id: number) => onChange(selected.filter((x) => x !== id));
   return (
