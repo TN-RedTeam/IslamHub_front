@@ -3,6 +3,7 @@ import { SujetField } from '../../components/admin/SujetField';
 import { DeleteEntryButton } from '../../components/admin/DeleteEntryButton';
 import { TagPicker } from '../../components/admin/TagPicker';
 import { ScanUploadButton } from '../../components/admin/ScanUploadButton';
+import { NameSelect } from '../../components/admin/NameSelect';
 import { useNavigate, useParams, Link } from 'react-router-dom';
 import { Loader2, Plus, Trash2, Check, AlertTriangle } from 'lucide-react';
 import { adminService, type SavantRow, type ParoleFormData, type ParoleImageInput, type RefOption } from '../../services/AdminService';
@@ -115,12 +116,17 @@ export const AdminParoleForm: React.FC = () => {
         <div className="grid sm:grid-cols-2 gap-3.5">
           <div>
             <label className={label}>Savant (auteur de la parole)</label>
-            <select className={field} value={savant} onChange={(e) => setSavant(e.target.value)}>
-              <option value="">—</option>
-              {savants.map((s) => <option key={s.id} value={s.id}>{s.nom}</option>)}
-              <option value={NEW}>＋ Nouveau savant…</option>
-            </select>
-            {savant === NEW && <input className={`${field} mt-2`} value={newSavant} onChange={(e) => setNewSavant(e.target.value)} placeholder="Nom du nouveau savant" />}
+            {savant === NEW ? (
+              <div className="flex gap-2">
+                <input className={field} value={newSavant} onChange={(e) => setNewSavant(e.target.value)} placeholder="Nom du nouveau savant" autoFocus />
+                <button type="button" onClick={() => { setSavant(''); setNewSavant(''); }} className="shrink-0 rounded-lg border border-line px-3 text-sm text-muted hover:text-ink">Annuler</button>
+              </div>
+            ) : (
+              <NameSelect options={savants} value={savant ? Number(savant) : null}
+                onChange={(id) => setSavant(id ? String(id) : '')}
+                allowCreate createLabel="Nouveau savant" onCreate={(nom) => { setSavant(NEW); setNewSavant(nom); }}
+                placeholder="Chercher un savant (nom, surnom…)" />
+            )}
           </div>
           <div><label className={label}>École <span className="text-muted font-normal">(optionnel)</span></label><input className={field} value={f.ecole} onChange={set('ecole')} placeholder="Hanafi, Malikite…" /></div>
         </div>
@@ -130,10 +136,9 @@ export const AdminParoleForm: React.FC = () => {
         </div>
         <div className="grid sm:grid-cols-2 gap-3.5 mt-3.5">
           <div><label className={label}>Rapportée par <span className="text-muted font-normal">(si un autre savant la rapporte)</span></label>
-            <select className={field} value={rapporteur} onChange={(e) => setRapporteur(e.target.value)}>
-              <option value="">— (personne)</option>
-              {savants.map((s) => <option key={s.id} value={s.id}>{s.nom}</option>)}
-            </select></div>
+            <NameSelect options={savants} value={rapporteur ? Number(rapporteur) : null}
+              onChange={(id) => setRapporteur(id ? String(id) : '')}
+              placeholder="Chercher un savant (nom, surnom…)" /></div>
           <div><label className={label}>Commente une parole <span className="text-muted font-normal">(optionnel)</span></label>
             <select className={field} value={commente} onChange={(e) => setCommente(e.target.value)}>
               <option value="">— (aucune)</option>
