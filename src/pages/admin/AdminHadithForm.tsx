@@ -8,6 +8,7 @@ import { adminService, type NarrateurRow, type RecueilRow, type SavantRow, type 
 import { AR_TEMPLATE, caretBetween, normalizeBracketSpaces } from '../../utils/arabicTemplate';
 import { rankNames } from '../../utils/nameSearch';
 import { NameSelect } from '../../components/admin/NameSelect';
+import { BlocEditor } from '../../components/admin/BlocEditor';
 import type { ThemeRef } from '../../types';
 
 const DEGRES = ['Sahih', 'Hassan', "Da'if"];
@@ -471,6 +472,15 @@ export const AdminHadithForm: React.FC = () => {
         <button type="button" onClick={() => setVariants((p) => [...p, emptyVar()])} className="inline-flex items-center gap-1.5 rounded-lg border border-line bg-surface text-ink font-semibold px-3.5 py-2 text-sm hover:border-green">
           <Plus className="w-4 h-4" /> Ajouter une variante
         </button>
+      </section>
+
+      {/* Corps composé — blocs ordonnés (khoutba tissée : plusieurs narrations + versets + prose) */}
+      <section className="rounded-card border border-line bg-surface p-5 mb-4">
+        <h2 className="font-display font-semibold text-ink text-lg mb-1">Corps composé <span className="text-muted font-normal">(optionnel)</span></h2>
+        <p className="text-xs text-muted mb-3.5">Pour un contenu <b>tissé</b> (plusieurs hadiths/versets/dialogues dans un ordre précis, avec de la prose entre). Chaque bloc est réordonnable&nbsp;: <b>Texte</b> (prose), <b>Preuve</b> (cite un hadith/parole/verset existant, ou saisie manuelle «&nbsp;arabe → ce qui signifie&nbsp;»), <b>Commentaire</b>. S'affiche sur la fiche <b>après</b> le matn principal. Laisse vide pour un hadith classique.</p>
+        {editId
+          ? <BlocEditor parentType="hadith" parentId={editId} />
+          : <p className="text-sm text-muted italic">Enregistre d'abord le hadith, puis reviens l'éditer pour composer son corps.</p>}
       </section>
 
       {/* 6. Texte équivoque */}

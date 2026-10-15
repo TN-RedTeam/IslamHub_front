@@ -27,7 +27,7 @@ const DialogueBlock: React.FC<{ sg: HadithSegment }> = ({ sg }) => (
     {sg.texte_francais && (
       <div className="pl-4 border-l-4 border-green">
         <p className="text-sm text-green mb-1">Traduction :</p>
-        <Markdown className="[unicode-bidi:plaintext] font-semibold">{sg.texte_francais}</Markdown>
+        <Markdown className="[unicode-bidi:plaintext] font-bold">{sg.texte_francais}</Markdown>
       </div>
     )}
     {sg.explication && (
@@ -43,6 +43,7 @@ export const HadithPage: React.FC = () => {
   const { id = '' } = useParams();
   const [hadith, setHadith] = useState<HadithDetail | null>(null);
   const [eqBlocs, setEqBlocs] = useState<Bloc[]>([]);
+  const [blocs, setBlocs] = useState<Bloc[]>([]); // corps composé (khoutba tissée)
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
   const [copied, setCopied] = useState(false);
@@ -58,7 +59,7 @@ export const HadithPage: React.FC = () => {
     let alive = true;
     setLoading(true); setNotFound(false);
     if (!Number.isFinite(numId)) { setNotFound(true); setLoading(false); return; }
-    setEqBlocs([]);
+    setEqBlocs([]); setBlocs([]);
     dataService.getHadith(numId)
       .then((h) => {
         if (!alive) return;
@@ -66,6 +67,7 @@ export const HadithPage: React.FC = () => {
         else {
           setHadith(h);
           if (h.equivoque?.id != null) dataService.getBlocs('equivoque', h.equivoque.id).then((bl) => { if (alive) setEqBlocs(bl); }).catch(() => {});
+          dataService.getBlocs('hadith', numId).then((bl) => { if (alive) setBlocs(bl); }).catch(() => {});
         }
         setLoading(false);
       })
@@ -162,7 +164,7 @@ export const HadithPage: React.FC = () => {
           {hadith.texte_francais && (
             <div className="pl-4 border-l-4 border-green">
               <p className="text-sm text-green mb-1">Traduction :</p>
-              <Markdown className="[unicode-bidi:plaintext] font-semibold">{hadith.texte_francais}</Markdown>
+              <Markdown className="[unicode-bidi:plaintext] font-bold">{hadith.texte_francais}</Markdown>
             </div>
           )}
           {hadith.explication && (
@@ -203,7 +205,7 @@ export const HadithPage: React.FC = () => {
               {vr.texte_francais && (
                 <div className="pl-4 border-l-4 border-green">
                   <p className="text-sm text-green mb-1">Traduction :</p>
-                  <Markdown className="[unicode-bidi:plaintext] font-semibold">{vr.texte_francais}</Markdown>
+                  <Markdown className="[unicode-bidi:plaintext] font-bold">{vr.texte_francais}</Markdown>
                 </div>
               )}
               {vr.explication && (
@@ -225,6 +227,13 @@ export const HadithPage: React.FC = () => {
             ))}
           </React.Fragment>
         ))}
+
+        {/* Corps composé (khoutba tissée) : narrations + versets + prose dans l'ordre */}
+        {blocs.length > 0 && (
+          <div className="bg-glass rounded-card p-6 shadow border border-line">
+            <ArticleBlocs blocs={blocs} />
+          </div>
+        )}
 
         {hadith.sources && hadith.sources.length > 0 && (
           <section>

@@ -107,7 +107,7 @@ export const ParolePage: React.FC = () => {
           )}
           {p.texte_francais && (
             <div className="mt-4 pl-4 border-l-4 border-gold [unicode-bidi:plaintext]">
-              <Markdown className="font-semibold">{p.texte_francais}</Markdown>
+              <Markdown className="font-bold">{p.texte_francais}</Markdown>
             </div>
           )}
           {reference && (

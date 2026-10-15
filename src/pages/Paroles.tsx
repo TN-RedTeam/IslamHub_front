@@ -58,7 +58,7 @@ const ParoleCard: React.FC<{ parole: Parole }> = ({ parole }) => {
         {parole.texte_francais && (
             <div className="mt-4 pl-4 border-l-4 border-green-line dark:border-green line-clamp-2">
               <p className="text-sm text-ink mb-1">Signification :</p>
-              <p className="text-ink font-semibold whitespace-pre-wrap [unicode-bidi:plaintext]">{parole.texte_francais}</p>
+              <p className="text-ink font-bold whitespace-pre-wrap [unicode-bidi:plaintext]">{parole.texte_francais}</p>
             </div>
         )}
       </div>
