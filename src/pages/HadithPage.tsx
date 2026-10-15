@@ -10,8 +10,34 @@ import { RelatedByTheme } from '../components/RelatedByTheme';
 import { ArticleBlocs } from '../components/ArticleBlocs';
 import { Markdown } from '../components/Markdown';
 import { useSeo } from '../hooks/useSeo';
-import type { HadithDetail, Bloc } from '../types';
+import type { HadithDetail, Bloc, HadithSegment } from '../types';
 import { IconBadge } from '../components/Icon';
+
+/** Bloc « dialogue » (un passage : intro → arabe → phonétique → traduction → explication). */
+const DialogueBlock: React.FC<{ sg: HadithSegment }> = ({ sg }) => (
+  <div className="bg-glass rounded-card p-6 shadow border border-green-line space-y-5">
+    {sg.intro && <p className="text-ink/80 italic [unicode-bidi:plaintext]">{sg.intro}</p>}
+    {sg.texte_arabe && <p className="text-3xl leading-loose text-right font-arabic text-ink whitespace-pre-wrap">{sg.texte_arabe}</p>}
+    {sg.phonetique && (
+      <div className="bg-glass-tint rounded-lg p-4">
+        <p className="text-sm text-ink mb-1">Phonétique :</p>
+        <p className="text-ink whitespace-pre-wrap [unicode-bidi:plaintext]">{sg.phonetique}</p>
+      </div>
+    )}
+    {sg.texte_francais && (
+      <div className="pl-4 border-l-4 border-green">
+        <p className="text-sm text-green mb-1">Traduction :</p>
+        <Markdown className="[unicode-bidi:plaintext]">{sg.texte_francais}</Markdown>
+      </div>
+    )}
+    {sg.explication && (
+      <div className="bg-glass-tint rounded-lg p-4">
+        <p className="text-sm font-bold text-ink mb-1">Explication :</p>
+        <Markdown className="[unicode-bidi:plaintext]">{sg.explication}</Markdown>
+      </div>
+    )}
+  </div>
+);
 
 export const HadithPage: React.FC = () => {
   const { id = '' } = useParams();
@@ -154,63 +180,50 @@ export const HadithPage: React.FC = () => {
           )}
         </div>
 
+        {/* Dialogues du matn principal */}
         {hadith.segments && hadith.segments.length > 0 && hadith.segments.map((sg, i) => (
-          <div key={i} className="bg-glass rounded-card p-6 shadow border border-green-line space-y-5">
-            {sg.intro && <p className="text-ink/80 italic [unicode-bidi:plaintext]">{sg.intro}</p>}
-            {sg.texte_arabe && <p className="text-3xl leading-loose text-right font-arabic text-ink whitespace-pre-wrap">{sg.texte_arabe}</p>}
-            {sg.phonetique && (
-              <div className="bg-glass-tint rounded-lg p-4">
-                <p className="text-sm text-ink mb-1">Phonétique :</p>
-                <p className="text-ink whitespace-pre-wrap [unicode-bidi:plaintext]">{sg.phonetique}</p>
-              </div>
-            )}
-            {sg.texte_francais && (
-              <div className="pl-4 border-l-4 border-green">
-                <p className="text-sm text-green mb-1">Traduction :</p>
-                <Markdown className="[unicode-bidi:plaintext]">{sg.texte_francais}</Markdown>
-              </div>
-            )}
-            {sg.explication && (
-              <div className="bg-glass-tint rounded-lg p-4">
-                <p className="text-sm font-bold text-ink mb-1">Explication :</p>
-                <Markdown className="[unicode-bidi:plaintext]">{sg.explication}</Markdown>
-              </div>
-            )}
-          </div>
+          <DialogueBlock key={`seg-${i}`} sg={sg} />
         ))}
 
+        {/* Variantes / autres hadiths — chacun suivi de ses propres dialogues */}
         {hadith.variants && hadith.variants.length > 0 && hadith.variants.map((vr, i) => (
-          <div key={`var-${i}`} className="bg-glass rounded-card p-6 shadow border border-line space-y-5">
-            <p className="text-[11px] uppercase tracking-[0.16em] text-accent font-semibold">
-              Autre version{hadith.variants && hadith.variants.length > 1 ? ` ${i + 1}` : ''}
-            </p>
-            {vr.intro && <p className="text-ink/80 italic [unicode-bidi:plaintext]">{vr.intro}</p>}
-            {vr.texte_arabe && <p className="text-3xl leading-loose text-right font-arabic text-ink whitespace-pre-wrap">{vr.texte_arabe}</p>}
-            {vr.phonetique && (
-              <div className="bg-glass-tint rounded-lg p-4">
-                <p className="text-sm text-ink mb-1">Phonétique :</p>
-                <p className="text-ink whitespace-pre-wrap [unicode-bidi:plaintext]">{vr.phonetique}</p>
-              </div>
-            )}
-            {vr.texte_francais && (
-              <div className="pl-4 border-l-4 border-green">
-                <p className="text-sm text-green mb-1">Traduction :</p>
-                <Markdown className="[unicode-bidi:plaintext]">{vr.texte_francais}</Markdown>
-              </div>
-            )}
-            {vr.explication && (
-              <div className="bg-glass-tint rounded-lg p-4">
-                <p className="text-sm font-bold text-ink mb-1">Explication :</p>
-                <Markdown className="[unicode-bidi:plaintext]">{vr.explication}</Markdown>
-              </div>
-            )}
-            {vr.source && (
-              <p className="flex items-center gap-1.5 text-xs text-muted">
-                <BookOpen className="h-3.5 w-3.5 shrink-0 text-green" />
-                <span className="[unicode-bidi:plaintext]">{vr.source}</span>
+          <React.Fragment key={`var-${i}`}>
+            <div className="bg-glass rounded-card p-6 shadow border border-line space-y-5">
+              <p className="text-[11px] uppercase tracking-[0.16em] text-accent font-semibold">
+                {vr.titre?.trim() || `Autre version${hadith.variants && hadith.variants.length > 1 ? ` ${i + 1}` : ''}`}
               </p>
-            )}
-          </div>
+              {vr.intro && <p className="text-ink/80 italic [unicode-bidi:plaintext]">{vr.intro}</p>}
+              {vr.texte_arabe && <p className="text-3xl leading-loose text-right font-arabic text-ink whitespace-pre-wrap">{vr.texte_arabe}</p>}
+              {vr.phonetique && (
+                <div className="bg-glass-tint rounded-lg p-4">
+                  <p className="text-sm text-ink mb-1">Phonétique :</p>
+                  <p className="text-ink whitespace-pre-wrap [unicode-bidi:plaintext]">{vr.phonetique}</p>
+                </div>
+              )}
+              {vr.texte_francais && (
+                <div className="pl-4 border-l-4 border-green">
+                  <p className="text-sm text-green mb-1">Traduction :</p>
+                  <Markdown className="[unicode-bidi:plaintext]">{vr.texte_francais}</Markdown>
+                </div>
+              )}
+              {vr.explication && (
+                <div className="bg-glass-tint rounded-lg p-4">
+                  <p className="text-sm font-bold text-ink mb-1">Explication :</p>
+                  <Markdown className="[unicode-bidi:plaintext]">{vr.explication}</Markdown>
+                </div>
+              )}
+              {vr.source && (
+                <p className="flex items-center gap-1.5 text-xs text-muted">
+                  <BookOpen className="h-3.5 w-3.5 shrink-0 text-green" />
+                  <span className="[unicode-bidi:plaintext]">{vr.source}</span>
+                </p>
+              )}
+            </div>
+            {/* dialogues rattachés à cette variante */}
+            {vr.segments && vr.segments.length > 0 && vr.segments.map((sg, j) => (
+              <DialogueBlock key={`var-${i}-seg-${j}`} sg={sg} />
+            ))}
+          </React.Fragment>
         ))}
 
         {hadith.sources && hadith.sources.length > 0 && (
