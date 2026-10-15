@@ -16,6 +16,9 @@ const GENERATIONS = ['sahabi', 'tabii', 'tabi_tabii', 'khalaf'];
 const ROLES = [{ v: '', l: '— aucun' }, { v: 'epouse_prophete', l: 'Mère des croyants' }, { v: 'calife_rachidoun', l: 'Calife bien-guidé' }];
 
 const NEW = '__new';
+/** Clé locale stable (rattachement dialogue → variante, clés React). */
+const uid = (): string =>
+  (typeof crypto !== 'undefined' && crypto.randomUUID ? crypto.randomUUID() : Math.random().toString(36).slice(2));
 type Src = { key: string; recueil_id: string; new_titre: string; new_savant: string; numero: string; chapitre: string };
 const emptySrc = (): Src => ({ key: Math.random().toString(36).slice(2), recueil_id: '', new_titre: '', new_savant: '', numero: '', chapitre: '' });
 
@@ -117,20 +120,28 @@ export const AdminHadithForm: React.FC = () => {
   useEffect(() => { adminService.tagsVocabulary().then(setTagVocab).catch(() => {}); }, []);
   const [isEquivoque, setIsEquivoque] = useState(false);
   const [equivoqueId, setEquivoqueId] = useState<number | null>(null);
-  // Segments de dialogue (suite du hadith).
-  type Seg = { intro: string; texte_arabe: string; phonetique: string; texte_francais: string; explication: string };
-  const emptySeg = (): Seg => ({ intro: '', texte_arabe: '', phonetique: '', texte_francais: '', explication: '' });
+  // Segments de dialogue (suite du hadith). variantUid = null → rattaché au matn principal ;
+  // sinon → rattaché à la variante portant cet uid local.
+  type Seg = { intro: string; texte_arabe: string; phonetique: string; texte_francais: string; explication: string; variantUid: string | null };
+  const emptySeg = (): Seg => ({ intro: '', texte_arabe: '', phonetique: '', texte_francais: '', explication: '', variantUid: null });
   const [segments, setSegments] = useState<Seg[]>([]);
-  const setSeg = (i: number, k: keyof Seg, v: string) => setSegments((p) => p.map((s, j) => (j === i ? { ...s, [k]: v } : s)));
+  const setSeg = (i: number, k: keyof Seg, v: string | null) => setSegments((p) => p.map((s, j) => (j === i ? { ...s, [k]: v } : s)));
   const moveSeg = (i: number, d: -1 | 1) => setSegments((p) => {
     const j = i + d; if (j < 0 || j >= p.length) return p;
     const n = [...p]; [n[i], n[j]] = [n[j], n[i]]; return n;
   });
-  // Variantes (autres versions du même hadith).
-  type Var = { intro: string; texte_arabe: string; phonetique: string; texte_francais: string; explication: string; source: string };
-  const emptyVar = (): Var => ({ intro: '', texte_arabe: '', phonetique: '', texte_francais: '', explication: '', source: '' });
+  // Variantes (autres versions / autres hadiths de la même khoutba). uid = clé locale stable
+  // pour rattacher des dialogues, titre = en-tête libre du bloc.
+  type Var = { uid: string; titre: string; intro: string; texte_arabe: string; phonetique: string; texte_francais: string; explication: string; source: string };
+  const emptyVar = (): Var => ({ uid: uid(), titre: '', intro: '', texte_arabe: '', phonetique: '', texte_francais: '', explication: '', source: '' });
   const [variants, setVariants] = useState<Var[]>([]);
   const setVar = (i: number, k: keyof Var, v: string) => setVariants((p) => p.map((s, j) => (j === i ? { ...s, [k]: v } : s)));
+  const removeVar = (i: number) => setVariants((p) => {
+    const victim = p[i];
+    // les dialogues rattachés à cette variante repassent sur le matn principal
+    if (victim) setSegments((ps) => ps.map((s) => (s.variantUid === victim.uid ? { ...s, variantUid: null } : s)));
+    return p.filter((_, j) => j !== i);
+  });
   const moveVar = (i: number, d: -1 | 1) => setVariants((p) => {
     const j = i + d; if (j < 0 || j >= p.length) return p;
     const n = [...p]; [n[i], n[j]] = [n[j], n[i]]; return n;
@@ -156,13 +167,19 @@ export const AdminHadithForm: React.FC = () => {
       setNarrateurIds(h.narrateur_ids ?? []);
       setIsEquivoque(!!h.is_equivoque);
       setEquivoqueId(h.equivoque_id ?? null);
+      // variantes : on fabrique un uid local et on retient la correspondance id BDD → uid
+      const idToUid = new Map<number, string>();
+      setVariants((h.variants ?? []).map((v) => {
+        const u = uid(); idToUid.set(v.id, u);
+        return {
+          uid: u, titre: v.titre ?? '', intro: v.intro ?? '', texte_arabe: v.texte_arabe ?? '', phonetique: v.phonetique ?? '',
+          texte_francais: v.texte_francais ?? '', explication: v.explication ?? '', source: v.source ?? '',
+        };
+      }));
       setSegments((h.segments ?? []).map((s) => ({
         intro: s.intro ?? '', texte_arabe: s.texte_arabe ?? '', phonetique: s.phonetique ?? '',
         texte_francais: s.texte_francais ?? '', explication: s.explication ?? '',
-      })));
-      setVariants((h.variants ?? []).map((v) => ({
-        intro: v.intro ?? '', texte_arabe: v.texte_arabe ?? '', phonetique: v.phonetique ?? '',
-        texte_francais: v.texte_francais ?? '', explication: v.explication ?? '', source: v.source ?? '',
+        variantUid: s.variant_id != null ? (idToUid.get(s.variant_id) ?? null) : null,
       })));
       setSources(h.sources.length ? h.sources.map((s) => ({ ...emptySrc(), recueil_id: String(s.recueil_id), numero: s.numero ?? '', chapitre: s.chapitre ?? '' })) : [emptySrc()]);
     }).catch(() => setError("Hadith introuvable."));
@@ -179,6 +196,14 @@ export const AdminHadithForm: React.FC = () => {
 
   const recueilLabel = (r: RecueilRow) => `${r.auteur ? r.auteur + ' — ' : ''}${r.titre}`;
   const recueilOptions = useMemo(() => recueils.map((r) => ({ id: r.id, nom: recueilLabel(r) })), [recueils]);
+  // Choix de rattachement d'un dialogue (matn principal ou une variante).
+  const variantChoices = useMemo(
+    () => variants.map((v, i) => {
+      const extra = v.titre.trim() || v.source.trim() || v.texte_francais.trim().slice(0, 40);
+      return { uid: v.uid, label: `Variante ${i + 1}${extra ? ` — ${extra}` : ''}` };
+    }),
+    [variants],
+  );
   // Texte arabe non obligatoire : on exige le sujet + au moins un contenu
   // (arabe, traduction ou intro) pour éviter une fiche totalement vide.
   const canSave = useMemo(
@@ -186,21 +211,36 @@ export const AdminHadithForm: React.FC = () => {
     [f.sujet, f.texte_arabe, f.texte_francais, f.intro],
   );
 
-  const buildPayload = (): HadithFormData => ({
+  const buildPayload = (): HadithFormData => {
+    // variantes réellement envoyées (même prédicat « non vide » que la base, titre inclus)
+    const sentVars = variants.filter((v) =>
+      v.texte_arabe.trim() || v.texte_francais.trim() || v.intro.trim() || v.explication.trim() || v.source.trim() || v.titre.trim());
+    const pos = new Map<string, number>(); // uid → position 1-based dans le tableau envoyé
+    sentVars.forEach((v, i) => pos.set(v.uid, i + 1));
+    return {
     id: editId,
     ...f,
     texte_arabe: normalizeBracketSpaces(f.texte_arabe),
     rapporteur_ids: rapporteurIds,
     narrateur_ids: narrateurIds,
     is_equivoque: isEquivoque,
-    segments: segments.filter((s) => s.texte_arabe.trim() || s.texte_francais.trim() || s.intro.trim() || s.explication.trim()),
-    variants: variants.filter((v) => v.texte_arabe.trim() || v.texte_francais.trim() || v.intro.trim() || v.explication.trim() || v.source.trim()),
+    segments: segments
+      .filter((s) => s.texte_arabe.trim() || s.texte_francais.trim() || s.intro.trim() || s.explication.trim())
+      .map((s) => ({
+        intro: s.intro, texte_arabe: s.texte_arabe, phonetique: s.phonetique, texte_francais: s.texte_francais, explication: s.explication,
+        variant_index: s.variantUid ? (pos.get(s.variantUid) ?? null) : null,
+      })),
+    variants: sentVars.map((v) => ({
+      titre: v.titre, intro: v.intro, texte_arabe: v.texte_arabe, phonetique: v.phonetique,
+      texte_francais: v.texte_francais, explication: v.explication, source: v.source,
+    })),
     new_narrateur: addingNarr && newNarr.nom.trim() ? newNarr : null,
     sources: sources.map<HadithSourceInput>((s) => s.recueil_id === NEW
       ? { new_recueil: { titre: s.new_titre.trim(), savant_id: s.new_savant ? Number(s.new_savant) : null }, numero: s.numero || null, chapitre: s.chapitre || null }
       : { recueil_id: s.recueil_id ? Number(s.recueil_id) : null, numero: s.numero || null, chapitre: s.chapitre || null },
     ).filter((s) => s.recueil_id || (s.new_recueil && s.new_recueil.titre)),
-  });
+    };
+  };
 
   const save = async (andNew: boolean) => {
     setBusy(true); setError(null); setOk(false);
@@ -371,6 +411,13 @@ export const AdminHadithForm: React.FC = () => {
                 <button type="button" onClick={() => setSegments((p) => p.filter((_, j) => j !== i))} className="px-2 py-1 text-xs rounded border border-low/40 text-low hover:bg-low/10 inline-flex items-center gap-1"><Trash2 className="w-3.5 h-3.5" /></button>
               </div>
             </div>
+            {variants.length > 0 && (
+              <div className="mb-2.5"><label className={label}>Rattaché à <span className="text-muted font-normal">(sous quel bloc ce dialogue s'affiche)</span></label>
+                <select className={field} value={sg.variantUid ?? ''} onChange={(e) => setSeg(i, 'variantUid', e.target.value || null)}>
+                  <option value="">Matn principal (hadith ci-dessus)</option>
+                  {variantChoices.map((c) => <option key={c.uid} value={c.uid}>{c.label}</option>)}
+                </select></div>
+            )}
             <div className="mb-2.5"><label className={label}>Intro / narration <span className="text-muted font-normal">(optionnel)</span></label>
               <input className={field} value={sg.intro} onChange={(e) => setSeg(i, 'intro', e.target.value)} placeholder="Ex. Les compagnons ont répondu :" /></div>
             <div className="mb-2.5"><label className={label}>Texte arabe</label>
@@ -392,7 +439,7 @@ export const AdminHadithForm: React.FC = () => {
       {/* Variantes — autres versions du même hadith (optionnel) */}
       <section className="rounded-card border border-line bg-surface p-5 mb-4">
         <h2 className="font-display font-semibold text-ink text-lg mb-1">Variantes <span className="text-muted font-normal">(optionnel)</span></h2>
-        <p className="text-xs text-muted mb-3.5">Autre(s) version(s) du <b>même</b> hadith (wording ou narration différente). Chaque variante est affichée à part sur la fiche, sous «&nbsp;Autre version&nbsp;». L'<b>intro</b> introduit la variante (ex. «&nbsp;Dans une version rapportée par Mouslim&nbsp;:&nbsp;»), la <b>source</b> en précise la référence.</p>
+        <p className="text-xs text-muted mb-3.5">Autre(s) version(s) ou <b>autre(s) hadith(s)</b> de la même page (wording ou narration différente, ou un hadith qui enchaîne). Chaque bloc est affiché à part. Le <b>titre</b> sert d'en-tête (ex. «&nbsp;Autre version&nbsp;», «&nbsp;Autre hadith — rapporté par Ahmad&nbsp;»), l'<b>intro</b> l'introduit, la <b>source</b> en précise la référence. Un dialogue peut être <b>rattaché</b> à un bloc via la section «&nbsp;Dialogue&nbsp;» ci-dessus.</p>
 
         {variants.map((vr, i) => (
           <div key={i} className="rounded-lg border border-line bg-ground/40 p-3.5 mb-3">
@@ -401,9 +448,11 @@ export const AdminHadithForm: React.FC = () => {
               <div className="ml-auto flex items-center gap-1">
                 <button type="button" onClick={() => moveVar(i, -1)} disabled={i === 0} className="px-2 py-1 text-xs rounded border border-line text-muted hover:text-ink disabled:opacity-40" aria-label="Monter">↑</button>
                 <button type="button" onClick={() => moveVar(i, 1)} disabled={i === variants.length - 1} className="px-2 py-1 text-xs rounded border border-line text-muted hover:text-ink disabled:opacity-40" aria-label="Descendre">↓</button>
-                <button type="button" onClick={() => setVariants((p) => p.filter((_, j) => j !== i))} className="px-2 py-1 text-xs rounded border border-low/40 text-low hover:bg-low/10 inline-flex items-center gap-1"><Trash2 className="w-3.5 h-3.5" /></button>
+                <button type="button" onClick={() => removeVar(i)} className="px-2 py-1 text-xs rounded border border-low/40 text-low hover:bg-low/10 inline-flex items-center gap-1"><Trash2 className="w-3.5 h-3.5" /></button>
               </div>
             </div>
+            <div className="mb-2.5"><label className={label}>Titre du bloc <span className="text-muted font-normal">(optionnel — en-tête affiché, ex. « Autre hadith — rapporté par Ahmad »)</span></label>
+              <input className={field} value={vr.titre} onChange={(e) => setVar(i, 'titre', e.target.value)} placeholder="Autre version" /></div>
             <div className="mb-2.5"><label className={label}>Intro / narration <span className="text-muted font-normal">(optionnel)</span></label>
               <input className={field} value={vr.intro} onChange={(e) => setVar(i, 'intro', e.target.value)} placeholder="Ex. Dans une version rapportée par Mouslim :" /></div>
             <div className="mb-2.5"><label className={label}>Texte arabe</label>

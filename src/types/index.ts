@@ -38,12 +38,14 @@ export interface HadithSegment {
 /** Variante d'un hadith : autre version/wording du même hadith (optionnel). */
 export interface HadithVariant {
   ordre: number;
+  titre?: string | null;         // titre libre du bloc (« Autre version », « Autre hadith — Ahmad »…)
   intro: string | null;          // lead-in (« Dans une version rapportée par Mouslim : »)
   texte_arabe: string | null;
   phonetique: string | null;
   texte_francais: string | null;
   explication: string | null;
   source: string | null;         // référence libre (recueil / narrateur de cette variante)
+  segments?: HadithSegment[];    // dialogues rattachés à CETTE variante (optionnel)
 }
 export interface Hadith extends BaseText {
   intro?: string | null;         // narration de contexte avant le texte arabe (hadith-dialogue)
