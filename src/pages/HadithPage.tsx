@@ -27,7 +27,7 @@ const DialogueBlock: React.FC<{ sg: HadithSegment }> = ({ sg }) => (
     {sg.texte_francais && (
       <div className="pl-4 border-l-4 border-green">
         <p className="text-sm text-green mb-1">Traduction :</p>
-        <Markdown className="[unicode-bidi:plaintext]">{sg.texte_francais}</Markdown>
+        <Markdown className="[unicode-bidi:plaintext] font-semibold">{sg.texte_francais}</Markdown>
       </div>
     )}
     {sg.explication && (
@@ -162,7 +162,7 @@ export const HadithPage: React.FC = () => {
           {hadith.texte_francais && (
             <div className="pl-4 border-l-4 border-green">
               <p className="text-sm text-green mb-1">Traduction :</p>
-              <Markdown className="[unicode-bidi:plaintext]">{hadith.texte_francais}</Markdown>
+              <Markdown className="[unicode-bidi:plaintext] font-semibold">{hadith.texte_francais}</Markdown>
             </div>
           )}
           {hadith.explication && (
@@ -203,7 +203,7 @@ export const HadithPage: React.FC = () => {
               {vr.texte_francais && (
                 <div className="pl-4 border-l-4 border-green">
                   <p className="text-sm text-green mb-1">Traduction :</p>
-                  <Markdown className="[unicode-bidi:plaintext]">{vr.texte_francais}</Markdown>
+                  <Markdown className="[unicode-bidi:plaintext] font-semibold">{vr.texte_francais}</Markdown>
                 </div>
               )}
               {vr.explication && (

@@ -55,7 +55,7 @@ const InvocationCard: React.FC<{ item: Item; onClick: () => void; onTagClick?: (
                 {item.texte_francais && (
                     <div className="mt-4 pl-4 border-l-4 border-gold/60 line-clamp-2">
                         <p className="text-sm text-muted mb-1">Signification :</p>
-                        <p className="text-ink/90 whitespace-pre-wrap [unicode-bidi:plaintext]">{item.texte_francais}</p>
+                        <p className="text-ink/90 font-semibold whitespace-pre-wrap [unicode-bidi:plaintext]">{item.texte_francais}</p>
                     </div>
                 )}
             </div>
@@ -104,7 +104,7 @@ const InvocationModal: React.FC<{ item: Item; onClose: () => void; onTagClick?: 
                         {item.texte_francais && (
                             <div className="mt-6 pl-4 border-l-4 border-green">
                                 <p className="text-sm text-green mb-2">Traduction :</p>
-                                <Markdown className="[unicode-bidi:plaintext]">{item.texte_francais}</Markdown>
+                                <Markdown className="[unicode-bidi:plaintext] font-semibold">{item.texte_francais}</Markdown>
                             </div>
                         )}
                         {item.explication && (
