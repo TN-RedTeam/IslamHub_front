@@ -1,0 +1,30 @@
+-- ============================================================================
+-- Phase 11w — « Corps composé » des hadiths (khoutba tissée)
+-- ============================================================================
+-- Besoin : un contenu qui enchaîne, dans un ordre précis, plusieurs narrations
+-- (matn + variantes + autres hadiths), des versets du Coran et de la prose, sans
+-- pouvoir séparer (le contexte se perdrait). Le modèle variantes/dialogues (11u)
+-- ne gère ni l'ordre libre ni les versets intercalés.
+--
+-- Solution : réutiliser le composeur de blocs existant (contenu_blocs + BlocEditor
+-- + ArticleBlocs), déjà utilisé par exposes/dossiers/recits/equivoques, en
+-- l'attachant à parent_type = 'hadith'.
+--
+-- AUCUN changement de schéma : contenu_blocs.parent_type est du texte libre (pas
+-- de contrainte), et get_blocs / admin_get_blocs / admin_save_blocs sont déjà
+-- génériques (agnostiques du parent). Côté front : BlocEditor dans le formulaire
+-- hadith (en édition) + ArticleBlocs sur la fiche publique.
+--
+-- Seul ajustement base : rendre les blocs de hadith trouvables dans la recherche
+-- admin « Recherche & correction ».
+-- ============================================================================
+
+-- admin_search_occurrences : ajoute parent_type 'hadith' à la branche « Bloc d'article »
+-- (liste IN + chemin /admin/hadiths/). Le reste de la fonction est inchangé (cf. 11t).
+-- Déjà appliqué via MCP. Idempotent (create or replace).
+-- Les deux seules différences vs 11t :
+--   when 'hadith' then '/admin/hadiths/'||b.parent_id   -- dans le CASE du chemin
+--   and b.parent_type in ('equivoque','expose','recit','dossier','hadith')
+--
+-- (Voir la définition complète appliquée dans l'historique ; non recopiée ici pour
+--  éviter la divergence — phase11t_admin_search_arabe.sql + ces 2 lignes.)
