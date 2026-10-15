@@ -90,7 +90,7 @@ const CoranCard: React.FC<{
         {coran.texte_francais && (
           <div className="mt-4 pl-4 border-l-4 border-green-line dark:border-green line-clamp-2">
             <p className="text-sm text-ink mb-1">Signification :</p>
-            <p className="text-ink whitespace-pre-wrap [unicode-bidi:plaintext]">{coran.texte_francais}</p>
+            <p className="text-ink font-semibold whitespace-pre-wrap [unicode-bidi:plaintext]">{coran.texte_francais}</p>
           </div>
         )}
       </div>
@@ -185,7 +185,7 @@ const CoranModal: React.FC<{
             {coran.texte_francais && (
               <div className="mt-6 pl-4 border-l-4 border-green">
                 <p className="text-sm text-green mb-2">Traduction:</p>
-                <p className="text-ink whitespace-pre-wrap [unicode-bidi:plaintext]">{coran.texte_francais}</p>
+                <p className="text-ink font-semibold whitespace-pre-wrap [unicode-bidi:plaintext]">{coran.texte_francais}</p>
               </div>
             )}
           </div>
