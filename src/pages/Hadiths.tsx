@@ -74,7 +74,7 @@ const HadithCard: React.FC<{ hadith: Hadith; onClick: () => void }> = ({ hadith,
         {hadith.texte_francais && (
             <div className="mt-4 pl-4 border-l-4 border-glass-border line-clamp-2">
               <p className="text-sm text-ink mb-1">Signification :</p>
-              <p className="text-ink font-semibold whitespace-pre-wrap [unicode-bidi:plaintext]">{hadith.texte_francais}</p>
+              <p className="text-ink font-bold whitespace-pre-wrap [unicode-bidi:plaintext]">{hadith.texte_francais}</p>
             </div>
         )}
       </div>
@@ -177,7 +177,7 @@ const HadithModal: React.FC<{ hadith: Hadith; onClose: () => void }> = ({ hadith
             {hadith.texte_francais && (
                 <div className="mt-6 pl-4 border-l-4 border-green">
                   <p className="text-sm text-green mb-2">Traduction:</p>
-                  <Markdown className="[unicode-bidi:plaintext] font-semibold">{hadith.texte_francais}</Markdown>
+                  <Markdown className="[unicode-bidi:plaintext] font-bold">{hadith.texte_francais}</Markdown>
                 </div>
             )}
           </div>
@@ -203,7 +203,7 @@ const HadithModal: React.FC<{ hadith: Hadith; onClose: () => void }> = ({ hadith
               {sg.texte_francais && (
                 <div className="pl-4 border-l-4 border-green">
                   <p className="text-sm text-green mb-1">Traduction :</p>
-                  <Markdown className="[unicode-bidi:plaintext] font-semibold">{sg.texte_francais}</Markdown>
+                  <Markdown className="[unicode-bidi:plaintext] font-bold">{sg.texte_francais}</Markdown>
                 </div>
               )}
               {sg.explication && (
@@ -232,7 +232,7 @@ const HadithModal: React.FC<{ hadith: Hadith; onClose: () => void }> = ({ hadith
               {vr.texte_francais && (
                 <div className="pl-4 border-l-4 border-green">
                   <p className="text-sm text-green mb-1">Traduction :</p>
-                  <Markdown className="[unicode-bidi:plaintext] font-semibold">{vr.texte_francais}</Markdown>
+                  <Markdown className="[unicode-bidi:plaintext] font-bold">{vr.texte_francais}</Markdown>
                 </div>
               )}
               {vr.explication && (
