@@ -8,12 +8,29 @@ import { BadgeGeneration, honorificFor } from '../components/BadgeGeneration';
 import { EcoleBadge } from '../components/EcoleBadge';
 import { ThemeChips } from '../components/ThemeChips';
 import { RelatedByTheme } from '../components/RelatedByTheme';
+import { ArticleBlocs } from '../components/ArticleBlocs';
 import { useSeo } from '../hooks/useSeo';
-import type { ParoleDetail, ParoleImage } from '../types';
+import type { ParoleDetail, ParoleImage, Bloc, HadithSegment } from '../types';
+
+/** Bloc « dialogue » d'une parole (intro → arabe → phonétique → traduction → explication). */
+const ParoleDialogue: React.FC<{ sg: HadithSegment }> = ({ sg }) => (
+  <div className="rounded-panel border border-line bg-surface p-6 sm:p-7 shadow-card space-y-4">
+    {sg.intro && <p className="text-ink/80 italic [unicode-bidi:plaintext]">{sg.intro}</p>}
+    {sg.texte_arabe && <p className="font-arabic text-3xl leading-loose text-right text-ink whitespace-pre-wrap" dir="rtl" lang="ar">{sg.texte_arabe}</p>}
+    {sg.phonetique && <p className="text-sm text-muted italic [unicode-bidi:plaintext]">{sg.phonetique}</p>}
+    {sg.texte_francais && (
+      <div className="pl-4 border-l-4 border-gold [unicode-bidi:plaintext]"><Markdown className="font-bold">{sg.texte_francais}</Markdown></div>
+    )}
+    {sg.explication && (
+      <div className="bg-glass-tint rounded-lg p-4"><p className="text-sm font-bold text-ink mb-1">Explication :</p><Markdown className="[unicode-bidi:plaintext]">{sg.explication}</Markdown></div>
+    )}
+  </div>
+);
 
 export const ParolePage: React.FC = () => {
   const { slug = '' } = useParams();
   const [p, setP] = useState<ParoleDetail | null>(null);
+  const [blocs, setBlocs] = useState<Bloc[]>([]); // corps composé (parole tissée)
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
   const [zoomed, setZoomed] = useState<LightboxImage | null>(null);
@@ -25,9 +42,14 @@ export const ParolePage: React.FC = () => {
 
   useEffect(() => {
     let alive = true;
-    setLoading(true); setNotFound(false);
+    setLoading(true); setNotFound(false); setBlocs([]);
     dataService.getParole(slug)
-      .then((d) => { if (!alive) return; if (!d) setNotFound(true); else setP(d); setLoading(false); })
+      .then((d) => {
+        if (!alive) return;
+        if (!d) setNotFound(true);
+        else { setP(d); dataService.getBlocs('parole', d.id).then((bl) => { if (alive) setBlocs(bl); }).catch(() => {}); }
+        setLoading(false);
+      })
       .catch(() => { if (alive) { setNotFound(true); setLoading(false); } });
     return () => { alive = false; };
   }, [slug]);
@@ -60,7 +82,7 @@ export const ParolePage: React.FC = () => {
           {p.savant && <> <span aria-hidden>·</span> {p.savant}</>}
         </nav>
 
-        <p className="text-[11.5px] font-semibold uppercase tracking-[0.2em] text-accent mb-1">Parole de savant</p>
+        <p className="text-[11.5px] font-semibold uppercase tracking-[0.2em] text-accent mb-1">Parole de savant{p.rubrique ? <span className="text-muted"> · {p.rubrique}</span> : null}</p>
         {p.sujet && <h1 className="font-display font-semibold text-ink leading-tight" style={{ fontSize: 'clamp(26px,4vw,38px)' }}>{p.sujet}</h1>}
 
         {/* Savant : lien + honorifique + badge + école */}
@@ -99,6 +121,9 @@ export const ParolePage: React.FC = () => {
 
         {/* Texte */}
         <div className="rounded-panel border border-line bg-surface p-6 sm:p-7 mt-5 shadow-card">
+          {p.intro && (
+            <p className="text-ink/80 italic mb-4 [unicode-bidi:plaintext]">{p.intro}</p>
+          )}
           {p.texte_arabe && (
             <p className="font-arabic text-3xl leading-loose text-right text-ink whitespace-pre-wrap" dir="rtl" lang="ar">{p.texte_arabe}</p>
           )}
@@ -114,6 +139,13 @@ export const ParolePage: React.FC = () => {
             <p className="text-xs uppercase tracking-[0.05em] text-accent font-semibold mt-4">{reference}</p>
           )}
         </div>
+
+        {/* Dialogue — suite de la parole */}
+        {p.segments && p.segments.length > 0 && (
+          <div className="mt-5 space-y-5">
+            {p.segments.map((sg, i) => <ParoleDialogue key={i} sg={sg} />)}
+          </div>
+        )}
 
         {/* Explication */}
         {p.explication && (
@@ -155,6 +187,13 @@ export const ParolePage: React.FC = () => {
                 </figure>
               ))}
             </div>
+          </section>
+        )}
+
+        {/* Corps composé (parole tissée) : narrations + versets + prose dans l'ordre */}
+        {blocs.length > 0 && (
+          <section className="mt-6 rounded-card border border-line bg-surface p-5">
+            <ArticleBlocs blocs={blocs} />
           </section>
         )}
 

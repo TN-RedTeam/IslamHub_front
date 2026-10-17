@@ -454,9 +454,12 @@ export interface GlobalReplaceResult { applied: boolean; whole_word: boolean; fi
 export interface ReplaceBatch { batch: string; find: string; replace: string; created_at: string; cells: number; }
 
 export interface ParoleImageInput { image_url: string; alt: string; legende?: string | null; source_livre?: string | null; source_livre_ar?: string | null; ordre?: number | null; }
+export interface ParoleSegmentInput {
+  intro: string; texte_arabe: string; phonetique: string; texte_francais: string; explication: string;
+}
 export interface ParoleFormData {
   id?: number | null;
-  sujet: string; texte_arabe: string; texte_francais: string; phonetique: string; explication: string;
+  sujet: string; rubrique: string; intro: string; texte_arabe: string; texte_francais: string; phonetique: string; explication: string;
   source_livre: string; page: string; ecole: string; tag: string;
   savant_id?: number | null;
   new_savant?: { nom: string } | null;
@@ -464,13 +467,15 @@ export interface ParoleFormData {
   commente_parole_id?: number | null;
   commente_livre: string;
   images: ParoleImageInput[];
+  segments?: ParoleSegmentInput[]; // suite de la parole en dialogue
 }
 export interface ParoleEditShape {
-  id: number; sujet: string | null; texte_arabe: string | null; texte_francais: string | null;
+  id: number; sujet: string | null; rubrique: string | null; intro: string | null; texte_arabe: string | null; texte_francais: string | null;
   phonetique: string | null; explication: string | null; source_livre: string | null; page: string | null;
   ecole: string | null; savant_id: number | null; tag: string | null;
   rapporteur_savant_id: number | null; commente_parole_id: number | null; commente_livre: string | null;
   images: { image_url: string; alt: string | null; legende: string | null; source_livre: string | null; source_livre_ar: string | null; ordre: number | null }[];
+  segments: { intro: string | null; texte_arabe: string | null; phonetique: string | null; texte_francais: string | null; explication: string | null }[];
 }
 
 export type VersetType = 'verset' | 'hadith';

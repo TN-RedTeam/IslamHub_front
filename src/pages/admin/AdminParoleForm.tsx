@@ -4,6 +4,7 @@ import { DeleteEntryButton } from '../../components/admin/DeleteEntryButton';
 import { TagPicker } from '../../components/admin/TagPicker';
 import { ScanUploadButton } from '../../components/admin/ScanUploadButton';
 import { NameSelect } from '../../components/admin/NameSelect';
+import { BlocEditor } from '../../components/admin/BlocEditor';
 import { useNavigate, useParams, Link } from 'react-router-dom';
 import { Loader2, Plus, Trash2, Check, AlertTriangle } from 'lucide-react';
 import { adminService, type SavantRow, type ParoleFormData, type ParoleImageInput, type RefOption } from '../../services/AdminService';
@@ -27,7 +28,7 @@ export const AdminParoleForm: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [ok, setOk] = useState(false);
 
-  const [f, setF] = useState({ sujet: '', texte_arabe: AR_TEMPLATE.parole, texte_francais: '', phonetique: '', explication: '', source_livre: '', page: '', ecole: '', tag: '', commente_livre: '' });
+  const [f, setF] = useState({ sujet: '', rubrique: '', intro: '', texte_arabe: AR_TEMPLATE.parole, texte_francais: '', phonetique: '', explication: '', source_livre: '', page: '', ecole: '', tag: '', commente_livre: '' });
   const set = (k: keyof typeof f) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => setF((p) => ({ ...p, [k]: e.target.value }));
   const [savant, setSavant] = useState('');           // savant_id (string) ou NEW
   const [newSavant, setNewSavant] = useState('');
@@ -36,6 +37,12 @@ export const AdminParoleForm: React.FC = () => {
   const [paroles, setParoles] = useState<RefOption[]>([]);
   const [images, setImages] = useState<Img[]>([]);
   const moveImg = (i: number, d: -1 | 1) => setImages((p) => { const j = i + d; if (j < 0 || j >= p.length) return p; const n = [...p]; [n[i], n[j]] = [n[j], n[i]]; return n; });
+  // Dialogue — suite de la parole (échange question/réponse…).
+  type Seg = { intro: string; texte_arabe: string; phonetique: string; texte_francais: string; explication: string };
+  const emptySeg = (): Seg => ({ intro: '', texte_arabe: '', phonetique: '', texte_francais: '', explication: '' });
+  const [segments, setSegments] = useState<Seg[]>([]);
+  const setSeg = (i: number, k: keyof Seg, v: string) => setSegments((p) => p.map((s, j) => (j === i ? { ...s, [k]: v } : s)));
+  const moveSeg = (i: number, d: -1 | 1) => setSegments((p) => { const j = i + d; if (j < 0 || j >= p.length) return p; const n = [...p]; [n[i], n[j]] = [n[j], n[i]]; return n; });
   const [derived, setDerived] = useState<ThemeRef[]>([]);
   const [tagVocab, setTagVocab] = useState<string[]>([]);
   useEffect(() => { adminService.tagsVocabulary().then(setTagVocab).catch(() => {}); }, []);
@@ -49,11 +56,12 @@ export const AdminParoleForm: React.FC = () => {
     if (!editId) return;
     adminService.getParoleForEdit(editId).then((p) => {
       if (!p) return;
-      setF({ sujet: p.sujet ?? '', texte_arabe: p.texte_arabe ?? '', texte_francais: p.texte_francais ?? '', phonetique: p.phonetique ?? '', explication: p.explication ?? '', source_livre: p.source_livre ?? '', page: p.page ?? '', ecole: p.ecole ?? '', tag: p.tag ?? '', commente_livre: p.commente_livre ?? '' });
+      setF({ sujet: p.sujet ?? '', rubrique: p.rubrique ?? '', intro: p.intro ?? '', texte_arabe: p.texte_arabe ?? '', texte_francais: p.texte_francais ?? '', phonetique: p.phonetique ?? '', explication: p.explication ?? '', source_livre: p.source_livre ?? '', page: p.page ?? '', ecole: p.ecole ?? '', tag: p.tag ?? '', commente_livre: p.commente_livre ?? '' });
       setSavant(p.savant_id ? String(p.savant_id) : '');
       setRapporteur(p.rapporteur_savant_id ? String(p.rapporteur_savant_id) : '');
       setCommente(p.commente_parole_id ? String(p.commente_parole_id) : '');
       setImages(p.images.map((im) => ({ ...emptyImg(), image_url: im.image_url ?? '', alt: im.alt ?? '', legende: im.legende ?? '', source_livre: im.source_livre ?? '', source_livre_ar: im.source_livre_ar ?? '' })));
+      setSegments((p.segments ?? []).map((s) => ({ intro: s.intro ?? '', texte_arabe: s.texte_arabe ?? '', phonetique: s.phonetique ?? '', texte_francais: s.texte_francais ?? '', explication: s.explication ?? '' })));
     }).catch(() => setError('Parole introuvable.'));
   }, [editId]);
 
@@ -74,6 +82,7 @@ export const AdminParoleForm: React.FC = () => {
     images: images.filter((im) => im.image_url.trim()).map<ParoleImageInput>((im, i) => ({
       image_url: im.image_url.trim(), alt: im.alt.trim() || 'Scan du livre', legende: im.legende || null, source_livre: im.source_livre || null, source_livre_ar: im.source_livre_ar || null, ordre: i,
     })),
+    segments: segments.filter((s) => s.texte_arabe.trim() || s.texte_francais.trim() || s.intro.trim() || s.explication.trim()),
   });
 
   const save = async (andNew: boolean) => {
@@ -81,7 +90,7 @@ export const AdminParoleForm: React.FC = () => {
     try {
       const newId = await adminService.saveParole(buildPayload());
       setOk(true);
-      if (andNew) { setF({ sujet: '', texte_arabe: AR_TEMPLATE.parole, texte_francais: '', phonetique: '', explication: '', source_livre: '', page: '', ecole: '', tag: '', commente_livre: '' }); setSavant(''); setNewSavant(''); setRapporteur(''); setCommente(''); setImages([]); setTimeout(() => setOk(false), 2500); }
+      if (andNew) { setF({ sujet: '', rubrique: '', intro: '', texte_arabe: AR_TEMPLATE.parole, texte_francais: '', phonetique: '', explication: '', source_livre: '', page: '', ecole: '', tag: '', commente_livre: '' }); setSavant(''); setNewSavant(''); setRapporteur(''); setCommente(''); setImages([]); setSegments([]); setTimeout(() => setOk(false), 2500); }
       else { navigate(`/admin/paroles/${newId}`, { replace: true }); setTimeout(() => setOk(false), 2500); }
     } catch (e) {
       const msg = (e as Error).message || 'Erreur à l’enregistrement.';
@@ -101,6 +110,10 @@ export const AdminParoleForm: React.FC = () => {
       <section className="rounded-card border border-line bg-surface p-5 mb-4">
         <h2 className="font-display font-semibold text-ink text-lg mb-4">1 · La parole</h2>
         <div className="mb-3.5"><label className={label}>Sujet <span className="text-red-600">*</span></label><SujetField className={field} value={f.sujet} onChange={set('sujet')} placeholder="Ex. Allah existe sans endroit" /></div>
+        <div className="mb-3.5"><label className={label}>Rubrique / série <span className="text-muted font-normal">(optionnel)</span></label>
+          <input className={field} value={f.rubrique} onChange={set('rubrique')} placeholder="Ex. Série sur la croyance" /></div>
+        <div className="mb-3.5"><label className={label}>Intro / narration <span className="text-muted font-normal">(optionnel)</span></label>
+          <input className={field} value={f.intro} onChange={set('intro')} placeholder="Narration de contexte avant le texte arabe…" /></div>
         <div className="mb-3.5"><label className={label}>Texte arabe <span className="text-red-600">*</span></label>
           <textarea dir="rtl" lang="ar" className={`${field} font-arabic text-2xl leading-loose text-right min-h-[90px]`} value={f.texte_arabe} onChange={set('texte_arabe')} onFocus={caretBetween(AR_TEMPLATE.parole)} placeholder="Colle ici le texte arabe (vocalisé)…" /></div>
         <div className="grid sm:grid-cols-2 gap-3.5">
@@ -205,6 +218,46 @@ export const AdminParoleForm: React.FC = () => {
           {derived.length === 0 ? <p className="text-sm text-muted mt-1">Aucun.</p> :
             <div className="flex flex-wrap gap-1.5 mt-2">{derived.map((t) => <span key={t.slug} className="text-xs bg-glass-tint text-accent border border-glass-border rounded-full px-2.5 py-0.5">{t.nom}</span>)}</div>}
         </div>
+      </section>
+
+      {/* 5. Dialogue — suite de la parole (optionnel) */}
+      <section className="rounded-card border border-line bg-surface p-5 mb-4">
+        <h2 className="font-display font-semibold text-ink text-lg mb-1">5 · Dialogue <span className="text-muted font-normal">(optionnel)</span></h2>
+        <p className="text-xs text-muted mb-3.5">Pour une parole sous forme d'échange (question → réponse → précision…). Le texte principal ci-dessus est le <b>1er passage</b> ; ajoute ici les passages suivants, dans l'ordre. L'<b>intro</b> est la narration qui précède.</p>
+        {segments.map((sg, i) => (
+          <div key={i} className="rounded-lg border border-line bg-ground/40 p-3.5 mb-3">
+            <div className="flex items-center gap-2 mb-2.5">
+              <span className="text-xs font-semibold text-accent">Passage {i + 2}</span>
+              <div className="ml-auto flex items-center gap-1">
+                <button type="button" onClick={() => moveSeg(i, -1)} disabled={i === 0} className="px-2 py-1 text-xs rounded border border-line text-muted hover:text-ink disabled:opacity-40" aria-label="Monter">↑</button>
+                <button type="button" onClick={() => moveSeg(i, 1)} disabled={i === segments.length - 1} className="px-2 py-1 text-xs rounded border border-line text-muted hover:text-ink disabled:opacity-40" aria-label="Descendre">↓</button>
+                <button type="button" onClick={() => setSegments((p) => p.filter((_, j) => j !== i))} className="px-2 py-1 text-xs rounded border border-low/40 text-low hover:bg-low/10 inline-flex items-center gap-1"><Trash2 className="w-3.5 h-3.5" /></button>
+              </div>
+            </div>
+            <div className="mb-2.5"><label className={label}>Intro / narration <span className="text-muted font-normal">(optionnel)</span></label>
+              <input className={field} value={sg.intro} onChange={(e) => setSeg(i, 'intro', e.target.value)} placeholder="Ex. On lui demanda :" /></div>
+            <div className="mb-2.5"><label className={label}>Texte arabe</label>
+              <textarea dir="rtl" lang="ar" className={`${field} font-arabic text-2xl leading-loose text-right min-h-[80px]`} value={sg.texte_arabe} onChange={(e) => setSeg(i, 'texte_arabe', e.target.value)} /></div>
+            <div className="grid sm:grid-cols-2 gap-2.5 mb-2.5">
+              <div><label className={label}>Phonétique</label><input className={field} value={sg.phonetique} onChange={(e) => setSeg(i, 'phonetique', e.target.value)} /></div>
+              <div><label className={label}>Traduction</label><input className={field} value={sg.texte_francais} onChange={(e) => setSeg(i, 'texte_francais', e.target.value)} /></div>
+            </div>
+            <div><label className={label}>Explication <span className="text-muted font-normal">(Markdown)</span></label>
+              <textarea className={`${field} min-h-[60px]`} value={sg.explication} onChange={(e) => setSeg(i, 'explication', e.target.value)} /></div>
+          </div>
+        ))}
+        <button type="button" onClick={() => setSegments((p) => [...p, emptySeg()])} className="inline-flex items-center gap-1.5 rounded-lg border border-line bg-surface text-ink font-semibold px-3.5 py-2 text-sm hover:border-green">
+          <Plus className="w-4 h-4" /> Ajouter un passage
+        </button>
+      </section>
+
+      {/* 6. Corps composé — blocs ordonnés (parole tissée : narrations + versets + prose) */}
+      <section className="rounded-card border border-line bg-surface p-5 mb-4">
+        <h2 className="font-display font-semibold text-ink text-lg mb-1">6 · Corps composé <span className="text-muted font-normal">(optionnel)</span></h2>
+        <p className="text-xs text-muted mb-3.5">Pour un contenu <b>tissé</b> (plusieurs paroles/hadiths/versets + prose dans un ordre précis). Chaque bloc est réordonnable : <b>Texte</b>, <b>Preuve</b> (cite un contenu existant ou saisie manuelle), <b>Commentaire</b>. S'affiche sur la fiche <b>après</b> la parole. Laisse vide pour une parole classique.</p>
+        {editId
+          ? <BlocEditor parentType="parole" parentId={editId} />
+          : <p className="text-sm text-muted italic">Enregistre d'abord la parole, puis reviens l'éditer pour composer son corps.</p>}
       </section>
 
       <div className="fixed bottom-0 left-0 md:left-[230px] right-0 flex items-center gap-3 px-6 py-3.5 bg-ivory/95 backdrop-blur border-t border-line">
