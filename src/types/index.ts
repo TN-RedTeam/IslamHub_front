@@ -115,6 +115,9 @@ export interface ParoleDetail {
   id: number;
   slug: string;
   sujet: string | null;
+  rubrique?: string | null;      // série / rubrique (optionnel)
+  intro?: string | null;         // narration de contexte avant le texte arabe
+  segments?: HadithSegment[];    // suite de la parole en dialogue (optionnel)
   texte_arabe: string | null;
   texte_francais: string | null;
   phonetique: string | null;
