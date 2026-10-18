@@ -7,7 +7,7 @@ import { NameSelect } from '../../components/admin/NameSelect';
 import { BlocEditor } from '../../components/admin/BlocEditor';
 import { useNavigate, useParams, Link } from 'react-router-dom';
 import { Loader2, Plus, Trash2, Check, AlertTriangle } from 'lucide-react';
-import { adminService, type SavantRow, type ParoleFormData, type ParoleImageInput, type RefOption } from '../../services/AdminService';
+import { adminService, type SavantRow, type ParoleFormData, type ParoleImageInput, type DossierRefs } from '../../services/AdminService';
 import { AR_TEMPLATE, caretBetween, normalizeBracketSpaces } from '../../utils/arabicTemplate';
 import type { ThemeRef } from '../../types';
 
@@ -33,8 +33,11 @@ export const AdminParoleForm: React.FC = () => {
   const [savant, setSavant] = useState('');           // savant_id (string) ou NEW
   const [newSavant, setNewSavant] = useState('');
   const [rapporteur, setRapporteur] = useState('');   // rapporteur_savant_id (string)
-  const [commente, setCommente] = useState('');       // commente_parole_id (string)
-  const [paroles, setParoles] = useState<RefOption[]>([]);
+  // Commente un contenu : type (parole/hadith/verset) + id de la cible.
+  const [commenteType, setCommenteType] = useState<'' | 'parole' | 'hadith' | 'verset'>('');
+  const [commenteRef, setCommenteRef] = useState('');
+  const [commenteFilter, setCommenteFilter] = useState('');
+  const [refs, setRefs] = useState<DossierRefs>({ hadiths: [], paroles: [], versets: [] });
   const [images, setImages] = useState<Img[]>([]);
   const moveImg = (i: number, d: -1 | 1) => setImages((p) => { const j = i + d; if (j < 0 || j >= p.length) return p; const n = [...p]; [n[i], n[j]] = [n[j], n[i]]; return n; });
   // Dialogue — suite de la parole (échange question/réponse…).
@@ -49,7 +52,7 @@ export const AdminParoleForm: React.FC = () => {
 
   useEffect(() => {
     adminService.listSavants().then(setSavants).catch(() => setError('Impossible de charger les savants.')).finally(() => setLoading(false));
-    adminService.listDossierRefs().then((r) => setParoles(r.paroles)).catch(() => {});
+    adminService.listDossierRefs().then(setRefs).catch(() => {});
   }, []);
 
   useEffect(() => {
@@ -59,7 +62,9 @@ export const AdminParoleForm: React.FC = () => {
       setF({ sujet: p.sujet ?? '', rubrique: p.rubrique ?? '', intro: p.intro ?? '', texte_arabe: p.texte_arabe ?? '', texte_francais: p.texte_francais ?? '', phonetique: p.phonetique ?? '', explication: p.explication ?? '', source_livre: p.source_livre ?? '', page: p.page ?? '', ecole: p.ecole ?? '', tag: p.tag ?? '', commente_livre: p.commente_livre ?? '' });
       setSavant(p.savant_id ? String(p.savant_id) : '');
       setRapporteur(p.rapporteur_savant_id ? String(p.rapporteur_savant_id) : '');
-      setCommente(p.commente_parole_id ? String(p.commente_parole_id) : '');
+      const ct = p.commente_type ?? (p.commente_parole_id ? 'parole' : p.commente_hadith_id ? 'hadith' : p.commente_verset_id ? 'verset' : '');
+      setCommenteType(ct as '' | 'parole' | 'hadith' | 'verset');
+      setCommenteRef(ct === 'parole' ? String(p.commente_parole_id ?? '') : ct === 'hadith' ? String(p.commente_hadith_id ?? '') : ct === 'verset' ? String(p.commente_verset_id ?? '') : '');
       setImages(p.images.map((im) => ({ ...emptyImg(), image_url: im.image_url ?? '', alt: im.alt ?? '', legende: im.legende ?? '', source_livre: im.source_livre ?? '', source_livre_ar: im.source_livre_ar ?? '' })));
       setSegments((p.segments ?? []).map((s) => ({ intro: s.intro ?? '', texte_arabe: s.texte_arabe ?? '', phonetique: s.phonetique ?? '', texte_francais: s.texte_francais ?? '', explication: s.explication ?? '' })));
     }).catch(() => setError('Parole introuvable.'));
@@ -78,7 +83,10 @@ export const AdminParoleForm: React.FC = () => {
     savant_id: savant && savant !== NEW ? Number(savant) : null,
     new_savant: savant === NEW && newSavant.trim() ? { nom: newSavant.trim() } : null,
     rapporteur_savant_id: rapporteur ? Number(rapporteur) : null,
-    commente_parole_id: commente ? Number(commente) : null,
+    commente_type: commenteType || null,
+    commente_parole_id: commenteType === 'parole' && commenteRef ? Number(commenteRef) : null,
+    commente_hadith_id: commenteType === 'hadith' && commenteRef ? Number(commenteRef) : null,
+    commente_verset_id: commenteType === 'verset' && commenteRef ? Number(commenteRef) : null,
     images: images.filter((im) => im.image_url.trim()).map<ParoleImageInput>((im, i) => ({
       image_url: im.image_url.trim(), alt: im.alt.trim() || 'Scan du livre', legende: im.legende || null, source_livre: im.source_livre || null, source_livre_ar: im.source_livre_ar || null, ordre: i,
     })),
@@ -90,7 +98,7 @@ export const AdminParoleForm: React.FC = () => {
     try {
       const newId = await adminService.saveParole(buildPayload());
       setOk(true);
-      if (andNew) { setF({ sujet: '', rubrique: '', intro: '', texte_arabe: AR_TEMPLATE.parole, texte_francais: '', phonetique: '', explication: '', source_livre: '', page: '', ecole: '', tag: '', commente_livre: '' }); setSavant(''); setNewSavant(''); setRapporteur(''); setCommente(''); setImages([]); setSegments([]); setTimeout(() => setOk(false), 2500); }
+      if (andNew) { setF({ sujet: '', rubrique: '', intro: '', texte_arabe: AR_TEMPLATE.parole, texte_francais: '', phonetique: '', explication: '', source_livre: '', page: '', ecole: '', tag: '', commente_livre: '' }); setSavant(''); setNewSavant(''); setRapporteur(''); setCommenteType(''); setCommenteRef(''); setCommenteFilter(''); setImages([]); setSegments([]); setTimeout(() => setOk(false), 2500); }
       else { navigate(`/admin/paroles/${newId}`, { replace: true }); setTimeout(() => setOk(false), 2500); }
     } catch (e) {
       const msg = (e as Error).message || 'Erreur à l’enregistrement.';
@@ -147,16 +155,37 @@ export const AdminParoleForm: React.FC = () => {
           <div><label className={label}>Livre source</label><input className={field} value={f.source_livre} onChange={set('source_livre')} placeholder="Ex. Al-Asmāʾ wa ṣ-Ṣifāt" /></div>
           <div><label className={label}>Page</label><input className={field} value={f.page} onChange={set('page')} placeholder="88" /></div>
         </div>
-        <div className="grid sm:grid-cols-2 gap-3.5 mt-3.5">
-          <div><label className={label}>Rapportée par <span className="text-muted font-normal">(si un autre savant la rapporte)</span></label>
-            <NameSelect options={savants} value={rapporteur ? Number(rapporteur) : null}
-              onChange={(id) => setRapporteur(id ? String(id) : '')}
-              placeholder="Chercher un savant (nom, surnom…)" /></div>
-          <div><label className={label}>Commente une parole <span className="text-muted font-normal">(optionnel)</span></label>
-            <select className={field} value={commente} onChange={(e) => setCommente(e.target.value)}>
-              <option value="">— (aucune)</option>
-              {paroles.filter((o) => o.id !== editId).map((o) => <option key={o.id} value={o.id}>{o.label}</option>)}
-            </select></div>
+        <div className="mt-3.5">
+          <label className={label}>Rapportée par <span className="text-muted font-normal">(si un autre savant la rapporte)</span></label>
+          <NameSelect options={savants} value={rapporteur ? Number(rapporteur) : null}
+            onChange={(id) => setRapporteur(id ? String(id) : '')}
+            placeholder="Chercher un savant (nom, surnom…)" />
+        </div>
+        {/* Commente un contenu — parole, hadith ou verset du Coran */}
+        <div className="mt-3.5 rounded-lg border border-line bg-ground/40 p-3.5">
+          <label className={label}>Commente un contenu <span className="text-muted font-normal">(optionnel)</span></label>
+          <p className="text-xs text-muted mb-2.5">Relie cette parole au contenu qu'elle commente : une autre <b>parole</b>, un <b>hadith</b> ou un <b>verset</b> du Coran.</p>
+          <div className="grid sm:grid-cols-[200px_1fr] gap-2.5">
+            <select className={field} value={commenteType}
+              onChange={(e) => { setCommenteType(e.target.value as '' | 'parole' | 'hadith' | 'verset'); setCommenteRef(''); setCommenteFilter(''); }}>
+              <option value="">— (aucun)</option>
+              <option value="parole">Une parole</option>
+              <option value="hadith">Un hadith</option>
+              <option value="verset">Un verset du Coran</option>
+            </select>
+            {commenteType && (
+              <input className={field} value={commenteFilter} onChange={(e) => setCommenteFilter(e.target.value)} placeholder="Filtrer par sujet…" />
+            )}
+          </div>
+          {commenteType && (
+            <select className={`${field} mt-2.5`} value={commenteRef} onChange={(e) => setCommenteRef(e.target.value)}>
+              <option value="">— (choisir)</option>
+              {(commenteType === 'parole' ? refs.paroles : commenteType === 'hadith' ? refs.hadiths : refs.versets)
+                .filter((o) => !(commenteType === 'parole' && o.id === editId))
+                .filter((o) => !commenteFilter.trim() || o.label.toLowerCase().includes(commenteFilter.trim().toLowerCase()))
+                .map((o) => <option key={o.id} value={o.id}>{o.label}</option>)}
+            </select>
+          )}
         </div>
         <div className="mt-3.5">
           <label className={label}>Commente un livre <span className="text-muted font-normal">(titre du livre commenté, optionnel)</span></label>

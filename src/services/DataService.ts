@@ -1,4 +1,5 @@
 import { supabase } from './supabase';
+import { MOMENTS, type MomentDef } from '../data/moments';
 import type {
   Hadith,
   Coran,
@@ -207,11 +208,17 @@ class DataService {
     if (error) throw error;
     return (data ?? null) as Invocation | null;
   }
-  /** Invocations/évocations rattachées à un moment de la journée (page « La journée du musulman »). */
+  /** Invocations/évocations rattachées à un moment de la journée (panneau « Au fil de la journée »). */
   async getJourneeInvocations(): Promise<Invocation[]> {
     const { data, error } = await supabase.rpc('journee_invocations');
     if (error) throw error;
     return (data ?? []) as Invocation[];
+  }
+  /** Vocabulaire des moments de la journée (table `moments`, repli sur la liste statique). */
+  async getMoments(): Promise<MomentDef[]> {
+    const { data, error } = await supabase.from('moments').select('key,label,ordre').eq('actif', true).order('ordre').order('id');
+    if (error || !data || data.length === 0) return MOMENTS;
+    return (data as { key: string; label: string }[]).map((m) => ({ key: m.key, label: m.label }));
   }
 
   // ============ Versets équivoques (Phase 12.4) ============

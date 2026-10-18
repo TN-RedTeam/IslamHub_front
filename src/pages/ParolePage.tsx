@@ -106,11 +106,20 @@ export const ParolePage: React.FC = () => {
                 <Link to={`/savants/${p.rapporteur.slug}`} className="text-ink font-medium hover:underline">{p.rapporteur.nom}</Link>
               </span>
             )}
-            {p.commente && (
-              <span>Commente une parole&nbsp;:{' '}
-                <Link to={`/paroles/${p.commente.slug}`} className="text-green font-medium hover:underline">{p.commente.sujet} →</Link>
-              </span>
-            )}
+            {p.commente && (() => {
+              const c = p.commente;
+              const txt = c.sujet || 'Voir le contenu';
+              if (c.type === 'parole' && c.slug) {
+                return <span>Commente une parole&nbsp;:{' '}<Link to={`/paroles/${c.slug}`} className="text-green font-medium hover:underline">{txt} →</Link></span>;
+              }
+              if (c.type === 'hadith' && c.id) {
+                return <span>Commente un hadith&nbsp;:{' '}<Link to={`/hadiths/${c.id}/${c.slug ?? ''}`} className="text-green font-medium hover:underline">{txt} →</Link></span>;
+              }
+              if (c.type === 'verset') {
+                return <span>Commente un verset&nbsp;: <span className="text-ink font-medium">{txt}{c.sourate ? ` — ${c.sourate}` : ''}</span></span>;
+              }
+              return null;
+            })()}
             {p.commente_livre && (
               <span>Commente le livre&nbsp;: <span className="text-ink font-medium">{p.commente_livre}</span></span>
             )}

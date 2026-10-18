@@ -240,6 +240,20 @@ class AdminService {
     if (error) throw error; return (data ?? []) as InvocationRow[];
   }
 
+  // ---- Moments de la journée (table `moments`) ----
+  async listMoments(): Promise<MomentRow[]> {
+    const { data, error } = await supabase.from('moments').select('id,key,label,ordre,actif').order('ordre').order('id');
+    if (error) throw error; return (data ?? []) as MomentRow[];
+  }
+  async addMoment(label: string): Promise<MomentRow> {
+    const { data, error } = await supabase.rpc('admin_add_moment', { p_label: label });
+    if (error) throw error; return data as MomentRow;
+  }
+  async deleteMoment(id: number): Promise<void> {
+    const { error } = await supabase.rpc('admin_delete_moment', { p_id: id });
+    if (error) throw error;
+  }
+
   // ---- Savants (fiche complète) ----
   async getSavantForEdit(id: number): Promise<SavantEditShape | null> {
     const { data, error } = await supabase.rpc('admin_get_savant', { p_id: id });
@@ -464,7 +478,11 @@ export interface ParoleFormData {
   savant_id?: number | null;
   new_savant?: { nom: string } | null;
   rapporteur_savant_id?: number | null;
+  // Commentaire d'un autre contenu : le type pilote lequel des 3 id est rempli.
+  commente_type?: 'parole' | 'hadith' | 'verset' | null;
   commente_parole_id?: number | null;
+  commente_hadith_id?: number | null;
+  commente_verset_id?: number | null;
   commente_livre: string;
   images: ParoleImageInput[];
   segments?: ParoleSegmentInput[]; // suite de la parole en dialogue
@@ -473,7 +491,9 @@ export interface ParoleEditShape {
   id: number; sujet: string | null; rubrique: string | null; intro: string | null; texte_arabe: string | null; texte_francais: string | null;
   phonetique: string | null; explication: string | null; source_livre: string | null; page: string | null;
   ecole: string | null; savant_id: number | null; tag: string | null;
-  rapporteur_savant_id: number | null; commente_parole_id: number | null; commente_livre: string | null;
+  rapporteur_savant_id: number | null;
+  commente_type: 'parole' | 'hadith' | 'verset' | null;
+  commente_parole_id: number | null; commente_hadith_id: number | null; commente_verset_id: number | null; commente_livre: string | null;
   images: { image_url: string; alt: string | null; legende: string | null; source_livre: string | null; source_livre_ar: string | null; ordre: number | null }[];
   segments: { intro: string | null; texte_arabe: string | null; phonetique: string | null; texte_francais: string | null; explication: string | null }[];
 }
@@ -550,6 +570,7 @@ export interface InvocationEditShape {
   commentaire: string | null; tag: string | null; moments: string | null;
 }
 export interface InvocationRow { id: number; type_id: number; sujet: string; tag: string | null; }
+export interface MomentRow { id: number; key: string; label: string; ordre: number; actif: boolean; }
 
 // ---- Savants (fiche complète) ----
 export interface EcoleRow { id: number; nom: string; }

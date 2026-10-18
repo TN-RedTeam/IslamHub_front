@@ -129,7 +129,9 @@ export interface ParoleDetail {
   savant_slug: string | null;    // → /savants/:slug
   generation: string | null;     // badge de génération
   rapporteur?: { nom: string; slug: string } | null;   // autre savant qui la rapporte
-  commente?: { sujet: string; slug: string } | null;   // parole commentée par celle-ci
+  // Contenu commenté par cette parole (parole, hadith ou verset du Coran).
+  // slug → parole ; id+slug → hadith (/hadiths/:id/:slug) ; sourate → verset (sans page dédiée).
+  commente?: { type: 'parole' | 'hadith' | 'verset'; sujet: string | null; slug?: string | null; id?: number | null; sourate?: string | null } | null;
   commente_livre?: string | null; // livre commenté par cette parole (texte libre)
   images: ParoleImage[];         // 0..N scans du livre (table parole_images)
   themes?: ThemeRef[];           // thèmes transverses (puces)
@@ -190,6 +192,7 @@ export interface RecitDetail {
   titre: string;
   contenu_md: string | null;
   image_url: string | null;
+  parent?: { slug: string; titre: string } | null;   // récit parent (prophète) — fil d'Ariane + retour
   enfants?: { slug: string; titre: string }[];   // « Ses récits » (Phase 5)
 }
 
