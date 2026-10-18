@@ -730,6 +730,9 @@ export interface SearchHit {
   id: number; slug?: string | null; sujet: string | null; extrait?: string | null;
   savant?: string | null; sourate?: string | null; type_id?: number;
   chapitre?: string | null; ecole?: string | null; // fiqh
+  // Invocations : champs complets pour ouvrir la fiche (modale) directement.
+  texte_arabe?: string | null; texte_francais?: string | null; 'phonétique'?: string | null;
+  explication?: string | null; commentaire?: string | null; tag?: string | null;
 }
 export interface SearchThemeHit { slug: string; nom: string; famille: string; }
 export interface SearchResults {
