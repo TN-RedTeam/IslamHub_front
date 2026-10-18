@@ -53,7 +53,7 @@ const Proof: React.FC<{ b: Bloc }> = ({ b }) => {
       )}
 
       {ref.texte_arabe && (
-        <p className="font-arabic text-right leading-[2.05] text-ink" dir="rtl" lang="ar" style={{ fontSize: 'clamp(18px,3.1vw,22px)' }}>{ref.texte_arabe}</p>
+        <p className="font-arabic text-right leading-[2.05] text-ink" dir="rtl" lang="ar" style={{ fontSize: 'clamp(17px,2.8vw,20px)' }}>{ref.texte_arabe}</p>
       )}
 
       {ref.texte_francais && (

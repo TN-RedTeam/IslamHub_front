@@ -51,7 +51,7 @@ const ParoleCard: React.FC<{ parole: Parole }> = ({ parole }) => {
       )}
 
       <div className="bg-glass-tint p-4 rounded-lg border border-line flex-grow">
-        <p className="text-2xl text-ink font-arabic leading-loose text-right line-clamp-3 whitespace-pre-wrap">
+        <p className="text-xl text-ink font-arabic leading-loose text-right line-clamp-3 whitespace-pre-wrap">
           {parole.texte_arabe}
         </p>
 
