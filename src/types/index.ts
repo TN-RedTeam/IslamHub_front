@@ -192,6 +192,7 @@ export interface RecitDetail {
   titre: string;
   contenu_md: string | null;
   image_url: string | null;
+  parent?: { slug: string; titre: string } | null;   // récit parent (prophète) — fil d'Ariane + retour
   enfants?: { slug: string; titre: string }[];   // « Ses récits » (Phase 5)
 }
 

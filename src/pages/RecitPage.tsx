@@ -48,7 +48,11 @@ export const RecitPage: React.FC = () => {
         <nav aria-label="Fil d'Ariane" className="text-xs text-muted mb-1.5">
           <Link to="/" className="hover:text-ink">Accueil</Link> <span aria-hidden>·</span>{' '}
           <Link to="/recits" className="hover:text-ink">Récits</Link> <span aria-hidden>·</span>{' '}
-          {CAT_LABEL[r.categorie] ?? r.categorie}
+          {r.parent ? (
+            <><Link to={`/recits/${r.parent.slug}`} className="hover:text-ink">{r.parent.titre}</Link> <span aria-hidden>·</span> {r.titre}</>
+          ) : (
+            CAT_LABEL[r.categorie] ?? r.categorie
+          )}
         </nav>
 
         <p className="text-[11.5px] font-semibold uppercase tracking-[0.2em] text-accent mb-1">{CAT_LABEL[r.categorie] ?? 'Récit'}</p>
@@ -80,8 +84,13 @@ export const RecitPage: React.FC = () => {
           </section>
         )}
 
-        <div className="mt-8">
-          <Link to="/recits" className="inline-flex items-center gap-1.5 text-green font-medium hover:underline">
+        <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-2">
+          {r.parent && (
+            <Link to={`/recits/${r.parent.slug}`} className="inline-flex items-center gap-1.5 text-green font-medium hover:underline">
+              <ArrowLeft className="w-4 h-4" /> Retour à {r.parent.titre}
+            </Link>
+          )}
+          <Link to="/recits" className="inline-flex items-center gap-1.5 text-muted hover:text-ink">
             <ArrowLeft className="w-4 h-4" /> Tous les récits
           </Link>
         </div>
