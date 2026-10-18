@@ -88,6 +88,10 @@ export interface Invocation extends BaseText {
   type_id: InvocationType;
   commentaire: string | null;
   moments?: string | null; // CSV des moments de la journée (réveil, matin, coucher…)
+  // Origine : 'invocation' (table invocations) ou 'hadith' (hadith marqué invocation/évocation).
+  kind?: 'invocation' | 'hadith';
+  slug?: string | null;       // slug du hadith (si kind='hadith') → /hadiths/:id/:slug
+  hadith_id?: number | null;  // id du hadith (si kind='hadith')
 }
 
 /** Parole de savant (table `paroles`) */
@@ -299,6 +303,10 @@ export interface HadithDetail {
   segments?: HadithSegment[]; // suite du hadith en dialogue
   variants?: HadithVariant[]; // autres versions du même hadith
   equivoque?: { slug: string; id: number; theme?: string; sens_juste?: string | null } | null; // fiche « équivoque » liée (si publiée)
+  // Aussi une invocation/évocation : 1=invocation, 2=évocation, null=non.
+  invocation_type?: number | null;
+  invocation_commentaire?: string | null; // mérite, moment, nb de répétitions…
+  invocation_moments?: string | null;      // CSV de clés `moments`
 }
 
 /** Infos légères d'un savant (mini-bio au survol). */
