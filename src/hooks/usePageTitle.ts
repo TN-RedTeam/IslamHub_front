@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-const SITE_NAME = 'IslamHub';
+const SITE_NAME = 'Aqida';
 
 /**
  * Met à jour le titre de l'onglet par page (SEO + UX).

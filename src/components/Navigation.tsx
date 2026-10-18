@@ -34,7 +34,7 @@ const HIJRI_MONTHS_FR = [
   'Ramadân', 'Chawwâl', 'Dhou al-qiʿda', 'Dhou al-hijja',
 ];
 
-// Marque IslamHub : croissant + étoile, teinte accent (héritée via currentColor).
+// Marque Aqida : croissant + étoile, teinte accent (héritée via currentColor).
 const Mark: React.FC<{ size?: number }> = ({ size = 26 }) => (
   <svg width={size} height={size} viewBox="0 0 40 40" fill="none" aria-hidden="true">
     <path d="M27 8 A13 13 0 1 0 27 32 A10 10 0 1 1 27 8Z" fill="currentColor" />
@@ -99,10 +99,10 @@ export const Navigation: React.FC = () => {
       <div className="max-w-[1440px] mx-auto px-4">
         <div className="flex items-center gap-4 h-16">
           {/* Marque */}
-          <Link to="/" className="flex items-center gap-2.5 shrink-0" aria-label="IslamHub — accueil">
+          <Link to="/" className="flex items-center gap-2.5 shrink-0" aria-label="Aqida — accueil">
             <BrandBadge px={40} radius="rounded-[11px]" mark={26} />
             <span className="font-display text-2xl font-extrabold tracking-[-0.02em]">
-              <span className="text-ink">Islam</span><span className="text-accent">Hub</span>
+              <span className="text-ink">Aq</span><span className="text-accent">ida</span>
             </span>
           </Link>
 
