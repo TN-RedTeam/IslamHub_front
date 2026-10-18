@@ -9,6 +9,7 @@ import { ThemeChips } from '../components/ThemeChips';
 import { RelatedByTheme } from '../components/RelatedByTheme';
 import { ArticleBlocs } from '../components/ArticleBlocs';
 import { Markdown } from '../components/Markdown';
+import { parseMoments } from '../data/moments';
 import { useSeo } from '../hooks/useSeo';
 import type { HadithDetail, Bloc, HadithSegment } from '../types';
 import { IconBadge } from '../components/Icon';
@@ -47,6 +48,8 @@ export const HadithPage: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [momentLabels, setMomentLabels] = useState<Record<string, string>>({});
+  useEffect(() => { dataService.getMoments().then((ms) => setMomentLabels(Object.fromEntries(ms.map((m) => [m.key, m.label])))).catch(() => {}); }, []);
 
   const numId = Number(id);
 
@@ -128,6 +131,11 @@ export const HadithPage: React.FC = () => {
             <ArrowLeft className="h-4 w-4" /> Tous les hadiths
           </Link>
           <h1 className="text-3xl md:text-4xl font-bold text-ink font-display">{hadith.sujet}</h1>
+          {hadith.invocation_type && (
+            <span className="inline-flex items-center gap-1.5 mt-2.5 text-xs font-semibold text-accent-deep bg-glass-tint border border-green-line rounded-full px-3 py-1">
+              {hadith.invocation_type === 2 ? 'Évocation (dhikr)' : 'Invocation (duʿāʾ)'}
+            </span>
+          )}
           {hadith.narrateur && (
             <p className="text-muted mt-2 text-sm flex items-center gap-2 flex-wrap">
               Narrateur : {hadith.narrateur}
@@ -181,6 +189,28 @@ export const HadithPage: React.FC = () => {
             </div>
           )}
         </div>
+
+        {/* En tant qu'invocation / évocation : mérite, moment, nb de répétitions + moments */}
+        {hadith.invocation_type && (hadith.invocation_commentaire || parseMoments(hadith.invocation_moments).length > 0) && (
+          <section className="rounded-card border border-green-line bg-glass-tint/50 p-5">
+            <h2 className="font-display font-semibold text-ink text-lg mb-2">
+              En tant qu'{hadith.invocation_type === 2 ? 'évocation' : 'invocation'}
+            </h2>
+            {hadith.invocation_commentaire && (
+              <Markdown className="[unicode-bidi:plaintext]">{hadith.invocation_commentaire}</Markdown>
+            )}
+            {parseMoments(hadith.invocation_moments).length > 0 && (
+              <div className="mt-3">
+                <p className="text-[11px] uppercase tracking-[0.12em] text-muted font-semibold mb-1.5">Moments de la journée</p>
+                <div className="flex flex-wrap gap-2">
+                  {parseMoments(hadith.invocation_moments).map((k) => (
+                    <span key={k} className="text-xs bg-surface text-ink border border-green-line rounded-full px-2.5 py-0.5">{momentLabels[k] ?? k}</span>
+                  ))}
+                </div>
+              </div>
+            )}
+          </section>
+        )}
 
         {/* Dialogues du matn principal */}
         {hadith.segments && hadith.segments.length > 0 && hadith.segments.map((sg, i) => (

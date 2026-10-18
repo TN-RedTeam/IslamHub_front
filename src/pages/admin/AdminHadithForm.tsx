@@ -9,6 +9,7 @@ import { AR_TEMPLATE, caretBetween, normalizeBracketSpaces } from '../../utils/a
 import { rankNames } from '../../utils/nameSearch';
 import { NameSelect } from '../../components/admin/NameSelect';
 import { BlocEditor } from '../../components/admin/BlocEditor';
+import { MOMENTS, parseMoments } from '../../data/moments';
 import type { ThemeRef } from '../../types';
 
 const DEGRES = ['Sahih', 'Hassan', "Da'if"];
@@ -121,6 +122,25 @@ export const AdminHadithForm: React.FC = () => {
   useEffect(() => { adminService.tagsVocabulary().then(setTagVocab).catch(() => {}); }, []);
   const [isEquivoque, setIsEquivoque] = useState(false);
   const [equivoqueId, setEquivoqueId] = useState<number | null>(null);
+  // Aussi une invocation/évocation : type ('' | '1' | '2') + commentaire + moments (CSV).
+  const [invType, setInvType] = useState<'' | '1' | '2'>('');
+  const [invCmt, setInvCmt] = useState('');
+  const [invMoments, setInvMoments] = useState('');
+  const [momentDefs, setMomentDefs] = useState<{ key: string; label: string }[]>(MOMENTS);
+  const [newMoment, setNewMoment] = useState('');
+  const [addingMoment, setAddingMoment] = useState(false);
+  useEffect(() => { adminService.listMoments().then((rows) => { if (rows.length) setMomentDefs(rows.filter((r) => r.actif).map((r) => ({ key: r.key, label: r.label }))); }).catch(() => {}); }, []);
+  const addMoment = async () => {
+    const lbl = newMoment.trim(); if (!lbl) return;
+    setAddingMoment(true);
+    try {
+      const row = await adminService.addMoment(lbl);
+      setMomentDefs((p) => (p.some((m) => m.key === row.key) ? p : [...p, { key: row.key, label: row.label }]));
+      setInvMoments((cur) => [...new Set([...parseMoments(cur), row.key])].join(','));
+      setNewMoment('');
+    } catch (e) { setError((e as Error).message || 'Ajout du moment impossible.'); }
+    finally { setAddingMoment(false); }
+  };
   // Segments de dialogue (suite du hadith). variantUid = null → rattaché au matn principal ;
   // sinon → rattaché à la variante portant cet uid local.
   type Seg = { intro: string; texte_arabe: string; phonetique: string; texte_francais: string; explication: string; variantUid: string | null };
@@ -168,6 +188,9 @@ export const AdminHadithForm: React.FC = () => {
       setNarrateurIds(h.narrateur_ids ?? []);
       setIsEquivoque(!!h.is_equivoque);
       setEquivoqueId(h.equivoque_id ?? null);
+      setInvType(h.invocation_type ? (String(h.invocation_type) as '1' | '2') : '');
+      setInvCmt(h.invocation_commentaire ?? '');
+      setInvMoments(h.invocation_moments ?? '');
       // variantes : on fabrique un uid local et on retient la correspondance id BDD → uid
       const idToUid = new Map<number, string>();
       setVariants((h.variants ?? []).map((v) => {
@@ -225,6 +248,9 @@ export const AdminHadithForm: React.FC = () => {
     rapporteur_ids: rapporteurIds,
     narrateur_ids: narrateurIds,
     is_equivoque: isEquivoque,
+    invocation_type: invType ? Number(invType) : null,
+    invocation_commentaire: invType ? invCmt : '',
+    invocation_moments: invType ? invMoments : '',
     segments: segments
       .filter((s) => s.texte_arabe.trim() || s.texte_francais.trim() || s.intro.trim() || s.explication.trim())
       .map((s) => ({
@@ -252,6 +278,7 @@ export const AdminHadithForm: React.FC = () => {
         setF({ sujet: '', rubrique: '', intro: '', texte_arabe: AR_TEMPLATE.hadith, texte_francais: '', phonetique: '', explication: '', degre_authenticite: 'Sahih', type_hadith: '', juge_par: '', tag: '' });
         setRapporteurIds([]); setNarrateurIds([]); setAddingNarr(false); setNewNarr({ nom: '', generation: 'sahabi', role: '', sexe: 'm' });
         setIsEquivoque(false); setEquivoqueId(null); setSegments([]); setVariants([]);
+        setInvType(''); setInvCmt(''); setInvMoments(''); setNewMoment('');
         setSources([emptySrc()]); setTimeout(() => setOk(false), 2500);
       } else {
         navigate(`/admin/hadiths/${newId}`, { replace: true });
@@ -498,6 +525,55 @@ export const AdminHadithForm: React.FC = () => {
         )}
         {isEquivoque && editId && !equivoqueId && (
           <p className="text-xs text-muted mt-3">Enregistre pour créer la fiche équivoque liée, puis reviens ici pour saisir les arguments.</p>
+        )}
+      </section>
+
+      {/* 7. Aussi une invocation / évocation */}
+      <section className="rounded-card border border-line bg-surface p-5 mb-4">
+        <h2 className="font-display font-semibold text-ink text-lg mb-1">7 · Aussi une invocation / évocation <span className="text-muted font-normal">(optionnel)</span></h2>
+        <p className="text-xs text-muted mb-3.5">Si ce hadith est une <b>invocation</b> (duʿāʾ) ou une <b>évocation</b> (dhikr) à réciter, marque-le ici&nbsp;: il apparaîtra <b>aussi</b> dans la rubrique Invocations&nbsp;&amp;&nbsp;Évocations. Le clic depuis cette rubrique ouvre la page complète du hadith (avec dialogue, variantes, sources).</p>
+        <div className="flex flex-wrap gap-2 mb-3.5">
+          {[{ v: '', l: 'Non' }, { v: '1', l: 'Invocation (duʿāʾ)' }, { v: '2', l: 'Évocation (dhikr)' }].map((o) => (
+            <button key={o.v || 'non'} type="button" onClick={() => setInvType(o.v as '' | '1' | '2')}
+              className={`px-4 py-2 rounded-lg text-sm font-semibold border transition-colors ${
+                invType === o.v ? 'bg-green text-white border-green' : 'bg-surface text-ink border-line hover:bg-glass-tint'}`}>
+              {o.l}
+            </button>
+          ))}
+        </div>
+        {invType && (
+          <>
+            <div className="mb-3.5">
+              <label className={label}>Commentaire <span className="text-muted font-normal">(mérite, moment, nombre de répétitions…)</span></label>
+              <textarea className={`${field} min-h-[70px]`} value={invCmt} onChange={(e) => setInvCmt(e.target.value)} placeholder="Ex. À dire 3× le matin et le soir ; protège de tout mal…" />
+            </div>
+            <label className={label}>Moments de la journée <span className="text-muted font-normal">(optionnel)</span></label>
+            <div className="flex flex-wrap gap-2">
+              {momentDefs.map((mo) => {
+                const active = parseMoments(invMoments).includes(mo.key);
+                return (
+                  <button key={mo.key} type="button"
+                    onClick={() => {
+                      const cur = parseMoments(invMoments);
+                      const next = active ? cur.filter((k) => k !== mo.key) : [...cur, mo.key];
+                      setInvMoments(next.join(','));
+                    }}
+                    className={`px-3 py-1.5 rounded-full text-sm border transition-colors ${active ? 'bg-accent-deep text-white border-accent-deep' : 'bg-glass-tint text-ink border-line hover:border-green'}`}>
+                    {mo.label}
+                  </button>
+                );
+              })}
+            </div>
+            <div className="mt-3.5 flex items-center gap-2">
+              <input className={field} value={newMoment} onChange={(e) => setNewMoment(e.target.value)}
+                onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); addMoment(); } }}
+                placeholder="Nouveau moment (ex. Avant l'étude…)" />
+              <button type="button" onClick={addMoment} disabled={addingMoment || !newMoment.trim()}
+                className="shrink-0 inline-flex items-center gap-1.5 rounded-lg border border-line bg-surface text-ink font-semibold px-3.5 py-2.5 text-sm hover:border-green disabled:opacity-50">
+                {addingMoment ? <Loader2 className="w-4 h-4 animate-spin" /> : <Plus className="w-4 h-4" />} Ajouter
+              </button>
+            </div>
+          </>
         )}
       </section>
 

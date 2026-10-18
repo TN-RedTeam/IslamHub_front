@@ -24,6 +24,10 @@ export interface HadithFormData {
   tag: string;
   sources: HadithSourceInput[];
   is_equivoque?: boolean; // marque aussi le hadith dans « Versets et hadiths équivoques »
+  // Aussi une invocation/évocation : type (1=invocation, 2=évocation, null=non) + commentaire + moments.
+  invocation_type?: number | null;
+  invocation_commentaire?: string;
+  invocation_moments?: string;
   segments?: HadithSegmentInput[]; // suite du hadith en dialogue
   variants?: HadithVariantInput[]; // autres versions du même hadith
 }
@@ -50,6 +54,7 @@ export interface HadithEditShape {
   type_hadith: string | null; juge_par: string | null; rapporteur: string | null; narrateur: string | null;
   rapporteur_ids: number[]; narrateur_ids: number[];
   is_equivoque: boolean; equivoque_id: number | null; equivoque_slug: string | null;
+  invocation_type: number | null; invocation_commentaire: string | null; invocation_moments: string | null;
   tag: string | null; sources: { recueil_id: number; numero: string | null; chapitre: string | null }[];
   segments: { variant_id: number | null; intro: string | null; texte_arabe: string | null; phonetique: string | null; texte_francais: string | null; explication: string | null }[];
   variants: { id: number; titre: string | null; intro: string | null; texte_arabe: string | null; phonetique: string | null; texte_francais: string | null; explication: string | null; source: string | null }[];

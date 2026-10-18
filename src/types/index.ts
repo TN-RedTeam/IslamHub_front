@@ -88,6 +88,10 @@ export interface Invocation extends BaseText {
   type_id: InvocationType;
   commentaire: string | null;
   moments?: string | null; // CSV des moments de la journée (réveil, matin, coucher…)
+  // Origine : 'invocation' (table invocations) ou 'hadith' (hadith marqué invocation/évocation).
+  kind?: 'invocation' | 'hadith';
+  slug?: string | null;       // slug du hadith (si kind='hadith') → /hadiths/:id/:slug
+  hadith_id?: number | null;  // id du hadith (si kind='hadith')
 }
 
 /** Parole de savant (table `paroles`) */
@@ -299,6 +303,10 @@ export interface HadithDetail {
   segments?: HadithSegment[]; // suite du hadith en dialogue
   variants?: HadithVariant[]; // autres versions du même hadith
   equivoque?: { slug: string; id: number; theme?: string; sens_juste?: string | null } | null; // fiche « équivoque » liée (si publiée)
+  // Aussi une invocation/évocation : 1=invocation, 2=évocation, null=non.
+  invocation_type?: number | null;
+  invocation_commentaire?: string | null; // mérite, moment, nb de répétitions…
+  invocation_moments?: string | null;      // CSV de clés `moments`
 }
 
 /** Infos légères d'un savant (mini-bio au survol). */
@@ -730,6 +738,9 @@ export interface SearchHit {
   id: number; slug?: string | null; sujet: string | null; extrait?: string | null;
   savant?: string | null; sourate?: string | null; type_id?: number;
   chapitre?: string | null; ecole?: string | null; // fiqh
+  // Invocations : champs complets pour ouvrir la fiche (modale) directement.
+  texte_arabe?: string | null; texte_francais?: string | null; 'phonétique'?: string | null;
+  explication?: string | null; commentaire?: string | null; tag?: string | null;
 }
 export interface SearchThemeHit { slug: string; nom: string; famille: string; }
 export interface SearchResults {

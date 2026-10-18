@@ -16,9 +16,9 @@ const fiqhLink = (h: SearchHit): string => {
   return route ? `/ecoles/${route}?sujet=${h.id}` : '/ecoles';
 };
 
-const Hit: React.FC<{ to: string; icon: React.ReactNode; titre: string; sous?: string | null; extrait?: string | null }> = ({ to, icon, titre, sous, extrait }) => (
+const Hit: React.FC<{ to: string; icon: React.ReactNode; titre: string; sous?: string | null; extrait?: string | null; state?: unknown }> = ({ to, icon, titre, sous, extrait, state }) => (
   <li>
-    <Link to={to} className="flex gap-3 rounded-card border border-line bg-surface p-3.5 hover:border-green transition-colors">
+    <Link to={to} state={state} className="flex gap-3 rounded-card border border-line bg-surface p-3.5 hover:border-green transition-colors">
       <span className="w-9 h-9 rounded-lg bg-glass-tint text-green grid place-items-center shrink-0">{icon}</span>
       <span className="min-w-0">
         <span className="block font-display font-semibold text-ink leading-tight">{titre}</span>
@@ -128,7 +128,7 @@ export const Recherche: React.FC = () => {
               <section>
                 <h2 className="font-display font-semibold text-ink text-xl mb-3">{compteur(results.invocations.length, 'invocation')}</h2>
                 <ul className="grid gap-2.5 sm:grid-cols-2">
-                  {results.invocations.map((i) => <Hit key={i.id} to="/invocations" icon={<Heart className="w-4 h-4" />} titre={i.sujet ?? 'Invocation'} sous={invLabel(i)} extrait={i.extrait} />)}
+                  {results.invocations.map((i) => <Hit key={i.id} to="/invocations" state={i.texte_arabe ? { openItem: i } : undefined} icon={<Heart className="w-4 h-4" />} titre={i.sujet ?? 'Invocation'} sous={invLabel(i)} extrait={i.extrait} />)}
                 </ul>
               </section>
             )}

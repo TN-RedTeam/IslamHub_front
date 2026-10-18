@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { m, AnimatePresence } from 'framer-motion';
 import { Search, Filter, X, Star, Loader, Tags, Hash } from 'lucide-react';
 import { dataService } from '../services/DataService';
@@ -46,13 +46,16 @@ const InvocationCard: React.FC<{ item: Item; onClick: () => void; onTagClick?: (
             className="relative bg-ivory rounded-card p-6 shadow-card border border-line space-y-4 overflow-hidden cursor-pointer h-full flex flex-col transition-shadow duration-300 hover:shadow-card-hover motion-reduce:transition-none"
         >
             {item.sujet && (
-                <div className="flex items-center">
-                    <Star className="h-5 w-5 text-accent mr-2 shrink-0" />
-                    <h3 className="text-xl font-semibold text-ink font-display">{item.sujet}</h3>
+                <div className="flex items-center gap-2">
+                    <Star className="h-5 w-5 text-accent shrink-0" />
+                    <h3 className="text-xl font-semibold text-ink font-display min-w-0">{item.sujet}</h3>
+                    {item.kind === 'hadith' && (
+                        <span className="ml-auto shrink-0 text-[10px] font-semibold uppercase tracking-wide text-accent-deep bg-glass-tint border border-green-line rounded-full px-2 py-0.5">Hadith</span>
+                    )}
                 </div>
             )}
             <div className="bg-glass-tint p-4 rounded-lg border border-line flex-grow">
-                <p className="text-2xl text-ink font-arabic leading-loose text-right line-clamp-3 whitespace-pre-wrap">{item.texte_arabe}</p>
+                <p className="text-xl text-ink font-arabic leading-loose text-right line-clamp-3 whitespace-pre-wrap">{item.texte_arabe}</p>
                 {item.texte_francais && (
                     <div className="mt-4 pl-4 border-l-4 border-gold/60 line-clamp-2">
                         <p className="text-sm text-muted mb-1">Signification :</p>
@@ -71,7 +74,7 @@ const InvocationCard: React.FC<{ item: Item; onClick: () => void; onTagClick?: (
                 </div>
             )}
             <div className="mt-auto pt-4 text-center">
-                <button className="text-green text-sm font-medium hover:underline">Lire la suite...</button>
+                <button className="text-green text-sm font-medium hover:underline">{item.kind === 'hadith' ? 'Voir le hadith →' : 'Lire la suite...'}</button>
             </div>
         </m.div>
     );
@@ -161,12 +164,19 @@ export const Invocations: React.FC = () => {
     const meta = TYPES.find(t => t.id === activeType) ?? TYPES[0];
     const debounceRef = useRef<ReturnType<typeof setTimeout>>();
     const location = useLocation();
+    const navigate = useNavigate();
+
+    // Un hadith marqué invocation/évocation ouvre sa PAGE complète ; sinon, la modale.
+    const openItem = useCallback((it: Item) => {
+        if (it.kind === 'hadith' && it.hadith_id) { navigate(`/hadiths/${it.hadith_id}/${it.slug ?? ''}`); return; }
+        setSelected(it);
+    }, [navigate]);
 
     // Ouvre directement l'invocation transmise depuis l'accueil (« Invocation du jour »).
     useEffect(() => {
         const it = (location.state as { openItem?: Item } | null)?.openItem;
-        if (it) { if (it.type_id) setActiveType(it.type_id); setSelected(it); }
-    }, [location.state]);
+        if (it) { if (it.type_id) setActiveType(it.type_id); openItem(it); }
+    }, [location.state, openItem]);
 
     // Charger les SUJETS du type actif (le menu déroulant filtre par sujet).
     useEffect(() => {
@@ -271,7 +281,7 @@ export const Invocations: React.FC = () => {
                 </div>
 
                 {/* Bandeau « Au fil de la journée » (dépliant, au-dessus de la recherche) */}
-                <JourneePanel onOpen={(it) => { if (it.type_id) setActiveType(it.type_id as TypeId); setSelected(it as Item); }} />
+                <JourneePanel onOpen={(it) => { if (it.type_id) setActiveType(it.type_id as TypeId); openItem(it as Item); }} />
 
                 {/* Tag cloud — après recherche */}
                 {hasSearched && tagCounts.size > 0 && (
@@ -408,7 +418,7 @@ export const Invocations: React.FC = () => {
                                         <m.div key={`${item.id}-${index}`}
                                                     initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
                                                     transition={{ delay: Math.min(index, 10) * 0.05 }} layout>
-                                            <InvocationCard item={item} onClick={() => setSelected(item)} onTagClick={handleTagClick} />
+                                            <InvocationCard item={item} onClick={() => openItem(item)} onTagClick={handleTagClick} />
                                         </m.div>
                                     ))}
                                 </div>
