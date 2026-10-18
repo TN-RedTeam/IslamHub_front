@@ -84,6 +84,7 @@ const AdminSourateForm = lazy(() => import('./pages/admin/AdminSourateForm').the
 const AdminSouratesList = lazy(() => import('./pages/admin/AdminSouratesList').then((m) => ({ default: m.AdminSouratesList })));
 const AdminInvocationForm = lazy(() => import('./pages/admin/AdminInvocationForm').then((m) => ({ default: m.AdminInvocationForm })));
 const AdminInvocationsList = lazy(() => import('./pages/admin/AdminInvocationsList').then((m) => ({ default: m.AdminInvocationsList })));
+const AdminMomentsList = lazy(() => import('./pages/admin/AdminMomentsList').then((m) => ({ default: m.AdminMomentsList })));
 const AdminSavantForm = lazy(() => import('./pages/admin/AdminSavantForm').then((m) => ({ default: m.AdminSavantForm })));
 const AdminSavantsList = lazy(() => import('./pages/admin/AdminSavantsList').then((m) => ({ default: m.AdminSavantsList })));
 const AdminDossierForm = lazy(() => import('./pages/admin/AdminDossierForm').then((m) => ({ default: m.AdminDossierForm })));
@@ -231,6 +232,7 @@ function App() {
                   <Route path="sourates/nouveau" element={<AdminSourateForm />} />
                   <Route path="sourates/:id" element={<AdminSourateForm />} />
                   <Route path="invocations" element={<AdminInvocationsList />} />
+                  <Route path="invocations/moments" element={<AdminMomentsList />} />
                   <Route path="invocations/nouveau" element={<AdminInvocationForm />} />
                   <Route path="invocations/:id" element={<AdminInvocationForm />} />
                   <Route path="savants" element={<AdminSavantsList />} />

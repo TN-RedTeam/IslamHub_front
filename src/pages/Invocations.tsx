@@ -247,9 +247,7 @@ export const Invocations: React.FC = () => {
                 )}
             </PageHeader>
 
-            <main className="container mx-auto px-4 py-10 relative z-10 lg:flex lg:gap-8 lg:items-start">
-              <JourneePanel onOpen={(it) => { if (it.type_id) setActiveType(it.type_id as TypeId); setSelected(it as Item); }} />
-              <div className="lg:flex-1 min-w-0 lg:order-1">
+            <main className="container mx-auto px-4 py-10 relative z-10">
                 {/* Contrôle segmenté Invocations / Évocations (charte 11.7, option A) */}
                 <div className="flex justify-center mb-8">
                     <div role="tablist" aria-label="Type" className="inline-flex gap-1 rounded-full bg-surface border border-line p-1 shadow-[inset_0_1px_2px_rgba(27,38,32,.05)]">
@@ -271,6 +269,9 @@ export const Invocations: React.FC = () => {
                         })}
                     </div>
                 </div>
+
+                {/* Bandeau « Au fil de la journée » (dépliant, au-dessus de la recherche) */}
+                <JourneePanel onOpen={(it) => { if (it.type_id) setActiveType(it.type_id as TypeId); setSelected(it as Item); }} />
 
                 {/* Tag cloud — après recherche */}
                 {hasSearched && tagCounts.size > 0 && (
@@ -415,7 +416,6 @@ export const Invocations: React.FC = () => {
                         </AnimatePresence>
                     )}
                 </section>
-              </div>
             </main>
 
             <AnimatePresence>

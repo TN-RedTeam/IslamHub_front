@@ -236,7 +236,7 @@ class AdminService {
     if (error) throw error; return data as number;
   }
   async listInvocations(): Promise<InvocationRow[]> {
-    const { data, error } = await supabase.from('invocations').select('id,type_id,sujet,tag').order('type_id').order('sujet');
+    const { data, error } = await supabase.from('invocations').select('id,type_id,sujet,tag,moments').order('type_id').order('sujet');
     if (error) throw error; return (data ?? []) as InvocationRow[];
   }
 
@@ -251,6 +251,14 @@ class AdminService {
   }
   async deleteMoment(id: number): Promise<void> {
     const { error } = await supabase.rpc('admin_delete_moment', { p_id: id });
+    if (error) throw error;
+  }
+  async reorderMoments(ids: number[]): Promise<void> {
+    const { error } = await supabase.rpc('admin_reorder_moments', { p_ids: ids });
+    if (error) throw error;
+  }
+  async renameMoment(id: number, label: string): Promise<void> {
+    const { error } = await supabase.rpc('admin_rename_moment', { p_id: id, p_label: label });
     if (error) throw error;
   }
 
@@ -569,7 +577,7 @@ export interface InvocationEditShape {
   texte_francais: string | null; phonetique: string | null; explication: string | null;
   commentaire: string | null; tag: string | null; moments: string | null;
 }
-export interface InvocationRow { id: number; type_id: number; sujet: string; tag: string | null; }
+export interface InvocationRow { id: number; type_id: number; sujet: string; tag: string | null; moments: string | null; }
 export interface MomentRow { id: number; key: string; label: string; ordre: number; actif: boolean; }
 
 // ---- Savants (fiche complète) ----
