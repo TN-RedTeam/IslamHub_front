@@ -464,7 +464,11 @@ export interface ParoleFormData {
   savant_id?: number | null;
   new_savant?: { nom: string } | null;
   rapporteur_savant_id?: number | null;
+  // Commentaire d'un autre contenu : le type pilote lequel des 3 id est rempli.
+  commente_type?: 'parole' | 'hadith' | 'verset' | null;
   commente_parole_id?: number | null;
+  commente_hadith_id?: number | null;
+  commente_verset_id?: number | null;
   commente_livre: string;
   images: ParoleImageInput[];
   segments?: ParoleSegmentInput[]; // suite de la parole en dialogue
@@ -473,7 +477,9 @@ export interface ParoleEditShape {
   id: number; sujet: string | null; rubrique: string | null; intro: string | null; texte_arabe: string | null; texte_francais: string | null;
   phonetique: string | null; explication: string | null; source_livre: string | null; page: string | null;
   ecole: string | null; savant_id: number | null; tag: string | null;
-  rapporteur_savant_id: number | null; commente_parole_id: number | null; commente_livre: string | null;
+  rapporteur_savant_id: number | null;
+  commente_type: 'parole' | 'hadith' | 'verset' | null;
+  commente_parole_id: number | null; commente_hadith_id: number | null; commente_verset_id: number | null; commente_livre: string | null;
   images: { image_url: string; alt: string | null; legende: string | null; source_livre: string | null; source_livre_ar: string | null; ordre: number | null }[];
   segments: { intro: string | null; texte_arabe: string | null; phonetique: string | null; texte_francais: string | null; explication: string | null }[];
 }
