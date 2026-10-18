@@ -24,8 +24,8 @@ export default defineConfig({
       devOptions: { enabled: false },
       includeAssets: ['favicon.svg', 'apple-touch-icon.png'],
       manifest: {
-        name: 'IslamHub',
-        short_name: 'IslamHub',
+        name: 'Aqida',
+        short_name: 'Aqida',
         description: 'Hadiths, douaas, dhikrs, Coran et paroles de savants',
         lang: 'fr',
         start_url: './',

@@ -18,7 +18,7 @@ export const SiteFooter: React.FC = () => (
       «&nbsp;Que l'un de vous apprenne un chapitre de la religion ou l'enseigne, cela lui vaut mieux que mille rakʿah surérogatoires.&nbsp;»
     </p>
     <p className="text-[12.5px] tracking-wide text-[#8fb2ad]">
-      © 2026 IslamHub — Ahl as-Sunna wa-l-Jamāʿa
+      © 2026 Aqida — Ahl as-Sunna wa-l-Jamāʿa
     </p>
   </footer>
 );

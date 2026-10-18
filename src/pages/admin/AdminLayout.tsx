@@ -42,7 +42,7 @@ export const AdminLayout: React.FC = () => {
   return (
     <div className="min-h-screen">
       <header className="sticky top-0 z-20 flex items-center gap-3 h-14 px-5 bg-[#0b1e22] text-[#e9f4f1]">
-        <span className="font-display font-extrabold text-xl">Islam<span className="text-accent-br">Hub</span></span>
+        <span className="font-display font-extrabold text-xl">Aq<span className="text-accent-br">ida</span></span>
         <span className="text-[11px] uppercase tracking-[0.16em] text-[#8fb2ad] border border-glass-border rounded-full px-2.5 py-0.5">Admin</span>
         <div className="ml-auto flex items-center gap-3">
           <span className="hidden sm:block text-[13px] text-[#8fb2ad]">{email}</span>

@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-const SITE_NAME = 'IslamHub';
+const SITE_NAME = 'Aqida';
 
 function upsertMeta(attr: 'name' | 'property', key: string, content: string) {
   const sel = `meta[${attr}="${key}"]`;
