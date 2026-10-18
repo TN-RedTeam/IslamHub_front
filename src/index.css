@@ -25,7 +25,8 @@
     --hero-fade: #f2ebdd; /* couleur de fondu du bas du hero (= --bg2) */
     color-scheme: light;
     /* Alias historiques → palette Nuit Teal */
-    --ground: var(--bg2); --surface: var(--glass); --ivory: var(--glass);
+    /* Cartes = ivoire chaud (et non blanc pur) pour se fondre dans le fond sable. */
+    --ground: var(--bg2); --surface: #fcf9f3; --ivory: #fcf9f3;
     --ink: var(--tx); --muted: var(--mut); --line: var(--glass-b);
     --green: var(--acc); --green-deep: var(--acc2); --green-soft: var(--glass2); --green-line: var(--glass-b);
     --gold: var(--acc2); --gold-soft: var(--glass2);

@@ -59,7 +59,7 @@ export const AdminMomentsList: React.FC = () => {
     <div className="max-w-2xl px-6 py-8 pb-24">
       <p className="text-xs text-muted"><Link to="/admin/invocations" className="hover:text-ink">Invocations & Évocations</Link> · Moments de la journée</p>
       <h1 className="font-display font-semibold text-ink text-3xl mt-1 mb-1">Moments de la journée</h1>
-      <p className="text-muted text-sm mb-6">Ajoute, renomme, <b>réordonne</b> (↑/↓) ou supprime les moments. L'ordre défini ici est celui du panneau «&nbsp;Au fil de la journée&nbsp;» (du réveil au coucher).</p>
+      <p className="text-muted text-sm mb-6">Ajoute, renomme, <b>réordonne</b> (↑/↓) ou supprime les moments. L'ordre défini ici est celui du panneau «&nbsp;Les invocations à dire dans une journée&nbsp;» (du réveil au coucher).</p>
 
       {loading ? <div className="flex justify-center py-16"><Loader2 className="w-8 h-8 text-green animate-spin" /></div> : (
         <>

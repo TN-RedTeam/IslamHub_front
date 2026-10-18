@@ -37,52 +37,54 @@ const Proof: React.FC<{ b: Bloc }> = ({ b }) => {
   const href = isLibre ? null : sourceLink(b.citation_type, ref);
   const badge = isLibre ? null : badgeText(b.citation_type, ref);
   return (
-    <div className="my-5 rounded-r-card border border-line border-l-[3px] border-l-gold bg-surface px-5 py-4 shadow-card">
-      <div className="flex items-center gap-2 mb-2.5 text-[10.5px] uppercase tracking-[0.12em] text-muted">
-        <span className="text-accent font-bold">Preuve</span>
-        <span>· {kind}</span>
-        {!isLibre && <span className="ml-auto normal-case tracking-normal">réutilisée depuis la rubrique {b.source_rubrique}</span>}
-      </div>
+    <figure className="my-6 rounded-xl border border-green-line/70 border-l-[3px] border-l-green bg-green-soft/25 px-5 py-4">
+      {/* En-tête discret : nature de la source + éventuel degré/école/sourate */}
+      <figcaption className="flex items-center gap-2 mb-3">
+        <span className="text-[10.5px] font-bold uppercase tracking-[0.14em] text-green">{kind}</span>
+        {badge && (
+          <span className="ml-auto text-[10px] font-semibold uppercase tracking-wide text-green/90 bg-surface/60 border border-green-line rounded-full px-2 py-0.5">{badge}</span>
+        )}
+      </figcaption>
 
-      {b.citation_type === 'parole' && (ref.savant || ref.sujet) && (
-        <p className="font-display font-semibold text-ink text-[16px] mb-1.5">
-          {ref.savant_slug ? <Link to={`/savants/${ref.savant_slug}`} className="hover:underline">{ref.savant}</Link> : ref.savant}
-          {badge && <span className="ml-2 align-middle text-[10px] font-bold uppercase text-accent bg-glass-tint border border-gold rounded-full px-2 py-0.5">{badge}</span>}
+      {b.citation_type === 'parole' && ref.savant && (
+        <p className="font-display font-semibold text-ink text-[15.5px] mb-2">
+          {ref.savant_slug ? <Link to={`/savants/${ref.savant_slug}`} className="hover:text-green transition-colors">{ref.savant}</Link> : ref.savant}
         </p>
       )}
 
-      {ref.texte_arabe && <p className="font-arabic text-right leading-[2] text-ink" dir="rtl" lang="ar" style={{ fontSize: 'clamp(20px,4.2vw,26px)' }}>{ref.texte_arabe}</p>}
+      {ref.texte_arabe && (
+        <p className="font-arabic text-right leading-[2.05] text-ink" dir="rtl" lang="ar" style={{ fontSize: 'clamp(18px,3.1vw,22px)' }}>{ref.texte_arabe}</p>
+      )}
 
       {ref.texte_francais && (
-        <p className="mt-2 text-ink">
+        <p className="mt-3 pt-3 border-t border-green-line/50 text-[15px] leading-relaxed text-ink/85 [unicode-bidi:plaintext]">
           <span className="text-muted italic">ce qui signifie&nbsp;: </span>«&nbsp;{ref.texte_francais}&nbsp;»
-          {b.citation_type !== 'parole' && badge && <span className="ml-2 align-middle text-[10px] font-bold uppercase text-accent bg-glass-tint border border-gold rounded-full px-2 py-0.5">{badge}</span>}
         </p>
       )}
 
-      {isLibre && ref.ref && <p className="mt-2 text-[12.5px] font-semibold text-accent">— {ref.ref}</p>}
+      {isLibre && ref.ref && <p className="mt-2 text-[12.5px] font-medium text-muted">— {ref.ref}</p>}
 
       {href && (
-        <Link to={href} className="inline-flex items-center gap-1.5 mt-2.5 text-[12.5px] font-semibold text-green hover:text-ink">
-          <BookOpen className="w-4 h-4" /> Voir la source {b.citation_type === 'parole' ? 'et le scan' : ''} <ExternalLink className="w-3.5 h-3.5" />
+        <Link to={href} className="inline-flex items-center gap-1.5 mt-3 text-[12.5px] font-semibold text-green hover:text-green-deep transition-colors">
+          <BookOpen className="w-4 h-4" /> Voir la source{b.citation_type === 'parole' ? ' et le scan' : ''} <ExternalLink className="w-3.5 h-3.5" />
         </Link>
       )}
 
       {b.commentaire_md && (
-        <div className="mt-3 -mx-5 -mb-4 px-5 py-2.5 border-t border-dashed border-line bg-glass-tint/60 rounded-br-card">
-          <span className="text-[10.5px] uppercase tracking-[0.1em] text-accent font-bold mr-1.5">Commentaire</span>
-          <div className="text-[15px] text-muted italic [&_p]:my-1"><Markdown>{b.commentaire_md}</Markdown></div>
+        <div className="mt-3.5 pt-3 border-t border-dashed border-green-line/60">
+          <span className="text-[10px] uppercase tracking-[0.12em] text-muted font-bold mr-1.5">Commentaire</span>
+          <div className="text-[14.5px] text-ink/75 italic [&_p]:my-1"><Markdown>{b.commentaire_md}</Markdown></div>
         </div>
       )}
-    </div>
+    </figure>
   );
 };
 
 const Callout: React.FC<{ b: Bloc }> = ({ b }) => (
-  <div className="my-5 rounded-r-card border border-line border-l-[3px] border-l-[#3f6c96] bg-[#eef2f6] dark:bg-[#12303f] px-5 py-4">
-    <p className="text-[10.5px] uppercase tracking-[0.12em] text-[#3f6c96] dark:text-[#7fb0dd] font-bold mb-1.5">Note de l’auteur</p>
-    <div className="text-ink [&_p]:my-1.5"><Markdown>{b.texte_md ?? ''}</Markdown></div>
-  </div>
+  <aside className="my-6 rounded-xl border border-line bg-ground/70 px-5 py-4">
+    <p className="text-[10.5px] uppercase tracking-[0.14em] text-muted font-bold mb-1.5">Note</p>
+    <div className="text-ink/90 leading-relaxed [&_p]:my-1.5"><Markdown>{b.texte_md ?? ''}</Markdown></div>
+  </aside>
 );
 
 export const ArticleBlocs: React.FC<{ blocs: Bloc[]; showToc?: boolean }> = ({ blocs, showToc = true }) => {

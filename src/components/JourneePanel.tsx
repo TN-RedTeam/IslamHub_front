@@ -37,8 +37,8 @@ export const JourneePanel: React.FC<{ onOpen: (it: Invocation) => void }> = ({ o
         className="w-full flex items-center gap-3 px-5 py-4 text-left hover:bg-glass-tint transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green">
         <span className="grid place-items-center w-9 h-9 rounded-full bg-accent-deep text-white shrink-0"><Sunrise className="w-4.5 h-4.5" /></span>
         <span className="flex-1 min-w-0">
-          <span className="block font-display font-semibold text-ink text-lg">Au fil de la journée</span>
-          <span className="block text-sm text-muted">Invocations &amp; évocations à dire du réveil au coucher — {groups.length} moment{groups.length > 1 ? 's' : ''}</span>
+          <span className="block font-display font-semibold text-ink text-lg">Les invocations à dire dans une journée</span>
+          <span className="block text-sm text-muted">Du réveil au coucher — {groups.length} moment{groups.length > 1 ? 's' : ''}</span>
         </span>
         <ChevronDown className={`w-5 h-5 text-muted transition-transform ${open ? 'rotate-180' : ''}`} />
       </button>
