@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { useLocation, Link } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { m, AnimatePresence } from 'framer-motion';
-import { Search, Filter, X, Star, Loader, Tags, Hash, Sunrise } from 'lucide-react';
+import { Search, Filter, X, Star, Loader, Tags, Hash } from 'lucide-react';
 import { dataService } from '../services/DataService';
 import { FilterSelect } from '../components/FilterSelect';
 import { PageHeader } from '../components/PageHeader';
+import { JourneePanel } from '../components/JourneePanel';
 import { Markdown } from '../components/Markdown';
 import type { Invocation as InvocationType, InvocationType as TypeId } from '../types';
 import { useSeo } from '../hooks/useSeo';
@@ -237,20 +238,18 @@ export const Invocations: React.FC = () => {
                 subtitle="« Invoquez-Moi, Je vous répondrai » — Sourate Ghafir, verset 60"
                 crumbs={[{ label: 'Accueil', to: '/' }, { label: 'Invocations & Évocations' }]}
             >
-                <div className="flex items-center gap-3 flex-wrap">
-                    <Link to="/invocations/journee"
-                        className="inline-flex items-center gap-2 rounded-xl bg-accent-deep text-white font-semibold px-4 py-2.5 text-sm hover:brightness-110 transition">
-                        <Sunrise className="w-4 h-4" /> La journée du musulman
-                    </Link>
-                    {hasSearched && (
+                {hasSearched && (
+                    <div className="flex items-center gap-3 flex-wrap">
                         <span className="inline-flex items-center rounded-full bg-glass-tint px-3 py-1 text-sm text-ink tabular-nums">
                             {totalCount} {meta.nounPlural}
                         </span>
-                    )}
-                </div>
+                    </div>
+                )}
             </PageHeader>
 
-            <main className="container mx-auto px-4 py-10 relative z-10">
+            <main className="container mx-auto px-4 py-10 relative z-10 lg:flex lg:gap-8 lg:items-start">
+              <JourneePanel onOpen={(it) => { if (it.type_id) setActiveType(it.type_id as TypeId); setSelected(it as Item); }} />
+              <div className="lg:flex-1 min-w-0 lg:order-1">
                 {/* Contrôle segmenté Invocations / Évocations (charte 11.7, option A) */}
                 <div className="flex justify-center mb-8">
                     <div role="tablist" aria-label="Type" className="inline-flex gap-1 rounded-full bg-surface border border-line p-1 shadow-[inset_0_1px_2px_rgba(27,38,32,.05)]">
@@ -416,6 +415,7 @@ export const Invocations: React.FC = () => {
                         </AnimatePresence>
                     )}
                 </section>
+              </div>
             </main>
 
             <AnimatePresence>

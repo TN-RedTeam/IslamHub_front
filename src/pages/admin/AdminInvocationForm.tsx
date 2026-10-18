@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { SujetField } from '../../components/admin/SujetField';
 import { DeleteEntryButton } from '../../components/admin/DeleteEntryButton';
 import { useNavigate, useParams, Link } from 'react-router-dom';
-import { Loader2, Check, AlertTriangle } from 'lucide-react';
+import { Loader2, Check, AlertTriangle, Plus } from 'lucide-react';
 import { adminService, type InvocationFormData } from '../../services/AdminService';
 import { MOMENTS, parseMoments } from '../../data/moments';
 
@@ -21,6 +21,28 @@ export const AdminInvocationForm: React.FC = () => {
   const [ok, setOk] = useState(false);
   const [f, setF] = useState(blank);
   const set = (k: keyof typeof f) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => setF((p) => ({ ...p, [k]: e.target.value }));
+
+  // Vocabulaire des moments (table `moments`, repli sur la liste statique) + ajout manuel.
+  const [momentDefs, setMomentDefs] = useState<{ key: string; label: string }[]>(MOMENTS);
+  const [newMoment, setNewMoment] = useState('');
+  const [addingMoment, setAddingMoment] = useState(false);
+  useEffect(() => {
+    adminService.listMoments()
+      .then((rows) => { if (rows.length) setMomentDefs(rows.filter((r) => r.actif).map((r) => ({ key: r.key, label: r.label }))); })
+      .catch(() => {});
+  }, []);
+  const addMoment = async () => {
+    const lbl = newMoment.trim();
+    if (!lbl) return;
+    setAddingMoment(true); setError(null);
+    try {
+      const row = await adminService.addMoment(lbl);
+      setMomentDefs((p) => (p.some((m) => m.key === row.key) ? p : [...p, { key: row.key, label: row.label }]));
+      setF((p) => ({ ...p, moments: [...new Set([...parseMoments(p.moments), row.key])].join(',') }));
+      setNewMoment('');
+    } catch (e) { setError((e as Error).message || 'Ajout du moment impossible.'); }
+    finally { setAddingMoment(false); }
+  };
 
   useEffect(() => {
     if (!editId) return;
@@ -86,9 +108,9 @@ export const AdminInvocationForm: React.FC = () => {
 
       <section className="rounded-card border border-line bg-surface p-5 mb-4">
         <h2 className="font-display font-semibold text-ink text-lg mb-1">4 · Moments de la journée <span className="text-muted font-normal">(optionnel)</span></h2>
-        <p className="text-xs text-muted mb-3.5">Rattache cette invocation à un ou plusieurs moments. Elle apparaîtra dans le guide «&nbsp;La journée du musulman&nbsp;» (du réveil au coucher).</p>
+        <p className="text-xs text-muted mb-3.5">Rattache cette invocation à un ou plusieurs moments. Elle apparaîtra dans le panneau «&nbsp;Au fil de la journée&nbsp;» de la page Invocations&nbsp;&amp;&nbsp;Évocations (du réveil au coucher). Tu peux <b>ajouter un moment</b> ci-dessous s'il n'existe pas encore.</p>
         <div className="flex flex-wrap gap-2">
-          {MOMENTS.map((m) => {
+          {momentDefs.map((m) => {
             const active = parseMoments(f.moments).includes(m.key);
             return (
               <button key={m.key} type="button"
@@ -102,6 +124,15 @@ export const AdminInvocationForm: React.FC = () => {
               </button>
             );
           })}
+        </div>
+        <div className="mt-3.5 flex items-center gap-2">
+          <input className={field} value={newMoment} onChange={(e) => setNewMoment(e.target.value)}
+            onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); addMoment(); } }}
+            placeholder="Nouveau moment (ex. Avant l'étude, En cas de peur…)" />
+          <button type="button" onClick={addMoment} disabled={addingMoment || !newMoment.trim()}
+            className="shrink-0 inline-flex items-center gap-1.5 rounded-lg border border-line bg-surface text-ink font-semibold px-3.5 py-2.5 text-sm hover:border-green disabled:opacity-50">
+            {addingMoment ? <Loader2 className="w-4 h-4 animate-spin" /> : <Plus className="w-4 h-4" />} Ajouter
+          </button>
         </div>
       </section>
 

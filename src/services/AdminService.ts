@@ -240,6 +240,20 @@ class AdminService {
     if (error) throw error; return (data ?? []) as InvocationRow[];
   }
 
+  // ---- Moments de la journée (table `moments`) ----
+  async listMoments(): Promise<MomentRow[]> {
+    const { data, error } = await supabase.from('moments').select('id,key,label,ordre,actif').order('ordre').order('id');
+    if (error) throw error; return (data ?? []) as MomentRow[];
+  }
+  async addMoment(label: string): Promise<MomentRow> {
+    const { data, error } = await supabase.rpc('admin_add_moment', { p_label: label });
+    if (error) throw error; return data as MomentRow;
+  }
+  async deleteMoment(id: number): Promise<void> {
+    const { error } = await supabase.rpc('admin_delete_moment', { p_id: id });
+    if (error) throw error;
+  }
+
   // ---- Savants (fiche complète) ----
   async getSavantForEdit(id: number): Promise<SavantEditShape | null> {
     const { data, error } = await supabase.rpc('admin_get_savant', { p_id: id });
@@ -556,6 +570,7 @@ export interface InvocationEditShape {
   commentaire: string | null; tag: string | null; moments: string | null;
 }
 export interface InvocationRow { id: number; type_id: number; sujet: string; tag: string | null; }
+export interface MomentRow { id: number; key: string; label: string; ordre: number; actif: boolean; }
 
 // ---- Savants (fiche complète) ----
 export interface EcoleRow { id: number; nom: string; }
