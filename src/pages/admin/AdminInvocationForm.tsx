@@ -108,7 +108,7 @@ export const AdminInvocationForm: React.FC = () => {
 
       <section className="rounded-card border border-line bg-surface p-5 mb-4">
         <h2 className="font-display font-semibold text-ink text-lg mb-1">4 · Moments de la journée <span className="text-muted font-normal">(optionnel)</span></h2>
-        <p className="text-xs text-muted mb-3.5">Rattache cette invocation à un ou plusieurs moments. Elle apparaîtra dans le panneau «&nbsp;Au fil de la journée&nbsp;» de la page Invocations&nbsp;&amp;&nbsp;Évocations (du réveil au coucher). Tu peux <b>ajouter un moment</b> ci-dessous s'il n'existe pas encore.</p>
+        <p className="text-xs text-muted mb-3.5">Rattache cette invocation à un ou plusieurs moments. Elle apparaîtra dans le panneau «&nbsp;Les invocations à dire dans une journée&nbsp;» de la page Invocations&nbsp;&amp;&nbsp;Évocations (du réveil au coucher). Tu peux <b>ajouter un moment</b> ci-dessous s'il n'existe pas encore.</p>
         <div className="flex flex-wrap gap-2">
           {momentDefs.map((m) => {
             const active = parseMoments(f.moments).includes(m.key);
