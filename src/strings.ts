@@ -10,6 +10,9 @@
  * On n'externalise donc pas rétroactivement les libellés déjà en place.
  */
 export const UI = {
+  brand: {
+    name: 'Aqida',
+  },
   nav: {
     home: 'Accueil',
     coran: 'Coran',
