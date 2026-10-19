@@ -738,6 +738,9 @@ export interface RelatedItem {
   sourate: string | null;
 }
 
+/** Sujet + compteur, pour « Parcourir par sujet » (Phase 12). */
+export interface SubjectCount { sujet: string; n: number; }
+
 // ————— Recherche globale (Phase 4.4) —————
 export interface SearchHit {
   id: number; slug?: string | null; sujet: string | null; extrait?: string | null;

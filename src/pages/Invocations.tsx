@@ -9,6 +9,7 @@ import { JourneePanel } from '../components/JourneePanel';
 import { Markdown } from '../components/Markdown';
 import type { Invocation as InvocationType, InvocationType as TypeId } from '../types';
 import { useSeo } from '../hooks/useSeo';
+import { UI } from '../strings';
 import { IconBadge, type IconName } from '../components/Icon';
 
 interface Item extends Omit<InvocationType, 'tag'> {
@@ -31,7 +32,7 @@ const getTagsArray = (tag: string | null, sujet?: string): string[] => {
     return [];
 };
 
-const ITEMS_PER_PAGE = 20;
+
 
 // ─── Carte ────────────────────────────────────────────────────────────────────
 
@@ -152,7 +153,7 @@ export const Invocations: React.FC = () => {
     const [activeType, setActiveType] = useState<TypeId>(1);
     const [items, setItems] = useState<Item[]>([]);
     const [hasSearched, setHasSearched] = useState(false);
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(true); // contenu d'abord : chargement dès l'arrivée
     const [error, setError] = useState<string | null>(null);
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedTag, setSelectedTag] = useState<string | null>(null);
@@ -192,15 +193,13 @@ export const Invocations: React.FC = () => {
         setTagCounts(counts);
     }, [items]);
 
+    // Contenu d'abord : on charge la liste complète dès l'arrivée (dataset modeste),
+    // puis on la filtre. Pas d'écran vide « cherchez d'abord ».
     const doSearch = useCallback(async (q: string, tag: string | null, type: TypeId) => {
-        if (!q.trim() && !tag) {
-            setItems([]); setHasSearched(false); setTotalCount(0);
-            return;
-        }
         setIsLoading(true);
         setError(null);
         try {
-            const res = await dataService.searchInvocations(q, tag, type, { page: 0, pageSize: ITEMS_PER_PAGE });
+            const res = await dataService.searchInvocations(q, tag, type, { page: 0, pageSize: 1000 });
             setItems((res.data ?? []) as Item[]);
             setTotalCount(res.count ?? 0);
             setHasSearched(true);
@@ -229,16 +228,7 @@ export const Invocations: React.FC = () => {
     };
 
     const handleTagClick = (tag: string) => { setSelectedTag(null); setSearchTerm(tag); window.scrollTo({ top: 0, behavior: 'smooth' }); };
-    const handleSujetClick = (sujet: string) => { setSelectedTag(sujet); window.scrollTo({ top: 0, behavior: 'smooth' }); };
     const handleResetFilters = () => { setSearchTerm(''); setSelectedTag(null); };
-
-    const showAll = async () => {
-        setIsLoading(true);
-        try {
-            const res = await dataService.searchInvocations('', null, activeType, { page: 0, pageSize: 1000 });
-            setItems((res.data ?? []) as Item[]); setTotalCount(res.count ?? 0); setHasSearched(true);
-        } finally { setIsLoading(false); }
-    };
 
     return (
         <div className="min-h-screen">
@@ -366,45 +356,14 @@ export const Invocations: React.FC = () => {
                             <p className="text-low mb-4">{error}</p>
                             <button onClick={() => doSearch(searchTerm, selectedTag, activeType)} className="px-6 py-2 bg-accent-deep hover:brightness-110 text-white rounded-lg">Réessayer</button>
                         </div>
-                    ) : !hasSearched ? (
-                        <m.div key="empty-state" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center py-14">
-                            <div className="max-w-lg mx-auto">
-                                <h3 className="text-3xl font-semibold text-ink mb-4 font-display">
-                                    Recherchez parmi les {meta.nounPlural}
-                                </h3>
-                                <p className="text-muted mb-6 leading-relaxed text-lg">
-                                    Saisissez un mot-clé, sélectionnez un sujet — ou affichez tout.
-                                </p>
-                                <button
-                                    onClick={showAll}
-                                    className="inline-flex items-center gap-2 px-6 py-3 mb-8 rounded-xl bg-accent-deep hover:brightness-110 text-white font-medium shadow-card"
-                                >
-                                    Tout afficher
-                                </button>
-                                {allTags.length > 0 && (
-                                    <div className="flex flex-wrap gap-2 justify-center">
-                                        <p className="w-full text-sm text-muted mb-2">Sujets :</p>
-                                        {allTags.slice(0, 8).map(sujet => (
-                                            <m.button key={sujet} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
-                                                           onClick={() => handleSujetClick(sujet)}
-                                                           className="px-4 py-2 bg-glass-tint text-ink rounded-full text-sm font-medium hover:bg-green hover:text-white transition-colors border border-line">
-                                                {sujet}
-                                            </m.button>
-                                        ))}
-                                    </div>
-                                )}
-                            </div>
-                        </m.div>
                     ) : items.length === 0 ? (
-                        <m.div key="no-results" initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-                                    className="text-center py-16 bg-ivory rounded-card shadow-card border border-line">
-                            <div className="max-w-md mx-auto">
-                                <IconBadge name="book" />
-                                <h3 className="text-xl font-semibold text-ink mb-2">Aucun résultat trouvé</h3>
-                                <p className="text-muted mb-6">Essayez de modifier vos critères de recherche</p>
-                                <button onClick={handleResetFilters} className="px-6 py-2 bg-accent-deep hover:brightness-110 text-white rounded-lg transition-colors">Réinitialiser</button>
-                            </div>
-                        </m.div>
+                        <div className="rounded-card border border-line bg-ivory px-5 py-6 text-center">
+                            <p className="text-ink font-medium">{UI.list.noResultFor} {searchTerm.trim() ? <>«&nbsp;{searchTerm.trim()}&nbsp;»</> : 'ces filtres'}.</p>
+                            <p className="text-sm text-muted mt-1">{UI.list.noResultHint}</p>
+                            {(searchTerm.trim() || selectedTag) && (
+                                <button onClick={handleResetFilters} className="mt-3 inline-flex items-center gap-1.5 text-sm font-semibold text-green hover:text-green-deep"><X className="w-4 h-4" /> {UI.list.reset}</button>
+                            )}
+                        </div>
                     ) : (
                         <AnimatePresence mode="wait">
                             <>
