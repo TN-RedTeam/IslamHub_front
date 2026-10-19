@@ -34,19 +34,16 @@ export const Home: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    (async () => {
-      setIsLoading(true);
-      try {
-        const day = getDayOfYear();
-        const [s, h, d, v, p] = await Promise.all([
-          dataService.getStats(), dataService.getDailyHadith(day),
-          dataService.getDailyInvocation(day, 1), dataService.getDailyCoran(day),
-          dataService.getDailyParole(day),
-        ]);
-        setStats(s); setDailyHadith(h); setDailyDouaa(d); setDailyVerse(v); setDailyParole(p);
-      } catch (e) { console.error('Error fetching home data:', e); }
-      finally { setIsLoading(false); }
-    })();
+    const day = getDayOfYear();
+    // Chargements INDÉPENDANTS : l'échec d'une source ne doit pas vider les autres.
+    const jobs = [
+      dataService.getStats().then(setStats),
+      dataService.getDailyHadith(day).then(setDailyHadith),
+      dataService.getDailyInvocation(day, 1).then(setDailyDouaa),
+      dataService.getDailyCoran(day).then(setDailyVerse),
+      dataService.getDailyParole(day).then(setDailyParole),
+    ].map((pr) => pr.catch(() => {}));
+    Promise.allSettled(jobs).finally(() => setIsLoading(false));
   }, []);
 
   // Carrousel du hero : verset / hadith / parole (rotation déterministe par date).
