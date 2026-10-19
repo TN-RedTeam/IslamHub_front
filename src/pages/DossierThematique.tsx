@@ -5,6 +5,8 @@ import { Loader, Copy, Check, Share2, Star, BookOpen, ArrowLeft, Quote } from 'l
 import { dataService } from '../services/DataService';
 import { Markdown } from '../components/Markdown';
 import { ArticleBlocs } from '../components/ArticleBlocs';
+import { Lightbox, type LightboxImage } from '../components/Lightbox';
+import { VideoCard } from '../components/VideoCard';
 import { useSeo } from '../hooks/useSeo';
 import { SavantHover } from '../components/SavantHover';
 import type { DossierData, DossierPreuve, Bloc } from '../types';
@@ -44,6 +46,7 @@ export const DossierThematique: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
   const [isFav, setIsFav] = useState(false);
+  const [zoom, setZoom] = useState<LightboxImage | null>(null);
 
   useSeo({
     title: data?.dossier.meta_title || data?.dossier.h1,
@@ -137,7 +140,7 @@ export const DossierThematique: React.FC = () => {
     );
   }
 
-  const { dossier, preuves, images, lies } = data;
+  const { dossier, preuves, images, lies, videos } = data;
 
   return (
     <div className="min-h-screen">
@@ -237,7 +240,10 @@ export const DossierThematique: React.FC = () => {
           <section className="grid sm:grid-cols-2 gap-4">
             {images.map((img) => (
               <figure key={img.id} className="bg-glass rounded-card overflow-hidden shadow border border-green-line">
-                <img src={img.image_url} alt={img.alt} loading="lazy" className="w-full" />
+                <button type="button" onClick={() => setZoom({ image_url: img.image_url, alt: img.alt, legende: img.legende ?? undefined, source_livre: img.source_livre ?? undefined })}
+                  className="block w-full hover:opacity-95 transition-opacity focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green" aria-label={`Agrandir : ${img.alt}`}>
+                  <img src={img.image_url} alt={img.alt} loading="lazy" className="w-full" />
+                </button>
                 {(img.legende || img.source_livre) && (
                   <figcaption className="p-3 text-sm text-muted">
                     {img.legende}{img.source_livre ? ` — ${img.source_livre}` : ''}
@@ -245,6 +251,16 @@ export const DossierThematique: React.FC = () => {
                 )}
               </figure>
             ))}
+          </section>
+        )}
+
+        {/* Pour approfondir — vidéos rattachées (13.4) */}
+        {videos && videos.length > 0 && (
+          <section>
+            <h2 className="text-lg font-bold text-ink mb-3">Pour approfondir</h2>
+            <div className="grid sm:grid-cols-2 gap-4">
+              {videos.map((v, i) => <VideoCard key={v.id} video={v} index={i} />)}
+            </div>
           </section>
         )}
 
@@ -263,6 +279,7 @@ export const DossierThematique: React.FC = () => {
         )}
       </main>
 
+      <Lightbox image={zoom} onClose={() => setZoom(null)} />
     </div>
   );
 };

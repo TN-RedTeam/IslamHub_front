@@ -4,12 +4,13 @@ import { m, AnimatePresence } from 'framer-motion';
 import { Moon, Sun, Menu, X, ChevronDown, Search } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 import { InstallPWA } from './InstallPWA';
+import { UI } from '../strings';
 import moment from 'moment-hijri';
 
 // Barre principale (entrées essentielles).
 const mainItems = [
   { to: '/', label: 'Accueil', exact: true },
-  { to: '/coran', label: 'Coran' },
+  { to: '/coran/sourates', label: 'Coran' },
   { to: '/croyance', label: 'Croyance' },
   { to: '/hadiths', label: 'Hadiths & paroles' },
   { to: '/biographies', label: 'Biographies' },
@@ -21,7 +22,6 @@ const resItems = [
   { to: '/dossiers', label: 'Dossiers thématiques' },
   { to: '/ecoles', label: 'Écoles' },
   { to: '/recits', label: 'Récits' },
-  { to: '/multimedia', label: 'Multimédia' },
   { to: '/femmes', label: 'La femme musulmane' },
 ];
 
@@ -34,22 +34,13 @@ const HIJRI_MONTHS_FR = [
   'Ramadân', 'Chawwâl', 'Dhou al-qiʿda', 'Dhou al-hijja',
 ];
 
-// Marque Aqida : croissant + étoile, teinte accent (héritée via currentColor).
-const Mark: React.FC<{ size?: number }> = ({ size = 26 }) => (
-  <svg width={size} height={size} viewBox="0 0 40 40" fill="none" aria-hidden="true">
-    <path d="M27 8 A13 13 0 1 0 27 32 A10 10 0 1 1 27 8Z" fill="currentColor" />
-    <path d="M30 15 l1.3 3.4 3.7.2-2.9 2.3 1 3.6-3.1-2-3.1 2 1-3.6-2.9-2.3 3.7-.2z" fill="currentColor" />
+// Marque Aqida : « le Nœud » — deux brins entrelacés, monochrome (currentColor,
+// donc teinte du thème : teal profond en clair, menthe en sombre).
+const Mark: React.FC<{ size?: number }> = ({ size = 30 }) => (
+  <svg width={size} height={size} viewBox="0 0 64 64" fill="none" aria-hidden="true">
+    <path d="M44 20 h-12 a12 12 0 0 0 -12 12 v12" fill="none" stroke="currentColor" strokeOpacity={0.4} strokeWidth={6} strokeLinecap="round" />
+    <path d="M20 20 h12 a12 12 0 0 1 12 12 v12" fill="none" stroke="currentColor" strokeWidth={6} strokeLinecap="round" />
   </svg>
-);
-
-// Badge « verre » (glass-tint + bord fin) portant la marque en accent menthe.
-const BrandBadge: React.FC<{ px: number; radius: string; mark: number }> = ({ px, radius, mark }) => (
-  <span
-    className={`grid place-items-center shrink-0 bg-glass-tint border border-glass-border text-accent ${radius}`}
-    style={{ width: px, height: px }}
-  >
-    <Mark size={mark} />
-  </span>
 );
 
 export const Navigation: React.FC = () => {
@@ -99,11 +90,9 @@ export const Navigation: React.FC = () => {
       <div className="max-w-[1440px] mx-auto px-4">
         <div className="flex items-center gap-4 h-16">
           {/* Marque */}
-          <Link to="/" className="flex items-center gap-2.5 shrink-0" aria-label="Aqida — accueil">
-            <BrandBadge px={40} radius="rounded-[11px]" mark={26} />
-            <span className="font-display text-2xl font-extrabold tracking-[-0.02em]">
-              <span className="text-ink">Aq</span><span className="text-accent">ida</span>
-            </span>
+          <Link to="/" className="flex items-center gap-2 shrink-0 text-accent" aria-label={`${UI.brand.name} — ${UI.nav.home}`}>
+            <Mark size={30} />
+            <span className="font-display text-2xl font-extrabold tracking-[-0.02em] text-ink">{UI.brand.name}<span className="text-accent">.</span></span>
           </Link>
 
           {/* Liens en ligne à partir de 900px ; en dessous, drawer hamburger. */}
@@ -150,7 +139,7 @@ export const Navigation: React.FC = () => {
               className="hidden min-[1360px]:flex items-center gap-2.5 px-3 py-1.5 rounded-full bg-surface border border-line"
               aria-label={`Date : ${hijriFr}`}
             >
-              <BrandBadge px={30} radius="rounded-lg" mark={19} />
+              <span className="grid place-items-center shrink-0 w-[30px] h-[30px] rounded-lg bg-glass-tint border border-glass-border text-accent"><Mark size={20} /></span>
               <span className="leading-tight">
                 <span className="block font-display font-semibold text-[13px] text-ink whitespace-nowrap">{hijriFr}</span>
                 <span className="block text-[11px] text-muted whitespace-nowrap first-letter:uppercase">{greg}</span>

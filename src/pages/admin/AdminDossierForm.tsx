@@ -6,7 +6,7 @@ import { useNavigate, useParams, Link } from 'react-router-dom';
 import { Loader2, Plus, Trash2, Check, AlertTriangle, ArrowUp, ArrowDown } from 'lucide-react';
 import {
   adminService, type DossierFormData, type DossierPreuveType, type DossierRefs,
-  type DossierPreuveInput, type DossierImageInput,
+  type DossierPreuveInput, type DossierImageInput, type MultimediaRow,
 } from '../../services/AdminService';
 import { slugify } from '../../utils/slug';
 
@@ -40,10 +40,14 @@ export const AdminDossierForm: React.FC = () => {
   const [lies, setLies] = useState<number[]>([]);
   const [lieToAdd, setLieToAdd] = useState('');
   const [allDossiers, setAllDossiers] = useState<{ id: number; label: string }[]>([]);
+  // 13.4 — vidéos « Pour approfondir » rattachées à ce dossier.
+  const [videos, setVideos] = useState<number[]>([]);
+  const [videoToAdd, setVideoToAdd] = useState('');
+  const [allVideos, setAllVideos] = useState<MultimediaRow[]>([]);
 
   useEffect(() => {
-    Promise.all([adminService.listDossierRefs(), adminService.listDossiers()])
-      .then(([r, list]) => { setRefs(r); setAllDossiers(list.map((d) => ({ id: d.id, label: d.h1 }))); })
+    Promise.all([adminService.listDossierRefs(), adminService.listDossiers(), adminService.listMultimedia()])
+      .then(([r, list, vids]) => { setRefs(r); setAllDossiers(list.map((d) => ({ id: d.id, label: d.h1 }))); setAllVideos(vids); })
       .catch(() => setError('Impossible de charger les listes.'))
       .finally(() => { if (!editId) setLoading(false); });
   }, [editId]);
@@ -56,6 +60,7 @@ export const AdminDossierForm: React.FC = () => {
       setPreuves(d.preuves.map((p) => ({ key: rid(), type: p.type, ref_id: p.ref_id != null ? String(p.ref_id) : '' })));
       setImages(d.images.map((im) => ({ ...emptyImg(), image_url: im.image_url ?? '', alt: im.alt ?? '', legende: im.legende ?? '', source_livre: im.source_livre ?? '' })));
       setLies(d.lies ?? []);
+      setVideos(d.video_ids ?? []);
     }).catch(() => setError('Dossier introuvable.')).finally(() => setLoading(false));
   }, [editId]);
 
@@ -64,6 +69,8 @@ export const AdminDossierForm: React.FC = () => {
   const optionsFor = (t: DossierPreuveType) => (t === 'hadith' ? refs.hadiths : t === 'parole' ? refs.paroles : refs.versets);
   const liesOptions = allDossiers.filter((d) => d.id !== editId && !lies.includes(d.id));
   const labelForDossier = (did: number) => allDossiers.find((d) => d.id === did)?.label ?? `#${did}`;
+  const videoOptions = allVideos.filter((v) => !videos.includes(v.id));
+  const labelForVideo = (vid: number) => { const v = allVideos.find((x) => x.id === vid); return v ? `${v.titre}${v.savant ? ` — ${v.savant}` : ''}` : `#${vid}`; };
 
   const buildPayload = (): DossierFormData => ({
     id: editId, slug: autoSlug, h1: f.h1.trim(), meta_title: f.meta_title, meta_description: f.meta_description,
@@ -77,6 +84,7 @@ export const AdminDossierForm: React.FC = () => {
     setBusy(true); setError(null); setOk(false);
     try {
       const newId = await adminService.saveDossier(buildPayload());
+      await adminService.setDossierVideos(newId, videos);
       setOk(true); navigate(`/admin/dossiers/${newId}`, { replace: true }); setTimeout(() => setOk(false), 2500);
     } catch (e) {
       const msg = (e as Error).message || 'Erreur.';
@@ -201,6 +209,33 @@ export const AdminDossierForm: React.FC = () => {
           </select>
           <button type="button" disabled={!lieToAdd} onClick={() => { setLies((a) => [...a, Number(lieToAdd)]); setLieToAdd(''); }} className="shrink-0 inline-flex items-center gap-1.5 rounded-lg bg-glass-tint text-ink border border-green-line font-semibold px-3.5 py-2 text-sm disabled:opacity-50"><Plus className="w-4 h-4" /> Ajouter</button>
         </div>
+      </section>
+
+      {/* 6. Pour approfondir (vidéos) */}
+      <section className="rounded-card border border-line bg-surface p-5 mb-4">
+        <h2 className="font-display font-semibold text-ink text-lg mb-1">6 · Pour approfondir <span className="text-muted font-normal">(vidéos, optionnel)</span></h2>
+        <p className="text-xs text-muted mb-4">Les vidéos rattachées s'affichent en bas du dossier, dans un bloc «&nbsp;Pour approfondir&nbsp;» — jamais en tête.</p>
+        {videos.length > 0 && (
+          <div className="flex flex-wrap gap-2 mb-3">
+            {videos.map((vid) => (
+              <span key={vid} className="inline-flex items-center gap-1.5 text-[13px] text-ink bg-glass-tint border border-green-line px-3 py-1 rounded-full">
+                {labelForVideo(vid)}
+                <button type="button" onClick={() => setVideos((a) => a.filter((x) => x !== vid))} className="text-red-600" aria-label="Retirer"><Trash2 className="w-3.5 h-3.5" /></button>
+              </span>
+            ))}
+          </div>
+        )}
+        {allVideos.length === 0 ? (
+          <p className="text-sm text-muted italic">Aucune vidéo en base.</p>
+        ) : (
+          <div className="flex gap-2">
+            <select className={field} value={videoToAdd} onChange={(e) => setVideoToAdd(e.target.value)}>
+              <option value="">— Rattacher une vidéo…</option>
+              {videoOptions.map((v) => <option key={v.id} value={v.id}>{v.titre}{v.savant ? ` — ${v.savant}` : ''}{v.dossier_id && v.dossier_id !== editId ? ' (déjà rattachée ailleurs)' : ''}</option>)}
+            </select>
+            <button type="button" disabled={!videoToAdd} onClick={() => { setVideos((a) => [...a, Number(videoToAdd)]); setVideoToAdd(''); }} className="shrink-0 inline-flex items-center gap-1.5 rounded-lg bg-glass-tint text-ink border border-green-line font-semibold px-3.5 py-2 text-sm disabled:opacity-50"><Plus className="w-4 h-4" /> Ajouter</button>
+          </div>
+        )}
       </section>
 
       {/* 6. Publication */}

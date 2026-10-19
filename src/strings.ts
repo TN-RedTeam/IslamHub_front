@@ -10,6 +10,9 @@
  * On n'externalise donc pas rétroactivement les libellés déjà en place.
  */
 export const UI = {
+  brand: {
+    name: 'Aqida',
+  },
   nav: {
     home: 'Accueil',
     coran: 'Coran',
@@ -17,5 +20,17 @@ export const UI = {
     savants: 'Savants',
     biographies: 'Biographies',
     search: 'Rechercher',
+  },
+  article: {
+    toc: 'Sommaire',
+    backToTop: 'Haut de page',
+    viewScan: 'Voir le scan',
+    openSource: 'Ouvrir la fiche',
+    sourceDetails: 'Détails de la source',
+  },
+  journee: {
+    title: 'Les invocations à dire dans une journée',
+    subtitle: 'Du réveil au coucher',
+    seeHadith: 'Voir le hadith',
   },
 } as const;

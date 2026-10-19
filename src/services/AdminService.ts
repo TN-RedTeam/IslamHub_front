@@ -298,6 +298,15 @@ class AdminService {
     const { data, error } = await supabase.rpc('admin_list_dossiers');
     if (error) throw error; return (data ?? []) as DossierListRow[];
   }
+  // Vidéos (multimedia) — rattachement à un dossier (13.4 « Pour approfondir »).
+  async listMultimedia(): Promise<MultimediaRow[]> {
+    const { data, error } = await supabase.from('multimedia').select('id,titre,savant,categorie,dossier_id').order('titre');
+    if (error) throw error; return (data ?? []) as MultimediaRow[];
+  }
+  async setDossierVideos(dossierId: number, videoIds: number[]): Promise<void> {
+    const { error } = await supabase.rpc('admin_set_dossier_videos', { p_dossier_id: dossierId, p_video_ids: videoIds });
+    if (error) throw error;
+  }
   async listDossierRefs(): Promise<DossierRefs> {
     const { data, error } = await supabase.rpc('admin_list_dossier_refs');
     if (error) throw error;
@@ -620,9 +629,11 @@ export interface DossierEditShape {
   croyance_texte: string | null; objection_texte: string | null; reponse_texte: string | null; published: boolean;
   preuves: DossierPreuveInput[];
   images: { image_url: string; alt: string | null; legende: string | null; source_livre: string | null; ordre: number | null }[];
+  video_ids: number[];
   lies: number[];
 }
 export interface DossierListRow { id: number; slug: string; h1: string; published: boolean; }
+export interface MultimediaRow { id: number; titre: string; savant: string | null; categorie: string | null; dossier_id: number | null; }
 
 // ---- Exposés ----
 export type CitationType = 'verset' | 'hadith' | 'parole';

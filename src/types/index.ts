@@ -521,6 +521,7 @@ export interface DossierData {
   };
   preuves: DossierPreuve[];
   images: DossierImage[];
+  videos?: Multimedia[];   // 13.4 — « Pour approfondir » (vidéos rattachées au dossier)
   lies: { slug: string; h1: string }[];
 }
 
@@ -706,6 +707,10 @@ export interface BlocRef {
   texte_francais?: string | null;
   'phonétique'?: string | null;
   explication?: string | null;
+  source_livre?: string | null;
+  page?: string | null;
+  // Scans du livre (paroles) — ouverts en lightbox sans quitter l'article.
+  images?: { image_url: string; alt: string; legende?: string | null; source_livre?: string | null; source_livre_ar?: string | null }[];
   // Preuve en saisie libre (pas de source en base).
   libre?: boolean;
   ref?: string | null;

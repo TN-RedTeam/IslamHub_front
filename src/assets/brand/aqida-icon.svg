@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="Aqida">
+  <defs>
+    <linearGradient id="aqidaGrad" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#66e0cd"/>
+      <stop offset="1" stop-color="#0e8f80"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="16" fill="url(#aqidaGrad)"/>
+  <!-- brin dessous (clair) -->
+  <path d="M44 20 h-12 a12 12 0 0 0 -12 12 v12" fill="none" stroke="#eafffb" stroke-opacity="0.5" stroke-width="7" stroke-linecap="round"/>
+  <!-- brin dessus (encre) -->
+  <path d="M20 20 h12 a12 12 0 0 1 12 12 v12" fill="none" stroke="#06242a" stroke-width="7" stroke-linecap="round"/>
+</svg>

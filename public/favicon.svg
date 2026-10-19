@@ -1,11 +1,13 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="Aqida">
   <defs>
-    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#1c5a43"/>
-      <stop offset="1" stop-color="#0f3d2e"/>
+    <linearGradient id="aqidaGrad" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#66e0cd"/>
+      <stop offset="1" stop-color="#0e8f80"/>
     </linearGradient>
   </defs>
-  <rect width="40" height="40" rx="11" fill="url(#bg)"/>
-  <path d="M27 8 A13 13 0 1 0 27 32 A10 10 0 1 1 27 8Z" fill="#caa24a"/>
-  <path d="M30 15 l1.3 3.4 3.7.2-2.9 2.3 1 3.6-3.1-2-3.1 2 1-3.6-2.9-2.3 3.7-.2z" fill="#caa24a"/>
+  <rect width="64" height="64" rx="16" fill="url(#aqidaGrad)"/>
+  <!-- brin dessous (clair) -->
+  <path d="M44 20 h-12 a12 12 0 0 0 -12 12 v12" fill="none" stroke="#eafffb" stroke-opacity="0.5" stroke-width="7" stroke-linecap="round"/>
+  <!-- brin dessus (encre) -->
+  <path d="M20 20 h12 a12 12 0 0 1 12 12 v12" fill="none" stroke="#06242a" stroke-width="7" stroke-linecap="round"/>
 </svg>
