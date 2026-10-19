@@ -1,6 +1,7 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import App from './App.tsx';
+import './i18n'; // initialise i18next (libellés d'interface, bundlé, repli FR)
 import './styles/fonts.css';
 import './index.css';
 import ErrorBoundary from './components/ErrorBoundary.tsx';
