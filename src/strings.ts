@@ -21,4 +21,11 @@ export const UI = {
     biographies: 'Biographies',
     search: 'Rechercher',
   },
+  article: {
+    toc: 'Sommaire',
+    backToTop: 'Haut de page',
+    viewScan: 'Voir le scan',
+    openSource: 'Ouvrir la fiche',
+    sourceDetails: 'Détails de la source',
+  },
 } as const;
