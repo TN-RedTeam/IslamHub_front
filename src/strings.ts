@@ -28,4 +28,9 @@ export const UI = {
     openSource: 'Ouvrir la fiche',
     sourceDetails: 'Détails de la source',
   },
+  journee: {
+    title: 'Les invocations à dire dans une journée',
+    subtitle: 'Du réveil au coucher',
+    seeHadith: 'Voir le hadith',
+  },
 } as const;
