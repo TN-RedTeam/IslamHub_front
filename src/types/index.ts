@@ -521,6 +521,7 @@ export interface DossierData {
   };
   preuves: DossierPreuve[];
   images: DossierImage[];
+  videos?: Multimedia[];   // 13.4 — « Pour approfondir » (vidéos rattachées au dossier)
   lies: { slug: string; h1: string }[];
 }
 

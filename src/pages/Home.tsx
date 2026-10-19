@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Book, BookOpen, Heart, GraduationCap, Video, Moon, Sun, Sparkles, Loader2 } from 'lucide-react';
+import { Book, BookOpen, Heart, GraduationCap, Moon, Sun, Sparkles, Loader2 } from 'lucide-react';
 import { dataService } from '../services/DataService';
 import { useSeo } from '../hooks/useSeo';
 import { slugify } from '../utils/slug';
@@ -51,7 +51,6 @@ export const Home: React.FC = () => {
     { title: 'Hadiths', meta: stats.hadiths ? String(stats.hadiths) : '—', icon: <Book className="w-5 h-5" />, to: '/hadiths' },
     { title: 'Invocations', meta: stats.douaas + stats.dhikrs ? String(stats.douaas + stats.dhikrs) : '—', icon: <Heart className="w-5 h-5" />, to: '/invocations' },
     { title: 'Paroles de savants', meta: stats.paroles ? String(stats.paroles) : '—', icon: <GraduationCap className="w-5 h-5" />, to: '/savants/paroles' },
-    { title: 'Vidéos', meta: stats.videos ? String(stats.videos) : '—', icon: <Video className="w-5 h-5" />, to: '/multimedia' },
   ];
 
   return (

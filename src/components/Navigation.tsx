@@ -22,7 +22,6 @@ const resItems = [
   { to: '/dossiers', label: 'Dossiers thématiques' },
   { to: '/ecoles', label: 'Écoles' },
   { to: '/recits', label: 'Récits' },
-  { to: '/multimedia', label: 'Multimédia' },
   { to: '/femmes', label: 'La femme musulmane' },
 ];
 

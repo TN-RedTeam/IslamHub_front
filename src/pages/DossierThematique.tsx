@@ -6,6 +6,7 @@ import { dataService } from '../services/DataService';
 import { Markdown } from '../components/Markdown';
 import { ArticleBlocs } from '../components/ArticleBlocs';
 import { Lightbox, type LightboxImage } from '../components/Lightbox';
+import { VideoCard } from '../components/VideoCard';
 import { useSeo } from '../hooks/useSeo';
 import { SavantHover } from '../components/SavantHover';
 import type { DossierData, DossierPreuve, Bloc } from '../types';
@@ -139,7 +140,7 @@ export const DossierThematique: React.FC = () => {
     );
   }
 
-  const { dossier, preuves, images, lies } = data;
+  const { dossier, preuves, images, lies, videos } = data;
 
   return (
     <div className="min-h-screen">
@@ -250,6 +251,16 @@ export const DossierThematique: React.FC = () => {
                 )}
               </figure>
             ))}
+          </section>
+        )}
+
+        {/* Pour approfondir — vidéos rattachées (13.4) */}
+        {videos && videos.length > 0 && (
+          <section>
+            <h2 className="text-lg font-bold text-ink mb-3">Pour approfondir</h2>
+            <div className="grid sm:grid-cols-2 gap-4">
+              {videos.map((v, i) => <VideoCard key={v.id} video={v} index={i} />)}
+            </div>
           </section>
         )}
 
