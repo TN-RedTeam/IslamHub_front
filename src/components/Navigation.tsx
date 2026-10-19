@@ -10,7 +10,7 @@ import moment from 'moment-hijri';
 // Barre principale (entrées essentielles).
 const mainItems = [
   { to: '/', label: 'Accueil', exact: true },
-  { to: '/coran', label: 'Coran' },
+  { to: '/coran/sourates', label: 'Coran' },
   { to: '/croyance', label: 'Croyance' },
   { to: '/hadiths', label: 'Hadiths & paroles' },
   { to: '/biographies', label: 'Biographies' },

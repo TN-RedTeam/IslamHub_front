@@ -10,7 +10,7 @@ import { UI } from '../strings';
  */
 const TABS = [
   { to: '/', label: UI.nav.home, icon: Home, exact: true },
-  { to: '/coran', label: UI.nav.coran, icon: BookOpen },
+  { to: '/coran/sourates', label: UI.nav.coran, icon: BookOpen },
   { to: '/croyance', label: UI.nav.croyance, icon: Sparkles },
   { to: '/biographies', label: UI.nav.biographies, icon: Users },
 ];

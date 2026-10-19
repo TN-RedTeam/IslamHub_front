@@ -2,7 +2,6 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Loader2, BookOpen, Search, LayoutGrid, List, Check } from 'lucide-react';
 import { dataService } from '../services/DataService';
-import { CoranTabs } from '../components/CoranTabs';
 import { useSeo } from '../hooks/useSeo';
 import type { SourateInfo } from '../types';
 
@@ -63,10 +62,9 @@ export const SouratesIndex: React.FC = () => {
   return (
     <div className="min-h-screen">
       <header className="max-w-3xl mx-auto px-4 pt-7 pb-2">
-        <nav aria-label="Fil d'Ariane" className="text-xs text-muted mb-2"><Link to="/" className="hover:text-accent">Accueil</Link> <span aria-hidden>·</span> <Link to="/coran" className="hover:text-accent">Coran</Link> <span aria-hidden>·</span> Sourates</nav>
+        <nav aria-label="Fil d'Ariane" className="text-xs text-muted mb-2"><Link to="/" className="hover:text-accent">Accueil</Link> <span aria-hidden>·</span> Coran</nav>
         <h1 className="font-display font-extrabold tracking-[-0.02em] text-ink" style={{ fontSize: 'clamp(24px,5vw,34px)' }}>Exégèse des sourates</h1>
         <p className="text-muted mt-2 text-[14px] max-w-2xl">Le tafsir d’Al-Fātiḥah et des Juz 29 &amp; 30, expliqué à la lumière des savants.</p>
-        <div className="mt-4"><CoranTabs /></div>
       </header>
 
       <main className="max-w-3xl mx-auto px-4 py-6">

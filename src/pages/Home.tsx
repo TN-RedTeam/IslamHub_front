@@ -46,7 +46,7 @@ export const Home: React.FC = () => {
   }, []);
 
   const explore = [
-    { title: 'Coran', meta: stats.coran ? `${stats.coran} versets` : 'Exégèse', icon: <BookOpen className="w-5 h-5" />, to: '/coran' },
+    { title: 'Coran', meta: 'Exégèse des sourates', icon: <BookOpen className="w-5 h-5" />, to: '/coran/sourates' },
     { title: 'Croyance', meta: 'Le dossier', icon: <Sparkles className="w-5 h-5" />, to: '/croyance' },
     { title: 'Hadiths', meta: stats.hadiths ? String(stats.hadiths) : '—', icon: <Book className="w-5 h-5" />, to: '/hadiths' },
     { title: 'Invocations', meta: stats.douaas + stats.dhikrs ? String(stats.douaas + stats.dhikrs) : '—', icon: <Heart className="w-5 h-5" />, to: '/invocations' },

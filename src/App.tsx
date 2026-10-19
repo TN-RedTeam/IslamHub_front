@@ -29,7 +29,6 @@ const Paroles = lazy(() => import('./pages/Paroles').then((m) => ({ default: m.P
 const ParolePage = lazy(() => import('./pages/ParolePage').then((m) => ({ default: m.ParolePage })));
 const Biographies = lazy(() => import('./pages/Biographies').then((m) => ({ default: m.Biographies })));
 const SavantPage = lazy(() => import('./pages/SavantPage').then((m) => ({ default: m.SavantPage })));
-const Corans = lazy(() => import('./pages/Coran').then((m) => ({ default: m.Corans })));
 const SouratesIndex = lazy(() => import('./pages/SouratesIndex').then((m) => ({ default: m.SouratesIndex })));
 const SouratePage = lazy(() => import('./pages/SouratePage').then((m) => ({ default: m.SouratePage })));
 const Multimedia = lazy(() => import('./pages/Multimedia').then((m) => ({ default: m.Multimedia })));
@@ -123,7 +122,8 @@ function PublicShell() {
           <Routes>
                 {/* Pages principales */}
                 <Route path="/" element={<Home />} />
-                <Route path="/coran" element={<Corans />} />
+                {/* 13.3 — la rubrique Coran = exégèse ; « versets par thème » n'est plus exposé publiquement (données + preuves intactes). */}
+                <Route path="/coran" element={<Navigate to="/coran/sourates" replace />} />
                 <Route path="/coran/sourates" element={<SouratesIndex />} />
                 <Route path="/coran/sourates/:slug" element={<SouratePage />} />
                 <Route path="/recherche" element={<Recherche />} />

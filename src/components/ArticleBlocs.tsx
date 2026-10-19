@@ -20,7 +20,7 @@ function sourceLink(citation: Bloc['citation_type'], ref: BlocRef): string | nul
   if (!ref) return null;
   if (citation === 'hadith') return `/hadiths/${ref.id}/${ref.slug ?? ''}`;
   if (citation === 'parole') return ref.slug ? `/paroles/${ref.slug}` : null;
-  if (citation === 'verset') return '/coran';
+  // 13.3 — plus de page publique « versets par thème » : le verset s'affiche inline, sans lien mort.
   return null;
 }
 function badgeText(citation: Bloc['citation_type'], ref: BlocRef): string | null {
