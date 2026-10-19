@@ -38,6 +38,7 @@ import type {
   RelatedItem,
   SearchResults,
   DossierListItem,
+  SubjectCount,
 } from '../types';
 
 // ============================================================
@@ -403,6 +404,15 @@ class DataService {
   async getDhikrSujets(): Promise<string[]> { return rpcTags('sujets_dhikrs'); }
   async getDouaaSujets(): Promise<string[]> { return rpcTags('sujets_douaas'); }
   async getParoleSujets(): Promise<string[]> { return rpcTags('sujets_paroles'); }
+  /** Sujets + compteur (une requête agrégée, pas de N+1) — pour « Parcourir par sujet ». */
+  async getHadithSujetsCounts(): Promise<SubjectCount[]> {
+    const { data, error } = await supabase.rpc('sujets_hadiths_counts');
+    if (error) throw error; return (data ?? []) as SubjectCount[];
+  }
+  async getParoleSujetsCounts(): Promise<SubjectCount[]> {
+    const { data, error } = await supabase.rpc('sujets_paroles_counts');
+    if (error) throw error; return (data ?? []) as SubjectCount[];
+  }
 
   // ================= Multimedia =================
   async searchMultimedia(

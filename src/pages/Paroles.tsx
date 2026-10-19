@@ -1,14 +1,16 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { m, AnimatePresence } from 'framer-motion';
+import { m } from 'framer-motion';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Search, X, Star, ChevronRight, Loader, GraduationCap as SavantIcon, BookOpen } from 'lucide-react';
 import { dataService } from '../services/DataService';
 import { FilterSelect } from '../components/FilterSelect';
+import { SubjectBrowser, FilterChip } from '../components/SubjectBrowser';
 import { EcoleBadge } from '../components/EcoleBadge';
 import { SavantHover } from '../components/SavantHover';
 import { PageHeader } from '../components/PageHeader';
 import { HadithsParolesTabs } from '../components/HadithsParolesTabs';
-import type { Parole } from '../types';
+import { UI } from '../strings';
+import type { Parole, SubjectCount } from '../types';
 import { IconBadge } from '../components/Icon';
 
 const ParoleCard: React.FC<{ parole: Parole }> = ({ parole }) => {
@@ -95,6 +97,7 @@ const ParoleCard: React.FC<{ parole: Parole }> = ({ parole }) => {
 };
 
 const ITEMS_PER_PAGE = 20;
+const sPl = (n: number) => (n > 1 ? 's' : '');
 
 export const Paroles: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -102,12 +105,10 @@ export const Paroles: React.FC = () => {
   const [selectedTag, setSelectedTag] = useState<string | null>(() => searchParams.get('sujet')); // sujet
   const [selectedSavant, setSelectedSavant] = useState('');
   const [selectedSource, setSelectedSource] = useState(() => searchParams.get('source') ?? ''); // recueil/source
-  const [showAll, setShowAll] = useState(false);
 
-  const [allTags, setAllTags] = useState<string[]>([]); // sujets
+  const [subjects, setSubjects] = useState<SubjectCount[]>([]); // sujets + compteur
   const [savants, setSavants] = useState<string[]>([]);
   const [sources, setSources] = useState<string[]>([]); // recueils / ouvrages
-  const [totalCount, setTotalCount] = useState(0); // total en base
 
   const [paroles, setParoles] = useState<Parole[]>([]);
   const [total, setTotal] = useState(0);
@@ -115,22 +116,20 @@ export const Paroles: React.FC = () => {
   const [hasMore, setHasMore] = useState(false);
   const [hasSearched, setHasSearched] = useState(false);
   const [isApprox, setIsApprox] = useState(false); // résultats approchants (repli fuzzy)
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true); // contenu d'abord
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const loadMoreRef = useRef<HTMLDivElement>(null);
   const debounceRef = useRef<ReturnType<typeof setTimeout>>();
 
-  const hasQuery = !!(searchTerm.trim() || selectedTag || selectedSavant || selectedSource);
+  const hasFilter = !!(searchTerm.trim() || selectedTag || selectedSavant || selectedSource);
 
-  // Listes (sujets + savants + recueils) + total, sans charger les paroles.
+  // Listes (sujets + compteurs + savants + recueils). La liste se charge dès l'arrivée.
   useEffect(() => {
-    dataService.getParoleSujets().then(setAllTags).catch(() => {});
+    dataService.getParoleSujetsCounts().then(setSubjects).catch(() => {});
     dataService.getParoleNames().then(setSavants).catch(() => {});
     dataService.getParoleSources().then(setSources).catch(() => {});
-    dataService.searchParoles('', null, { page: 0, pageSize: 1 })
-      .then((r) => setTotalCount(r.count ?? 0)).catch(() => {});
   }, []);
 
   // Pré-filtre par savant si on arrive depuis /savants (?savant=Nom).
@@ -172,15 +171,11 @@ export const Paroles: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    if (!hasQuery && !showAll) {
-      setParoles([]); setTotal(0); setHasMore(false); setCurrentPage(0); setHasSearched(false);
-      return;
-    }
     clearTimeout(debounceRef.current);
     debounceRef.current = setTimeout(() => doSearch(searchTerm, selectedTag, selectedSavant, selectedSource, 0, false), 300);
     return () => clearTimeout(debounceRef.current);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchTerm, selectedTag, selectedSavant, selectedSource, showAll]);
+  }, [searchTerm, selectedTag, selectedSavant, selectedSource]);
 
   useEffect(() => {
     const el = loadMoreRef.current;
@@ -205,7 +200,7 @@ export const Paroles: React.FC = () => {
   }, [searchTerm, selectedTag, selectedSource]);
 
   const handleResetFilters = () => {
-    setSearchTerm(''); setSelectedTag(null); setSelectedSavant(''); setSelectedSource(''); setShowAll(false);
+    setSearchTerm(''); setSelectedTag(null); setSelectedSavant(''); setSelectedSource('');
   };
 
   if (error) {
@@ -253,9 +248,7 @@ export const Paroles: React.FC = () => {
                 )}
               </div>
 
-              <FilterSelect
-                  value={selectedTag || ''} onChange={(v) => setSelectedTag(v || null)}
-                  options={allTags} allLabel="Tous les sujets" ariaLabel="Filtrer par sujet" />
+              <SubjectBrowser subjects={subjects} value={selectedTag} onChange={setSelectedTag} className="md:w-64" />
 
               {savants.length > 0 && (
                 <FilterSelect
@@ -270,63 +263,33 @@ export const Paroles: React.FC = () => {
               )}
             </div>
 
-            {(selectedTag || selectedSavant || selectedSource) && (
-                <m.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-                    className="mt-4 flex items-center justify-between bg-glass-tint rounded-lg px-4 py-2">
-                  <span className="font-medium text-ink flex flex-wrap items-center gap-2">
-                    Filtres :
-                    {selectedTag && <span className="px-2 py-0.5 bg-glass-tint rounded-full text-sm">{selectedTag}</span>}
-                    {selectedSavant && <span className="px-2 py-0.5 bg-glass-tint rounded-full text-sm">{selectedSavant}</span>}
-                    {selectedSource && <span className="px-2 py-0.5 bg-glass-tint rounded-full text-sm">{selectedSource}</span>}
-                  </span>
-                  <button onClick={handleResetFilters} aria-label="Retirer les filtres"
-                      className="text-green hover:text-ink p-1 shrink-0">
-                    <X className="h-5 w-5" />
-                  </button>
-                </m.div>
+            {hasFilter && (
+              <div className="mt-4 flex flex-wrap items-center gap-2">
+                {selectedTag && <FilterChip prefix={UI.browse.subjectChip} label={selectedTag} onRemove={() => setSelectedTag(null)} />}
+                {selectedSavant && <FilterChip label={selectedSavant} onRemove={() => setSelectedSavant('')} />}
+                {selectedSource && <FilterChip label={selectedSource} onRemove={() => setSelectedSource('')} />}
+                <button type="button" onClick={handleResetFilters} className="text-sm text-green hover:text-ink font-medium ml-1">{UI.list.reset}</button>
+              </div>
             )}
           </m.section>
 
           <section className="pb-16">
-            {!hasQuery && !showAll ? (
-              <div className="text-center py-14 bg-glass rounded-card border border-line">
-                <IconBadge name="search" />
-                <h3 className="text-xl font-bold text-ink mb-2 font-display">Recherchez une parole</h3>
-                <p className="text-muted max-w-md mx-auto mb-6">
-                  Saisissez un mot-clé (cherche aussi les tags), un savant, choisissez un sujet — ou affichez tout.
-                </p>
-                <button onClick={() => setShowAll(true)}
-                    className="inline-flex items-center gap-2 px-6 py-3 mb-6 rounded-xl bg-accent-deep hover:brightness-110 text-white font-medium shadow">
-                  Tout afficher{totalCount > 0 ? ` (${totalCount})` : ''}
-                </button>
-                {allTags.length > 0 && (
-                  <div className="flex flex-wrap gap-2 justify-center max-w-lg mx-auto">
-                    <span className="w-full text-sm text-muted mb-1">Sujets :</span>
-                    {allTags.slice(0, 8).map((t) => (
-                      <button key={t} onClick={() => setSelectedTag(t)}
-                          className="px-4 py-2 rounded-full text-sm font-medium bg-glass-tint text-ink hover:bg-green-line dark:hover:bg-green-deep transition-colors">
-                        {t}
-                      </button>
-                    ))}
-                  </div>
-                )}
-              </div>
-            ) : isLoading ? (
+            {isLoading ? (
               <div className="flex flex-col items-center py-16 gap-4">
                 <Loader className="h-12 w-12 text-green animate-spin" />
-                <p className="text-green font-display text-xl">Recherche en cours...</p>
               </div>
             ) : paroles.length === 0 ? (
-              <m.div key="no-results" initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-                  className="text-center py-16 bg-glass rounded-card shadow-card">
-                <div className="max-w-md mx-auto">
-                  <IconBadge name="book" />
-                  <h3 className="text-xl font-bold text-ink mb-2">Aucun résultat trouvé</h3>
-                  <p className="text-muted mb-6">Essayez de modifier vos critères de recherche</p>
-                  <button onClick={handleResetFilters}
-                      className="px-6 py-2 bg-accent-deep hover:brightness-110 text-white rounded-lg transition-colors">Réinitialiser</button>
-                </div>
-              </m.div>
+              <div className="rounded-card border border-line bg-glass px-5 py-6 text-center">
+                <p className="text-ink font-medium">
+                  {UI.list.noResultFor} {searchTerm.trim() ? <>«&nbsp;{searchTerm.trim()}&nbsp;»</> : 'ces filtres'}.
+                </p>
+                <p className="text-sm text-muted mt-1">{UI.list.noResultHint}</p>
+                {hasFilter && (
+                  <button onClick={handleResetFilters} className="mt-3 inline-flex items-center gap-1.5 text-sm font-semibold text-green hover:text-green-deep">
+                    <X className="w-4 h-4" /> {UI.list.reset}
+                  </button>
+                )}
+              </div>
             ) : (
               <>
                 {isApprox && (
@@ -335,20 +298,13 @@ export const Paroles: React.FC = () => {
                     Astuce : pour un texte arabe, cherche un court extrait distinctif.
                   </div>
                 )}
-                <m.p initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-                    className="text-sm font-medium text-green mb-6">
-                  {paroles.length}{total > paroles.length ? ` / ${total}` : ''} parole{total > 1 ? 's' : ''} {isApprox ? 'approchante' : 'trouvée'}{total > 1 ? 's' : ''}
-                </m.p>
+                <p className="text-sm font-medium text-ink mb-6">
+                  <span className="tabular-nums">{total}</span> parole{sPl(total)} {isApprox ? `approchante${sPl(total)}` : hasFilter ? `trouvée${sPl(total)}` : ''}
+                </p>
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                  <AnimatePresence mode="popLayout">
-                    {paroles.map((parole, index) => (
-                        <m.div key={parole.id}
-                            initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: Math.min(index % ITEMS_PER_PAGE, 10) * 0.05 }} layout>
-                          <ParoleCard parole={parole} />
-                        </m.div>
-                    ))}
-                  </AnimatePresence>
+                  {paroles.map((parole) => (
+                    <ParoleCard key={parole.id} parole={parole} />
+                  ))}
                 </div>
                 {hasMore && (
                     <div ref={loadMoreRef} className="flex justify-center py-8">

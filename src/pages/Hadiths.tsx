@@ -4,13 +4,15 @@ import { m, AnimatePresence } from 'framer-motion';
 import { Search, X, Star, ChevronRight, Loader, SlidersHorizontal, BookOpen } from 'lucide-react';
 import { dataService } from '../services/DataService';
 import { FilterSelect } from '../components/FilterSelect';
+import { SubjectBrowser, FilterChip } from '../components/SubjectBrowser';
 import { PageHeader } from '../components/PageHeader';
 import { HadithsParolesTabs } from '../components/HadithsParolesTabs';
 import { Markdown } from '../components/Markdown';
 import { BadgeGeneration } from '../components/BadgeGeneration';
 import { HadithSources } from '../components/HadithSources';
 import { slugify } from '../utils/slug';
-import type { Hadith as HadithType, HadithSegment, HadithVariant } from '../types';
+import { UI } from '../strings';
+import type { Hadith as HadithType, HadithSegment, HadithVariant, SubjectCount } from '../types';
 import { IconBadge } from '../components/Icon';
 
 interface Hadith extends HadithType {
@@ -286,13 +288,7 @@ const HadithModal: React.FC<{ hadith: Hadith; onClose: () => void }> = ({ hadith
 };
 
 const ITEMS_PER_PAGE = 20;
-
-// Thèmes rapides (Aqida) — cliquent une recherche sur le tag correspondant.
-const AQIDA_THEMES = [
-  { label: 'Croyance', q: 'croyance' },
-  { label: 'Noms et Attributs', q: 'attributs' },
-  { label: 'Foi', q: 'foi' },
-];
+const sPl = (n: number) => (n > 1 ? 's' : '');
 
 export const Hadiths: React.FC = () => {
   const [sp, setSp] = useSearchParams();
@@ -301,13 +297,11 @@ export const Hadiths: React.FC = () => {
   const [selectedStatut, setSelectedStatut] = useState('');
   const [selectedRapporteur, setSelectedRapporteur] = useState('');
   const [selectedNarrateur, setSelectedNarrateur] = useState('');
-  const [showAll, setShowAll] = useState(false);
 
-  const [allTags, setAllTags] = useState<string[]>([]); // sujets
+  const [subjects, setSubjects] = useState<SubjectCount[]>([]); // sujets + compteur
   const [statuts, setStatuts] = useState<string[]>([]);
   const [rapporteurs, setRapporteurs] = useState<string[]>([]);
   const [narrateurs, setNarrateurs] = useState<string[]>([]);
-  const [totalCount, setTotalCount] = useState(0); // total en base (bouton « Tout afficher »)
 
   const [hadiths, setHadiths] = useState<Hadith[]>([]);
   const [total, setTotal] = useState(0);
@@ -315,7 +309,7 @@ export const Hadiths: React.FC = () => {
   const [hasMore, setHasMore] = useState(false);
   const [hasSearched, setHasSearched] = useState(false);
   const [isApprox, setIsApprox] = useState(false); // résultats approchants (repli fuzzy)
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true); // contenu d'abord : chargement dès l'arrivée
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [selectedHadith, setSelectedHadith] = useState<Hadith | null>(null);
@@ -324,18 +318,17 @@ export const Hadiths: React.FC = () => {
   const debounceRef = useRef<ReturnType<typeof setTimeout>>();
 
   const hasRubricFilter = !!(selectedStatut || selectedRapporteur || selectedNarrateur);
-  const hasQuery = !!(searchTerm.trim() || selectedTag || hasRubricFilter);
+  const hasFilter = !!(searchTerm.trim() || selectedTag || hasRubricFilter);
 
   const rubrics = { statut: selectedStatut, rapporteur: selectedRapporteur, narrateur: selectedNarrateur };
 
-  // Préchargement des listes (sujets + rubriques) + total — sans charger les hadiths.
+  // Préchargement des listes (sujets + compteurs + rubriques). La liste de hadiths
+  // se charge dès l'arrivée (contenu d'abord) via l'effet de recherche ci-dessous.
   useEffect(() => {
-    dataService.getHadithSujets().then(setAllTags).catch(() => {});
+    dataService.getHadithSujetsCounts().then(setSubjects).catch(() => {});
     dataService.getHadithRubriques()
       .then((r) => { setStatuts(r.statuts); setRapporteurs(r.rapporteurs); setNarrateurs(r.narrateurs); })
       .catch(() => {});
-    dataService.searchHadiths('', null, { page: 0, pageSize: 1 })
-      .then((res) => setTotalCount(res.count ?? 0)).catch(() => {});
   }, []);
 
   const doSearch = useCallback(async (
@@ -372,19 +365,16 @@ export const Hadiths: React.FC = () => {
     }
   }, []);
 
-  // Recherche débouncée à chaque changement de critère (rien tant qu'aucun filtre).
+  // Contenu d'abord : on charge la liste dès l'arrivée, puis à chaque changement
+  // de critère (débouncé). Sans filtre, la recherche vide renvoie tout (paginé).
   useEffect(() => {
-    if (!hasQuery && !showAll) {
-      setHadiths([]); setTotal(0); setHasMore(false); setCurrentPage(0); setHasSearched(false);
-      return;
-    }
     clearTimeout(debounceRef.current);
     debounceRef.current = setTimeout(() => {
       doSearch(searchTerm, selectedTag, rubrics, 0, false);
     }, 300);
     return () => clearTimeout(debounceRef.current);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchTerm, selectedTag, selectedStatut, selectedRapporteur, selectedNarrateur, showAll]);
+  }, [searchTerm, selectedTag, selectedStatut, selectedRapporteur, selectedNarrateur]);
 
   // Scroll infini.
   useEffect(() => {
@@ -410,7 +400,6 @@ export const Hadiths: React.FC = () => {
   const handleResetFilters = () => {
     setSearchTerm(''); setSelectedTag(null);
     setSelectedStatut(''); setSelectedRapporteur(''); setSelectedNarrateur('');
-    setShowAll(false);
   };
 
   if (error) {
@@ -460,9 +449,7 @@ export const Hadiths: React.FC = () => {
                     </div>
                 )}
               </div>
-              <FilterSelect
-                  value={selectedTag || ''} onChange={(v) => setSelectedTag(v || null)}
-                  options={allTags} allLabel="Tous les sujets" ariaLabel="Filtrer par sujet" />
+              <SubjectBrowser subjects={subjects} value={selectedTag} onChange={setSelectedTag} className="md:w-72" />
             </div>
 
             {(statuts.length > 0 || rapporteurs.length > 0 || narrateurs.length > 0) && (
@@ -493,74 +480,34 @@ export const Hadiths: React.FC = () => {
                 </div>
             )}
 
-            <div className="mt-4 flex flex-wrap items-center gap-2">
-              <span className="text-sm font-medium text-muted">Thèmes :</span>
-              {AQIDA_THEMES.map((t) => (
-                  <button key={t.q} onClick={() => setSearchTerm(t.q)}
-                      className="px-3 py-1.5 rounded-full text-sm font-medium bg-glass-tint text-ink hover:bg-green-line dark:hover:bg-green-deep transition-colors">
-                    {t.label}
-                  </button>
-              ))}
-            </div>
-
-            {(selectedTag || hasRubricFilter) && (
-                <m.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-                    className="mt-4 flex items-center justify-between bg-glass-tint rounded-lg px-4 py-2">
-                  <span className="font-medium text-ink flex flex-wrap items-center gap-2">
-                    Filtres :
-                    {selectedTag && <span className="px-2 py-0.5 bg-glass-tint rounded-full text-sm">{selectedTag}</span>}
-                    {selectedStatut && <span className="px-2 py-0.5 bg-glass-tint text-ink rounded-full text-sm">{selectedStatut}</span>}
-                    {selectedRapporteur && <span className="px-2 py-0.5 bg-glass-tint rounded-full text-sm">{selectedRapporteur}</span>}
-                    {selectedNarrateur && <span className="px-2 py-0.5 bg-glass-tint rounded-full text-sm">{selectedNarrateur}</span>}
-                  </span>
-                  <button onClick={handleResetFilters} aria-label="Retirer les filtres"
-                      className="text-green hover:text-ink p-1 shrink-0">
-                    <X className="h-5 w-5" />
-                  </button>
-                </m.div>
+            {hasFilter && (
+              <div className="mt-4 flex flex-wrap items-center gap-2">
+                {selectedTag && <FilterChip prefix={UI.browse.subjectChip} label={selectedTag} onRemove={() => setSelectedTag(null)} />}
+                {selectedStatut && <FilterChip label={selectedStatut} onRemove={() => setSelectedStatut('')} />}
+                {selectedRapporteur && <FilterChip label={selectedRapporteur} onRemove={() => setSelectedRapporteur('')} />}
+                {selectedNarrateur && <FilterChip label={selectedNarrateur} onRemove={() => setSelectedNarrateur('')} />}
+                <button type="button" onClick={handleResetFilters} className="text-sm text-green hover:text-ink font-medium ml-1">{UI.list.reset}</button>
+              </div>
             )}
           </m.section>
 
           <section className="pb-16">
-            {!hasQuery && !showAll ? (
-              <div className="text-center py-14 bg-glass rounded-card border border-line">
-                <IconBadge name="search" />
-                <h3 className="text-xl font-bold text-ink mb-2 font-display">Recherchez un hadith</h3>
-                <p className="text-muted max-w-md mx-auto mb-6">
-                  Saisissez un mot-clé (cherche aussi dans les tags et l'arabe) ou choisissez un filtre (sujet, authenticité, rapporteur, narrateur) — ou affichez tout.
-                </p>
-                <button onClick={() => setShowAll(true)}
-                    className="inline-flex items-center gap-2 px-6 py-3 mb-6 rounded-xl bg-accent-deep hover:brightness-110 text-white font-medium shadow">
-                  Tout afficher{totalCount > 0 ? ` (${totalCount})` : ''}
-                </button>
-                {allTags.length > 0 && (
-                  <div className="flex flex-wrap gap-2 justify-center max-w-lg mx-auto">
-                    <span className="w-full text-sm text-muted mb-1">Sujets :</span>
-                    {allTags.slice(0, 10).map((t) => (
-                      <button key={t} onClick={() => setSelectedTag(t)}
-                          className="px-4 py-2 rounded-full text-sm font-medium bg-glass-tint text-ink hover:bg-green-line dark:hover:bg-green-deep transition-colors">
-                        {t}
-                      </button>
-                    ))}
-                  </div>
-                )}
-              </div>
-            ) : isLoading ? (
+            {isLoading ? (
               <div className="flex flex-col items-center py-16 gap-4">
                 <Loader className="h-12 w-12 text-green animate-spin" />
-                <p className="text-green font-display text-xl">Recherche en cours...</p>
               </div>
             ) : hadiths.length === 0 ? (
-              <m.div key="no-results" initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-                  className="text-center py-16 bg-glass rounded-card shadow-card">
-                <div className="max-w-md mx-auto">
-                  <IconBadge name="book" />
-                  <h3 className="text-xl font-bold text-ink mb-2">Aucun résultat trouvé</h3>
-                  <p className="text-muted mb-6">Essayez de modifier vos critères de recherche</p>
-                  <button onClick={handleResetFilters}
-                      className="px-6 py-2 bg-accent-deep hover:brightness-110 text-white rounded-lg transition-colors">Réinitialiser</button>
-                </div>
-              </m.div>
+              <div className="rounded-card border border-line bg-glass px-5 py-6 text-center">
+                <p className="text-ink font-medium">
+                  {UI.list.noResultFor} {searchTerm.trim() ? <>«&nbsp;{searchTerm.trim()}&nbsp;»</> : 'ces filtres'}.
+                </p>
+                <p className="text-sm text-muted mt-1">{UI.list.noResultHint}</p>
+                {hasFilter && (
+                  <button onClick={handleResetFilters} className="mt-3 inline-flex items-center gap-1.5 text-sm font-semibold text-green hover:text-green-deep">
+                    <X className="w-4 h-4" /> {UI.list.reset}
+                  </button>
+                )}
+              </div>
             ) : (
               <>
                 {isApprox && (
@@ -569,20 +516,13 @@ export const Hadiths: React.FC = () => {
                     Astuce : pour un texte arabe, cherche un court extrait distinctif.
                   </div>
                 )}
-                <m.p initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-                    className="text-sm font-medium text-green mb-6">
-                  {hadiths.length}{total > hadiths.length ? ` / ${total}` : ''} hadith{total > 1 ? 's' : ''} {isApprox ? 'approchant' : 'trouvé'}{total > 1 ? 's' : ''}
-                </m.p>
+                <p className="text-sm font-medium text-ink mb-6">
+                  <span className="tabular-nums">{total}</span> hadith{sPl(total)} {isApprox ? `approchant${sPl(total)}` : hasFilter ? `trouvé${sPl(total)}` : ''}
+                </p>
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                  <AnimatePresence mode="popLayout">
-                    {hadiths.map((hadith, index) => (
-                        <m.div key={hadith.id}
-                            initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: Math.min(index % ITEMS_PER_PAGE, 10) * 0.05 }} layout>
-                          <HadithCard hadith={hadith} onClick={() => setSelectedHadith(hadith)} />
-                        </m.div>
-                    ))}
-                  </AnimatePresence>
+                  {hadiths.map((hadith) => (
+                    <HadithCard key={hadith.id} hadith={hadith} onClick={() => setSelectedHadith(hadith)} />
+                  ))}
                 </div>
                 {hasMore && (
                     <div ref={loadMoreRef} className="flex justify-center py-8">

@@ -7,7 +7,7 @@ import { VideoCard } from '../components/VideoCard';
 import { PageHeader } from '../components/PageHeader';
 import type { Multimedia as MultimediaType, MultimediaCategory } from '../types';
 import { useSeo } from '../hooks/useSeo';
-import { Icon, IconBadge } from '../components/Icon';
+import { IconBadge } from '../components/Icon';
 
 const PAGE_SIZE = 12;
 
@@ -18,7 +18,7 @@ export const Multimedia: React.FC = () => {
   const [searchTerm, setSearchTerm]       = useState('');
   const [selectedCategory, setCategory]   = useState<string | null>(null);
   const [hasSearched, setHasSearched]     = useState(false);
-  const [isLoading, setIsLoading]         = useState(false);
+  const [isLoading, setIsLoading]         = useState(true); // contenu d'abord
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [error, setError]                 = useState<string | null>(null);
   const [totalCount, setTotalCount]       = useState(0);
@@ -55,11 +55,8 @@ export const Multimedia: React.FC = () => {
     }
   }, []);
 
-  // Recherche débouncée quand searchTerm/category changent (sauf au mount)
+  // Contenu d'abord : on charge dès l'arrivée, puis à chaque changement de critère.
   useEffect(() => {
-    const isInitial = !searchTerm && !selectedCategory && !hasSearched;
-    if (isInitial) return;
-
     const t = setTimeout(() => {
       doSearch(searchTerm, selectedCategory, 0, false);
     }, 300);
@@ -156,44 +153,6 @@ export const Multimedia: React.FC = () => {
         {/* Résultats */}
         <section className="pb-16">
           <AnimatePresence mode="wait">
-            {/* État initial : pas de recherche */}
-            {!hasSearched && !isLoading && (
-              <m.div
-                key="empty"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                className="text-center py-16 bg-glass rounded-card shadow-card"
-              >
-                <m.div
-                  animate={{ scale: [1, 1.05, 1] }}
-                  transition={{ repeat: Infinity, duration: 2 }}
-                  className="mx-auto mb-6 w-20 h-20 rounded-full bg-glass-tint text-green grid place-items-center motion-reduce:animate-none"
-                >
-                  <Icon name="camera" className="w-10 h-10" />
-                </m.div>
-                <h3 className="text-2xl font-bold text-ink mb-3 font-display">
-                  Lance une recherche pour découvrir des vidéos
-                </h3>
-                <p className="text-muted mb-8 max-w-md mx-auto">
-                  Tape un mot-clé, le nom d'un savant, ou choisis une catégorie pour explorer notre sélection.
-                </p>
-                {categories.length > 0 && (
-                  <div className="flex flex-wrap justify-center gap-2 max-w-2xl mx-auto">
-                    {categories.slice(0, 8).map(c => (
-                      <button
-                        key={c.categorie}
-                        onClick={() => setCategory(c.categorie)}
-                        className="px-4 py-2 rounded-full bg-glass-tint text-ink hover:bg-glass-tint transition-colors text-sm font-medium"
-                      >
-                        {c.categorie}
-                      </button>
-                    ))}
-                  </div>
-                )}
-              </m.div>
-            )}
-
             {/* Loading initial */}
             {isLoading && (
               <m.div

@@ -33,4 +33,18 @@ export const UI = {
     subtitle: 'Du réveil au coucher',
     seeHadith: 'Voir le hadith',
   },
+  browse: {
+    bySubject: 'Parcourir par sujet',
+    searchSubject: 'Filtrer les sujets…',
+    allSubjects: 'Tous les sujets',
+    noSubject: 'Aucun sujet ne correspond.',
+    subjectChip: 'Sujet',
+    seeTheme: 'Voir ce thème en entier',
+  },
+  list: {
+    reset: 'Réinitialiser les filtres',
+    noResultFor: 'Aucun résultat pour',
+    noResultHint: 'Essaie un autre mot-clé, ou retire un filtre.',
+    clearSearch: 'Effacer la recherche',
+  },
 } as const;
