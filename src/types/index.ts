@@ -398,11 +398,15 @@ export interface FemmesSegment {
   commentaire: string | null;  // explication (ou paragraphe libre)
   texte_arabe: string | null;
   source: string | null;
+  section_titre?: string | null;  // 14.B.3 — partie interne d'un cours composé (ex. « Partie 1 »)
+  section_ordre?: number | null;
 }
 
 /** Un chapitre regroupant des segments (pour l'accordéon Femmes) */
 export interface FemmesChapitre {
   chapitre: string;
+  categorie?: string | null;   // 14.B.2 — catégorie de classement (réglée en admin)
+  cat_ordre?: number | null;
   segments: FemmesSegment[];
 }
 
@@ -740,6 +744,10 @@ export interface RelatedItem {
 
 /** Sujet + compteur, pour « Parcourir par sujet » (Phase 12). */
 export interface SubjectCount { sujet: string; n: number; }
+
+/** Accueil (Phase 14) — dossier mis en avant + derniers ajouts. */
+export interface HomeVedette { id: number; slug: string; h1: string; meta_description: string | null; }
+export interface HomeRecentItem { type: string; titre: string; href: string; created_at: string; }
 
 // ————— Recherche globale (Phase 4.4) —————
 export interface SearchHit {

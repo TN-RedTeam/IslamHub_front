@@ -39,6 +39,8 @@ import type {
   SearchResults,
   DossierListItem,
   SubjectCount,
+  HomeVedette,
+  HomeRecentItem,
 } from '../types';
 
 // ============================================================
@@ -511,6 +513,20 @@ class DataService {
     const { data, error } = await supabase.rpc('daily_coran', { day });
     if (error) throw error;
     return (data ?? null) as Coran | null;
+  }
+  async getDailyParole(day: number): Promise<Parole | null> {
+    const { data, error } = await supabase.rpc('daily_parole', { day });
+    if (error) throw error;
+    return (data ?? null) as Parole | null;
+  }
+  // ---- Accueil (Phase 14) ----
+  async getHomeVedette(): Promise<HomeVedette | null> {
+    const { data, error } = await supabase.rpc('home_dossier_vedette');
+    if (error) throw error; return (data ?? null) as HomeVedette | null;
+  }
+  async getHomeRecent(limit = 3): Promise<HomeRecentItem[]> {
+    const { data, error } = await supabase.rpc('home_recent', { p_limit: limit });
+    if (error) throw error; return (data ?? []) as HomeRecentItem[];
   }
 
   // ================= Utilitaires =================

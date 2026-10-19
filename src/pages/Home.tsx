@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Book, BookOpen, Heart, GraduationCap, Moon, Sun, Sparkles, Loader2 } from 'lucide-react';
+import { Book, BookOpen, Heart, GraduationCap, Moon, Sun, Sparkles, Loader2, ArrowRight, Folder, Tag, Clock, Sunrise } from 'lucide-react';
 import { dataService } from '../services/DataService';
 import { useSeo } from '../hooks/useSeo';
 import { slugify } from '../utils/slug';
 import { GlassCard, SectionHeader, Tile } from '../components/ui/Nuit';
-import type { Hadith, Invocation, Coran } from '../types';
+import { HeroCarousel, type HeroSlide } from '../components/HeroCarousel';
+import { UI } from '../strings';
+import type { Hadith, Invocation, Coran, Parole, ThemeCard, HomeVedette, HomeRecentItem } from '../types';
 // Hero validé — Dôme vert au crépuscule (violet), images fidèles bundlées (offline).
 import domeW800 from '../assets/hero/dome-violet-800.webp';
 import domeW1280 from '../assets/hero/dome-violet-1280.webp';
@@ -28,22 +30,42 @@ export const Home: React.FC = () => {
   const [dailyHadith, setDailyHadith] = useState<Hadith | null>(null);
   const [dailyDouaa, setDailyDouaa] = useState<Invocation | null>(null);
   const [dailyVerse, setDailyVerse] = useState<Coran | null>(null);
+  const [dailyParole, setDailyParole] = useState<Parole | null>(null);
+  const [vedette, setVedette] = useState<HomeVedette | null>(null);
+  const [recent, setRecent] = useState<HomeRecentItem[]>([]);
+  const [themes, setThemes] = useState<ThemeCard[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    (async () => {
-      setIsLoading(true);
-      try {
-        const day = getDayOfYear();
-        const [s, h, d, v] = await Promise.all([
-          dataService.getStats(), dataService.getDailyHadith(day),
-          dataService.getDailyInvocation(day, 1), dataService.getDailyCoran(day),
-        ]);
-        setStats(s); setDailyHadith(h); setDailyDouaa(d); setDailyVerse(v);
-      } catch (e) { console.error('Error fetching home data:', e); }
-      finally { setIsLoading(false); }
-    })();
+    const day = getDayOfYear();
+    // Chargements INDÉPENDANTS : l'échec d'une source ne doit pas vider les autres.
+    const jobs = [
+      dataService.getStats().then(setStats),
+      dataService.getDailyHadith(day).then(setDailyHadith),
+      dataService.getDailyInvocation(day, 1).then(setDailyDouaa),
+      dataService.getDailyCoran(day).then(setDailyVerse),
+      dataService.getDailyParole(day).then(setDailyParole),
+      dataService.getHomeVedette().then(setVedette),
+      dataService.getHomeRecent(3).then(setRecent),
+      dataService.getThemes().then((t) => setThemes(t.slice(0, 8))),
+    ].map((pr) => pr.catch(() => {}));
+    Promise.allSettled(jobs).finally(() => setIsLoading(false));
   }, []);
+
+  const themeTotal = (t: ThemeCard) => (t.n_coran ?? 0) + (t.n_hadith ?? 0) + (t.n_parole ?? 0);
+  const figures = [
+    { n: stats.hadiths, label: 'hadiths' },
+    { n: stats.paroles, label: 'paroles' },
+    { n: stats.douaas + stats.dhikrs, label: 'invocations' },
+    { n: stats.coran, label: 'versets' },
+  ].filter((f) => f.n > 0);
+
+  // Carrousel du hero : verset / hadith / parole (rotation déterministe par date).
+  const heroSlides: HeroSlide[] = [
+    dailyVerse?.texte_arabe && { key: 'verset', eyebrow: UI.hero.verset, eyebrowAr: UI.hero.versetAr, arabic: dailyVerse.texte_arabe, translation: dailyVerse.texte_francais, source: dailyVerse.sourate, to: '/coran/sourates' },
+    dailyHadith?.texte_arabe && { key: 'hadith', eyebrow: UI.hero.hadith, arabic: dailyHadith.texte_arabe, translation: dailyHadith.texte_francais, source: dailyHadith.rapporteur ?? dailyHadith.narrateur ?? null, to: `/hadiths/${dailyHadith.id}/${slugify(dailyHadith.sujet)}` },
+    dailyParole?.texte_arabe && { key: 'parole', eyebrow: UI.hero.parole, arabic: dailyParole.texte_arabe, translation: dailyParole.texte_francais, source: dailyParole.savant, to: dailyParole.slug ? `/paroles/${dailyParole.slug}` : null },
+  ].filter(Boolean) as HeroSlide[];
 
   const explore = [
     { title: 'Coran', meta: 'Exégèse des sourates', icon: <BookOpen className="w-5 h-5" />, to: '/coran/sourates' },
@@ -76,16 +98,7 @@ export const Home: React.FC = () => {
         <div className="absolute inset-0" aria-hidden="true" style={{ background: 'linear-gradient(180deg, transparent 46%, rgba(4,13,14,.5) 86%, var(--hero-fade) 100%)' }} />
 
         <div className="absolute inset-x-0 bottom-0 flex flex-col items-center px-6 pb-[max(26px,9%)] text-center">
-          {/* Textes sur photo sombre (bas assombri) → teintes claires fixes */}
-          <p className="mb-2 text-[10px] font-extrabold uppercase tracking-[0.22em] text-[#7fe9d8] [text-shadow:0_1px_10px_rgba(0,0,0,.7)]" lang="ar">آية اليوم · Verset du jour</p>
-          {dailyVerse?.texte_arabe && (
-            <p className="font-arabic-display text-white [text-shadow:0_2px_16px_rgba(0,0,0,.7)] max-w-2xl" lang="ar" dir="rtl" style={{ fontSize: 'clamp(24px,3vw,32px)', lineHeight: 1.7 }}>{dailyVerse.texte_arabe}</p>
-          )}
-          {(dailyVerse?.texte_francais || dailyVerse?.sourate) && (
-            <p className="mt-2.5 max-w-xl text-[14px] font-medium text-[#f3f6f4] [text-shadow:0_1px_10px_rgba(0,0,0,.6)]">
-              {dailyVerse?.texte_francais && <>«&nbsp;{dailyVerse.texte_francais}&nbsp;»</>}{dailyVerse?.sourate ? ` — ${dailyVerse.sourate}` : ''}
-            </p>
-          )}
+          {heroSlides.length > 0 && <HeroCarousel slides={heroSlides} startIndex={getDayOfYear()} />}
         </div>
       </section>
 
@@ -129,6 +142,64 @@ export const Home: React.FC = () => {
           </div>
         )}
 
+        {/* DOSSIER PHARE — le dossier mis en vedette (réglable en admin) */}
+        {vedette && (
+          <Link to={`/dossiers/${vedette.slug}`} className="group block mt-8">
+            <GlassCard tint className="p-5 sm:p-6 flex items-start gap-4 transition-colors group-hover:border-accent/60">
+              <span className="hidden sm:grid place-items-center w-14 h-14 rounded-2xl bg-accent-deep text-[#eafffb] shrink-0"><Folder className="w-7 h-7" /></span>
+              <span className="min-w-0">
+                <span className="block text-[10.5px] font-bold uppercase tracking-[0.16em] text-accent mb-1">{UI.home.featured}</span>
+                <span className="block font-display font-bold text-ink text-xl leading-tight">{vedette.h1}</span>
+                {vedette.meta_description && <span className="block text-[13.5px] text-muted mt-1 line-clamp-2">{vedette.meta_description}</span>}
+                <span className="inline-flex items-center gap-1.5 mt-2.5 text-sm font-semibold text-green">{UI.home.openDossier} <ArrowRight className="w-4 h-4" /></span>
+              </span>
+            </GlassCard>
+          </Link>
+        )}
+
+        {/* PARCOURIR PAR THÈME */}
+        {themes.length > 0 && (
+          <>
+            <SectionHeader title={UI.home.byTheme} to="/themes" seeLabel={UI.home.allThemes} />
+            <div className="flex flex-wrap gap-2">
+              {themes.map((t) => (
+                <Link key={t.slug} to={`/themes/${t.slug}`} className="inline-flex items-center gap-1.5 rounded-full border border-green-line bg-glass-tint text-ink px-3.5 py-1.5 text-sm hover:border-green transition-colors">
+                  <Tag className="w-3.5 h-3.5 text-accent" /> {t.nom} <span className="text-muted text-xs tabular-nums">{themeTotal(t)}</span>
+                </Link>
+              ))}
+            </div>
+          </>
+        )}
+
+        {/* DERNIERS AJOUTS */}
+        {recent.length > 0 && (
+          <>
+            <SectionHeader title={UI.home.recent} />
+            <div className="grid gap-3 sm:grid-cols-3">
+              {recent.map((r, i) => (
+                <Link key={i} to={r.href} className="block">
+                  <GlassCard className="h-full p-4">
+                    <span className="inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-[0.1em] text-accent mb-1"><Clock className="w-3 h-3" /> {r.type}</span>
+                    <span className="block font-display font-semibold text-ink leading-snug line-clamp-2">{r.titre}</span>
+                  </GlassCard>
+                </Link>
+              ))}
+            </div>
+          </>
+        )}
+
+        {/* LES ÉVOCATIONS DE LA JOURNÉE — accès au parcours (frise 13.5) */}
+        <Link to="/invocations" className="group block mt-8">
+          <GlassCard tint className="p-5 flex items-center gap-4 transition-colors group-hover:border-accent/60">
+            <span className="grid place-items-center w-12 h-12 rounded-2xl bg-accent-deep text-[#eafffb] shrink-0"><Sunrise className="w-6 h-6" /></span>
+            <span className="min-w-0 flex-1">
+              <span className="block font-display font-bold text-ink">{UI.home.adhkar}</span>
+              <span className="block text-[13px] text-muted">{UI.home.adhkarSub}</span>
+            </span>
+            <span className="hidden sm:inline-flex items-center gap-1.5 text-sm font-semibold text-green shrink-0">{UI.home.startParcours} <ArrowRight className="w-4 h-4" /></span>
+          </GlassCard>
+        </Link>
+
         {/* EXPLORER — tuiles de rubriques */}
         <SectionHeader title="Explorer" />
         <div className="grid grid-cols-2 gap-3">
@@ -136,6 +207,21 @@ export const Home: React.FC = () => {
             <Tile key={t.title} to={t.to} icon={t.icon} title={t.title} meta={t.meta} />
           ))}
         </div>
+
+        {/* REPÈRES CHIFFRÉS */}
+        {figures.length > 0 && (
+          <>
+            <SectionHeader title={UI.home.figures} />
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+              {figures.map((f) => (
+                <GlassCard key={f.label} className="p-4 text-center">
+                  <span className="block font-display font-extrabold text-ink text-2xl tabular-nums">{f.n}</span>
+                  <span className="block text-[12px] text-muted">{f.label}</span>
+                </GlassCard>
+              ))}
+            </div>
+          </>
+        )}
       </main>
     </div>
   );

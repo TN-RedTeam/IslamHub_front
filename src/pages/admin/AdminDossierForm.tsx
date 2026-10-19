@@ -44,6 +44,9 @@ export const AdminDossierForm: React.FC = () => {
   const [videos, setVideos] = useState<number[]>([]);
   const [videoToAdd, setVideoToAdd] = useState('');
   const [allVideos, setAllVideos] = useState<MultimediaRow[]>([]);
+  // À la une sur l'accueil (flag vedette) — réglé via une RPC dédiée.
+  const [vedette, setVedette] = useState(false);
+  const [wasVedette, setWasVedette] = useState(false);
 
   useEffect(() => {
     Promise.all([adminService.listDossierRefs(), adminService.listDossiers(), adminService.listMultimedia()])
@@ -61,6 +64,7 @@ export const AdminDossierForm: React.FC = () => {
       setImages(d.images.map((im) => ({ ...emptyImg(), image_url: im.image_url ?? '', alt: im.alt ?? '', legende: im.legende ?? '', source_livre: im.source_livre ?? '' })));
       setLies(d.lies ?? []);
       setVideos(d.video_ids ?? []);
+      setVedette(!!d.vedette); setWasVedette(!!d.vedette);
     }).catch(() => setError('Dossier introuvable.')).finally(() => setLoading(false));
   }, [editId]);
 
@@ -85,6 +89,9 @@ export const AdminDossierForm: React.FC = () => {
     try {
       const newId = await adminService.saveDossier(buildPayload());
       await adminService.setDossierVideos(newId, videos);
+      if (vedette) await adminService.setHomeVedette(newId);
+      else if (wasVedette) await adminService.setHomeVedette(0);
+      setWasVedette(vedette);
       setOk(true); navigate(`/admin/dossiers/${newId}`, { replace: true }); setTimeout(() => setOk(false), 2500);
     } catch (e) {
       const msg = (e as Error).message || 'Erreur.';
@@ -243,6 +250,10 @@ export const AdminDossierForm: React.FC = () => {
         <label className="flex items-center gap-2.5 cursor-pointer">
           <input type="checkbox" checked={f.published} onChange={(e) => setF((p) => ({ ...p, published: e.target.checked }))} className="w-4 h-4 accent-green" />
           <span className="text-[15px] text-ink font-medium">Publié <span className="text-muted font-normal">— visible sur le site public</span></span>
+        </label>
+        <label className="flex items-center gap-2.5 cursor-pointer mt-3">
+          <input type="checkbox" checked={vedette} onChange={(e) => setVedette(e.target.checked)} className="w-4 h-4 accent-green" />
+          <span className="text-[15px] text-ink font-medium">À la une sur l'accueil <span className="text-muted font-normal">— un seul dossier à la fois</span></span>
         </label>
       </section>
 
