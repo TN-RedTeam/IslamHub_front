@@ -512,6 +512,11 @@ class DataService {
     if (error) throw error;
     return (data ?? null) as Coran | null;
   }
+  async getDailyParole(day: number): Promise<Parole | null> {
+    const { data, error } = await supabase.rpc('daily_parole', { day });
+    if (error) throw error;
+    return (data ?? null) as Parole | null;
+  }
 
   // ================= Utilitaires =================
   async testApiConnection(): Promise<boolean> {

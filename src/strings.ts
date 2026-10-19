@@ -33,6 +33,15 @@ export const UI = {
     subtitle: 'Du réveil au coucher',
     seeHadith: 'Voir le hadith',
   },
+  hero: {
+    verset: 'Verset du jour',
+    versetAr: 'آية اليوم',
+    hadith: 'Hadith du jour',
+    parole: 'Parole de savant',
+    prev: 'Précédent',
+    next: 'Suivant',
+    goTo: 'Aller au contenu',
+  },
   browse: {
     bySubject: 'Parcourir par sujet',
     searchSubject: 'Filtrer les sujets…',
