@@ -307,6 +307,11 @@ class AdminService {
     const { error } = await supabase.rpc('admin_set_dossier_videos', { p_dossier_id: dossierId, p_video_ids: videoIds });
     if (error) throw error;
   }
+  /** Met CE dossier en vedette sur l'accueil (retire la vedette des autres). id=0 pour tout retirer. */
+  async setHomeVedette(dossierId: number): Promise<void> {
+    const { error } = await supabase.rpc('admin_set_home_vedette', { p_id: dossierId });
+    if (error) throw error;
+  }
   async listDossierRefs(): Promise<DossierRefs> {
     const { data, error } = await supabase.rpc('admin_list_dossier_refs');
     if (error) throw error;
@@ -626,7 +631,7 @@ export interface DossierFormData {
 }
 export interface DossierEditShape {
   id: number; slug: string; h1: string; meta_title: string | null; meta_description: string | null;
-  croyance_texte: string | null; objection_texte: string | null; reponse_texte: string | null; published: boolean;
+  croyance_texte: string | null; objection_texte: string | null; reponse_texte: string | null; published: boolean; vedette?: boolean;
   preuves: DossierPreuveInput[];
   images: { image_url: string; alt: string | null; legende: string | null; source_livre: string | null; ordre: number | null }[];
   video_ids: number[];

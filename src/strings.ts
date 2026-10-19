@@ -42,6 +42,17 @@ export const UI = {
     next: 'Suivant',
     goTo: 'Aller au contenu',
   },
+  home: {
+    featured: 'Dossier à la une',
+    openDossier: 'Ouvrir le dossier',
+    byTheme: 'Parcourir par thème',
+    allThemes: 'Tous les thèmes',
+    recent: 'Derniers ajouts',
+    adhkar: 'Les évocations de la journée',
+    adhkarSub: 'Un parcours d’adhkâr, du réveil au coucher.',
+    startParcours: 'Commencer le parcours',
+    figures: 'Repères',
+  },
   browse: {
     bySubject: 'Parcourir par sujet',
     searchSubject: 'Filtrer les sujets…',

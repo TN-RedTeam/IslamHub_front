@@ -741,6 +741,10 @@ export interface RelatedItem {
 /** Sujet + compteur, pour « Parcourir par sujet » (Phase 12). */
 export interface SubjectCount { sujet: string; n: number; }
 
+/** Accueil (Phase 14) — dossier mis en avant + derniers ajouts. */
+export interface HomeVedette { id: number; slug: string; h1: string; meta_description: string | null; }
+export interface HomeRecentItem { type: string; titre: string; href: string; created_at: string; }
+
 // ————— Recherche globale (Phase 4.4) —————
 export interface SearchHit {
   id: number; slug?: string | null; sujet: string | null; extrait?: string | null;
