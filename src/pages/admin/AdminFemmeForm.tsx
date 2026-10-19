@@ -6,7 +6,8 @@ import { adminService, type FemmeFormData } from '../../services/AdminService';
 
 const label = 'block text-[13px] font-semibold text-ink mb-1.5';
 const field = 'w-full rounded-lg border border-line bg-surface px-3 py-2.5 text-[15px] text-ink focus:outline-none focus:ring-2 focus:ring-green';
-const blank = { chapitre: '', matn: '', commentaire: '', texte_arabe: '', source: '', ordre: '0' };
+const blank = { chapitre: '', categorie: '', cat_ordre: '', matn: '', commentaire: '', texte_arabe: '', source: '', ordre: '0' };
+const CATEGORIES = ['Purification & règles féminines', 'Prière & jeûne — spécificités', 'Mariage & vie de couple', 'Tenue & comportement'];
 
 export const AdminFemmeForm: React.FC = () => {
   const { id } = useParams();
@@ -29,7 +30,7 @@ export const AdminFemmeForm: React.FC = () => {
     if (!editId) return;
     adminService.getFemmeForEdit(editId).then((d) => {
       if (!d) { setError('Segment introuvable.'); return; }
-      setF({ chapitre: d.chapitre ?? '', matn: d.matn ?? '', commentaire: d.commentaire ?? '', texte_arabe: d.texte_arabe ?? '', source: d.source ?? '', ordre: String(d.ordre ?? 0) });
+      setF({ chapitre: d.chapitre ?? '', categorie: d.categorie ?? '', cat_ordre: d.cat_ordre != null ? String(d.cat_ordre) : '', matn: d.matn ?? '', commentaire: d.commentaire ?? '', texte_arabe: d.texte_arabe ?? '', source: d.source ?? '', ordre: String(d.ordre ?? 0) });
     }).catch(() => setError('Segment introuvable.')).finally(() => setLoading(false));
   }, [editId]);
 
@@ -62,6 +63,12 @@ export const AdminFemmeForm: React.FC = () => {
             <input className={field} list="femmes-chapitres" value={f.chapitre} onChange={set('chapitre')} placeholder="Ex. Le Ghousl" />
             <datalist id="femmes-chapitres">{chapitres.map((c) => <option key={c} value={c} />)}</datalist></div>
           <div><label className={label}>Ordre</label><input className={field} type="number" value={f.ordre} onChange={set('ordre')} /></div>
+        </div>
+        <div className="grid sm:grid-cols-[1fr_120px] gap-3.5 mt-3.5">
+          <div><label className={label}>Catégorie <span className="text-muted font-normal">(regroupe le cours sur la page — appliquée à tout le chapitre)</span></label>
+            <input className={field} list="femmes-categories" value={f.categorie} onChange={set('categorie')} placeholder="Ex. Purification & règles féminines" />
+            <datalist id="femmes-categories">{CATEGORIES.map((c) => <option key={c} value={c} />)}</datalist></div>
+          <div><label className={label}>Ordre catég.</label><input className={field} type="number" value={f.cat_ordre} onChange={set('cat_ordre')} placeholder="1" /></div>
         </div>
       </section>
 

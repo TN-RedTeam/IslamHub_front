@@ -398,11 +398,15 @@ export interface FemmesSegment {
   commentaire: string | null;  // explication (ou paragraphe libre)
   texte_arabe: string | null;
   source: string | null;
+  section_titre?: string | null;  // 14.B.3 — partie interne d'un cours composé (ex. « Partie 1 »)
+  section_ordre?: number | null;
 }
 
 /** Un chapitre regroupant des segments (pour l'accordéon Femmes) */
 export interface FemmesChapitre {
   chapitre: string;
+  categorie?: string | null;   // 14.B.2 — catégorie de classement (réglée en admin)
+  cat_ordre?: number | null;
   segments: FemmesSegment[];
 }
 

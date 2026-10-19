@@ -732,9 +732,11 @@ export interface FiqhRow { id: number; ecole: string; chapitre: string; sujet: s
 export interface FemmeFormData {
   id?: number | null;
   chapitre: string; matn: string; commentaire: string; texte_arabe: string; source: string; ordre: string;
+  categorie?: string; cat_ordre?: string;
 }
 export interface FemmeEditShape {
   id: number; chapitre: string; matn: string | null; commentaire: string | null; texte_arabe: string | null; source: string | null; ordre: number;
+  categorie?: string | null; cat_ordre?: number | null;
 }
 export interface FemmeRow { id: number; chapitre: string; matn: string | null; ordre: number; }
 

@@ -30,6 +30,8 @@
     --ink: var(--tx); --muted: var(--mut); --line: var(--glass-b);
     --green: var(--acc); --green-deep: var(--acc2); --green-soft: var(--glass2); --green-line: var(--glass-b);
     --gold: var(--acc2); --gold-soft: var(--glass2);
+    /* Accent chaud (14.B.4) — réservé à la rubrique « La femme musulmane ». Rosé doux, contraste AA. */
+    --warm: #b26b67; --warm-soft: #f3e3e1;
 }
 .dark {
     /* Nuit Teal — SOMBRE (signature) */
@@ -47,6 +49,8 @@
     --ink: var(--tx); --muted: var(--mut); --line: var(--glass-b);
     --green: var(--acc); --green-deep: var(--acc2); --green-soft: var(--glass2); --green-line: var(--glass-b);
     --gold: var(--acc2); --gold-soft: var(--glass2);
+    /* Accent chaud (14.B.4) — version sombre, rosé plus clair pour le contraste AA. */
+    --warm: #e0a6a0; --warm-soft: rgba(224,166,160,.16);
 }
 @layer base {
     /* Fond de page : dégradé vertical --bg1 → --bg2 + halo radial en haut.

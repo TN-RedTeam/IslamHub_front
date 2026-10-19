@@ -42,6 +42,11 @@ export const UI = {
     next: 'Suivant',
     goTo: 'Aller au contenu',
   },
+  femme: {
+    eyebrow: 'Pour toi, ma sœur',
+    title: 'La femme musulmane',
+    intro: 'Les règles et prescriptions qui te concernent, expliquées avec clarté et pudeur, à partir du Coran et de la Sunna et selon la compréhension des savants.',
+  },
   home: {
     featured: 'Dossier à la une',
     openDossier: 'Ouvrir le dossier',
