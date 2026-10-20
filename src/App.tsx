@@ -95,6 +95,7 @@ const AdminDossierForm = lazy(() => import('./pages/admin/AdminDossierForm').the
 const AdminDossiersList = lazy(() => import('./pages/admin/AdminDossiersList').then((m) => ({ default: m.AdminDossiersList })));
 const AdminQuestionForm = lazy(() => import('./pages/admin/AdminQuestionForm').then((m) => ({ default: m.AdminQuestionForm })));
 const AdminQuestionsList = lazy(() => import('./pages/admin/AdminQuestionsList').then((m) => ({ default: m.AdminQuestionsList })));
+const AdminTaxonomyI18n = lazy(() => import('./pages/admin/AdminTaxonomyI18n').then((m) => ({ default: m.AdminTaxonomyI18n })));
 const AdminExposeForm = lazy(() => import('./pages/admin/AdminExposeForm').then((m) => ({ default: m.AdminExposeForm })));
 const AdminExposesList = lazy(() => import('./pages/admin/AdminExposesList').then((m) => ({ default: m.AdminExposesList })));
 const AdminFiqhForm = lazy(() => import('./pages/admin/AdminFiqhForm').then((m) => ({ default: m.AdminFiqhForm })));
@@ -280,6 +281,7 @@ function App() {
                   <Route path="recits" element={<AdminRecitsList />} />
                   <Route path="tags" element={<AdminTagsList />} />
                   <Route path="themes" element={<AdminThemesList />} />
+                  <Route path="traductions" element={<AdminTaxonomyI18n />} />
                   <Route path="sujets" element={<AdminSujetsList />} />
                   <Route path="recits/nouveau" element={<AdminRecitForm />} />
                   <Route path="recits/:id" element={<AdminRecitForm />} />

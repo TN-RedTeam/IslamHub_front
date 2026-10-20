@@ -20,6 +20,7 @@ const ENTITIES: { to: string; label: string; soon?: boolean }[] = [
   { to: '/admin/recits', label: 'Récits' },
   { to: '/admin/tags', label: 'Tags & mots-clés' },
   { to: '/admin/themes', label: 'Thèmes & mapping' },
+  { to: '/admin/traductions', label: 'Traductions (thèmes/tags)' },
   { to: '/admin/sujets', label: 'Sujets' },
 ];
 

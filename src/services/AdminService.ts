@@ -363,6 +363,18 @@ class AdminService {
     if (error) throw error; return (data ?? []) as { slug: string; nom: string }[];
   }
 
+  // ---- Traduction de la taxonomie (thèmes & tags) ----
+  async listTaxonomyI18n(): Promise<TaxonomyI18n> {
+    const { data, error } = await supabase.rpc('admin_taxonomy_i18n');
+    if (error) throw error;
+    const d = (data ?? {}) as Partial<TaxonomyI18n>;
+    return { themes: d.themes ?? [], tags: d.tags ?? [] };
+  }
+  async setTaxonomyLabel(kind: 'theme' | 'tag', key: string, locale: 'en' | 'ar', nom: string): Promise<void> {
+    const { error } = await supabase.rpc('admin_set_taxonomy_label', { p_kind: kind, p_key: key, p_locale: locale, p_nom: nom });
+    if (error) throw error;
+  }
+
   // ---- Exposés ----
   async getExposeForEdit(slug: string): Promise<ExposeEditShape | null> {
     const { data, error } = await supabase.rpc('admin_get_expose', { p_slug: slug });
@@ -695,6 +707,11 @@ export interface QuestionFormData {
   variantes: string[]; publiee: boolean; ordre: number;
   theme_slugs: string[]; dossier_ids: number[];
 }
+
+// ---- Traduction de la taxonomie ----
+export interface TaxonomyThemeI18n { slug: string; fr: string; famille: string; en: string | null; ar: string | null; }
+export interface TaxonomyTagI18n { id: number; fr: string; en: string | null; ar: string | null; }
+export interface TaxonomyI18n { themes: TaxonomyThemeI18n[]; tags: TaxonomyTagI18n[]; }
 export interface MultimediaRow { id: number; titre: string; savant: string | null; categorie: string | null; dossier_id: number | null; }
 
 // ---- Exposés ----
