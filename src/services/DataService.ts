@@ -349,14 +349,14 @@ class DataService {
 
   /** Recherche globale unifiée (Phase 4.4). */
   async searchAll(q: string, limit = 8): Promise<SearchResults> {
-    const { data, error } = await supabase.rpc('search_all', { q, p_limit: limit });
+    const { data, error } = await supabase.rpc('search_all', { q, p_limit: limit, p_locale: getContentLocale() });
     if (error) throw error;
     const d = (data ?? {}) as Partial<SearchResults>;
     return { hadiths: d.hadiths ?? [], paroles: d.paroles ?? [], invocations: d.invocations ?? [], versets: d.versets ?? [], fiqh: d.fiqh ?? [], themes: d.themes ?? [] };
   }
   /** Recherche globale approximative (similarité) — repli quand l'exacte ne donne rien. */
   async searchAllFuzzy(q: string, limit = 8): Promise<SearchResults> {
-    const { data, error } = await supabase.rpc('search_all_fuzzy', { q, p_limit: limit });
+    const { data, error } = await supabase.rpc('search_all_fuzzy', { q, p_limit: limit, p_locale: getContentLocale() });
     if (error) throw error;
     const d = (data ?? {}) as Partial<SearchResults>;
     return { hadiths: d.hadiths ?? [], paroles: d.paroles ?? [], invocations: d.invocations ?? [], versets: d.versets ?? [], fiqh: d.fiqh ?? [], themes: d.themes ?? [] };
@@ -504,7 +504,7 @@ class DataService {
     return (data ?? {}) as SiteStats;
   }
   async getDailyHadith(day: number): Promise<Hadith | null> {
-    const { data, error } = await supabase.rpc('daily_hadith', { day });
+    const { data, error } = await supabase.rpc('daily_hadith', { day, p_locale: getContentLocale() });
     if (error) throw error;
     return (data ?? null) as Hadith | null;
   }
@@ -519,7 +519,7 @@ class DataService {
     return (data ?? null) as Coran | null;
   }
   async getDailyParole(day: number): Promise<Parole | null> {
-    const { data, error } = await supabase.rpc('daily_parole', { day });
+    const { data, error } = await supabase.rpc('daily_parole', { day, p_locale: getContentLocale() });
     if (error) throw error;
     return (data ?? null) as Parole | null;
   }
