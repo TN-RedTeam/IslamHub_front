@@ -1,0 +1,55 @@
+import React, { useEffect, useMemo, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { Loader2, Plus, Search } from 'lucide-react';
+import { adminService, type QuestionAdminRow } from '../../services/AdminService';
+import { CountBadge, IdTag } from '../../components/admin/AdminListUI';
+
+export const AdminQuestionsList: React.FC = () => {
+  const [items, setItems] = useState<QuestionAdminRow[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [q, setQ] = useState('');
+
+  useEffect(() => { adminService.listQuestions().then(setItems).catch(() => setItems([])).finally(() => setLoading(false)); }, []);
+
+  const filtered = useMemo(() => {
+    const s = q.trim().toLowerCase();
+    if (!s) return items;
+    return items.filter((d) => String(d.id) === s.replace(/^#/, '') || `${d.question} ${d.slug}`.toLowerCase().includes(s));
+  }, [items, q]);
+
+  return (
+    <div className="max-w-4xl px-6 py-8">
+      <div className="flex items-center gap-3 flex-wrap mb-5">
+        <h1 className="font-display font-semibold text-ink text-3xl">Questions fréquentes</h1>
+        <CountBadge n={loading ? null : items.length} />
+        <Link to="/admin/questions/nouveau" className="ml-auto inline-flex items-center gap-1.5 rounded-lg bg-green text-white font-semibold px-4 py-2 hover:bg-green-deep transition-colors"><Plus className="w-4 h-4" /> Nouvelle</Link>
+      </div>
+
+      <div className="relative mb-4">
+        <Search className="w-4 h-4 text-muted absolute left-3 top-1/2 -translate-y-1/2" />
+        <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Rechercher (question, slug…)" className="w-full rounded-lg border border-line bg-surface pl-9 pr-3 py-2.5 text-[15px] text-ink focus:outline-none focus:ring-2 focus:ring-green" />
+      </div>
+
+      {loading ? <div className="flex justify-center py-16"><Loader2 className="w-8 h-8 text-green animate-spin" /></div>
+        : filtered.length === 0 ? <p className="text-muted italic py-8">Aucune question.</p>
+        : (
+          <ul className="divide-y divide-line rounded-card border border-line bg-surface overflow-hidden">
+            {filtered.map((d) => (
+              <li key={d.id}>
+                <Link to={`/admin/questions/${d.id}`} className="flex items-center gap-3 px-4 py-3 hover:bg-glass-tint transition-colors">
+                  <IdTag id={d.id} />
+                  <span className="text-ink font-medium min-w-0 truncate">{d.question}</span>
+                  {d.locale !== 'fr' && <span className="text-[10.5px] px-2 py-0.5 rounded-full bg-glass-tint text-green border border-green-line shrink-0 uppercase">{d.locale}</span>}
+                  {d.n_blocs > 0 && <span className="text-[10.5px] px-2 py-0.5 rounded-full bg-ground text-muted border border-line shrink-0">{d.n_blocs} bloc{d.n_blocs > 1 ? 's' : ''}</span>}
+                  {!d.publiee && <span className="text-[10.5px] px-2 py-0.5 rounded-full bg-ground text-muted border border-line shrink-0">brouillon</span>}
+                  <span className="ml-auto text-muted text-sm shrink-0">Modifier →</span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        )}
+    </div>
+  );
+};
+
+export default AdminQuestionsList;

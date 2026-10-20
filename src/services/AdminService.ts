@@ -340,6 +340,29 @@ class AdminService {
     return { hadiths: d.hadiths ?? [], paroles: d.paroles ?? [], versets: d.versets ?? [] };
   }
 
+  // ---- Questions fréquentes ----
+  async listQuestions(): Promise<QuestionAdminRow[]> {
+    const { data, error } = await supabase.rpc('admin_list_questions');
+    if (error) throw error; return (data ?? []) as QuestionAdminRow[];
+  }
+  async getQuestionForEdit(id: number): Promise<QuestionEditShape | null> {
+    const { data, error } = await supabase.rpc('admin_get_question', { p_id: id });
+    if (error) throw error; return (data ?? null) as QuestionEditShape | null;
+  }
+  async saveQuestion(payload: QuestionFormData): Promise<number> {
+    const { data, error } = await supabase.rpc('admin_save_question', { p: payload });
+    if (error) throw error; return data as number;
+  }
+  async deleteQuestion(id: number): Promise<void> {
+    const { error } = await supabase.rpc('admin_delete_question', { p_id: id });
+    if (error) throw error;
+  }
+  /** Tous les thèmes (slug + libellé) pour le sélecteur multi-thèmes des questions. */
+  async listAllThemes(): Promise<{ slug: string; nom: string }[]> {
+    const { data, error } = await supabase.from('themes').select('slug,nom').order('ordre');
+    if (error) throw error; return (data ?? []) as { slug: string; nom: string }[];
+  }
+
   // ---- Exposés ----
   async getExposeForEdit(slug: string): Promise<ExposeEditShape | null> {
     const { data, error } = await supabase.rpc('admin_get_expose', { p_slug: slug });
@@ -659,6 +682,19 @@ export interface DossierEditShape {
   lies: number[];
 }
 export interface DossierListRow { id: number; slug: string; h1: string; published: boolean; }
+
+// ---- Questions fréquentes ----
+export interface QuestionAdminRow { id: number; question: string; slug: string; publiee: boolean; ordre: number; locale: string; n_blocs: number; }
+export interface QuestionEditShape {
+  id: number; question: string; slug: string; reponse_courte: string | null;
+  variantes: string[]; publiee: boolean; ordre: number; locale: string; translation_group: string;
+  theme_slugs: string[]; dossier_ids: number[];
+}
+export interface QuestionFormData {
+  id?: number | null; question: string; slug: string; reponse_courte: string | null;
+  variantes: string[]; publiee: boolean; ordre: number;
+  theme_slugs: string[]; dossier_ids: number[];
+}
 export interface MultimediaRow { id: number; titre: string; savant: string | null; categorie: string | null; dossier_id: number | null; }
 
 // ---- Exposés ----

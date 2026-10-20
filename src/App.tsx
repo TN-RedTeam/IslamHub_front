@@ -93,6 +93,8 @@ const AdminSavantForm = lazy(() => import('./pages/admin/AdminSavantForm').then(
 const AdminSavantsList = lazy(() => import('./pages/admin/AdminSavantsList').then((m) => ({ default: m.AdminSavantsList })));
 const AdminDossierForm = lazy(() => import('./pages/admin/AdminDossierForm').then((m) => ({ default: m.AdminDossierForm })));
 const AdminDossiersList = lazy(() => import('./pages/admin/AdminDossiersList').then((m) => ({ default: m.AdminDossiersList })));
+const AdminQuestionForm = lazy(() => import('./pages/admin/AdminQuestionForm').then((m) => ({ default: m.AdminQuestionForm })));
+const AdminQuestionsList = lazy(() => import('./pages/admin/AdminQuestionsList').then((m) => ({ default: m.AdminQuestionsList })));
 const AdminExposeForm = lazy(() => import('./pages/admin/AdminExposeForm').then((m) => ({ default: m.AdminExposeForm })));
 const AdminExposesList = lazy(() => import('./pages/admin/AdminExposesList').then((m) => ({ default: m.AdminExposesList })));
 const AdminFiqhForm = lazy(() => import('./pages/admin/AdminFiqhForm').then((m) => ({ default: m.AdminFiqhForm })));
@@ -300,6 +302,9 @@ function App() {
                   <Route path="dossiers" element={<AdminDossiersList />} />
                   <Route path="dossiers/nouveau" element={<AdminDossierForm />} />
                   <Route path="dossiers/:id" element={<AdminDossierForm />} />
+                  <Route path="questions" element={<AdminQuestionsList />} />
+                  <Route path="questions/nouveau" element={<AdminQuestionForm />} />
+                  <Route path="questions/:id" element={<AdminQuestionForm />} />
                   <Route path="exposes" element={<AdminExposesList />} />
                   <Route path="exposes/nouveau" element={<AdminExposeForm />} />
                   <Route path="exposes/:slug" element={<AdminExposeForm />} />

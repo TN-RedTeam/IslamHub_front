@@ -13,6 +13,7 @@ const ENTITIES: { to: string; label: string; soon?: boolean }[] = [
   { to: '/admin/invocations', label: 'Invocations & Évocations' },
   { to: '/admin/equivoques', label: 'Versets/hadiths équivoques' },
   { to: '/admin/dossiers', label: 'Dossiers thématiques' },
+  { to: '/admin/questions', label: 'Questions fréquentes' },
   { to: '/admin/exposes', label: 'Exposés' },
   { to: '/admin/fiqh', label: 'Fiqh' },
   { to: '/admin/femmes', label: 'La femme musulmane' },
