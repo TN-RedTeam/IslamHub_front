@@ -66,11 +66,13 @@ jobs:
       - name: Installer Chromium (prérendu SSG)
         run: npx playwright install --with-deps chromium
 
-      - name: Prérendu SSG par langue (HTML servi par langue aux robots)
+      - name: Prérendu SSG par langue (coquille + fiches publiées)
         run: npm run prerender
         env:
           VITE_BASE: /IslamHub_front/
           SITE_ORIGIN: https://Sou55i.github.io/IslamHub_front
+          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
 
       # --- Démo « ancienne charte » : refonte/architecture-v2 → /v2/ ---
       - name: Récupérer la branche v2
