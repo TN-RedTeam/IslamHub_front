@@ -5,9 +5,11 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        // Phase 8 « Nuit Teal » : UI + titres = Manrope (self-host). Arabe inchangé.
-        sans: ['Manrope', 'system-ui', 'sans-serif'],
-        display: ['Manrope', 'system-ui', 'sans-serif'],
+        // Phase 8 « Nuit Teal » : UI + titres = Manrope (self-host).
+        // Phase 15.4 : repli Noto Sans Arabic pour les glyphes arabes de l'UI
+        // (le latin reste Manrope). Textes sacrés : familles arabic-* ci-dessous.
+        sans: ['Manrope', '"Noto Sans Arabic"', 'system-ui', 'sans-serif'],
+        display: ['Manrope', '"Noto Sans Arabic"', 'system-ui', 'sans-serif'],
         // Système de polices arabes par usage
         arabic: ['"Scheherazade New"', 'serif'],          // lecture : hadiths, versets, invocations, paroles
         'arabic-display': ['Amiri', 'serif'],             // grande calligraphie (Bismillah, hero, 99 Noms)

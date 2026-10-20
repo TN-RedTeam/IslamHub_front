@@ -57,7 +57,9 @@
        Fixé pour couvrir le défilement ; le contenu défile par-dessus. */
     body {
         color: var(--tx);
-        font-family: 'Manrope', system-ui, -apple-system, sans-serif;
+        /* Manrope couvre le latin ; les glyphes arabes de l'UI retombent sur
+           Noto Sans Arabic (Phase 15.4). Textes sacrés : Amiri/Scheherazade. */
+        font-family: 'Manrope', 'Noto Sans Arabic', system-ui, -apple-system, sans-serif;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
         background: var(--shell);
@@ -71,9 +73,13 @@ html {
     scroll-behavior: smooth;
 }
 
-/* Texte arabe (marqué lang="ar" OU via la classe .font-arabic) : Scheherazade New.
-   Un seul point de bascule : remplacer la pile ici suffit à revenir à Amiri. */
-[lang="ar"],
+/* Texte arabe SACRÉ (marqué lang="ar" sur un élément inline, OU via la classe
+   .font-arabic) : Scheherazade New. Un seul point de bascule : remplacer la
+   pile ici suffit à revenir à Amiri.
+   `:not(html)` (Phase 15.4) : exclut la RACINE pour que `<html lang="ar">`
+   (interface en arabe) n'impose pas la police/alignement sacrés à toute l'UI ;
+   celle-ci utilise Noto Sans Arabic (voir body + tailwind). */
+[lang="ar"]:not(html),
 .font-arabic {
     font-family: 'Scheherazade New', 'Amiri', 'Noto Naskh Arabic', serif !important;
     line-height: 2;
