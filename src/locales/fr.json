@@ -6,7 +6,21 @@
     "croyance": "Croyance",
     "savants": "Savants",
     "biographies": "Biographies",
-    "search": "Rechercher"
+    "search": "Rechercher",
+    "hadithsParoles": "Hadiths & paroles",
+    "invocations": "Invocations & Évocations",
+    "themes": "Thèmes",
+    "dossiers": "Dossiers thématiques",
+    "questions": "Questions fréquentes",
+    "ecoles": "Écoles",
+    "recits": "Récits",
+    "femme": "La femme musulmane",
+    "resources": "Ressources",
+    "searchSite": "Rechercher sur le site",
+    "toggleTheme": "Basculer le thème",
+    "openMenu": "Ouvrir le menu",
+    "closeMenu": "Fermer le menu",
+    "mainNav": "Navigation principale"
   },
   "article": {
     "toc": "Sommaire",

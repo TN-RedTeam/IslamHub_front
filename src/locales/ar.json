@@ -1,2 +1,25 @@
 {
+  "brand": { "name": "Aqida" },
+  "nav": {
+    "home": "الرئيسية",
+    "coran": "القرآن",
+    "croyance": "العقيدة",
+    "savants": "العلماء",
+    "biographies": "التراجم",
+    "search": "بحث",
+    "hadithsParoles": "الأحاديث والأقوال",
+    "invocations": "الأدعية والأذكار",
+    "themes": "المواضيع",
+    "dossiers": "الملفات الموضوعية",
+    "questions": "الأسئلة الشائعة",
+    "ecoles": "المذاهب الفقهية",
+    "recits": "القصص",
+    "femme": "المرأة المسلمة",
+    "resources": "الموارد",
+    "searchSite": "ابحث في الموقع",
+    "toggleTheme": "تبديل السمة",
+    "openMenu": "فتح القائمة",
+    "closeMenu": "إغلاق القائمة",
+    "mainNav": "التنقل الرئيسي"
+  }
 }
