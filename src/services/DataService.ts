@@ -21,6 +21,8 @@ import type {
   ParoleDetail,
   RecitCard,
   RecitDetail,
+  QuestionCard,
+  QuestionDetail,
   Multimedia,
   MultimediaCategory,
   FiqhChapitre,
@@ -332,6 +334,20 @@ class DataService {
     const { data, error } = await supabase.rpc('get_recit', { p_slug: slug });
     if (error) throw error;
     return (data ?? null) as RecitDetail | null;
+  }
+
+  // ================= Questions fréquentes =================
+  /** Liste des questions publiées (locale-aware), avec leurs thèmes pour le regroupement. */
+  async getQuestions(): Promise<QuestionCard[]> {
+    const { data, error } = await supabase.rpc('questions_all', { p_locale: getContentLocale() });
+    if (error) throw error;
+    return (data ?? []) as QuestionCard[];
+  }
+  /** Fiche réponse résolue par slug localisé (null si non publiée/introuvable). */
+  async getQuestion(slug: string): Promise<QuestionDetail | null> {
+    const { data, error } = await supabase.rpc('get_question', { p_slug: slug, p_locale: getContentLocale() });
+    if (error) throw error;
+    return (data ?? null) as QuestionDetail | null;
   }
 
   // ================= Contenu composable (blocs, Phase 3) =================

@@ -14,7 +14,7 @@ import { writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, resolve } from 'node:path';
 
-const SITE = (process.env.SITE_ORIGIN || 'https://Sou55i.github.io/IslamHub_front').replace(/\/+$/, '');
+const SITE = (process.env.SITE_ORIGIN || 'https://tn-redteam.github.io/IslamHub_front').replace(/\/+$/, '');
 const LOCALES = ['fr', 'en', 'ar'];
 const URL_ENV = process.env.VITE_SUPABASE_URL || process.env.SUPABASE_URL;
 const KEY_ENV = process.env.VITE_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY;
@@ -27,13 +27,14 @@ const STATIC_PATHS = [
   '/', '/hadiths', '/coran/sourates', '/croyance', '/croyance/attributs',
   '/croyance/piliers-de-la-foi', '/croyance/noms-d-allah',
   '/croyance/versets-hadiths-equivoques', '/biographies', '/invocations',
-  '/paroles', '/themes', '/dossiers', '/recits', '/femmes', '/ecoles',
+  '/paroles', '/themes', '/dossiers', '/questions', '/recits', '/femmes', '/ecoles',
   '/recherche', '/multimedia',
 ];
 
 // Tables de contenu internées → URL par ligne (slug/id localisés).
 const CONTENT = [
   { table: 'dossiers', cols: 'slug, locale, translation_group', path: (r) => `/dossiers/${r.slug}` },
+  { table: 'questions', cols: 'slug, locale, translation_group', path: (r) => `/questions/${r.slug}` },
   { table: 'recits', cols: 'slug, locale, translation_group', path: (r) => `/recits/${r.slug}` },
   { table: 'paroles', cols: 'slug, locale, translation_group', path: (r) => `/paroles/${r.slug}` },
   { table: 'hadiths', cols: 'id, slug, locale, translation_group', path: (r) => `/hadiths/${r.id}/${r.slug ?? ''}` },
