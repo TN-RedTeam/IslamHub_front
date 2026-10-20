@@ -1,4 +1,5 @@
 import { supabase } from './supabase';
+import { getContentLocale } from '../lib/contentLocale';
 import { MOMENTS, type MomentDef } from '../data/moments';
 import type {
   Hadith,
@@ -306,12 +307,12 @@ class DataService {
 
   // ================= Thèmes transverses (Phase 15) =================
   async getThemes(): Promise<ThemeCard[]> {
-    const { data, error } = await supabase.rpc('themes_all');
+    const { data, error } = await supabase.rpc('themes_all', { p_locale: getContentLocale() });
     if (error) throw error;
     return (data ?? []) as ThemeCard[];
   }
   async getTheme(slug: string): Promise<ThemeDetail | null> {
-    const { data, error } = await supabase.rpc('get_theme', { p_slug: slug });
+    const { data, error } = await supabase.rpc('get_theme', { p_slug: slug, p_locale: getContentLocale() });
     if (error) throw error;
     return (data ?? null) as ThemeDetail | null;
   }
