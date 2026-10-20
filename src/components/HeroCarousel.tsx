@@ -41,7 +41,7 @@ export const HeroCarousel: React.FC<{ slides: HeroSlide[]; startIndex?: number }
   const Body = (
     <>
       <p className="mb-2 text-[10px] font-extrabold uppercase tracking-[0.22em] text-[#7fe9d8] [text-shadow:0_1px_10px_rgba(0,0,0,.7)]">
-        {cur.eyebrowAr ? <span lang="ar" className="ml-1">{cur.eyebrowAr} · </span> : null}{cur.eyebrow}
+        {cur.eyebrowAr ? <span lang="ar" className="ms-1">{cur.eyebrowAr} · </span> : null}{cur.eyebrow}
       </p>
       {cur.arabic && (
         <p className="font-arabic-display text-white [text-shadow:0_2px_16px_rgba(0,0,0,.7)] max-w-2xl mx-auto" lang="ar" dir="rtl" style={{ fontSize: 'clamp(23px,3vw,32px)', lineHeight: 1.7 }}>{cur.arabic}</p>

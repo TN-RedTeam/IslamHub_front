@@ -78,8 +78,10 @@ html {
    pile ici suffit à revenir à Amiri.
    `:not(html)` (Phase 15.4) : exclut la RACINE pour que `<html lang="ar">`
    (interface en arabe) n'impose pas la police/alignement sacrés à toute l'UI ;
-   celle-ci utilise Noto Sans Arabic (voir body + tailwind). */
-[lang="ar"]:not(html),
+   celle-ci utilise Noto Sans Arabic (voir body + tailwind).
+   `:not(.ui-ar)` : un contrôle d'interface marqué lang="ar" (ex. l'option
+   « العربية » du sélecteur de langue) garde la police/alignement de l'UI. */
+[lang="ar"]:not(html):not(.ui-ar),
 .font-arabic {
     font-family: 'Scheherazade New', 'Amiri', 'Noto Naskh Arabic', serif !important;
     line-height: 2;
@@ -199,3 +201,36 @@ html {
 }
 .pulse-gold { animation: pulse-gold 1s ease-out 2; }
 @media (prefers-reduced-motion: reduce) { .pulse-gold { animation: none; } }
+
+/* ─────────────────────────────────────────────────────────────────────
+   RTL (Phase 15.4) — mécanismes transverses.
+   ───────────────────────────────────────────────────────────────────── */
+
+/* Icônes DIRECTIONNELLES miroitées en arabe (flèches « → », chevrons de
+   navigation/retour). Ciblées par la classe que lucide-react pose sur chaque
+   SVG (`lucide-arrow-right`…). Spécificité volontairement faible (0,2,0) :
+   un utilitaire de transform explicite (group-open:rotate-90, hover:translate-x,
+   variantes `group-*`) reste prioritaire, donc les animations d'ouverture ne
+   sont pas cassées. Les chevrons verticaux (haut/bas) ne sont pas concernés. */
+[dir="rtl"] .lucide-arrow-right,
+[dir="rtl"] .lucide-arrow-left,
+[dir="rtl"] .lucide-chevron-right,
+[dir="rtl"] .lucide-chevron-left,
+[dir="rtl"] .lucide-arrow-up-right,
+[dir="rtl"] .lucide-arrow-up-left,
+[dir="rtl"] .lucide-arrow-down-right,
+[dir="rtl"] .lucide-arrow-down-left,
+[dir="rtl"] .lucide-move-right,
+[dir="rtl"] .lucide-move-left,
+[dir="rtl"] .lucide-corner-up-left,
+[dir="rtl"] .lucide-corner-down-left {
+    transform: scaleX(-1);
+}
+
+/* Liseré d'accent d'une carte (ex. bloc de preuve) : côté INLINE-START via
+   propriétés logiques → se retourne tout seul en RTL. Non layé → prioritaire
+   sur l'utilitaire `border` (1px tout autour) pour le seul côté de départ. */
+.border-accent-s {
+    border-inline-start-width: 3px;
+    border-inline-start-color: var(--green);
+}

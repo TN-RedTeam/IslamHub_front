@@ -71,7 +71,7 @@ export const LanguageSwitcher: React.FC<{ variant?: 'bar' | 'drawer' }> = ({ var
               lang={loc}
               onClick={() => choose(loc)}
               aria-current={on ? 'true' : undefined}
-              className={`flex w-full items-center gap-2 pl-6 pr-4 py-2.5 rounded-lg mb-0.5 font-sans transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green ${
+              className={`ui-ar flex w-full items-center gap-2 ps-6 pe-4 py-2.5 rounded-lg mb-0.5 font-sans transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green ${
                 on ? 'bg-glass-tint text-ink font-medium' : 'text-ink hover:bg-glass-tint hover:text-ink'
               }`}
             >
@@ -116,7 +116,7 @@ export const LanguageSwitcher: React.FC<{ variant?: 'bar' | 'drawer' }> = ({ var
                 role="menuitemradio"
                 aria-checked={on}
                 onClick={() => choose(loc)}
-                className={`flex w-full items-center gap-2 px-3.5 py-2 text-[13.5px] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green ${
+                className={`ui-ar flex w-full items-center gap-2 px-3.5 py-2 text-[13.5px] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green ${
                   on ? 'bg-glass-tint text-ink font-medium' : 'text-ink hover:bg-glass-tint hover:text-ink'
                 }`}
               >

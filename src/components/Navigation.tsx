@@ -117,7 +117,7 @@ export const Navigation: React.FC = () => {
                 <ChevronDown className={`w-3.5 h-3.5 transition-transform motion-reduce:transition-none ${resOpen ? 'rotate-180' : ''}`} />
               </button>
               {resOpen && (
-                <div role="menu" className="absolute left-0 top-full mt-1.5 min-w-[210px] rounded-xl border border-glass-border bg-bg1 backdrop-blur-md shadow-glass py-1.5 z-50">
+                <div role="menu" className="absolute start-0 top-full mt-1.5 min-w-[210px] rounded-xl border border-glass-border bg-bg1 backdrop-blur-md shadow-glass py-1.5 z-50">
                   {resItems.map(({ to, label }) => (
                     <Link
                       key={to}
@@ -136,7 +136,7 @@ export const Navigation: React.FC = () => {
           </div>
 
           {/* Actions (droite) */}
-          <div className="flex items-center gap-2.5 shrink-0 ml-auto min-[900px]:ml-0">
+          <div className="flex items-center gap-2.5 shrink-0 ms-auto min-[900px]:ms-0">
             {/* Chip date : badge marque + hijri translittéré (ligne 1) + grégorien (ligne 2) */}
             <div
               className="hidden min-[1360px]:flex items-center gap-2.5 px-3 py-1.5 rounded-full bg-surface border border-line"
@@ -210,7 +210,7 @@ export const Navigation: React.FC = () => {
                   <Link
                     key={to}
                     to={to}
-                    className={`block pl-6 pr-4 py-2.5 rounded-lg mb-0.5 font-sans transition-colors ${
+                    className={`block ps-6 pe-4 py-2.5 rounded-lg mb-0.5 font-sans transition-colors ${
                       isActive(to) ? 'bg-glass-tint text-ink font-medium' : 'text-ink hover:bg-glass-tint hover:text-ink'
                     }`}
                   >
