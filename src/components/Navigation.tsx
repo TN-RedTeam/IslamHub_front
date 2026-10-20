@@ -2,29 +2,29 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Link, useLocation, stripLocale } from '../lib/router';
 import { m, AnimatePresence } from 'framer-motion';
 import { Moon, Sun, Menu, X, ChevronDown, Search } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { useTheme } from '../context/ThemeContext';
 import { InstallPWA } from './InstallPWA';
 import { LanguageSwitcher } from './LanguageSwitcher';
-import { UI } from '../strings';
 import moment from 'moment-hijri';
 
-// Barre principale (entrées essentielles).
+// Barre principale (entrées essentielles). `key` → clé i18n nav.<key>.
 const mainItems = [
-  { to: '/', label: 'Accueil', exact: true },
-  { to: '/coran/sourates', label: 'Coran' },
-  { to: '/croyance', label: 'Croyance' },
-  { to: '/hadiths', label: 'Hadiths & paroles' },
-  { to: '/biographies', label: 'Biographies' },
-  { to: '/invocations', label: 'Invocations & Évocations' },
+  { to: '/', key: 'home', exact: true },
+  { to: '/coran/sourates', key: 'coran' },
+  { to: '/croyance', key: 'croyance' },
+  { to: '/hadiths', key: 'hadithsParoles' },
+  { to: '/biographies', key: 'biographies' },
+  { to: '/invocations', key: 'invocations' },
 ];
 // Regroupées sous le menu déroulant « Ressources ».
 const resItems = [
-  { to: '/themes', label: 'Thèmes' },
-  { to: '/dossiers', label: 'Dossiers thématiques' },
-  { to: '/questions', label: 'Questions fréquentes' },
-  { to: '/ecoles', label: 'Écoles' },
-  { to: '/recits', label: 'Récits' },
-  { to: '/femmes', label: 'La femme musulmane' },
+  { to: '/themes', key: 'themes' },
+  { to: '/dossiers', key: 'dossiers' },
+  { to: '/questions', key: 'questions' },
+  { to: '/ecoles', key: 'ecoles' },
+  { to: '/recits', key: 'recits' },
+  { to: '/femmes', key: 'femme' },
 ];
 
 // Noms français (translittérés) des 12 mois du calendrier hégirien, dans l'ordre.
@@ -46,6 +46,7 @@ const Mark: React.FC<{ size?: number }> = ({ size = 30 }) => (
 );
 
 export const Navigation: React.FC = () => {
+  const { t } = useTranslation();
   const { theme, toggleTheme } = useTheme();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [resOpen, setResOpen] = useState(false);
@@ -94,15 +95,15 @@ export const Navigation: React.FC = () => {
       <div className="max-w-[1440px] mx-auto px-4">
         <div className="flex items-center gap-4 h-16">
           {/* Marque */}
-          <Link to="/" className="flex items-center gap-2 shrink-0 text-accent" aria-label={`${UI.brand.name} — ${UI.nav.home}`}>
+          <Link to="/" className="flex items-center gap-2 shrink-0 text-accent" aria-label={`${t('brand.name')} — ${t('nav.home')}`}>
             <Mark size={30} />
-            <span className="font-display text-2xl font-extrabold tracking-[-0.02em] text-ink">{UI.brand.name}<span className="text-accent">.</span></span>
+            <span className="font-display text-2xl font-extrabold tracking-[-0.02em] text-ink">{t('brand.name')}<span className="text-accent">.</span></span>
           </Link>
 
           {/* Liens en ligne à partir de 900px ; en dessous, drawer hamburger. */}
           <div className="hidden min-[900px]:flex items-center gap-0.5 flex-1 min-w-0">
-            {mainItems.map(({ to, label, exact }) => (
-              <Link key={to} to={to} className={linkCls(isActive(to, exact))}>{label}</Link>
+            {mainItems.map(({ to, key, exact }) => (
+              <Link key={to} to={to} className={linkCls(isActive(to, exact))}>{t(`nav.${key}`)}</Link>
             ))}
 
             {/* Menu déroulant « Ressources » */}
@@ -114,12 +115,12 @@ export const Navigation: React.FC = () => {
                 aria-expanded={resOpen}
                 className={`${linkCls(resActive)} inline-flex items-center gap-1`}
               >
-                Ressources
+                {t('nav.resources')}
                 <ChevronDown className={`w-3.5 h-3.5 transition-transform motion-reduce:transition-none ${resOpen ? 'rotate-180' : ''}`} />
               </button>
               {resOpen && (
                 <div role="menu" className="absolute start-0 top-full mt-1.5 min-w-[210px] rounded-xl border border-glass-border bg-bg1 backdrop-blur-md shadow-glass py-1.5 z-50">
-                  {resItems.map(({ to, label }) => (
+                  {resItems.map(({ to, key }) => (
                     <Link
                       key={to}
                       to={to}
@@ -128,7 +129,7 @@ export const Navigation: React.FC = () => {
                         isActive(to) ? 'bg-glass-tint text-ink font-medium' : 'text-ink hover:bg-glass-tint hover:text-ink'
                       }`}
                     >
-                      {label}
+                      {t(`nav.${key}`)}
                     </Link>
                   ))}
                 </div>
@@ -157,7 +158,7 @@ export const Navigation: React.FC = () => {
 
             <Link
               to="/recherche"
-              aria-label="Rechercher sur le site"
+              aria-label={t('nav.searchSite')}
               className="w-9 h-9 grid place-items-center rounded-lg border border-line bg-ivory text-muted hover:text-ink hover:border-green transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green"
             >
               <Search className="w-5 h-5" />
@@ -165,7 +166,7 @@ export const Navigation: React.FC = () => {
 
             <button
               onClick={toggleTheme}
-              aria-label="Basculer le thème"
+              aria-label={t('nav.toggleTheme')}
               className="w-9 h-9 grid place-items-center rounded-lg border border-line bg-ivory text-muted hover:text-ink hover:border-green transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green"
             >
               {theme === 'dark' ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
@@ -173,7 +174,7 @@ export const Navigation: React.FC = () => {
 
             <button
               onClick={() => setIsMenuOpen((v) => !v)}
-              aria-label={isMenuOpen ? 'Fermer le menu' : 'Ouvrir le menu'}
+              aria-label={isMenuOpen ? t('nav.closeMenu') : t('nav.openMenu')}
               aria-expanded={isMenuOpen}
               className="min-[900px]:hidden w-9 h-9 grid place-items-center rounded-lg border border-line bg-ivory text-muted hover:text-ink transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green"
             >
@@ -193,7 +194,7 @@ export const Navigation: React.FC = () => {
               className="min-[900px]:hidden overflow-hidden motion-reduce:transition-none"
             >
               <div className="py-3">
-                {mainItems.map(({ to, label, exact }) => (
+                {mainItems.map(({ to, key, exact }) => (
                   <Link
                     key={to}
                     to={to}
@@ -201,13 +202,13 @@ export const Navigation: React.FC = () => {
                       isActive(to, exact) ? 'bg-glass-tint text-ink font-medium' : 'text-ink hover:bg-glass-tint hover:text-ink'
                     }`}
                   >
-                    {label}
+                    {t(`nav.${key}`)}
                   </Link>
                 ))}
 
                 {/* Sous-groupe « Ressources » */}
-                <p className="px-4 pt-3 pb-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-muted">Ressources</p>
-                {resItems.map(({ to, label }) => (
+                <p className="px-4 pt-3 pb-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-muted">{t('nav.resources')}</p>
+                {resItems.map(({ to, key }) => (
                   <Link
                     key={to}
                     to={to}
@@ -215,7 +216,7 @@ export const Navigation: React.FC = () => {
                       isActive(to) ? 'bg-glass-tint text-ink font-medium' : 'text-ink hover:bg-glass-tint hover:text-ink'
                     }`}
                   >
-                    {label}
+                    {t(`nav.${key}`)}
                   </Link>
                 ))}
 

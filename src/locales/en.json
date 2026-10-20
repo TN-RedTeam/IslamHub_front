@@ -1,2 +1,29 @@
 {
+  "brand": { "name": "Aqida" },
+  "nav": {
+    "home": "Home",
+    "coran": "Qur'an",
+    "croyance": "Creed",
+    "savants": "Scholars",
+    "biographies": "Biographies",
+    "search": "Search",
+    "hadithsParoles": "Hadiths & sayings",
+    "invocations": "Invocations & remembrances",
+    "themes": "Themes",
+    "dossiers": "Thematic files",
+    "questions": "Frequently asked questions",
+    "ecoles": "Schools of law",
+    "recits": "Stories",
+    "femme": "The Muslim woman",
+    "resources": "Resources",
+    "searchSite": "Search the site",
+    "toggleTheme": "Toggle theme",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "mainNav": "Main navigation"
+  },
+  "footer": {
+    "quote": "“That one of you should learn a chapter of the religion, or teach it, is better for him than a thousand voluntary rakʿahs.”",
+    "rights": "© 2026 Aqida — Ahl as-Sunna wa-l-Jamāʿa"
+  }
 }

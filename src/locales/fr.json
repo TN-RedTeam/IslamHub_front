@@ -6,7 +6,25 @@
     "croyance": "Croyance",
     "savants": "Savants",
     "biographies": "Biographies",
-    "search": "Rechercher"
+    "search": "Rechercher",
+    "hadithsParoles": "Hadiths & paroles",
+    "invocations": "Invocations & Évocations",
+    "themes": "Thèmes",
+    "dossiers": "Dossiers thématiques",
+    "questions": "Questions fréquentes",
+    "ecoles": "Écoles",
+    "recits": "Récits",
+    "femme": "La femme musulmane",
+    "resources": "Ressources",
+    "searchSite": "Rechercher sur le site",
+    "toggleTheme": "Basculer le thème",
+    "openMenu": "Ouvrir le menu",
+    "closeMenu": "Fermer le menu",
+    "mainNav": "Navigation principale"
+  },
+  "footer": {
+    "quote": "« Que l'un de vous apprenne un chapitre de la religion ou l'enseigne, cela lui vaut mieux que mille rakʿah surérogatoires. »",
+    "rights": "© 2026 Aqida — Ahl as-Sunna wa-l-Jamāʿa"
   },
   "article": {
     "toc": "Sommaire",
