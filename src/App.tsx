@@ -16,6 +16,7 @@ const BASENAME = (import.meta.env.BASE_URL || '/').replace(/\/+$/, '') || '/';
 const routerProps = USE_BROWSER_ROUTER ? { basename: BASENAME } : {};
 import { Loader2 } from 'lucide-react';
 import { Navigation } from './components/Navigation';
+import { SeoHead } from './components/SeoHead';
 import { PwaUpdater } from './components/PwaUpdater';
 import { SiteFooter } from './components/SiteFooter';
 import { BottomNav } from './components/BottomNav';
@@ -166,6 +167,7 @@ function PublicShell() {
   return (
     <LocaleProvider value={locale}>
       <LocaleEffects locale={locale} />
+      <SeoHead />
       <div className="min-h-screen transition-colors duration-200 flex flex-col">
         <Navigation />
         <PwaUpdater />
