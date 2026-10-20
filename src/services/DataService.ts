@@ -367,7 +367,7 @@ class DataService {
     // Les 6 arguments sont toujours transmis pour lever toute ambiguïté de résolution RPC.
     return rpcSearch<Parole>('search_paroles', '', null, 'tag_filter', params ?? LOAD_ALL, {
       savant_filter: '', source_filter: '',
-    });
+    }, true);
   }
   async searchParoles(
     searchTerm: string,
@@ -379,11 +379,11 @@ class DataService {
     return rpcSearch<Parole>('search_paroles', searchTerm, tag ?? null, 'tag_filter', params ?? LOAD_ALL, {
       savant_filter: savant ?? '',
       source_filter: source ?? '',
-    });
+    }, true);
   }
   /** Recherche approximative (similarité) — repli quand la recherche exacte ne donne rien. */
   async searchParolesFuzzy(searchTerm: string, limit = 20): Promise<PaginatedResponse<Parole>> {
-    const { data, error } = await supabase.rpc('search_paroles_fuzzy', { q: sanitizeInput(searchTerm), p_limit: limit });
+    const { data, error } = await supabase.rpc('search_paroles_fuzzy', { q: sanitizeInput(searchTerm), p_limit: limit, p_locale: getContentLocale() });
     if (error) throw error;
     return shapeResult<Parole>(data, 0, limit);
   }
