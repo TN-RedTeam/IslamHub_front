@@ -3,6 +3,7 @@ import { BlocEditor } from '../../components/admin/BlocEditor';
 import { DeleteEntryButton } from '../../components/admin/DeleteEntryButton';
 import { ScanUploadButton } from '../../components/admin/ScanUploadButton';
 import { useNavigate, useParams, Link } from 'react-router-dom';
+import { TranslationPanel } from '../../components/admin/TranslationPanel';
 import { Loader2, Plus, Trash2, Check, AlertTriangle, ArrowUp, ArrowDown } from 'lucide-react';
 import {
   adminService, type DossierFormData, type DossierPreuveType, type DossierRefs,
@@ -104,6 +105,7 @@ export const AdminDossierForm: React.FC = () => {
   return (
     <div className="max-w-3xl px-6 py-8 pb-28">
       <p className="text-xs text-muted"><Link to="/admin/dossiers" className="hover:text-ink">Dossiers thématiques</Link> · {editId ? 'Modifier' : 'Nouveau'}</p>
+      {editId ? <TranslationPanel kind="dossier" id={editId} editPathBase="/admin/dossiers" /> : null}
       <h1 className="font-display font-semibold text-ink text-3xl mt-1 mb-6">{editId ? 'Modifier le dossier' : 'Nouveau dossier'}</h1>
 
       {/* 1. En-tête & SEO */}

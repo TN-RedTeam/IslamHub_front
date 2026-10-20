@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { SujetField } from '../../components/admin/SujetField';
 import { DeleteEntryButton } from '../../components/admin/DeleteEntryButton';
 import { useNavigate, useParams, Link } from 'react-router-dom';
+import { TranslationPanel } from '../../components/admin/TranslationPanel';
 import { Loader2, Check, AlertTriangle } from 'lucide-react';
 import { adminService, type FiqhFormData } from '../../services/AdminService';
 
@@ -60,6 +61,7 @@ export const AdminFiqhForm: React.FC = () => {
   return (
     <div className="max-w-3xl px-6 py-8 pb-28">
       <p className="text-xs text-muted"><Link to="/admin/fiqh" className="hover:text-ink">Fiqh</Link> · {editId ? 'Modifier' : 'Nouveau'}</p>
+      {editId ? <TranslationPanel kind="fiqh" id={editId} editPathBase="/admin/fiqh" /> : null}
       <h1 className="font-display font-semibold text-ink text-3xl mt-1 mb-1">{editId ? 'Modifier le point de fiqh' : 'Nouveau point de fiqh'}</h1>
       <p className="text-muted text-sm mb-6">Un point = une entrée dans un chapitre d’une école. Le texte arabe est enregistré tel quel (UTF-8).</p>
 

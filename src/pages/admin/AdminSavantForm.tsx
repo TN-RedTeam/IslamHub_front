@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { DeleteEntryButton } from '../../components/admin/DeleteEntryButton';
 import { useNavigate, useParams, Link } from 'react-router-dom';
+import { TranslationPanel } from '../../components/admin/TranslationPanel';
 import { Loader2, Check, AlertTriangle } from 'lucide-react';
 import { adminService, type EcoleRow, type SavantFormData } from '../../services/AdminService';
 import { slugify } from '../../utils/slug';
@@ -116,6 +117,7 @@ export const AdminSavantForm: React.FC = () => {
   return (
     <div className="max-w-3xl px-6 py-8 pb-28">
       <p className="text-xs text-muted"><Link to="/admin/savants" className="hover:text-ink">Savants</Link> · {editId ? 'Modifier' : 'Nouveau'}</p>
+      {editId ? <TranslationPanel kind="savant" id={editId} editPathBase="/admin/savants" /> : null}
       <h1 className="font-display font-semibold text-ink text-3xl mt-1 mb-1">{editId ? 'Modifier la fiche savant' : 'Nouvelle fiche savant'}</h1>
       <p className="text-muted text-sm mb-6">Le nom arabe collé ici est enregistré tel quel (UTF-8).</p>
 

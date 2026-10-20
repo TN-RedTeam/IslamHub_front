@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { DeleteEntryButton } from '../../components/admin/DeleteEntryButton';
 import { useNavigate, useParams, Link } from 'react-router-dom';
+import { TranslationPanel } from '../../components/admin/TranslationPanel';
 import { Loader2, Plus, Trash2, Check, AlertTriangle, ArrowUp, ArrowDown } from 'lucide-react';
 import { adminService, type SourateFormData, type VersetInput, type ExegeseInput } from '../../services/AdminService';
 import { AR_TEMPLATE, TRAD_TEMPLATE, caretBetween, caretInsideGuillemets, normalizeBracketSpaces } from '../../utils/arabicTemplate';
@@ -107,6 +108,7 @@ export const AdminSourateForm: React.FC = () => {
       {/* Autocomplétion « Source » des exégèses : noms de savants (table savants) */}
       <datalist id="exeg-savants">{savantNames.map((n) => <option key={n} value={n} />)}</datalist>
       <p className="text-xs text-muted"><Link to="/admin/sourates" className="hover:text-ink">Coran — exégèse</Link> · {editId ? 'Modifier' : 'Nouvelle'}</p>
+      {editId ? <TranslationPanel kind="sourate" id={editId} editPathBase="/admin/sourates" /> : null}
       <h1 className="font-display font-semibold text-ink text-3xl mt-1 mb-1">{editId ? 'Modifier la sourate' : 'Nouvelle sourate'}</h1>
       <p className="text-muted text-sm mb-6">Le texte arabe collé ici est enregistré tel quel (UTF-8).</p>
 
