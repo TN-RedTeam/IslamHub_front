@@ -6,7 +6,6 @@ import { ScanUploadButton } from '../../components/admin/ScanUploadButton';
 import { NameSelect } from '../../components/admin/NameSelect';
 import { BlocEditor } from '../../components/admin/BlocEditor';
 import { useNavigate, useParams, Link } from 'react-router-dom';
-import { TranslationPanel } from '../../components/admin/TranslationPanel';
 import { Loader2, Plus, Trash2, Check, AlertTriangle } from 'lucide-react';
 import { adminService, type SavantRow, type ParoleFormData, type ParoleImageInput, type DossierRefs } from '../../services/AdminService';
 import { AR_TEMPLATE, caretBetween, normalizeBracketSpaces } from '../../utils/arabicTemplate';
@@ -29,7 +28,7 @@ export const AdminParoleForm: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [ok, setOk] = useState(false);
 
-  const [f, setF] = useState({ sujet: '', rubrique: '', intro: '', texte_arabe: AR_TEMPLATE.parole, texte_francais: '', phonetique: '', explication: '', source_livre: '', page: '', ecole: '', tag: '', commente_livre: '' });
+  const [f, setF] = useState({ sujet: '', rubrique: '', intro: '', texte_arabe: AR_TEMPLATE.parole, texte_francais: '', phonetique: '', explication: '', source_livre: '', page: '', ecole: '', tag: '', commente_livre: '', sujet_en: '', sujet_ar: '', intro_en: '', intro_ar: '', texte_en: '', phonetique_en: '', explication_en: '', explication_ar: '' });
   const set = (k: keyof typeof f) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => setF((p) => ({ ...p, [k]: e.target.value }));
   const [savant, setSavant] = useState('');           // savant_id (string) ou NEW
   const [newSavant, setNewSavant] = useState('');
@@ -60,7 +59,7 @@ export const AdminParoleForm: React.FC = () => {
     if (!editId) return;
     adminService.getParoleForEdit(editId).then((p) => {
       if (!p) return;
-      setF({ sujet: p.sujet ?? '', rubrique: p.rubrique ?? '', intro: p.intro ?? '', texte_arabe: p.texte_arabe ?? '', texte_francais: p.texte_francais ?? '', phonetique: p.phonetique ?? '', explication: p.explication ?? '', source_livre: p.source_livre ?? '', page: p.page ?? '', ecole: p.ecole ?? '', tag: p.tag ?? '', commente_livre: p.commente_livre ?? '' });
+      setF({ sujet: p.sujet ?? '', rubrique: p.rubrique ?? '', intro: p.intro ?? '', texte_arabe: p.texte_arabe ?? '', texte_francais: p.texte_francais ?? '', phonetique: p.phonetique ?? '', explication: p.explication ?? '', source_livre: p.source_livre ?? '', page: p.page ?? '', ecole: p.ecole ?? '', tag: p.tag ?? '', commente_livre: p.commente_livre ?? '', sujet_en: p.sujet_en ?? '', sujet_ar: p.sujet_ar ?? '', intro_en: p.intro_en ?? '', intro_ar: p.intro_ar ?? '', texte_en: p.texte_en ?? '', phonetique_en: p.phonetique_en ?? '', explication_en: p.explication_en ?? '', explication_ar: p.explication_ar ?? '' });
       setSavant(p.savant_id ? String(p.savant_id) : '');
       setRapporteur(p.rapporteur_savant_id ? String(p.rapporteur_savant_id) : '');
       const ct = p.commente_type ?? (p.commente_parole_id ? 'parole' : p.commente_hadith_id ? 'hadith' : p.commente_verset_id ? 'verset' : '');
@@ -99,7 +98,7 @@ export const AdminParoleForm: React.FC = () => {
     try {
       const newId = await adminService.saveParole(buildPayload());
       setOk(true);
-      if (andNew) { setF({ sujet: '', rubrique: '', intro: '', texte_arabe: AR_TEMPLATE.parole, texte_francais: '', phonetique: '', explication: '', source_livre: '', page: '', ecole: '', tag: '', commente_livre: '' }); setSavant(''); setNewSavant(''); setRapporteur(''); setCommenteType(''); setCommenteRef(''); setCommenteFilter(''); setImages([]); setSegments([]); setTimeout(() => setOk(false), 2500); }
+      if (andNew) { setF({ sujet: '', rubrique: '', intro: '', texte_arabe: AR_TEMPLATE.parole, texte_francais: '', phonetique: '', explication: '', source_livre: '', page: '', ecole: '', tag: '', commente_livre: '', sujet_en: '', sujet_ar: '', intro_en: '', intro_ar: '', texte_en: '', phonetique_en: '', explication_en: '', explication_ar: '' }); setSavant(''); setNewSavant(''); setRapporteur(''); setCommenteType(''); setCommenteRef(''); setCommenteFilter(''); setImages([]); setSegments([]); setTimeout(() => setOk(false), 2500); }
       else { navigate(`/admin/paroles/${newId}`, { replace: true }); setTimeout(() => setOk(false), 2500); }
     } catch (e) {
       const msg = (e as Error).message || 'Erreur à l’enregistrement.';
@@ -115,24 +114,37 @@ export const AdminParoleForm: React.FC = () => {
       <h1 className="font-display font-semibold text-ink text-3xl mt-1 mb-1">{editId ? 'Modifier la parole' : 'Nouvelle parole'}</h1>
       <p className="text-muted text-sm mb-6">Le texte arabe collé ici est enregistré tel quel (UTF-8).</p>
 
-      {/* Circuit de traduction (Phase 15.7) — visible une fois l'entrée créée. */}
-      {editId ? <TranslationPanel kind="parole" id={editId} editPathBase="/admin/paroles" /> : null}
-
       {/* 1. Parole */}
       <section className="rounded-card border border-line bg-surface p-5 mb-4">
         <h2 className="font-display font-semibold text-ink text-lg mb-4">1 · La parole</h2>
         <div className="mb-3.5"><label className={label}>Sujet <span className="text-red-600">*</span></label><SujetField className={field} value={f.sujet} onChange={set('sujet')} placeholder="Ex. Allah existe sans endroit" /></div>
+        <div className="grid sm:grid-cols-2 gap-3.5 mb-3.5">
+          <div><label className={label}>Sujet — anglais</label><input className={field} value={f.sujet_en} onChange={set('sujet_en')} placeholder="Subject (EN)" /></div>
+          <div><label className={label}>Sujet — arabe</label><input dir="rtl" lang="ar" className={`${field} font-arabic text-right`} value={f.sujet_ar} onChange={set('sujet_ar')} placeholder="الموضوع" /></div>
+        </div>
         <div className="mb-3.5"><label className={label}>Rubrique / série <span className="text-muted font-normal">(optionnel)</span></label>
           <input className={field} value={f.rubrique} onChange={set('rubrique')} placeholder="Ex. Série sur la croyance" /></div>
         <div className="mb-3.5"><label className={label}>Intro / narration <span className="text-muted font-normal">(optionnel)</span></label>
           <input className={field} value={f.intro} onChange={set('intro')} placeholder="Narration de contexte avant le texte arabe…" /></div>
+        <div className="grid sm:grid-cols-2 gap-3.5 mb-3.5">
+          <div><label className={label}>Intro — anglais</label><input className={field} value={f.intro_en} onChange={set('intro_en')} placeholder="Intro (EN)" /></div>
+          <div><label className={label}>Intro — arabe</label><input dir="rtl" lang="ar" className={`${field} font-arabic text-right`} value={f.intro_ar} onChange={set('intro_ar')} placeholder="المقدمة" /></div>
+        </div>
         <div className="mb-3.5"><label className={label}>Texte arabe <span className="text-red-600">*</span></label>
           <textarea dir="rtl" lang="ar" className={`${field} font-arabic text-2xl leading-loose text-right min-h-[90px]`} value={f.texte_arabe} onChange={set('texte_arabe')} onFocus={caretBetween(AR_TEMPLATE.parole)} placeholder="Colle ici le texte arabe (vocalisé)…" /></div>
         <div className="grid sm:grid-cols-2 gap-3.5">
           <div><label className={label}>Phonétique</label><input className={field} value={f.phonetique} onChange={set('phonetique')} /></div>
+          <div><label className={label}>Phonétique — anglais</label><input className={field} value={f.phonetique_en} onChange={set('phonetique_en')} placeholder="Phonetic (EN)" /></div>
+        </div>
+        <div className="grid sm:grid-cols-2 gap-3.5 mt-3.5">
           <div><label className={label}>Traduction française</label><input className={field} value={f.texte_francais} onChange={set('texte_francais')} /></div>
+          <div><label className={label}>Traduction anglaise</label><input className={field} value={f.texte_en} onChange={set('texte_en')} placeholder="English translation" /></div>
         </div>
         <div className="mt-3.5"><label className={label}>Explication <span className="text-muted font-normal">(Markdown)</span></label><textarea className={`${field} min-h-[70px]`} value={f.explication} onChange={set('explication')} /></div>
+        <div className="grid sm:grid-cols-2 gap-3.5 mt-3.5">
+          <div><label className={label}>Explication — anglais</label><textarea className={`${field} min-h-[70px]`} value={f.explication_en} onChange={set('explication_en')} placeholder="Explanation (EN)" /></div>
+          <div><label className={label}>Explication — arabe</label><textarea dir="rtl" lang="ar" className={`${field} font-arabic text-right min-h-[70px]`} value={f.explication_ar} onChange={set('explication_ar')} placeholder="الشرح" /></div>
+        </div>
       </section>
 
       {/* 2. Savant & référence */}
