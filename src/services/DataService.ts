@@ -319,7 +319,7 @@ class DataService {
 
   // ================= Récits (Prophètes / vertueux) =================
   async getRecits(): Promise<RecitCard[]> {
-    const { data, error } = await supabase.rpc('recits_all');
+    const { data, error } = await supabase.rpc('recits_all', { p_locale: getContentLocale() });
     if (error) throw error;
     return (data ?? []) as RecitCard[];
   }
@@ -484,7 +484,7 @@ class DataService {
   // ================= Dossiers thématiques =================
   /** Liste des dossiers thématiques publiés (index + page Croyance). */
   async getDossiers(): Promise<DossierListItem[]> {
-    const { data, error } = await supabase.rpc('dossiers_all');
+    const { data, error } = await supabase.rpc('dossiers_all', { p_locale: getContentLocale() });
     if (error) throw error;
     return (data ?? []) as DossierListItem[];
   }
