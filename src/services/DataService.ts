@@ -91,6 +91,7 @@ async function rpcSearch<T>(
   filterKey: 'tag_filter' | 'categorie_filter',
   params?: PaginationParams,
   extra?: Record<string, string>,
+  localeAware = false,
 ) {
   const page = params?.page ?? 0;
   const pageSize = params?.pageSize ?? 20;
@@ -106,6 +107,8 @@ async function rpcSearch<T>(
       args[k] = v ? sanitizeInput(v) : '';
     }
   }
+  // Langue de contenu (RPC migrées locale-aware uniquement — cf. Phase 15.5).
+  if (localeAware) args.p_locale = getContentLocale();
   const { data, error } = await supabase.rpc(fn, args);
   if (error) throw error;
   return shapeResult<T>(data, page, pageSize);
@@ -120,7 +123,7 @@ async function rpcTags(fn: string, args?: Record<string, unknown>): Promise<stri
 class DataService {
   // ================= Hadiths =================
   async getHadiths(params?: PaginationParams): Promise<PaginatedResponse<Hadith>> {
-    return rpcSearch<Hadith>('search_hadiths', '', null, 'tag_filter', params ?? LOAD_ALL);
+    return rpcSearch<Hadith>('search_hadiths', '', null, 'tag_filter', params ?? LOAD_ALL, undefined, true);
   }
   async searchHadiths(
     searchTerm: string,
@@ -132,11 +135,11 @@ class DataService {
       statut_filter: rubrics?.statut ?? '',
       rapporteur_filter: rubrics?.rapporteur ?? '',
       narrateur_filter: rubrics?.narrateur ?? '',
-    });
+    }, true);
   }
   /** Recherche approximative (similarité) — repli quand la recherche exacte ne donne rien. */
   async searchHadithsFuzzy(searchTerm: string, limit = 20): Promise<PaginatedResponse<Hadith>> {
-    const { data, error } = await supabase.rpc('search_hadiths_fuzzy', { q: sanitizeInput(searchTerm), p_limit: limit });
+    const { data, error } = await supabase.rpc('search_hadiths_fuzzy', { q: sanitizeInput(searchTerm), p_limit: limit, p_locale: getContentLocale() });
     if (error) throw error;
     return shapeResult<Hadith>(data, 0, limit);
   }
