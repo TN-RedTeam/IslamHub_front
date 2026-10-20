@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { ChevronDown, Search, Check, X } from 'lucide-react';
-import { UI } from '../strings';
+import { useTranslation } from 'react-i18next';
 import type { SubjectCount } from '../types';
 
 /** Puce de filtre retirable (sujet, savant, recueil, authenticité…). */
@@ -24,6 +24,7 @@ export const SubjectBrowser: React.FC<{
   onChange: (sujet: string | null) => void;
   className?: string;
 }> = ({ subjects, value, onChange, className = '' }) => {
+  const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const [filter, setFilter] = useState('');
   const [active, setActive] = useState(0);
@@ -67,7 +68,7 @@ export const SubjectBrowser: React.FC<{
         aria-haspopup="listbox" aria-expanded={open}
         className="w-full inline-flex items-center gap-2 rounded-xl border border-line bg-glass px-4 py-3 text-left text-ink hover:border-green transition-colors focus:outline-none focus:ring-2 focus:ring-green"
       >
-        <span className="truncate">{value ? value : UI.browse.bySubject}</span>
+        <span className="truncate">{value ? value : t('browse.bySubject')}</span>
         <ChevronDown className={`w-4 h-4 text-muted ml-auto shrink-0 transition-transform ${open ? 'rotate-180' : ''}`} />
       </button>
 
@@ -77,19 +78,19 @@ export const SubjectBrowser: React.FC<{
             <Search className="w-4 h-4 text-muted absolute left-3 top-1/2 -translate-y-1/2" />
             <input
               ref={inputRef} value={filter} onChange={(e) => setFilter(e.target.value)}
-              placeholder={UI.browse.searchSubject} aria-label={UI.browse.searchSubject}
+              placeholder={t('browse.searchSubject')} aria-label={t('browse.searchSubject')}
               className="w-full bg-transparent pl-9 pr-3 py-2.5 text-[15px] text-ink focus:outline-none"
             />
           </div>
-          <ul ref={listRef} role="listbox" aria-label={UI.browse.bySubject} className="max-h-72 overflow-y-auto py-1">
+          <ul ref={listRef} role="listbox" aria-label={t('browse.bySubject')} className="max-h-72 overflow-y-auto py-1">
             <li>
               <button type="button" onClick={() => { onChange(null); setOpen(false); }}
                 className={`w-full flex items-center gap-2 px-3 py-2 text-[14px] text-left hover:bg-glass-tint ${!value ? 'text-green font-semibold' : 'text-muted'}`}>
-                {!value && <Check className="w-3.5 h-3.5" />} {UI.browse.allSubjects}
+                {!value && <Check className="w-3.5 h-3.5" />} {t('browse.allSubjects')}
               </button>
             </li>
             {filtered.length === 0 ? (
-              <li className="px-3 py-3 text-sm text-muted italic">{UI.browse.noSubject}</li>
+              <li className="px-3 py-3 text-sm text-muted italic">{t('browse.noSubject')}</li>
             ) : filtered.map((s, i) => {
               const on = value === s.sujet;
               return (

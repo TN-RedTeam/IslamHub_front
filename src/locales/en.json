@@ -25,5 +25,35 @@
   "footer": {
     "quote": "“That one of you should learn a chapter of the religion, or teach it, is better for him than a thousand voluntary rakʿahs.”",
     "rights": "© 2026 Aqida — Ahl as-Sunna wa-l-Jamāʿa"
+  },
+  "article": {
+    "toc": "Contents",
+    "backToTop": "Back to top",
+    "viewScan": "View scan",
+    "openSource": "Open entry",
+    "sourceDetails": "Source details"
+  },
+  "hero": {
+    "verset": "Verse of the day",
+    "versetAr": "آية اليوم",
+    "hadith": "Hadith of the day",
+    "parole": "Scholar's saying",
+    "prev": "Previous",
+    "next": "Next",
+    "goTo": "Go to content"
+  },
+  "journee": {
+    "title": "Invocations to say throughout the day",
+    "subtitle": "From waking to sleeping",
+    "seeHadith": "View the hadith",
+    "untitled": "Invocation"
+  },
+  "browse": {
+    "bySubject": "Browse by subject",
+    "searchSubject": "Filter subjects…",
+    "allSubjects": "All subjects",
+    "noSubject": "No matching subject.",
+    "subjectChip": "Subject",
+    "seeTheme": "See this theme in full"
   }
 }

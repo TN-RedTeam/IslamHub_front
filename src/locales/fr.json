@@ -36,7 +36,8 @@
   "journee": {
     "title": "Les invocations à dire dans une journée",
     "subtitle": "Du réveil au coucher",
-    "seeHadith": "Voir le hadith"
+    "seeHadith": "Voir le hadith",
+    "untitled": "Invocation"
   },
   "hero": {
     "verset": "Verset du jour",

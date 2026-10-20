@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Link } from '../lib/router';
-import { UI } from '../strings';
+import { useTranslation } from 'react-i18next';
 
 export interface HeroSlide {
   key: string;
@@ -22,6 +22,7 @@ const prefersReduced = () => typeof window !== 'undefined' && window.matchMedia?
  * On anime le TEXTE, jamais la photo.
  */
 export const HeroCarousel: React.FC<{ slides: HeroSlide[]; startIndex?: number }> = ({ slides, startIndex = 0 }) => {
+  const { t } = useTranslation();
   const n = slides.length;
   const reduced = prefersReduced();
   const [active, setActive] = useState(() => (n ? startIndex % n : 0));
@@ -79,7 +80,7 @@ export const HeroCarousel: React.FC<{ slides: HeroSlide[]; startIndex?: number }
         <div className="mt-3.5 flex items-center gap-2" role="tablist" aria-label="Contenus du jour">
           {slides.map((s, i) => (
             <button key={s.key} type="button" role="tab" aria-selected={i === active}
-              aria-label={`${UI.hero.goTo} : ${s.eyebrow}`} onClick={() => goTo(i)}
+              aria-label={`${t('hero.goTo')} : ${s.eyebrow}`} onClick={() => goTo(i)}
               className={`h-2 rounded-full transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80 ${i === active ? 'w-6 bg-[#7fe9d8]' : 'w-2 bg-white/50 hover:bg-white/80'}`} />
           ))}
         </div>

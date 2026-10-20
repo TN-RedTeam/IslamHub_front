@@ -3,17 +3,19 @@ import { ChevronDown, Sunrise, ArrowRight } from 'lucide-react';
 import { dataService } from '../services/DataService';
 import { Markdown } from './Markdown';
 import { parseMoments, type MomentDef } from '../data/moments';
-import { UI } from '../strings';
+import { useTranslation } from 'react-i18next';
 import type { Invocation } from '../types';
 
 const typeLabel = (t: number) => (t === 2 ? 'Évocation' : 'Invocation');
 
 /** Une invocation dépliée dans la frise : arabe + translittération + traduction + source. */
-const InvocationInline: React.FC<{ it: Invocation; onOpen: (it: Invocation) => void }> = ({ it, onOpen }) => (
+const InvocationInline: React.FC<{ it: Invocation; onOpen: (it: Invocation) => void }> = ({ it, onOpen }) => {
+  const { t } = useTranslation();
+  return (
   <li className="rounded-lg border border-line bg-surface p-3.5">
     <div className="flex items-center gap-1.5 mb-1.5">
       <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-glass-tint text-ink border border-green-line shrink-0">{typeLabel(it.type_id)}</span>
-      <span className="text-sm font-semibold text-ink min-w-0 truncate">{it.sujet || 'Invocation'}</span>
+      <span className="text-sm font-semibold text-ink min-w-0 truncate">{it.sujet || t('journee.untitled')}</span>
     </div>
     {it.texte_arabe && (
       <p dir="rtl" lang="ar" className="font-arabic text-right leading-loose text-ink whitespace-pre-wrap" style={{ fontSize: 'clamp(18px,3vw,22px)' }}>{it.texte_arabe}</p>
@@ -25,11 +27,12 @@ const InvocationInline: React.FC<{ it: Invocation; onOpen: (it: Invocation) => v
     {it.commentaire && <p className="text-[12.5px] text-muted mt-2 [unicode-bidi:plaintext]">{it.commentaire}</p>}
     {it.kind === 'hadith' && (
       <button type="button" onClick={() => onOpen(it)} className="mt-2 inline-flex items-center gap-1 text-[12.5px] font-semibold text-green hover:text-green-deep transition-colors">
-        {UI.journee.seeHadith} <ArrowRight className="w-3.5 h-3.5" />
+        {t('journee.seeHadith')} <ArrowRight className="w-3.5 h-3.5" />
       </button>
     )}
   </li>
-);
+  );
+};
 
 /**
  * « Les invocations à dire dans une journée » (finitions 13.5) — une FRISE
@@ -39,6 +42,7 @@ const InvocationInline: React.FC<{ it: Invocation; onOpen: (it: Invocation) => v
  * Bandeau dépliant, au-dessus du moteur de recherche. Masqué si rien à montrer.
  */
 export const JourneePanel: React.FC<{ onOpen: (it: Invocation) => void }> = ({ onOpen }) => {
+  const { t } = useTranslation();
   const [items, setItems] = useState<Invocation[]>([]);
   const [moments, setMoments] = useState<MomentDef[]>([]);
   const [open, setOpen] = useState(false);
@@ -64,8 +68,8 @@ export const JourneePanel: React.FC<{ onOpen: (it: Invocation) => void }> = ({ o
         className="w-full flex items-center gap-3 px-5 py-4 text-left hover:bg-glass-tint transition-colors motion-reduce:transition-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green">
         <span className="grid place-items-center w-9 h-9 rounded-full bg-accent-deep text-white shrink-0"><Sunrise className="w-[18px] h-[18px]" /></span>
         <span className="flex-1 min-w-0">
-          <span className="block font-display font-semibold text-ink text-lg">{UI.journee.title}</span>
-          <span className="block text-sm text-muted">{UI.journee.subtitle} — {groups.length} moment{groups.length > 1 ? 's' : ''}</span>
+          <span className="block font-display font-semibold text-ink text-lg">{t('journee.title')}</span>
+          <span className="block text-sm text-muted">{t('journee.subtitle')} — {groups.length} moment{groups.length > 1 ? 's' : ''}</span>
         </span>
         <ChevronDown className={`w-5 h-5 text-muted transition-transform motion-reduce:transition-none ${open ? 'rotate-180' : ''}`} />
       </button>
