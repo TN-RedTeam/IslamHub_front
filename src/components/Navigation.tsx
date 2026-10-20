@@ -4,6 +4,7 @@ import { m, AnimatePresence } from 'framer-motion';
 import { Moon, Sun, Menu, X, ChevronDown, Search } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 import { InstallPWA } from './InstallPWA';
+import { LanguageSwitcher } from './LanguageSwitcher';
 import { UI } from '../strings';
 import moment from 'moment-hijri';
 
@@ -150,6 +151,9 @@ export const Navigation: React.FC = () => {
 
             <div className="hidden min-[1360px]:block"><InstallPWA /></div>
 
+            {/* Sélecteur de langue (desktop) */}
+            <div className="hidden min-[900px]:block"><LanguageSwitcher variant="bar" /></div>
+
             <Link
               to="/recherche"
               aria-label="Rechercher sur le site"
@@ -213,6 +217,9 @@ export const Navigation: React.FC = () => {
                     {label}
                   </Link>
                 ))}
+
+                {/* Sélecteur de langue (mobile) */}
+                <LanguageSwitcher variant="drawer" />
 
                 <InstallPWA className="mt-2 flex w-full items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-green text-white hover:bg-green-deep transition-colors" />
               </div>
