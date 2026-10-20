@@ -35,12 +35,13 @@ const LOCALES = ['fr', 'en', 'ar'];
 // Pages « coquille » présentes dans toutes les langues.
 const SHELL = [
   '/', '/hadiths', '/coran/sourates', '/croyance', '/biographies', '/invocations',
-  '/paroles', '/themes', '/dossiers', '/recits', '/femmes', '/ecoles', '/recherche',
+  '/paroles', '/themes', '/dossiers', '/questions', '/recits', '/femmes', '/ecoles', '/recherche',
 ];
 
 // Fiches éditoriales partageables (URL par ligne publiée).
 const CONTENT = [
   { table: 'dossiers', cols: 'slug, locale', path: (r) => `/dossiers/${r.slug}` },
+  { table: 'questions', cols: 'slug, locale', path: (r) => `/questions/${r.slug}` },
   { table: 'recits', cols: 'slug, locale', path: (r) => `/recits/${r.slug}` },
   { table: 'paroles', cols: 'slug, locale', path: (r) => `/paroles/${r.slug}` },
   { table: 'hadiths', cols: 'id, slug, locale', path: (r) => `/hadiths/${r.id}/${r.slug ?? ''}` },
