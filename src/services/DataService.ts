@@ -248,6 +248,7 @@ class DataService {
       type_filter: (type ?? '').trim(),
       page_num: page,
       page_size: pageSize,
+      p_locale: getContentLocale(),
     });
     if (error) throw error;
     return shapeResult<VersetEquivoqueCard>(data, page, pageSize);
@@ -272,7 +273,7 @@ class DataService {
 
   // ============ Les Attributs d'Allah (Phase 13.6, BDD) ============
   async getAttributs(): Promise<Attribut[]> {
-    const { data, error } = await supabase.rpc('get_attributs');
+    const { data, error } = await supabase.rpc('get_attributs', { p_locale: getContentLocale() });
     if (error) throw error;
     return (data ?? []) as Attribut[];
   }
@@ -451,7 +452,7 @@ class DataService {
 
   // ================= Savants (fiches + biographie) =================
   async getSavants(): Promise<SavantInfo[]> {
-    const { data, error } = await supabase.rpc('savants_all');
+    const { data, error } = await supabase.rpc('savants_all', { p_locale: getContentLocale() });
     if (error) throw error;
     return (data ?? []) as SavantInfo[];
   }
@@ -525,11 +526,11 @@ class DataService {
   }
   // ---- Accueil (Phase 14) ----
   async getHomeVedette(): Promise<HomeVedette | null> {
-    const { data, error } = await supabase.rpc('home_dossier_vedette');
+    const { data, error } = await supabase.rpc('home_dossier_vedette', { p_locale: getContentLocale() });
     if (error) throw error; return (data ?? null) as HomeVedette | null;
   }
   async getHomeRecent(limit = 3): Promise<HomeRecentItem[]> {
-    const { data, error } = await supabase.rpc('home_recent', { p_limit: limit });
+    const { data, error } = await supabase.rpc('home_recent', { p_limit: limit, p_locale: getContentLocale() });
     if (error) throw error; return (data ?? []) as HomeRecentItem[];
   }
 
