@@ -63,6 +63,15 @@ jobs:
           VITE_ROUTER: browser
           VITE_BASE: /IslamHub_front/
 
+      - name: Installer Chromium (prérendu SSG)
+        run: npx playwright install --with-deps chromium
+
+      - name: Prérendu SSG par langue (HTML servi par langue aux robots)
+        run: npm run prerender
+        env:
+          VITE_BASE: /IslamHub_front/
+          SITE_ORIGIN: https://Sou55i.github.io/IslamHub_front
+
       # --- Démo « ancienne charte » : refonte/architecture-v2 → /v2/ ---
       - name: Récupérer la branche v2
         uses: actions/checkout@v4
