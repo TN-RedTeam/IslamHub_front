@@ -211,13 +211,13 @@ class DataService {
     return rpcTags('sujets_invocations', { type_filter: type ? String(type) : '' });
   }
   async getDailyInvocation(day: number, type: InvocationType = 1): Promise<Invocation | null> {
-    const { data, error } = await supabase.rpc('daily_invocation', { day, type_filter: String(type) });
+    const { data, error } = await supabase.rpc('daily_invocation', { day, type_filter: String(type), p_locale: getContentLocale() });
     if (error) throw error;
     return (data ?? null) as Invocation | null;
   }
   /** Invocations/évocations rattachées à un moment de la journée (panneau « Au fil de la journée »). */
   async getJourneeInvocations(): Promise<Invocation[]> {
-    const { data, error } = await supabase.rpc('journee_invocations');
+    const { data, error } = await supabase.rpc('journee_invocations', { p_locale: getContentLocale() });
     if (error) throw error;
     return (data ?? []) as Invocation[];
   }
@@ -437,14 +437,14 @@ class DataService {
 
   // ================= Fiqh / Madhaheb =================
   async getFiqhByEcole(ecole: string): Promise<FiqhChapitre[]> {
-    const { data, error } = await supabase.rpc('fiqh_by_ecole', { ecole_param: ecole });
+    const { data, error } = await supabase.rpc('fiqh_by_ecole', { ecole_param: ecole, p_locale: getContentLocale() });
     if (error) throw error;
     return (data ?? []) as FiqhChapitre[];
   }
 
   // ================= Femmes (matn + commentaire) =================
   async getFemmes(): Promise<FemmesChapitre[]> {
-    const { data, error } = await supabase.rpc('femmes_all');
+    const { data, error } = await supabase.rpc('femmes_all', { p_locale: getContentLocale() });
     if (error) throw error;
     return (data ?? []) as FemmesChapitre[];
   }
@@ -474,7 +474,7 @@ class DataService {
 
   // ================= Coran — exégèse (sourates) =================
   async getSourates(): Promise<SourateInfo[]> {
-    const { data, error } = await supabase.rpc('sourates_all');
+    const { data, error } = await supabase.rpc('sourates_all', { p_locale: getContentLocale() });
     if (error) throw error;
     return (data ?? []) as SourateInfo[];
   }
@@ -509,12 +509,12 @@ class DataService {
     return (data ?? null) as Hadith | null;
   }
   async getDailyDouaa(day: number): Promise<Douaa | null> {
-    const { data, error } = await supabase.rpc('daily_douaa', { day });
+    const { data, error } = await supabase.rpc('daily_douaa', { day, p_locale: getContentLocale() });
     if (error) throw error;
     return (data ?? null) as Douaa | null;
   }
   async getDailyCoran(day: number): Promise<Coran | null> {
-    const { data, error } = await supabase.rpc('daily_coran', { day });
+    const { data, error } = await supabase.rpc('daily_coran', { day, p_locale: getContentLocale() });
     if (error) throw error;
     return (data ?? null) as Coran | null;
   }
