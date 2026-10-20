@@ -22,6 +22,10 @@
     "closeMenu": "Fermer le menu",
     "mainNav": "Navigation principale"
   },
+  "footer": {
+    "quote": "« Que l'un de vous apprenne un chapitre de la religion ou l'enseigne, cela lui vaut mieux que mille rakʿah surérogatoires. »",
+    "rights": "© 2026 Aqida — Ahl as-Sunna wa-l-Jamāʿa"
+  },
   "article": {
     "toc": "Sommaire",
     "backToTop": "Haut de page",
