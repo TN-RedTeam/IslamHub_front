@@ -28,7 +28,7 @@ import { dirname, resolve, join } from 'node:path';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const DIST = resolve(__dirname, '../dist');
 const BASE = '/' + (process.env.VITE_BASE || '/IslamHub_front/').replace(/^\/+|\/+$/g, '');
-const SITE_HOST = new URL(process.env.SITE_ORIGIN || 'https://Sou55i.github.io/IslamHub_front').origin;
+const SITE_HOST = new URL(process.env.SITE_ORIGIN || 'https://tn-redteam.github.io/IslamHub_front').origin;
 const MAX = Number(process.env.PRERENDER_MAX || 1500);
 const LOCALES = ['fr', 'en', 'ar'];
 

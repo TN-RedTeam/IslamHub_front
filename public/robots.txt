@@ -1,5 +1,5 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://sou55i.github.io/IslamHub_front/sitemap.xml
+Sitemap: https://tn-redteam.github.io/IslamHub_front/sitemap.xml
 # Mettre à jour l'URL du Sitemap lors du passage à un vrai domaine.

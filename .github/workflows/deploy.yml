@@ -70,7 +70,7 @@ jobs:
         run: npm run prerender
         env:
           VITE_BASE: /IslamHub_front/
-          SITE_ORIGIN: https://Sou55i.github.io/IslamHub_front
+          SITE_ORIGIN: https://tn-redteam.github.io/IslamHub_front
           VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
           VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
 

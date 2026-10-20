@@ -14,7 +14,7 @@ import { writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, resolve } from 'node:path';
 
-const SITE = (process.env.SITE_ORIGIN || 'https://Sou55i.github.io/IslamHub_front').replace(/\/+$/, '');
+const SITE = (process.env.SITE_ORIGIN || 'https://tn-redteam.github.io/IslamHub_front').replace(/\/+$/, '');
 const LOCALES = ['fr', 'en', 'ar'];
 const URL_ENV = process.env.VITE_SUPABASE_URL || process.env.SUPABASE_URL;
 const KEY_ENV = process.env.VITE_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY;
