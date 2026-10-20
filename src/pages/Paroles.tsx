@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { m } from 'framer-motion';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from '../lib/router';
 import { Search, X, Star, ChevronRight, Loader, GraduationCap as SavantIcon, BookOpen } from 'lucide-react';
 import { dataService } from '../services/DataService';
 import { FilterSelect } from '../components/FilterSelect';

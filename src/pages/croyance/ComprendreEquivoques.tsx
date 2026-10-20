@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from '../../lib/router';
 import { Loader2, ArrowRight, X, Check } from 'lucide-react';
 import { dataService } from '../../services/DataService';
 import { ExposeBody } from '../../components/ExposeBody';

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, useSearchParams } from 'react-router-dom';
+import { Link, useSearchParams } from '../lib/router';
 import { ScrollText, Quote } from 'lucide-react';
 
 /**

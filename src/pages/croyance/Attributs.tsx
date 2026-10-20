@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Loader, ArrowRight } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link } from '../../lib/router';
 import { PageHeader } from '../../components/PageHeader';
 import { BadgeGeneration } from '../../components/BadgeGeneration';
 import { dataService } from '../../services/DataService';

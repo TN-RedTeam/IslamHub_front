@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from '../../lib/router';
 
 /**
  * Primitives « Nuit Teal » (Phase 8.3) — briques réutilisables de la charte :

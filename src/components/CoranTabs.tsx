@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocalizedPathname } from '../lib/router';
 
 /**
  * Onglets de la rubrique « Coran » : deux entrées.
@@ -12,7 +12,7 @@ const TABS = [
 ];
 
 export const CoranTabs: React.FC<{ className?: string }> = ({ className = '' }) => {
-  const { pathname } = useLocation();
+  const pathname = useLocalizedPathname(); // sans préfixe de langue
   const active = pathname.startsWith('/coran/sourates') ? '/coran/sourates' : '/coran';
   return (
     <div role="tablist" aria-label="Coran" className={`inline-flex gap-1 rounded-full border border-line bg-surface p-1 ${className}`}>

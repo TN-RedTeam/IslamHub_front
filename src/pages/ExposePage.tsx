@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link } from '../lib/router';
 import { Loader2, ArrowLeft } from 'lucide-react';
 import { dataService } from '../services/DataService';
 import { ExposeBody } from '../components/ExposeBody';

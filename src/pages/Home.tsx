@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from '../lib/router';
 import { Book, BookOpen, Heart, GraduationCap, Moon, Sun, Sparkles, Loader2, ArrowRight, Folder, Tag, Clock, Sunrise } from 'lucide-react';
 import { dataService } from '../services/DataService';
 import { useSeo } from '../hooks/useSeo';

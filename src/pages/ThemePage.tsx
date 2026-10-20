@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link } from '../lib/router';
 import { Loader2, Search, BookOpen, ScrollText, Quote, ArrowRight, Landmark } from 'lucide-react';
 import { dataService } from '../services/DataService';
 import { BadgeGeneration } from '../components/BadgeGeneration';

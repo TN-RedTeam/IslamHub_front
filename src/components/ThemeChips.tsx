@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from '../lib/router';
 import type { ThemeRef } from '../types';
 
 /** Puces de thèmes cliquables (→ /themes/:slug), style discret cohérent avec les badges. */

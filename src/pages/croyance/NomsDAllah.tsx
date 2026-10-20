@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from '../../lib/router';
 import { Search, Loader, X } from 'lucide-react';
 import { dataService } from '../../services/DataService';
 import { PageHeader } from '../../components/PageHeader';

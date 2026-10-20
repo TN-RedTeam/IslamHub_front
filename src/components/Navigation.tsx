@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, stripLocale } from '../lib/router';
 import { m, AnimatePresence } from 'framer-motion';
 import { Moon, Sun, Menu, X, ChevronDown, Search } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
@@ -76,8 +76,10 @@ export const Navigation: React.FC = () => {
     return () => { document.removeEventListener('mousedown', onDown); document.removeEventListener('keydown', onKey); };
   }, [resOpen]);
 
+  // Chemin sans préfixe de langue (`/fr/coran` → `/coran`) pour comparer aux `to`.
+  const path = stripLocale(location.pathname);
   const isActive = (to: string, exact?: boolean) =>
-    exact ? location.pathname === to : location.pathname === to || location.pathname.startsWith(`${to}/`);
+    exact ? path === to : path === to || path.startsWith(`${to}/`);
   const resActive = resItems.some((i) => isActive(i.to));
 
   const linkCls = (active: boolean) =>

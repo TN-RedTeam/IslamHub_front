@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link } from '../lib/router';
 import { m } from 'framer-motion';
 import { Loader, Copy, Check, Share2, Star, BookOpen, ArrowLeft, Quote } from 'lucide-react';
 import { dataService } from '../services/DataService';

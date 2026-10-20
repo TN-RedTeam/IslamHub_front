@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from '../lib/router';
 import { m } from 'framer-motion';
 import { Home, BookOpen } from 'lucide-react';
 import { usePageTitle } from '../hooks/usePageTitle';

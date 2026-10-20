@@ -1,5 +1,7 @@
-import { lazy, Suspense } from 'react';
-import { BrowserRouter, HashRouter, Routes, Route, Navigate, useParams } from 'react-router-dom';
+import { lazy, Suspense, useEffect, useMemo } from 'react';
+import { BrowserRouter, HashRouter, Routes, Route, useParams, useLocation } from 'react-router-dom';
+import { Navigate, LocaleProvider } from './lib/router';
+import i18n, { DEFAULT_LOCALE, dirFor, isLocale, type Locale } from './i18n';
 import { LazyMotion, domAnimation } from 'framer-motion';
 
 // Routeur choisi au build :
@@ -111,84 +113,135 @@ function OldVersetRedirect() {
   return <Navigate to={`/croyance/versets-hadiths-equivoques/${slug}`} replace />;
 }
 
+/**
+ * Effets de bord liés à la langue active : synchronise i18next, met à jour
+ * `<html lang>` / `dir` (RTL pour l'arabe) et mémorise le choix.
+ */
+function LocaleEffects({ locale }: { locale: Locale }) {
+  useEffect(() => {
+    if (i18n.language !== locale) void i18n.changeLanguage(locale);
+    const el = document.documentElement;
+    el.lang = locale;
+    el.dir = dirFor(locale);
+    try {
+      localStorage.setItem('locale', locale);
+    } catch {
+      /* stockage indisponible (mode privé) → on ignore */
+    }
+  }, [locale]);
+  return null;
+}
+
+/**
+ * `/` → redirige vers la langue mémorisée, sinon détectée (`Accept-Language`),
+ * avec repli sur le français.
+ */
+function RootRedirect() {
+  const target = useMemo<Locale>(() => {
+    let stored: string | null = null;
+    try {
+      stored = localStorage.getItem('locale');
+    } catch {
+      /* stockage indisponible → on ignore */
+    }
+    if (isLocale(stored)) return stored;
+    const nav = typeof navigator !== 'undefined' ? navigator.language.slice(0, 2) : '';
+    if (isLocale(nav)) return nav;
+    return DEFAULT_LOCALE;
+  }, []);
+  return <Navigate to={`/${target}`} replace />;
+}
+
 /** Shell public : barre de nav + pied de page + toutes les pages du site. */
 function PublicShell() {
+  const { locale } = useParams();
+  const { pathname } = useLocation();
+
+  // Préfixe inconnu = ancienne URL sans langue (ex. `/hadiths`) → 301 (client)
+  // vers son équivalent `/fr/…`, pour ne casser ni les liens ni le SEO acquis.
+  if (!isLocale(locale)) {
+    return <Navigate to={`/${DEFAULT_LOCALE}${pathname}`} replace />;
+  }
+
   return (
-    <div className="min-h-screen transition-colors duration-200 flex flex-col">
-      <Navigation />
-      <PwaUpdater />
-      <main className="flex-1">
-        <Suspense fallback={<PageFallback />}>
-          <Routes>
+    <LocaleProvider value={locale}>
+      <LocaleEffects locale={locale} />
+      <div className="min-h-screen transition-colors duration-200 flex flex-col">
+        <Navigation />
+        <PwaUpdater />
+        <main className="flex-1">
+          <Suspense fallback={<PageFallback />}>
+            <Routes>
                 {/* Pages principales */}
-                <Route path="/" element={<Home />} />
+                <Route index element={<Home />} />
                 {/* 13.3 — la rubrique Coran = exégèse ; « versets par thème » n'est plus exposé publiquement (données + preuves intactes). */}
-                <Route path="/coran" element={<Navigate to="/coran/sourates" replace />} />
-                <Route path="/coran/sourates" element={<SouratesIndex />} />
-                <Route path="/coran/sourates/:slug" element={<SouratePage />} />
-                <Route path="/recherche" element={<Recherche />} />
-                <Route path="/exposes/:slug" element={<ExposePage />} />
-                <Route path="/hadiths" element={<Hadiths />} />
-                <Route path="/hadiths/:id/:slug" element={<HadithPage />} />
+                <Route path="coran" element={<Navigate to="/coran/sourates" replace />} />
+                <Route path="coran/sourates" element={<SouratesIndex />} />
+                <Route path="coran/sourates/:slug" element={<SouratePage />} />
+                <Route path="recherche" element={<Recherche />} />
+                <Route path="exposes/:slug" element={<ExposePage />} />
+                <Route path="hadiths" element={<Hadiths />} />
+                <Route path="hadiths/:id/:slug" element={<HadithPage />} />
                 {/* Rubrique unifiée Invocations & Évocations (ex-douaas + ex-dhikrs) */}
-                <Route path="/invocations" element={<Invocations />} />
-                <Route path="/invocations/journee" element={<Navigate to="/invocations" replace />} />
+                <Route path="invocations" element={<Invocations />} />
+                <Route path="invocations/journee" element={<Navigate to="/invocations" replace />} />
                 {/* Redirections des anciennes URL pour ne pas casser les liens */}
-                <Route path="/douaas" element={<Navigate to="/invocations" replace />} />
-                <Route path="/dhikrs" element={<Navigate to="/invocations" replace />} />
+                <Route path="douaas" element={<Navigate to="/invocations" replace />} />
+                <Route path="dhikrs" element={<Navigate to="/invocations" replace />} />
                 {/* Rubrique « Savants » : répertoire (défaut) + toutes les paroles */}
                 {/* Phase 10 : hub unique « Biographies » (ex-Savants + ex-Compagnons). */}
-                <Route path="/biographies" element={<Biographies />} />
-                <Route path="/savants" element={<Navigate to="/biographies" replace />} />
-                <Route path="/compagnons" element={<Navigate to="/biographies" replace />} />
-                <Route path="/savants/paroles" element={<Navigate to="/paroles" replace />} />
-                <Route path="/savants/:slug" element={<SavantPage />} />
+                <Route path="biographies" element={<Biographies />} />
+                <Route path="savants" element={<Navigate to="/biographies" replace />} />
+                <Route path="compagnons" element={<Navigate to="/biographies" replace />} />
+                <Route path="savants/paroles" element={<Navigate to="/paroles" replace />} />
+                <Route path="savants/:slug" element={<SavantPage />} />
                 {/* Pages de parole dédiées + redirection de l'ancienne rubrique */}
-                <Route path="/paroles/:slug" element={<ParolePage />} />
-                <Route path="/paroles" element={<Paroles />} />
-                <Route path="/multimedia" element={<Multimedia />} />
+                <Route path="paroles/:slug" element={<ParolePage />} />
+                <Route path="paroles" element={<Paroles />} />
+                <Route path="multimedia" element={<Multimedia />} />
                 {/* Thèmes transverses (Coran / Sunna / Paroles) */}
-                <Route path="/themes" element={<ThemesIndex />} />
-                <Route path="/themes/:slug" element={<ThemePage />} />
+                <Route path="themes" element={<ThemesIndex />} />
+                <Route path="themes/:slug" element={<ThemePage />} />
                 {/* Récits : Histoires des Prophètes + Vies des vertueux */}
-                <Route path="/recits" element={<Recits />} />
-                <Route path="/recits/:slug" element={<RecitPage />} />
-                <Route path="/femmes" element={<Femmes />} />
+                <Route path="recits" element={<Recits />} />
+                <Route path="recits/:slug" element={<RecitPage />} />
+                <Route path="femmes" element={<Femmes />} />
 
                 {/* Croyance (Aqida) */}
-                <Route path="/croyance" element={<Croyance />} />
-                <Route path="/croyance/attributs" element={<Attributs />} />
+                <Route path="croyance" element={<Croyance />} />
+                <Route path="croyance/attributs" element={<Attributs />} />
                 {/* Redirection de l'ancienne URL */}
-                <Route path="/croyance/noms-et-attributs" element={<Navigate to="/croyance/attributs" replace />} />
-                <Route path="/croyance/piliers-de-la-foi" element={<PiliersDeLaFoi />} />
-                <Route path="/croyance/versets-hadiths-equivoques" element={<VersetsEquivoques />} />
-                <Route path="/croyance/versets-hadiths-equivoques/comprendre" element={<ComprendreEquivoques />} />
-                <Route path="/croyance/versets-hadiths-equivoques/:slug" element={<VersetEquivoque />} />
+                <Route path="croyance/noms-et-attributs" element={<Navigate to="/croyance/attributs" replace />} />
+                <Route path="croyance/piliers-de-la-foi" element={<PiliersDeLaFoi />} />
+                <Route path="croyance/versets-hadiths-equivoques" element={<VersetsEquivoques />} />
+                <Route path="croyance/versets-hadiths-equivoques/comprendre" element={<ComprendreEquivoques />} />
+                <Route path="croyance/versets-hadiths-equivoques/:slug" element={<VersetEquivoque />} />
                 {/* Redirections de l'ancienne route */}
-                <Route path="/croyance/versets-equivoques" element={<Navigate to="/croyance/versets-hadiths-equivoques" replace />} />
-                <Route path="/croyance/versets-equivoques/:slug" element={<OldVersetRedirect />} />
-                <Route path="/croyance/noms-d-allah" element={<NomsDAllah />} />
-                <Route path="/croyance/jugement-rationnel" element={<JugementRationnel />} />
-                <Route path="/dossiers" element={<DossiersIndex />} />
-                <Route path="/dossiers/:slug" element={<DossierThematique />} />
+                <Route path="croyance/versets-equivoques" element={<Navigate to="/croyance/versets-hadiths-equivoques" replace />} />
+                <Route path="croyance/versets-equivoques/:slug" element={<OldVersetRedirect />} />
+                <Route path="croyance/noms-d-allah" element={<NomsDAllah />} />
+                <Route path="croyance/jugement-rationnel" element={<JugementRationnel />} />
+                <Route path="dossiers" element={<DossiersIndex />} />
+                <Route path="dossiers/:slug" element={<DossierThematique />} />
 
                 {/* Écoles (madhāhib) */}
-                <Route path="/ecoles" element={<Madhaheb />} />
+                <Route path="ecoles" element={<Madhaheb />} />
                 {/* Redirection de l'ancienne route pour ne pas casser les liens */}
-                <Route path="/madhaheb" element={<Navigate to="/ecoles" replace />} />
-                <Route path="/ecoles/Hanafi" element={<Hanafi />} />
-                <Route path="/ecoles/Malikite" element={<Malikite />} />
-                <Route path="/ecoles/Shafii" element={<Shafii />} />
-                <Route path="/ecoles/Hanbalite" element={<Hanbalite />} />
+                <Route path="madhaheb" element={<Navigate to="/ecoles" replace />} />
+                <Route path="ecoles/Hanafi" element={<Hanafi />} />
+                <Route path="ecoles/Malikite" element={<Malikite />} />
+                <Route path="ecoles/Shafii" element={<Shafii />} />
+                <Route path="ecoles/Hanbalite" element={<Hanbalite />} />
 
                 {/* 404 */}
                 <Route path="*" element={<NotFound />} />
-          </Routes>
-        </Suspense>
-      </main>
-      <SiteFooter />
-      <BottomNav />
-    </div>
+            </Routes>
+          </Suspense>
+        </main>
+        <SiteFooter />
+        <BottomNav />
+      </div>
+    </LocaleProvider>
   );
 }
 
@@ -251,8 +304,9 @@ function App() {
                   <Route path="femmes/nouveau" element={<AdminFemmeForm />} />
                   <Route path="femmes/:id" element={<AdminFemmeForm />} />
                 </Route>
-                {/* Site public */}
-                <Route path="/*" element={<PublicShell />} />
+                {/* Site public — préfixé par la langue (/fr, /en, /ar) */}
+                <Route path="/" element={<RootRedirect />} />
+                <Route path="/:locale/*" element={<PublicShell />} />
               </Routes>
             </Suspense>
           </Router>

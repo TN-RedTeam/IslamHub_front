@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from '../lib/router';
 import { Landmark } from 'lucide-react';
 
 /** Mappe le nom d'école (colonne `ecole`) vers le segment d'URL de sa page. */

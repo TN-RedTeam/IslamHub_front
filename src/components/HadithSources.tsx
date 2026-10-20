@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from '../lib/router';
 import { BookOpen } from 'lucide-react';
 import type { HadithSource } from '../types';
 

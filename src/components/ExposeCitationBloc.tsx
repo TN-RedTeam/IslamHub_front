@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from '../lib/router';
 import { ArrowRight } from 'lucide-react';
 import { BadgeGeneration } from './BadgeGeneration';
 import type { ExposeCitation } from '../types';

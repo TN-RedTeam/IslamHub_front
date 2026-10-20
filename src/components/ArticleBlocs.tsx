@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from '../lib/router';
 import { BookOpen, ExternalLink, Image as ImageIcon, ArrowUp, List } from 'lucide-react';
 import { Markdown } from './Markdown';
 import { Lightbox, type LightboxImage } from './Lightbox';
