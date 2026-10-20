@@ -557,6 +557,9 @@ export interface ParoleSegmentInput {
 export interface ParoleFormData {
   id?: number | null;
   sujet: string; rubrique: string; intro: string; texte_arabe: string; texte_francais: string; phonetique: string; explication: string;
+  // Traductions côté à côte (modèle colonnes par langue). AR : sujet/explication/intro.
+  sujet_en: string; sujet_ar: string; intro_en: string; intro_ar: string;
+  texte_en: string; phonetique_en: string; explication_en: string; explication_ar: string;
   source_livre: string; page: string; ecole: string; tag: string;
   savant_id?: number | null;
   new_savant?: { nom: string } | null;
@@ -573,6 +576,8 @@ export interface ParoleFormData {
 export interface ParoleEditShape {
   id: number; sujet: string | null; rubrique: string | null; intro: string | null; texte_arabe: string | null; texte_francais: string | null;
   phonetique: string | null; explication: string | null; source_livre: string | null; page: string | null;
+  sujet_en: string | null; sujet_ar: string | null; intro_en: string | null; intro_ar: string | null;
+  texte_en: string | null; phonetique_en: string | null; explication_en: string | null; explication_ar: string | null;
   ecole: string | null; savant_id: number | null; tag: string | null;
   rapporteur_savant_id: number | null;
   commente_type: 'parole' | 'hadith' | 'verset' | null;

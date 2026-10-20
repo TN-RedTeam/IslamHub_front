@@ -3,7 +3,7 @@ import { Link } from '../lib/router';
 import { BookOpen, ExternalLink, Image as ImageIcon, ArrowUp, List } from 'lucide-react';
 import { Markdown } from './Markdown';
 import { Lightbox, type LightboxImage } from './Lightbox';
-import { UI } from '../strings';
+import { useTranslation } from 'react-i18next';
 import type { Bloc, BlocRef } from '../types';
 
 /**
@@ -46,6 +46,7 @@ function fullReference(citation: Bloc['citation_type'], ref: BlocRef): string {
 }
 
 const Proof: React.FC<{ b: Bloc }> = ({ b }) => {
+  const { t } = useTranslation();
   const ref = b.ref;
   const [zoom, setZoom] = useState<LightboxImage | null>(null);
   if (!ref) return null;
@@ -91,12 +92,12 @@ const Proof: React.FC<{ b: Bloc }> = ({ b }) => {
               onClick={() => setZoom({ image_url: scans[0].image_url, alt: scans[0].alt, legende: scans[0].legende ?? undefined, source_livre: scans[0].source_livre ?? ref.source_livre ?? undefined, source_livre_ar: scans[0].source_livre_ar ?? undefined })}
               className="inline-flex items-center gap-1.5 text-[12.5px] font-semibold text-green hover:text-green-deep transition-colors"
             >
-              <ImageIcon className="w-4 h-4" /> {UI.article.viewScan}
+              <ImageIcon className="w-4 h-4" /> {t('article.viewScan')}
             </button>
           )}
           {href && (
             <Link to={href} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-[12.5px] font-medium text-muted hover:text-ink transition-colors">
-              <BookOpen className="w-4 h-4" /> {UI.article.openSource} <ExternalLink className="w-3.5 h-3.5" />
+              <BookOpen className="w-4 h-4" /> {t('article.openSource')} <ExternalLink className="w-3.5 h-3.5" />
             </Link>
           )}
         </div>
@@ -140,6 +141,7 @@ function useActiveSection(ids: string[]): string | null {
 }
 
 export const ArticleBlocs: React.FC<{ blocs: Bloc[]; showToc?: boolean }> = ({ blocs, showToc = true }) => {
+  const { t } = useTranslation();
   const toc = useMemo(() => {
     const out: { id: string; label: string }[] = [];
     blocs.forEach((b, i) => {
@@ -186,10 +188,10 @@ export const ArticleBlocs: React.FC<{ blocs: Bloc[]; showToc?: boolean }> = ({ b
 
   const BackToTop = showTop ? (
     <button
-      type="button" onClick={toTop} aria-label={UI.article.backToTop}
+      type="button" onClick={toTop} aria-label={t('article.backToTop')}
       className="fixed bottom-5 end-5 z-30 inline-flex items-center gap-1.5 rounded-full bg-accent-deep text-white shadow-card px-3.5 py-2.5 text-sm font-medium hover:brightness-110 transition-[filter] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green"
     >
-      <ArrowUp className="w-4 h-4" /> <span className="hidden sm:inline">{UI.article.backToTop}</span>
+      <ArrowUp className="w-4 h-4" /> <span className="hidden sm:inline">{t('article.backToTop')}</span>
     </button>
   ) : null;
 
@@ -200,7 +202,7 @@ export const ArticleBlocs: React.FC<{ blocs: Bloc[]; showToc?: boolean }> = ({ b
       {/* Mobile : sommaire dépliant */}
       <details className="min-[900px]:hidden rounded-xl border border-line bg-surface">
         <summary className="flex items-center gap-2 px-4 py-2.5 cursor-pointer text-[13.5px] font-semibold text-ink list-none [&::-webkit-details-marker]:hidden">
-          <List className="w-4 h-4 text-green" /> {UI.article.toc}
+          <List className="w-4 h-4 text-green" /> {t('article.toc')}
         </summary>
         <ol className="list-none m-0 px-2 pb-2 pt-0">
           {toc.map((t) => (
@@ -213,8 +215,8 @@ export const ArticleBlocs: React.FC<{ blocs: Bloc[]; showToc?: boolean }> = ({ b
       </details>
 
       {/* Desktop : sommaire sticky + section active */}
-      <nav aria-label={UI.article.toc} className="hidden min-[900px]:block min-[900px]:sticky min-[900px]:top-20 self-start">
-        <p className="text-[11px] uppercase tracking-[0.16em] text-accent font-bold mb-2.5">{UI.article.toc}</p>
+      <nav aria-label={t('article.toc')} className="hidden min-[900px]:block min-[900px]:sticky min-[900px]:top-20 self-start">
+        <p className="text-[11px] uppercase tracking-[0.16em] text-accent font-bold mb-2.5">{t('article.toc')}</p>
         <ol className="list-none m-0 p-0">
           {toc.map((t) => (
             <li key={t.id}>

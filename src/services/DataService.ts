@@ -417,7 +417,7 @@ class DataService {
   }
   /** Fiche parole complète (page /paroles/:slug). */
   async getParole(slug: string): Promise<ParoleDetail | null> {
-    const { data, error } = await supabase.rpc('get_parole', { p_slug: slug });
+    const { data, error } = await supabase.rpc('get_parole', { p_slug: slug, p_locale: getContentLocale() });
     if (error) throw error;
     return (data ?? null) as ParoleDetail | null;
   }
