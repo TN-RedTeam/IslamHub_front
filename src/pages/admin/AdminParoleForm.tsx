@@ -6,6 +6,7 @@ import { ScanUploadButton } from '../../components/admin/ScanUploadButton';
 import { NameSelect } from '../../components/admin/NameSelect';
 import { BlocEditor } from '../../components/admin/BlocEditor';
 import { useNavigate, useParams, Link } from 'react-router-dom';
+import { TranslationPanel } from '../../components/admin/TranslationPanel';
 import { Loader2, Plus, Trash2, Check, AlertTriangle } from 'lucide-react';
 import { adminService, type SavantRow, type ParoleFormData, type ParoleImageInput, type DossierRefs } from '../../services/AdminService';
 import { AR_TEMPLATE, caretBetween, normalizeBracketSpaces } from '../../utils/arabicTemplate';
@@ -113,6 +114,9 @@ export const AdminParoleForm: React.FC = () => {
       <p className="text-xs text-muted"><Link to="/admin/paroles" className="hover:text-ink">Paroles</Link> · {editId ? 'Modifier' : 'Nouvelle'}</p>
       <h1 className="font-display font-semibold text-ink text-3xl mt-1 mb-1">{editId ? 'Modifier la parole' : 'Nouvelle parole'}</h1>
       <p className="text-muted text-sm mb-6">Le texte arabe collé ici est enregistré tel quel (UTF-8).</p>
+
+      {/* Circuit de traduction (Phase 15.7) — visible une fois l'entrée créée. */}
+      {editId ? <TranslationPanel kind="parole" id={editId} editPathBase="/admin/paroles" /> : null}
 
       {/* 1. Parole */}
       <section className="rounded-card border border-line bg-surface p-5 mb-4">
