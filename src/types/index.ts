@@ -200,6 +200,28 @@ export interface RecitDetail {
   enfants?: { slug: string; titre: string }[];   // « Ses récits » (Phase 5)
 }
 
+// ============================== Questions fréquentes ==============================
+/** Référence d'un thème attaché à une question (puces + regroupement de la liste). */
+export interface QuestionThemeRef { slug: string; nom: string; famille: ThemeFamille; }
+/** Carte d'index d'une question (page /questions). */
+export interface QuestionCard {
+  id: number;
+  slug: string;
+  question: string;
+  reponse_courte: string | null;
+  ordre: number;
+  themes: QuestionThemeRef[];
+}
+/** Fiche réponse complète (/questions/:slug). Le développement sourcé vient de getBlocs('question', id). */
+export interface QuestionDetail {
+  question: {
+    id: number; slug: string; question: string; reponse_courte: string | null;
+    variantes: string[]; ordre: number; locale: string; translation_group: string;
+  };
+  themes: QuestionThemeRef[];
+  dossiers: { slug: string; h1: string }[];
+}
+
 /** Fiche savant (table `savants`) pour la page /savants */
 export interface SavantInfo {
   id: number;

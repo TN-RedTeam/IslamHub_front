@@ -21,6 +21,7 @@ const mainItems = [
 const resItems = [
   { to: '/themes', label: 'Thèmes' },
   { to: '/dossiers', label: 'Dossiers thématiques' },
+  { to: '/questions', label: 'Questions fréquentes' },
   { to: '/ecoles', label: 'Écoles' },
   { to: '/recits', label: 'Récits' },
   { to: '/femmes', label: 'La femme musulmane' },

@@ -53,6 +53,8 @@ const JugementRationnel = lazy(() => import('./pages/croyance/JugementRationnel'
 const NomsDAllah = lazy(() => import('./pages/croyance/NomsDAllah').then((m) => ({ default: m.NomsDAllah })));
 const DossierThematique = lazy(() => import('./pages/DossierThematique').then((m) => ({ default: m.DossierThematique })));
 const DossiersIndex = lazy(() => import('./pages/DossiersIndex').then((m) => ({ default: m.DossiersIndex })));
+const QuestionsIndex = lazy(() => import('./pages/QuestionsIndex').then((m) => ({ default: m.QuestionsIndex })));
+const QuestionPage = lazy(() => import('./pages/QuestionPage').then((m) => ({ default: m.QuestionPage })));
 const NotFound = lazy(() => import('./pages/NotFound').then((m) => ({ default: m.NotFound })));
 
 // Écoles (madhāhib)
@@ -225,6 +227,8 @@ function PublicShell() {
                 <Route path="croyance/jugement-rationnel" element={<JugementRationnel />} />
                 <Route path="dossiers" element={<DossiersIndex />} />
                 <Route path="dossiers/:slug" element={<DossierThematique />} />
+                <Route path="questions" element={<QuestionsIndex />} />
+                <Route path="questions/:slug" element={<QuestionPage />} />
 
                 {/* Écoles (madhāhib) */}
                 <Route path="ecoles" element={<Madhaheb />} />
