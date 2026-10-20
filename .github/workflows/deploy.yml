@@ -44,6 +44,12 @@ jobs:
       - name: Installer les dépendances
         run: npm ci
 
+      - name: Générer le sitemap multilingue (depuis la base, publié uniquement)
+        run: npm run gen:sitemap
+        env:
+          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
+
       - name: Compiler le site principal (racine)
         run: npm run build
         # Les clés Supabase sont injectées au build depuis les secrets du dépôt
