@@ -8,9 +8,11 @@
 --   admin_delete_question(p_id)      : supprime la question (+ ses blocs & liens)
 -- Le développement sourcé reste géré par les blocs composables génériques
 -- (admin_get_blocs / admin_save_blocs avec parent_type='question').
--- Enfin : enregistre le type 'question' dans le circuit de traduction générique
--- (15.7b) — EN/AR copiés en brouillon, même translation_group, slug suffixé.
--- À exécuter après questions_01/02 (et 15.7b pour la traduction).
+-- Enfin : enregistre 'question' dans admin_translation_status (panneau de
+-- traduction). admin_add_translation n'est PAS redéfini ici : sa version
+-- autoritaire (avec 'question' + copie des enfants) est celle de phase15.7e.
+-- Ordre INDIFFÉRENT vis-à-vis de 15.7e (fonctions distinctes). À exécuter
+-- après questions_01/02.
 -- ============================================================================
 
 -- 1) Liste admin ------------------------------------------------------------
@@ -111,73 +113,10 @@ grant execute on function public.admin_save_question(jsonb)     to authenticated
 grant execute on function public.admin_delete_question(bigint)  to authenticated;
 
 -- 5) Traduction générique : enregistrer le type 'question' ------------------
--- Re-crée les 2 fonctions de 15.7b en AJOUTANT la ligne ('question',...).
-create or replace function public.admin_add_translation(p_kind text, p_source_id bigint, p_locale text)
- returns bigint language plpgsql security definer set search_path to 'public'
-as $function$
-declare
-  v_table text; v_slugcol text; v_pubcol text;
-  v_tg uuid; v_cols text; v_slug text; v_new_id bigint; v_n int;
-begin
-  if not public.is_admin() then raise exception 'Écriture réservée à l''administrateur.'; end if;
-  if p_locale not in ('en','ar') then raise exception 'Langue cible invalide : %', p_locale; end if;
-
-  select t, s, pub into v_table, v_slugcol, v_pubcol
-  from (values
-    ('hadith','hadiths','slug','publiee'),
-    ('parole','paroles','slug','publiee'),
-    ('recit','recits','slug','published'),
-    ('dossier','dossiers','slug','published'),
-    ('savant','savants','slug','publiee'),
-    ('equivoque','versets_equivoques','slug','published'),
-    ('sourate','sourates','slug','publiee'),
-    ('question','questions','slug','publiee'),
-    ('nom','noms_allah','slug',null),
-    ('attribut','attributs','slug',null),
-    ('coran','coran',null,'publiee'),
-    ('invocation','invocations',null,'publiee'),
-    ('femme','femmes',null,'publiee'),
-    ('fiqh','fiqh',null,'publiee')
-  ) as m(k,t,s,pub) where m.k = p_kind;
-
-  if v_table is null then raise exception 'Type non pris en charge : %', p_kind; end if;
-
-  execute format('select translation_group from public.%I where id=$1', v_table) into v_tg using p_source_id;
-  if v_tg is null then raise exception '% source introuvable (id %).', p_kind, p_source_id; end if;
-
-  execute format('select count(*) from public.%I where translation_group=$1 and locale=$2', v_table)
-    into v_n using v_tg, p_locale;
-  if v_n > 0 then raise exception 'Une version % existe déjà pour ce groupe.', p_locale; end if;
-
-  select string_agg(quote_ident(column_name), ', ' order by ordinal_position)
-    into v_cols
-    from information_schema.columns
-    where table_schema='public' and table_name=v_table
-      and is_generated='NEVER' and data_type <> 'tsvector'
-      and column_name not in ('id','locale','translation_group')
-      and column_name is distinct from v_slugcol
-      and column_name is distinct from v_pubcol;
-
-  if v_slugcol is not null then
-    execute format('select %I from public.%I where id=$1', v_slugcol, v_table) into v_slug using p_source_id;
-    v_slug := coalesce(nullif(v_slug,''), p_kind) || '-' || p_locale;
-    execute format('select count(*) from public.%I where %I=$1', v_table, v_slugcol) into v_n using v_slug;
-    if v_n > 0 then v_slug := v_slug || '-' || floor(random()*100000)::text; end if;
-  end if;
-
-  execute format(
-    'insert into public.%1$I (%2$s, locale, translation_group%3$s%4$s) '
-    'select %2$s, $1, $2%5$s%6$s from public.%1$I where id=$3 returning id',
-    v_table, v_cols,
-    case when v_slugcol is not null then ', '||quote_ident(v_slugcol) else '' end,
-    case when v_pubcol  is not null then ', '||quote_ident(v_pubcol)  else '' end,
-    case when v_slugcol is not null then ', '||quote_literal(v_slug)  else '' end,
-    case when v_pubcol  is not null then ', false'                    else '' end
-  ) into v_new_id using p_locale, v_tg, p_source_id;
-
-  return v_new_id;
-end $function$;
-
+-- NB. admin_add_translation est désormais défini (avec 'question' ET la copie
+-- des enfants) par phase15.7e — on NE le redéfinit PAS ici pour ne pas écraser
+-- sa version. On ne (re)déclare ici que admin_translation_status, qui doit
+-- connaître 'question' pour alimenter le panneau de traduction.
 create or replace function public.admin_translation_status(p_kind text, p_source_id bigint)
  returns json language plpgsql security definer set search_path to 'public'
 as $function$
