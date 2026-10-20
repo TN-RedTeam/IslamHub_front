@@ -114,8 +114,9 @@ async function rpcSearch<T>(
   return shapeResult<T>(data, page, pageSize);
 }
 
-async function rpcTags(fn: string, args?: Record<string, unknown>): Promise<string[]> {
-  const { data, error } = await supabase.rpc(fn, args);
+async function rpcTags(fn: string, args?: Record<string, unknown>, localeAware = false): Promise<string[]> {
+  const finalArgs = localeAware ? { ...(args ?? {}), p_locale: getContentLocale() } : args;
+  const { data, error } = await supabase.rpc(fn, finalArgs);
   if (error) throw error;
   return (data ?? []) as string[];
 }
@@ -144,7 +145,7 @@ class DataService {
     return shapeResult<Hadith>(data, 0, limit);
   }
   async getHadithTags(): Promise<string[]> {
-    return rpcTags('tags_hadiths');
+    return rpcTags('tags_hadiths', undefined, true);
   }
   async getHadith(id: number): Promise<HadithDetail | null> {
     const { data, error } = await supabase.rpc('get_hadith', { hadith_id: id });
@@ -153,7 +154,7 @@ class DataService {
   }
   /** Valeurs distinctes des rubriques (menus déroulants) sans charger les hadiths. */
   async getHadithRubriques(): Promise<{ statuts: string[]; rapporteurs: string[]; narrateurs: string[] }> {
-    const { data, error } = await supabase.rpc('hadith_rubriques');
+    const { data, error } = await supabase.rpc('hadith_rubriques', { p_locale: getContentLocale() });
     if (error) throw error;
     const d = (data ?? {}) as { statuts?: string[]; rapporteurs?: string[]; narrateurs?: string[] };
     return { statuts: d.statuts ?? [], rapporteurs: d.rapporteurs ?? [], narrateurs: d.narrateurs ?? [] };
@@ -343,7 +344,7 @@ class DataService {
 
   /** Contenus liés par thème partagé (Phase 4.7). */
   async getRelatedByTheme(kind: 'hadith' | 'parole' | 'verset', id: number, limit = 8): Promise<RelatedItem[]> {
-    const { data, error } = await supabase.rpc('related_by_theme', { p_kind: kind, p_id: id, p_limit: limit });
+    const { data, error } = await supabase.rpc('related_by_theme', { p_kind: kind, p_id: id, p_limit: limit, p_locale: getContentLocale() });
     if (error) throw error;
     return (data ?? []) as RelatedItem[];
   }
@@ -413,11 +414,11 @@ class DataService {
   async getParoleSujets(): Promise<string[]> { return rpcTags('sujets_paroles'); }
   /** Sujets + compteur (une requête agrégée, pas de N+1) — pour « Parcourir par sujet ». */
   async getHadithSujetsCounts(): Promise<SubjectCount[]> {
-    const { data, error } = await supabase.rpc('sujets_hadiths_counts');
+    const { data, error } = await supabase.rpc('sujets_hadiths_counts', { p_locale: getContentLocale() });
     if (error) throw error; return (data ?? []) as SubjectCount[];
   }
   async getParoleSujetsCounts(): Promise<SubjectCount[]> {
-    const { data, error } = await supabase.rpc('sujets_paroles_counts');
+    const { data, error } = await supabase.rpc('sujets_paroles_counts', { p_locale: getContentLocale() });
     if (error) throw error; return (data ?? []) as SubjectCount[];
   }
 
@@ -458,12 +459,12 @@ class DataService {
   }
   /** Hub « Biographies » : toutes les personnes publiées (Phase 10). */
   async getPersonnes(): Promise<PersonneHub[]> {
-    const { data, error } = await supabase.rpc('personnes_published');
+    const { data, error } = await supabase.rpc('personnes_published', { p_locale: getContentLocale() });
     if (error) throw error;
     return (data ?? []) as PersonneHub[];
   }
   async getSavantsMini(): Promise<SavantMini[]> {
-    const { data, error } = await supabase.rpc('savants_mini');
+    const { data, error } = await supabase.rpc('savants_mini', { p_locale: getContentLocale() });
     if (error) throw error;
     return (data ?? []) as SavantMini[];
   }
@@ -500,7 +501,7 @@ class DataService {
 
   // ================= Accueil (Home) =================
   async getStats(): Promise<SiteStats> {
-    const { data, error } = await supabase.rpc('site_stats');
+    const { data, error } = await supabase.rpc('site_stats', { p_locale: getContentLocale() });
     if (error) throw error;
     return (data ?? {}) as SiteStats;
   }
