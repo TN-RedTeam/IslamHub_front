@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from '../lib/router';
 import { dataService } from '../services/DataService';
 import { slugify } from '../utils/slug';
 import type { SavantMini } from '../types';

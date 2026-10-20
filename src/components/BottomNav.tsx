@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocalizedPathname } from '../lib/router';
 import { Home, BookOpen, Sparkles, Users, Search } from 'lucide-react';
 import { UI } from '../strings';
 
@@ -16,7 +16,7 @@ const TABS = [
 ];
 
 export const BottomNav: React.FC = () => {
-  const { pathname } = useLocation();
+  const pathname = useLocalizedPathname(); // sans préfixe de langue
   const isActive = (to: string, exact?: boolean) =>
     exact ? pathname === to : pathname === to || pathname.startsWith(`${to}/`);
 

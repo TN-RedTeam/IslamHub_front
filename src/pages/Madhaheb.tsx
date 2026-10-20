@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from '../lib/router';
 import { ChevronRight } from 'lucide-react';
 import { useSeo } from '../hooks/useSeo';
 import { MADHHAB_AR } from '../constants/madhaheb';

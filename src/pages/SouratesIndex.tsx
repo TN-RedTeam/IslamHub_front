@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from '../lib/router';
 import { Loader2, BookOpen, Search, LayoutGrid, List, Check } from 'lucide-react';
 import { dataService } from '../services/DataService';
 import { useSeo } from '../hooks/useSeo';

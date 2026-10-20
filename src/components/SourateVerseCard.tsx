@@ -1,5 +1,5 @@
 import { forwardRef } from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from '../lib/router';
 import { AlertTriangle, ChevronRight } from 'lucide-react';
 import { Markdown } from './Markdown';
 import type { SourateDetail } from '../types';

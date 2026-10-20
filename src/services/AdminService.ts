@@ -6,6 +6,15 @@ export interface NarrateurRow { id: number; nom: string; generation: string | nu
 export interface RecueilRow { id: number; titre: string; savant_id: number | null; auteur: string | null; }
 export interface SavantRow { id: number; nom: string; }
 
+// Statut de traduction d'une entrée (Phase 15.7).
+export interface TranslationVersion { exists: boolean; id: number | null; publiee: boolean; }
+export interface TranslationStatus {
+  translation_group: string;
+  fr: TranslationVersion;
+  en: TranslationVersion;
+  ar: TranslationVersion;
+}
+
 export interface HadithSourceInput {
   recueil_id?: number | null;
   new_recueil?: { titre: string; savant_id: number | null } | null;
@@ -178,6 +187,18 @@ class AdminService {
   async saveParole(payload: ParoleFormData): Promise<number> {
     const { data, error } = await supabase.rpc('admin_save_parole', { p: payload });
     if (error) throw error; return data as number;
+  }
+
+  // ---- Traductions (Phase 15.7) ----
+  /** Crée la version EN (reliée) ou AR (reliée) d'une entrée ; renvoie son id. */
+  async addTranslation(kind: string, sourceId: number, locale: 'en' | 'ar'): Promise<number> {
+    const { data, error } = await supabase.rpc('admin_add_translation', { p_kind: kind, p_source_id: sourceId, p_locale: locale });
+    if (error) throw error; return data as number;
+  }
+  /** Statut de traduction d'un groupe (FR ✓ · EN — · AR —). */
+  async translationStatus(kind: string, sourceId: number): Promise<TranslationStatus> {
+    const { data, error } = await supabase.rpc('admin_translation_status', { p_kind: kind, p_source_id: sourceId });
+    if (error) throw error; return data as TranslationStatus;
   }
 
   // ---- Versets / hadiths équivoques ----

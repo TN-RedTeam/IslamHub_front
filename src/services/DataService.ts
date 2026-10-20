@@ -1,4 +1,5 @@
 import { supabase } from './supabase';
+import { getContentLocale } from '../lib/contentLocale';
 import { MOMENTS, type MomentDef } from '../data/moments';
 import type {
   Hadith,
@@ -90,6 +91,7 @@ async function rpcSearch<T>(
   filterKey: 'tag_filter' | 'categorie_filter',
   params?: PaginationParams,
   extra?: Record<string, string>,
+  localeAware = false,
 ) {
   const page = params?.page ?? 0;
   const pageSize = params?.pageSize ?? 20;
@@ -105,13 +107,16 @@ async function rpcSearch<T>(
       args[k] = v ? sanitizeInput(v) : '';
     }
   }
+  // Langue de contenu (RPC migrées locale-aware uniquement — cf. Phase 15.5).
+  if (localeAware) args.p_locale = getContentLocale();
   const { data, error } = await supabase.rpc(fn, args);
   if (error) throw error;
   return shapeResult<T>(data, page, pageSize);
 }
 
-async function rpcTags(fn: string, args?: Record<string, unknown>): Promise<string[]> {
-  const { data, error } = await supabase.rpc(fn, args);
+async function rpcTags(fn: string, args?: Record<string, unknown>, localeAware = false): Promise<string[]> {
+  const finalArgs = localeAware ? { ...(args ?? {}), p_locale: getContentLocale() } : args;
+  const { data, error } = await supabase.rpc(fn, finalArgs);
   if (error) throw error;
   return (data ?? []) as string[];
 }
@@ -119,7 +124,7 @@ async function rpcTags(fn: string, args?: Record<string, unknown>): Promise<stri
 class DataService {
   // ================= Hadiths =================
   async getHadiths(params?: PaginationParams): Promise<PaginatedResponse<Hadith>> {
-    return rpcSearch<Hadith>('search_hadiths', '', null, 'tag_filter', params ?? LOAD_ALL);
+    return rpcSearch<Hadith>('search_hadiths', '', null, 'tag_filter', params ?? LOAD_ALL, undefined, true);
   }
   async searchHadiths(
     searchTerm: string,
@@ -131,16 +136,16 @@ class DataService {
       statut_filter: rubrics?.statut ?? '',
       rapporteur_filter: rubrics?.rapporteur ?? '',
       narrateur_filter: rubrics?.narrateur ?? '',
-    });
+    }, true);
   }
   /** Recherche approximative (similarité) — repli quand la recherche exacte ne donne rien. */
   async searchHadithsFuzzy(searchTerm: string, limit = 20): Promise<PaginatedResponse<Hadith>> {
-    const { data, error } = await supabase.rpc('search_hadiths_fuzzy', { q: sanitizeInput(searchTerm), p_limit: limit });
+    const { data, error } = await supabase.rpc('search_hadiths_fuzzy', { q: sanitizeInput(searchTerm), p_limit: limit, p_locale: getContentLocale() });
     if (error) throw error;
     return shapeResult<Hadith>(data, 0, limit);
   }
   async getHadithTags(): Promise<string[]> {
-    return rpcTags('tags_hadiths');
+    return rpcTags('tags_hadiths', undefined, true);
   }
   async getHadith(id: number): Promise<HadithDetail | null> {
     const { data, error } = await supabase.rpc('get_hadith', { hadith_id: id });
@@ -149,7 +154,7 @@ class DataService {
   }
   /** Valeurs distinctes des rubriques (menus déroulants) sans charger les hadiths. */
   async getHadithRubriques(): Promise<{ statuts: string[]; rapporteurs: string[]; narrateurs: string[] }> {
-    const { data, error } = await supabase.rpc('hadith_rubriques');
+    const { data, error } = await supabase.rpc('hadith_rubriques', { p_locale: getContentLocale() });
     if (error) throw error;
     const d = (data ?? {}) as { statuts?: string[]; rapporteurs?: string[]; narrateurs?: string[] };
     return { statuts: d.statuts ?? [], rapporteurs: d.rapporteurs ?? [], narrateurs: d.narrateurs ?? [] };
@@ -207,13 +212,13 @@ class DataService {
     return rpcTags('sujets_invocations', { type_filter: type ? String(type) : '' });
   }
   async getDailyInvocation(day: number, type: InvocationType = 1): Promise<Invocation | null> {
-    const { data, error } = await supabase.rpc('daily_invocation', { day, type_filter: String(type) });
+    const { data, error } = await supabase.rpc('daily_invocation', { day, type_filter: String(type), p_locale: getContentLocale() });
     if (error) throw error;
     return (data ?? null) as Invocation | null;
   }
   /** Invocations/évocations rattachées à un moment de la journée (panneau « Au fil de la journée »). */
   async getJourneeInvocations(): Promise<Invocation[]> {
-    const { data, error } = await supabase.rpc('journee_invocations');
+    const { data, error } = await supabase.rpc('journee_invocations', { p_locale: getContentLocale() });
     if (error) throw error;
     return (data ?? []) as Invocation[];
   }
@@ -244,6 +249,7 @@ class DataService {
       type_filter: (type ?? '').trim(),
       page_num: page,
       page_size: pageSize,
+      p_locale: getContentLocale(),
     });
     if (error) throw error;
     return shapeResult<VersetEquivoqueCard>(data, page, pageSize);
@@ -268,7 +274,7 @@ class DataService {
 
   // ============ Les Attributs d'Allah (Phase 13.6, BDD) ============
   async getAttributs(): Promise<Attribut[]> {
-    const { data, error } = await supabase.rpc('get_attributs');
+    const { data, error } = await supabase.rpc('get_attributs', { p_locale: getContentLocale() });
     if (error) throw error;
     return (data ?? []) as Attribut[];
   }
@@ -306,19 +312,19 @@ class DataService {
 
   // ================= Thèmes transverses (Phase 15) =================
   async getThemes(): Promise<ThemeCard[]> {
-    const { data, error } = await supabase.rpc('themes_all');
+    const { data, error } = await supabase.rpc('themes_all', { p_locale: getContentLocale() });
     if (error) throw error;
     return (data ?? []) as ThemeCard[];
   }
   async getTheme(slug: string): Promise<ThemeDetail | null> {
-    const { data, error } = await supabase.rpc('get_theme', { p_slug: slug });
+    const { data, error } = await supabase.rpc('get_theme', { p_slug: slug, p_locale: getContentLocale() });
     if (error) throw error;
     return (data ?? null) as ThemeDetail | null;
   }
 
   // ================= Récits (Prophètes / vertueux) =================
   async getRecits(): Promise<RecitCard[]> {
-    const { data, error } = await supabase.rpc('recits_all');
+    const { data, error } = await supabase.rpc('recits_all', { p_locale: getContentLocale() });
     if (error) throw error;
     return (data ?? []) as RecitCard[];
   }
@@ -338,21 +344,21 @@ class DataService {
 
   /** Contenus liés par thème partagé (Phase 4.7). */
   async getRelatedByTheme(kind: 'hadith' | 'parole' | 'verset', id: number, limit = 8): Promise<RelatedItem[]> {
-    const { data, error } = await supabase.rpc('related_by_theme', { p_kind: kind, p_id: id, p_limit: limit });
+    const { data, error } = await supabase.rpc('related_by_theme', { p_kind: kind, p_id: id, p_limit: limit, p_locale: getContentLocale() });
     if (error) throw error;
     return (data ?? []) as RelatedItem[];
   }
 
   /** Recherche globale unifiée (Phase 4.4). */
   async searchAll(q: string, limit = 8): Promise<SearchResults> {
-    const { data, error } = await supabase.rpc('search_all', { q, p_limit: limit });
+    const { data, error } = await supabase.rpc('search_all', { q, p_limit: limit, p_locale: getContentLocale() });
     if (error) throw error;
     const d = (data ?? {}) as Partial<SearchResults>;
     return { hadiths: d.hadiths ?? [], paroles: d.paroles ?? [], invocations: d.invocations ?? [], versets: d.versets ?? [], fiqh: d.fiqh ?? [], themes: d.themes ?? [] };
   }
   /** Recherche globale approximative (similarité) — repli quand l'exacte ne donne rien. */
   async searchAllFuzzy(q: string, limit = 8): Promise<SearchResults> {
-    const { data, error } = await supabase.rpc('search_all_fuzzy', { q, p_limit: limit });
+    const { data, error } = await supabase.rpc('search_all_fuzzy', { q, p_limit: limit, p_locale: getContentLocale() });
     if (error) throw error;
     const d = (data ?? {}) as Partial<SearchResults>;
     return { hadiths: d.hadiths ?? [], paroles: d.paroles ?? [], invocations: d.invocations ?? [], versets: d.versets ?? [], fiqh: d.fiqh ?? [], themes: d.themes ?? [] };
@@ -363,7 +369,7 @@ class DataService {
     // Les 6 arguments sont toujours transmis pour lever toute ambiguïté de résolution RPC.
     return rpcSearch<Parole>('search_paroles', '', null, 'tag_filter', params ?? LOAD_ALL, {
       savant_filter: '', source_filter: '',
-    });
+    }, true);
   }
   async searchParoles(
     searchTerm: string,
@@ -375,11 +381,11 @@ class DataService {
     return rpcSearch<Parole>('search_paroles', searchTerm, tag ?? null, 'tag_filter', params ?? LOAD_ALL, {
       savant_filter: savant ?? '',
       source_filter: source ?? '',
-    });
+    }, true);
   }
   /** Recherche approximative (similarité) — repli quand la recherche exacte ne donne rien. */
   async searchParolesFuzzy(searchTerm: string, limit = 20): Promise<PaginatedResponse<Parole>> {
-    const { data, error } = await supabase.rpc('search_paroles_fuzzy', { q: sanitizeInput(searchTerm), p_limit: limit });
+    const { data, error } = await supabase.rpc('search_paroles_fuzzy', { q: sanitizeInput(searchTerm), p_limit: limit, p_locale: getContentLocale() });
     if (error) throw error;
     return shapeResult<Parole>(data, 0, limit);
   }
@@ -408,11 +414,11 @@ class DataService {
   async getParoleSujets(): Promise<string[]> { return rpcTags('sujets_paroles'); }
   /** Sujets + compteur (une requête agrégée, pas de N+1) — pour « Parcourir par sujet ». */
   async getHadithSujetsCounts(): Promise<SubjectCount[]> {
-    const { data, error } = await supabase.rpc('sujets_hadiths_counts');
+    const { data, error } = await supabase.rpc('sujets_hadiths_counts', { p_locale: getContentLocale() });
     if (error) throw error; return (data ?? []) as SubjectCount[];
   }
   async getParoleSujetsCounts(): Promise<SubjectCount[]> {
-    const { data, error } = await supabase.rpc('sujets_paroles_counts');
+    const { data, error } = await supabase.rpc('sujets_paroles_counts', { p_locale: getContentLocale() });
     if (error) throw error; return (data ?? []) as SubjectCount[];
   }
 
@@ -433,32 +439,32 @@ class DataService {
 
   // ================= Fiqh / Madhaheb =================
   async getFiqhByEcole(ecole: string): Promise<FiqhChapitre[]> {
-    const { data, error } = await supabase.rpc('fiqh_by_ecole', { ecole_param: ecole });
+    const { data, error } = await supabase.rpc('fiqh_by_ecole', { ecole_param: ecole, p_locale: getContentLocale() });
     if (error) throw error;
     return (data ?? []) as FiqhChapitre[];
   }
 
   // ================= Femmes (matn + commentaire) =================
   async getFemmes(): Promise<FemmesChapitre[]> {
-    const { data, error } = await supabase.rpc('femmes_all');
+    const { data, error } = await supabase.rpc('femmes_all', { p_locale: getContentLocale() });
     if (error) throw error;
     return (data ?? []) as FemmesChapitre[];
   }
 
   // ================= Savants (fiches + biographie) =================
   async getSavants(): Promise<SavantInfo[]> {
-    const { data, error } = await supabase.rpc('savants_all');
+    const { data, error } = await supabase.rpc('savants_all', { p_locale: getContentLocale() });
     if (error) throw error;
     return (data ?? []) as SavantInfo[];
   }
   /** Hub « Biographies » : toutes les personnes publiées (Phase 10). */
   async getPersonnes(): Promise<PersonneHub[]> {
-    const { data, error } = await supabase.rpc('personnes_published');
+    const { data, error } = await supabase.rpc('personnes_published', { p_locale: getContentLocale() });
     if (error) throw error;
     return (data ?? []) as PersonneHub[];
   }
   async getSavantsMini(): Promise<SavantMini[]> {
-    const { data, error } = await supabase.rpc('savants_mini');
+    const { data, error } = await supabase.rpc('savants_mini', { p_locale: getContentLocale() });
     if (error) throw error;
     return (data ?? []) as SavantMini[];
   }
@@ -470,7 +476,7 @@ class DataService {
 
   // ================= Coran — exégèse (sourates) =================
   async getSourates(): Promise<SourateInfo[]> {
-    const { data, error } = await supabase.rpc('sourates_all');
+    const { data, error } = await supabase.rpc('sourates_all', { p_locale: getContentLocale() });
     if (error) throw error;
     return (data ?? []) as SourateInfo[];
   }
@@ -483,7 +489,7 @@ class DataService {
   // ================= Dossiers thématiques =================
   /** Liste des dossiers thématiques publiés (index + page Croyance). */
   async getDossiers(): Promise<DossierListItem[]> {
-    const { data, error } = await supabase.rpc('dossiers_all');
+    const { data, error } = await supabase.rpc('dossiers_all', { p_locale: getContentLocale() });
     if (error) throw error;
     return (data ?? []) as DossierListItem[];
   }
@@ -495,37 +501,37 @@ class DataService {
 
   // ================= Accueil (Home) =================
   async getStats(): Promise<SiteStats> {
-    const { data, error } = await supabase.rpc('site_stats');
+    const { data, error } = await supabase.rpc('site_stats', { p_locale: getContentLocale() });
     if (error) throw error;
     return (data ?? {}) as SiteStats;
   }
   async getDailyHadith(day: number): Promise<Hadith | null> {
-    const { data, error } = await supabase.rpc('daily_hadith', { day });
+    const { data, error } = await supabase.rpc('daily_hadith', { day, p_locale: getContentLocale() });
     if (error) throw error;
     return (data ?? null) as Hadith | null;
   }
   async getDailyDouaa(day: number): Promise<Douaa | null> {
-    const { data, error } = await supabase.rpc('daily_douaa', { day });
+    const { data, error } = await supabase.rpc('daily_douaa', { day, p_locale: getContentLocale() });
     if (error) throw error;
     return (data ?? null) as Douaa | null;
   }
   async getDailyCoran(day: number): Promise<Coran | null> {
-    const { data, error } = await supabase.rpc('daily_coran', { day });
+    const { data, error } = await supabase.rpc('daily_coran', { day, p_locale: getContentLocale() });
     if (error) throw error;
     return (data ?? null) as Coran | null;
   }
   async getDailyParole(day: number): Promise<Parole | null> {
-    const { data, error } = await supabase.rpc('daily_parole', { day });
+    const { data, error } = await supabase.rpc('daily_parole', { day, p_locale: getContentLocale() });
     if (error) throw error;
     return (data ?? null) as Parole | null;
   }
   // ---- Accueil (Phase 14) ----
   async getHomeVedette(): Promise<HomeVedette | null> {
-    const { data, error } = await supabase.rpc('home_dossier_vedette');
+    const { data, error } = await supabase.rpc('home_dossier_vedette', { p_locale: getContentLocale() });
     if (error) throw error; return (data ?? null) as HomeVedette | null;
   }
   async getHomeRecent(limit = 3): Promise<HomeRecentItem[]> {
-    const { data, error } = await supabase.rpc('home_recent', { p_limit: limit });
+    const { data, error } = await supabase.rpc('home_recent', { p_limit: limit, p_locale: getContentLocale() });
     if (error) throw error; return (data ?? []) as HomeRecentItem[];
   }
 

@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, stripLocale } from '../lib/router';
 import { m, AnimatePresence } from 'framer-motion';
 import { Moon, Sun, Menu, X, ChevronDown, Search } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 import { InstallPWA } from './InstallPWA';
+import { LanguageSwitcher } from './LanguageSwitcher';
 import { UI } from '../strings';
 import moment from 'moment-hijri';
 
@@ -76,8 +77,10 @@ export const Navigation: React.FC = () => {
     return () => { document.removeEventListener('mousedown', onDown); document.removeEventListener('keydown', onKey); };
   }, [resOpen]);
 
+  // Chemin sans préfixe de langue (`/fr/coran` → `/coran`) pour comparer aux `to`.
+  const path = stripLocale(location.pathname);
   const isActive = (to: string, exact?: boolean) =>
-    exact ? location.pathname === to : location.pathname === to || location.pathname.startsWith(`${to}/`);
+    exact ? path === to : path === to || path.startsWith(`${to}/`);
   const resActive = resItems.some((i) => isActive(i.to));
 
   const linkCls = (active: boolean) =>
@@ -114,7 +117,7 @@ export const Navigation: React.FC = () => {
                 <ChevronDown className={`w-3.5 h-3.5 transition-transform motion-reduce:transition-none ${resOpen ? 'rotate-180' : ''}`} />
               </button>
               {resOpen && (
-                <div role="menu" className="absolute left-0 top-full mt-1.5 min-w-[210px] rounded-xl border border-glass-border bg-bg1 backdrop-blur-md shadow-glass py-1.5 z-50">
+                <div role="menu" className="absolute start-0 top-full mt-1.5 min-w-[210px] rounded-xl border border-glass-border bg-bg1 backdrop-blur-md shadow-glass py-1.5 z-50">
                   {resItems.map(({ to, label }) => (
                     <Link
                       key={to}
@@ -133,7 +136,7 @@ export const Navigation: React.FC = () => {
           </div>
 
           {/* Actions (droite) */}
-          <div className="flex items-center gap-2.5 shrink-0 ml-auto min-[900px]:ml-0">
+          <div className="flex items-center gap-2.5 shrink-0 ms-auto min-[900px]:ms-0">
             {/* Chip date : badge marque + hijri translittéré (ligne 1) + grégorien (ligne 2) */}
             <div
               className="hidden min-[1360px]:flex items-center gap-2.5 px-3 py-1.5 rounded-full bg-surface border border-line"
@@ -147,6 +150,9 @@ export const Navigation: React.FC = () => {
             </div>
 
             <div className="hidden min-[1360px]:block"><InstallPWA /></div>
+
+            {/* Sélecteur de langue (desktop) */}
+            <div className="hidden min-[900px]:block"><LanguageSwitcher variant="bar" /></div>
 
             <Link
               to="/recherche"
@@ -204,13 +210,16 @@ export const Navigation: React.FC = () => {
                   <Link
                     key={to}
                     to={to}
-                    className={`block pl-6 pr-4 py-2.5 rounded-lg mb-0.5 font-sans transition-colors ${
+                    className={`block ps-6 pe-4 py-2.5 rounded-lg mb-0.5 font-sans transition-colors ${
                       isActive(to) ? 'bg-glass-tint text-ink font-medium' : 'text-ink hover:bg-glass-tint hover:text-ink'
                     }`}
                   >
                     {label}
                   </Link>
                 ))}
+
+                {/* Sélecteur de langue (mobile) */}
+                <LanguageSwitcher variant="drawer" />
 
                 <InstallPWA className="mt-2 flex w-full items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-green text-white hover:bg-green-deep transition-colors" />
               </div>

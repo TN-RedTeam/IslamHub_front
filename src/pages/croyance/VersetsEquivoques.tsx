@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef, useCallback } from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from '../../lib/router';
 import { m } from 'framer-motion';
 import { Search, Loader, ArrowRight } from 'lucide-react';
 import { dataService } from '../../services/DataService';

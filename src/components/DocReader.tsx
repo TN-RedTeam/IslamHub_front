@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams } from '../lib/router';
 import { Search, ChevronRight, BookOpen, ArrowLeft } from 'lucide-react';
 
 /**

@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from '../lib/router';
 import { BookOpen, ExternalLink, Image as ImageIcon, ArrowUp, List } from 'lucide-react';
 import { Markdown } from './Markdown';
 import { Lightbox, type LightboxImage } from './Lightbox';
@@ -57,11 +57,11 @@ const Proof: React.FC<{ b: Bloc }> = ({ b }) => {
   const scans = ref.images ?? [];
 
   return (
-    <figure className="my-6 rounded-xl border border-green-line/70 border-l-[3px] border-l-green bg-green-soft/25 px-5 py-4">
+    <figure className="my-6 rounded-xl border border-green-line/70 border-accent-s bg-green-soft/25 px-5 py-4">
       <figcaption className="flex items-center gap-2 mb-3">
         <span className="text-[10.5px] font-bold uppercase tracking-[0.14em] text-green">{kind}</span>
         {badge && (
-          <span className="ml-auto text-[10px] font-semibold uppercase tracking-wide text-green/90 bg-surface/60 border border-green-line rounded-full px-2 py-0.5">{badge}</span>
+          <span className="ms-auto text-[10px] font-semibold uppercase tracking-wide text-green/90 bg-surface/60 border border-green-line rounded-full px-2 py-0.5">{badge}</span>
         )}
       </figcaption>
 
@@ -104,7 +104,7 @@ const Proof: React.FC<{ b: Bloc }> = ({ b }) => {
 
       {b.commentaire_md && (
         <div className="mt-3.5 pt-3 border-t border-dashed border-green-line/60">
-          <span className="text-[10px] uppercase tracking-[0.12em] text-muted font-bold mr-1.5">Commentaire</span>
+          <span className="text-[10px] uppercase tracking-[0.12em] text-muted font-bold me-1.5">Commentaire</span>
           <div className="text-[14.5px] text-ink/75 italic [&_p]:my-1"><Markdown>{b.commentaire_md}</Markdown></div>
         </div>
       )}
@@ -187,7 +187,7 @@ export const ArticleBlocs: React.FC<{ blocs: Bloc[]; showToc?: boolean }> = ({ b
   const BackToTop = showTop ? (
     <button
       type="button" onClick={toTop} aria-label={UI.article.backToTop}
-      className="fixed bottom-5 right-5 z-30 inline-flex items-center gap-1.5 rounded-full bg-accent-deep text-white shadow-card px-3.5 py-2.5 text-sm font-medium hover:brightness-110 transition-[filter] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green"
+      className="fixed bottom-5 end-5 z-30 inline-flex items-center gap-1.5 rounded-full bg-accent-deep text-white shadow-card px-3.5 py-2.5 text-sm font-medium hover:brightness-110 transition-[filter] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green"
     >
       <ArrowUp className="w-4 h-4" /> <span className="hidden sm:inline">{UI.article.backToTop}</span>
     </button>
@@ -206,7 +206,7 @@ export const ArticleBlocs: React.FC<{ blocs: Bloc[]; showToc?: boolean }> = ({ b
           {toc.map((t) => (
             <li key={t.id}>
               <a href={`#${t.id}`} onClick={(e) => { e.preventDefault(); goTo(t.id); (e.currentTarget.closest('details') as HTMLDetailsElement).open = false; }}
-                className={`block text-[13.5px] pl-3 py-1.5 border-l-2 leading-snug ${activeId === t.id ? 'border-gold text-ink font-medium' : 'border-line text-muted'}`}>{t.label}</a>
+                className={`block text-[13.5px] ps-3 py-1.5 border-s-2 leading-snug ${activeId === t.id ? 'border-gold text-ink font-medium' : 'border-line text-muted'}`}>{t.label}</a>
             </li>
           ))}
         </ol>
@@ -220,7 +220,7 @@ export const ArticleBlocs: React.FC<{ blocs: Bloc[]; showToc?: boolean }> = ({ b
             <li key={t.id}>
               <a href={`#${t.id}`} onClick={(e) => { e.preventDefault(); goTo(t.id); }}
                 aria-current={activeId === t.id ? 'location' : undefined}
-                className={`block text-[13.5px] border-l-2 pl-3 py-1.5 leading-snug transition-colors ${activeId === t.id ? 'border-gold text-ink font-medium' : 'border-line text-muted hover:text-ink hover:border-gold'}`}>{t.label}</a>
+                className={`block text-[13.5px] border-s-2 ps-3 py-1.5 leading-snug transition-colors ${activeId === t.id ? 'border-gold text-ink font-medium' : 'border-line text-muted hover:text-ink hover:border-gold'}`}>{t.label}</a>
             </li>
           ))}
         </ol>

@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { SujetField } from '../../components/admin/SujetField';
 import { DeleteEntryButton } from '../../components/admin/DeleteEntryButton';
 import { useNavigate, useParams, Link } from 'react-router-dom';
+import { TranslationPanel } from '../../components/admin/TranslationPanel';
 import { Loader2, Check, AlertTriangle } from 'lucide-react';
 import { adminService, type CoranFormData } from '../../services/AdminService';
 import { AR_TEMPLATE, caretBetween, normalizeBracketSpaces } from '../../utils/arabicTemplate';
@@ -65,6 +66,7 @@ export const AdminCoranForm: React.FC = () => {
   return (
     <div className="max-w-3xl px-6 py-8 pb-28">
       <p className="text-xs text-muted"><Link to="/admin/coran" className="hover:text-ink">Coran (versets thématiques)</Link> · {editId ? 'Modifier' : 'Nouveau'}</p>
+      {editId ? <TranslationPanel kind="coran" id={editId} editPathBase="/admin/coran" /> : null}
       <h1 className="font-display font-semibold text-ink text-3xl mt-1 mb-1">{editId ? 'Modifier le verset' : 'Nouveau verset thématique'}</h1>
       <p className="text-muted text-sm mb-6">Le texte arabe collé ici est enregistré tel quel (UTF-8).</p>
 

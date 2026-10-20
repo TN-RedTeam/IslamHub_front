@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link, NavLink, Navigate, Outlet, useLocation } from 'react-router-dom';
 import { Loader2, LogOut, ExternalLink } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
+import i18n from '../../i18n';
 
 const ENTITIES: { to: string; label: string; soon?: boolean }[] = [
   { to: '/admin/hadiths', label: 'Hadiths' },
@@ -25,6 +26,11 @@ const ENTITIES: { to: string; label: string; soon?: boolean }[] = [
 export const AdminLayout: React.FC = () => {
   const { isAdmin, loading, email, signOut } = useAuth();
   const location = useLocation();
+
+  // L'admin travaille sur le contenu canonique FR (les requêtes locale-aware
+  // de DataService lisent i18n.language) — on force FR quelle que soit la langue
+  // publique visitée avant d'entrer dans l'admin. Phase 15.7.
+  useEffect(() => { if (i18n.language !== 'fr') void i18n.changeLanguage('fr'); }, []);
 
   if (loading) {
     return <div className="min-h-screen grid place-items-center"><Loader2 className="w-10 h-10 text-green animate-spin" /></div>;

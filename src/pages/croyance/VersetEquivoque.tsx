@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link } from '../../lib/router';
 import { Loader2, Copy, Check, Share2, Star, ChevronRight, BookOpen } from 'lucide-react';
 import { dataService } from '../../services/DataService';
 import { Markdown } from '../../components/Markdown';

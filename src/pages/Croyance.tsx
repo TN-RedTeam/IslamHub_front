@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from '../lib/router';
 import { ArrowRight, Layers, GraduationCap } from 'lucide-react';
 import { Icon, type IconName } from '../components/Icon';
 import { useSeo } from '../hooks/useSeo';
