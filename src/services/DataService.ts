@@ -331,7 +331,7 @@ class DataService {
     return (data ?? []) as RecitCard[];
   }
   async getRecit(slug: string): Promise<RecitDetail | null> {
-    const { data, error } = await supabase.rpc('get_recit', { p_slug: slug });
+    const { data, error } = await supabase.rpc('get_recit', { p_slug: slug, p_locale: getContentLocale() });
     if (error) throw error;
     return (data ?? null) as RecitDetail | null;
   }
@@ -510,7 +510,7 @@ class DataService {
     return (data ?? []) as DossierListItem[];
   }
   async getDossier(slug: string): Promise<DossierData | null> {
-    const { data, error } = await supabase.rpc('get_dossier', { dossier_slug: slug });
+    const { data, error } = await supabase.rpc('get_dossier', { dossier_slug: slug, p_locale: getContentLocale() });
     if (error) throw error;
     return (data ?? null) as DossierData | null;
   }
