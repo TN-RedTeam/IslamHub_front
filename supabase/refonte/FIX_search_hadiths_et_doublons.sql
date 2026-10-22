@@ -67,7 +67,7 @@ drop function if exists public.search_invocations(text, text, text, integer, int
 
 -- ---- PREUVE : AR ne doit plus être vide, EN doit être localisé --------------
 select json_array_length(public.search_hadiths('', '', 0, 100, '', '', '', 'ar')->'data') as n_ar,
-       (public.search_hadiths('', '', 0, 100, '', '', '', 'en')->'data'->0->>'sujet')       as 1er_sujet_en;
+       (public.search_hadiths('', '', 0, 100, '', '', '', 'en')->'data'->0->>'sujet')       as premier_sujet_en;
 -- Plus qu'UNE version de chacune :
 select proname, count(*) as surcharges
 from pg_proc where pronamespace='public'::regnamespace and proname in ('search_coran','search_invocations','search_hadiths')
