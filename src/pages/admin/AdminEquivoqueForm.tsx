@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { DeleteEntryButton } from '../../components/admin/DeleteEntryButton';
 import { ScanUploadButton } from '../../components/admin/ScanUploadButton';
 import { useNavigate, useParams, Link } from 'react-router-dom';
-import { TranslationPanel } from '../../components/admin/TranslationPanel';
+import { TranslationFields } from '../../components/admin/TranslationFields';
 import { Loader2, Plus, Trash2, Check, AlertTriangle, ArrowUp, ArrowDown } from 'lucide-react';
 import { BlocEditor } from '../../components/admin/BlocEditor';
 import { TagPicker } from '../../components/admin/TagPicker';
@@ -142,7 +142,7 @@ export const AdminEquivoqueForm: React.FC = () => {
   return (
     <div className="max-w-3xl px-6 py-8 pb-28">
       <p className="text-xs text-muted"><Link to="/admin/equivoques" className="hover:text-ink">Versets / hadiths équivoques</Link> · {editId ? 'Modifier' : 'Nouveau'}</p>
-      {editId ? <TranslationPanel kind="equivoque" id={editId} editPathBase="/admin/equivoques" /> : null}
+      {editId ? <TranslationFields table="versets_equivoques" id={editId} /> : null}
       <h1 className="font-display font-semibold text-ink text-3xl mt-1 mb-1">{editId ? 'Modifier l’équivoque' : 'Nouvelle équivoque'}</h1>
       <p className="text-muted text-sm mb-6">Le texte arabe collé ici est enregistré tel quel (UTF-8).</p>
 

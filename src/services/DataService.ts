@@ -150,7 +150,7 @@ class DataService {
     return rpcTags('tags_hadiths', undefined, true);
   }
   async getHadith(id: number): Promise<HadithDetail | null> {
-    const { data, error } = await supabase.rpc('get_hadith', { hadith_id: id });
+    const { data, error } = await supabase.rpc('get_hadith', { hadith_id: id, p_locale: getContentLocale() });
     if (error) throw error;
     return (data ?? null) as HadithDetail | null;
   }
@@ -164,10 +164,10 @@ class DataService {
 
   // ================= Coran =================
   async getCoran(params?: PaginationParams): Promise<PaginatedResponse<Coran>> {
-    return rpcSearch<Coran>('search_coran', '', null, 'tag_filter', params ?? LOAD_ALL);
+    return rpcSearch<Coran>('search_coran', '', null, 'tag_filter', params ?? LOAD_ALL, undefined, true);
   }
   async searchCoran(searchTerm: string, tag?: string | null, params?: PaginationParams): Promise<PaginatedResponse<Coran>> {
-    return rpcSearch<Coran>('search_coran', searchTerm, tag ?? null, 'tag_filter', params ?? LOAD_ALL);
+    return rpcSearch<Coran>('search_coran', searchTerm, tag ?? null, 'tag_filter', params ?? LOAD_ALL, undefined, true);
   }
   async getCoranTags(): Promise<string[]> {
     return rpcTags('tags_coran');
@@ -205,7 +205,7 @@ class DataService {
   ): Promise<PaginatedResponse<Invocation>> {
     return rpcSearch<Invocation>('search_invocations', searchTerm, tag ?? null, 'tag_filter', params ?? LOAD_ALL, {
       type_filter: type ? String(type) : '',
-    });
+    }, true);
   }
   async getInvocationTags(type?: InvocationType | null): Promise<string[]> {
     return rpcTags('tags_invocations', { type_filter: type ? String(type) : '' });
@@ -259,7 +259,7 @@ class DataService {
   async getVersetThemes(): Promise<string[]> { return rpcTags('themes_versets_equivoques'); }
   async getVersetSourates(): Promise<string[]> { return rpcTags('sourates_versets_equivoques'); }
   async getVersetEquivoque(slug: string): Promise<VersetEquivoqueDetail | null> {
-    const { data, error } = await supabase.rpc('get_verset_equivoque', { p_slug: slug });
+    const { data, error } = await supabase.rpc('get_verset_equivoque', { p_slug: slug, p_locale: getContentLocale() });
     if (error) throw error;
     return (data ?? null) as VersetEquivoqueDetail | null;
   }
@@ -331,7 +331,7 @@ class DataService {
     return (data ?? []) as RecitCard[];
   }
   async getRecit(slug: string): Promise<RecitDetail | null> {
-    const { data, error } = await supabase.rpc('get_recit', { p_slug: slug });
+    const { data, error } = await supabase.rpc('get_recit', { p_slug: slug, p_locale: getContentLocale() });
     if (error) throw error;
     return (data ?? null) as RecitDetail | null;
   }
@@ -485,7 +485,7 @@ class DataService {
     return (data ?? []) as SavantMini[];
   }
   async getSavantBySlug(slug: string): Promise<SavantDetail | null> {
-    const { data, error } = await supabase.rpc('savant_by_slug', { savant_slug: slug });
+    const { data, error } = await supabase.rpc('savant_by_slug', { savant_slug: slug, p_locale: getContentLocale() });
     if (error) throw error;
     return (data ?? null) as SavantDetail | null;
   }
@@ -497,7 +497,7 @@ class DataService {
     return (data ?? []) as SourateInfo[];
   }
   async getSourate(slug: string): Promise<SourateDetail | null> {
-    const { data, error } = await supabase.rpc('get_sourate', { sourate_slug: slug });
+    const { data, error } = await supabase.rpc('get_sourate', { sourate_slug: slug, p_locale: getContentLocale() });
     if (error) throw error;
     return (data ?? null) as SourateDetail | null;
   }
@@ -510,7 +510,7 @@ class DataService {
     return (data ?? []) as DossierListItem[];
   }
   async getDossier(slug: string): Promise<DossierData | null> {
-    const { data, error } = await supabase.rpc('get_dossier', { dossier_slug: slug });
+    const { data, error } = await supabase.rpc('get_dossier', { dossier_slug: slug, p_locale: getContentLocale() });
     if (error) throw error;
     return (data ?? null) as DossierData | null;
   }
