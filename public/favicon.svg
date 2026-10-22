@@ -1,13 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="Aqida">
-  <defs>
-    <linearGradient id="aqidaGrad" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#66e0cd"/>
-      <stop offset="1" stop-color="#0e8f80"/>
-    </linearGradient>
-  </defs>
-  <rect width="64" height="64" rx="16" fill="url(#aqidaGrad)"/>
-  <!-- brin dessous (clair) -->
-  <path d="M44 20 h-12 a12 12 0 0 0 -12 12 v12" fill="none" stroke="#eafffb" stroke-opacity="0.5" stroke-width="7" stroke-linecap="round"/>
-  <!-- brin dessus (encre) -->
-  <path d="M20 20 h12 a12 12 0 0 1 12 12 v12" fill="none" stroke="#06242a" stroke-width="7" stroke-linecap="round"/>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Ahl-Sunnah"><defs><linearGradient id="asGrad" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#66e0cd"/><stop offset="1" stop-color="#0e8f80"/></linearGradient></defs><rect width="64" height="64" rx="16" fill="url(#asGrad)"/><g fill="#06242a"><path d="M11 46 V30 Q11 26 13.5 24 Q16 26 16 30 V46Z"/><circle cx="13.5" cy="21.5" r="1.6"/><path d="M48 46 V30 Q48 26 50.5 24 Q53 26 53 30 V46Z"/><circle cx="50.5" cy="21.5" r="1.6"/><rect x="22" y="34" width="20" height="12"/><path d="M24 34 C21 27 25 20 32 13 C39 20 43 27 40 34 Z"/><rect x="31.1" y="7.5" width="1.8" height="6.5" rx="0.9"/><circle cx="32" cy="6.5" r="1.8"/><rect x="8" y="46" width="48" height="4" rx="1.5"/></g></svg>
