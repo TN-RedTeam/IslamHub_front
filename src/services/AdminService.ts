@@ -602,7 +602,8 @@ export interface ParoleEditShape {
   commente_type: 'parole' | 'hadith' | 'verset' | null;
   commente_parole_id: number | null; commente_hadith_id: number | null; commente_verset_id: number | null; commente_livre: string | null;
   images: { image_url: string; alt: string | null; legende: string | null; source_livre: string | null; source_livre_ar: string | null; ordre: number | null }[];
-  segments: { intro: string | null; texte_arabe: string | null; phonetique: string | null; texte_francais: string | null; explication: string | null }[];
+  segments: { intro: string | null; texte_arabe: string | null; phonetique: string | null; texte_francais: string | null; explication: string | null;
+    intro_en?: string | null; intro_ar?: string | null; phonetique_en?: string | null; texte_en?: string | null; explication_en?: string | null; explication_ar?: string | null }[];
 }
 
 export type VersetType = 'verset' | 'hadith';
