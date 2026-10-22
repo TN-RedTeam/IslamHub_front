@@ -42,6 +42,7 @@ export interface HadithFormData {
 }
 export interface HadithSegmentInput {
   intro: string; texte_arabe: string; phonetique: string; texte_francais: string; explication: string;
+  intro_en?: string; intro_ar?: string; phonetique_en?: string; texte_en?: string; explication_en?: string; explication_ar?: string;
   variant_index?: number | null; // position 1-based de la variante à laquelle ce dialogue est rattaché (null = matn principal)
 }
 export type DuplicateKind = 'hadith' | 'parole' | 'invocation';
@@ -56,6 +57,7 @@ export interface DuplicatePair {
 }
 export interface HadithVariantInput {
   titre: string; intro: string; texte_arabe: string; phonetique: string; texte_francais: string; explication: string; source: string;
+  titre_en?: string; titre_ar?: string; intro_en?: string; intro_ar?: string; phonetique_en?: string; texte_en?: string; explication_en?: string; explication_ar?: string;
 }
 export interface HadithEditShape {
   id: number; sujet: string | null; rubrique: string | null; intro: string | null; texte_arabe: string | null; texte_francais: string | null;
@@ -65,8 +67,10 @@ export interface HadithEditShape {
   is_equivoque: boolean; equivoque_id: number | null; equivoque_slug: string | null;
   invocation_type: number | null; invocation_commentaire: string | null; invocation_moments: string | null;
   tag: string | null; sources: { recueil_id: number; numero: string | null; chapitre: string | null }[];
-  segments: { variant_id: number | null; intro: string | null; texte_arabe: string | null; phonetique: string | null; texte_francais: string | null; explication: string | null }[];
-  variants: { id: number; titre: string | null; intro: string | null; texte_arabe: string | null; phonetique: string | null; texte_francais: string | null; explication: string | null; source: string | null }[];
+  segments: { variant_id: number | null; intro: string | null; texte_arabe: string | null; phonetique: string | null; texte_francais: string | null; explication: string | null;
+    intro_en?: string | null; intro_ar?: string | null; phonetique_en?: string | null; texte_en?: string | null; explication_en?: string | null; explication_ar?: string | null }[];
+  variants: { id: number; titre: string | null; intro: string | null; texte_arabe: string | null; phonetique: string | null; texte_francais: string | null; explication: string | null; source: string | null;
+    titre_en?: string | null; titre_ar?: string | null; intro_en?: string | null; intro_ar?: string | null; phonetique_en?: string | null; texte_en?: string | null; explication_en?: string | null; explication_ar?: string | null }[];
 }
 export interface HadithExtraRow {
   id: number; sujet: string | null; statut: string | null; tag: string | null;

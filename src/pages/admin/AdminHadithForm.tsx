@@ -144,8 +144,10 @@ export const AdminHadithForm: React.FC = () => {
   };
   // Segments de dialogue (suite du hadith). variantUid = null → rattaché au matn principal ;
   // sinon → rattaché à la variante portant cet uid local.
-  type Seg = { intro: string; texte_arabe: string; phonetique: string; texte_francais: string; explication: string; variantUid: string | null };
-  const emptySeg = (): Seg => ({ intro: '', texte_arabe: '', phonetique: '', texte_francais: '', explication: '', variantUid: null });
+  type Seg = { intro: string; texte_arabe: string; phonetique: string; texte_francais: string; explication: string; variantUid: string | null;
+    intro_en: string; intro_ar: string; phonetique_en: string; texte_en: string; explication_en: string; explication_ar: string };
+  const emptySeg = (): Seg => ({ intro: '', texte_arabe: '', phonetique: '', texte_francais: '', explication: '', variantUid: null,
+    intro_en: '', intro_ar: '', phonetique_en: '', texte_en: '', explication_en: '', explication_ar: '' });
   const [segments, setSegments] = useState<Seg[]>([]);
   const setSeg = (i: number, k: keyof Seg, v: string | null) => setSegments((p) => p.map((s, j) => (j === i ? { ...s, [k]: v } : s)));
   const moveSeg = (i: number, d: -1 | 1) => setSegments((p) => {
@@ -154,8 +156,10 @@ export const AdminHadithForm: React.FC = () => {
   });
   // Variantes (autres versions / autres hadiths de la même khoutba). uid = clé locale stable
   // pour rattacher des dialogues, titre = en-tête libre du bloc.
-  type Var = { uid: string; titre: string; intro: string; texte_arabe: string; phonetique: string; texte_francais: string; explication: string; source: string };
-  const emptyVar = (): Var => ({ uid: uid(), titre: '', intro: '', texte_arabe: '', phonetique: '', texte_francais: '', explication: '', source: '' });
+  type Var = { uid: string; titre: string; intro: string; texte_arabe: string; phonetique: string; texte_francais: string; explication: string; source: string;
+    titre_en: string; titre_ar: string; intro_en: string; intro_ar: string; phonetique_en: string; texte_en: string; explication_en: string; explication_ar: string };
+  const emptyVar = (): Var => ({ uid: uid(), titre: '', intro: '', texte_arabe: '', phonetique: '', texte_francais: '', explication: '', source: '',
+    titre_en: '', titre_ar: '', intro_en: '', intro_ar: '', phonetique_en: '', texte_en: '', explication_en: '', explication_ar: '' });
   const [variants, setVariants] = useState<Var[]>([]);
   const setVar = (i: number, k: keyof Var, v: string) => setVariants((p) => p.map((s, j) => (j === i ? { ...s, [k]: v } : s)));
   const removeVar = (i: number) => setVariants((p) => {
@@ -199,12 +203,16 @@ export const AdminHadithForm: React.FC = () => {
         return {
           uid: u, titre: v.titre ?? '', intro: v.intro ?? '', texte_arabe: v.texte_arabe ?? '', phonetique: v.phonetique ?? '',
           texte_francais: v.texte_francais ?? '', explication: v.explication ?? '', source: v.source ?? '',
+          titre_en: v.titre_en ?? '', titre_ar: v.titre_ar ?? '', intro_en: v.intro_en ?? '', intro_ar: v.intro_ar ?? '',
+          phonetique_en: v.phonetique_en ?? '', texte_en: v.texte_en ?? '', explication_en: v.explication_en ?? '', explication_ar: v.explication_ar ?? '',
         };
       }));
       setSegments((h.segments ?? []).map((s) => ({
         intro: s.intro ?? '', texte_arabe: s.texte_arabe ?? '', phonetique: s.phonetique ?? '',
         texte_francais: s.texte_francais ?? '', explication: s.explication ?? '',
         variantUid: s.variant_id != null ? (idToUid.get(s.variant_id) ?? null) : null,
+        intro_en: s.intro_en ?? '', intro_ar: s.intro_ar ?? '', phonetique_en: s.phonetique_en ?? '',
+        texte_en: s.texte_en ?? '', explication_en: s.explication_en ?? '', explication_ar: s.explication_ar ?? '',
       })));
       setSources(h.sources.length ? h.sources.map((s) => ({ ...emptySrc(), recueil_id: String(s.recueil_id), numero: s.numero ?? '', chapitre: s.chapitre ?? '' })) : [emptySrc()]);
     }).catch(() => setError("Hadith introuvable."));
@@ -256,11 +264,14 @@ export const AdminHadithForm: React.FC = () => {
       .filter((s) => s.texte_arabe.trim() || s.texte_francais.trim() || s.intro.trim() || s.explication.trim())
       .map((s) => ({
         intro: s.intro, texte_arabe: s.texte_arabe, phonetique: s.phonetique, texte_francais: s.texte_francais, explication: s.explication,
+        intro_en: s.intro_en, intro_ar: s.intro_ar, phonetique_en: s.phonetique_en, texte_en: s.texte_en, explication_en: s.explication_en, explication_ar: s.explication_ar,
         variant_index: s.variantUid ? (pos.get(s.variantUid) ?? null) : null,
       })),
     variants: sentVars.map((v) => ({
       titre: v.titre, intro: v.intro, texte_arabe: v.texte_arabe, phonetique: v.phonetique,
       texte_francais: v.texte_francais, explication: v.explication, source: v.source,
+      titre_en: v.titre_en, titre_ar: v.titre_ar, intro_en: v.intro_en, intro_ar: v.intro_ar,
+      phonetique_en: v.phonetique_en, texte_en: v.texte_en, explication_en: v.explication_en, explication_ar: v.explication_ar,
     })),
     new_narrateur: addingNarr && newNarr.nom.trim() ? newNarr : null,
     sources: sources.map<HadithSourceInput>((s) => s.recueil_id === NEW
@@ -450,14 +461,24 @@ export const AdminHadithForm: React.FC = () => {
             )}
             <div className="mb-2.5"><label className={label}>Intro / narration <span className="text-muted font-normal">(optionnel)</span></label>
               <input className={field} value={sg.intro} onChange={(e) => setSeg(i, 'intro', e.target.value)} placeholder="Ex. Les compagnons ont répondu :" /></div>
+            <div className="grid sm:grid-cols-2 gap-2.5 mb-2.5">
+              <div><label className={label}>Intro — anglais</label><input className={field} value={sg.intro_en} onChange={(e) => setSeg(i, 'intro_en', e.target.value)} /></div>
+              <div><label className={label}>Intro — arabe</label><input dir="rtl" lang="ar" className={`${field} font-arabic text-right`} value={sg.intro_ar} onChange={(e) => setSeg(i, 'intro_ar', e.target.value)} /></div>
+            </div>
             <div className="mb-2.5"><label className={label}>Texte arabe</label>
               <textarea dir="rtl" lang="ar" className={`${field} font-arabic text-2xl leading-loose text-right min-h-[80px]`} value={sg.texte_arabe} onChange={(e) => setSeg(i, 'texte_arabe', e.target.value)} /></div>
             <div className="grid sm:grid-cols-2 gap-2.5 mb-2.5">
               <div><label className={label}>Phonétique</label><input className={field} value={sg.phonetique} onChange={(e) => setSeg(i, 'phonetique', e.target.value)} /></div>
+              <div><label className={label}>Phonétique — anglais</label><input className={field} value={sg.phonetique_en} onChange={(e) => setSeg(i, 'phonetique_en', e.target.value)} /></div>
               <div><label className={label}>Traduction</label><input className={field} value={sg.texte_francais} onChange={(e) => setSeg(i, 'texte_francais', e.target.value)} /></div>
+              <div><label className={label}>Traduction — anglais</label><input className={field} value={sg.texte_en} onChange={(e) => setSeg(i, 'texte_en', e.target.value)} /></div>
             </div>
-            <div><label className={label}>Explication <span className="text-muted font-normal">(Markdown)</span></label>
+            <div className="mb-2.5"><label className={label}>Explication <span className="text-muted font-normal">(Markdown)</span></label>
               <textarea className={`${field} min-h-[60px]`} value={sg.explication} onChange={(e) => setSeg(i, 'explication', e.target.value)} /></div>
+            <div className="grid sm:grid-cols-2 gap-2.5">
+              <div><label className={label}>Explication — anglais</label><textarea className={`${field} min-h-[50px]`} value={sg.explication_en} onChange={(e) => setSeg(i, 'explication_en', e.target.value)} /></div>
+              <div><label className={label}>Explication — arabe</label><textarea dir="rtl" lang="ar" className={`${field} font-arabic text-right min-h-[50px]`} value={sg.explication_ar} onChange={(e) => setSeg(i, 'explication_ar', e.target.value)} /></div>
+            </div>
           </div>
         ))}
 
@@ -483,18 +504,32 @@ export const AdminHadithForm: React.FC = () => {
             </div>
             <div className="mb-2.5"><label className={label}>Titre du bloc <span className="text-muted font-normal">(optionnel — en-tête affiché, ex. « Autre hadith — rapporté par Ahmad »)</span></label>
               <input className={field} value={vr.titre} onChange={(e) => setVar(i, 'titre', e.target.value)} placeholder="Autre version" /></div>
+            <div className="grid sm:grid-cols-2 gap-2.5 mb-2.5">
+              <div><label className={label}>Titre — anglais</label><input className={field} value={vr.titre_en} onChange={(e) => setVar(i, 'titre_en', e.target.value)} /></div>
+              <div><label className={label}>Titre — arabe</label><input dir="rtl" lang="ar" className={`${field} font-arabic text-right`} value={vr.titre_ar} onChange={(e) => setVar(i, 'titre_ar', e.target.value)} /></div>
+            </div>
             <div className="mb-2.5"><label className={label}>Intro / narration <span className="text-muted font-normal">(optionnel)</span></label>
               <input className={field} value={vr.intro} onChange={(e) => setVar(i, 'intro', e.target.value)} placeholder="Ex. Dans une version rapportée par Mouslim :" /></div>
+            <div className="grid sm:grid-cols-2 gap-2.5 mb-2.5">
+              <div><label className={label}>Intro — anglais</label><input className={field} value={vr.intro_en} onChange={(e) => setVar(i, 'intro_en', e.target.value)} /></div>
+              <div><label className={label}>Intro — arabe</label><input dir="rtl" lang="ar" className={`${field} font-arabic text-right`} value={vr.intro_ar} onChange={(e) => setVar(i, 'intro_ar', e.target.value)} /></div>
+            </div>
             <div className="mb-2.5"><label className={label}>Texte arabe</label>
               <textarea dir="rtl" lang="ar" className={`${field} font-arabic text-2xl leading-loose text-right min-h-[80px]`} value={vr.texte_arabe} onChange={(e) => setVar(i, 'texte_arabe', e.target.value)} /></div>
             <div className="grid sm:grid-cols-2 gap-2.5 mb-2.5">
               <div><label className={label}>Phonétique</label><input className={field} value={vr.phonetique} onChange={(e) => setVar(i, 'phonetique', e.target.value)} /></div>
+              <div><label className={label}>Phonétique — anglais</label><input className={field} value={vr.phonetique_en} onChange={(e) => setVar(i, 'phonetique_en', e.target.value)} /></div>
               <div><label className={label}>Traduction</label><input className={field} value={vr.texte_francais} onChange={(e) => setVar(i, 'texte_francais', e.target.value)} /></div>
+              <div><label className={label}>Traduction — anglais</label><input className={field} value={vr.texte_en} onChange={(e) => setVar(i, 'texte_en', e.target.value)} /></div>
             </div>
             <div className="mb-2.5"><label className={label}>Source <span className="text-muted font-normal">(référence de cette variante)</span></label>
               <input className={field} value={vr.source} onChange={(e) => setVar(i, 'source', e.target.value)} placeholder="Ex. Sahih Mouslim, n° 2564" /></div>
-            <div><label className={label}>Explication <span className="text-muted font-normal">(Markdown)</span></label>
+            <div className="mb-2.5"><label className={label}>Explication <span className="text-muted font-normal">(Markdown)</span></label>
               <textarea className={`${field} min-h-[60px]`} value={vr.explication} onChange={(e) => setVar(i, 'explication', e.target.value)} /></div>
+            <div className="grid sm:grid-cols-2 gap-2.5">
+              <div><label className={label}>Explication — anglais</label><textarea className={`${field} min-h-[50px]`} value={vr.explication_en} onChange={(e) => setVar(i, 'explication_en', e.target.value)} /></div>
+              <div><label className={label}>Explication — arabe</label><textarea dir="rtl" lang="ar" className={`${field} font-arabic text-right min-h-[50px]`} value={vr.explication_ar} onChange={(e) => setVar(i, 'explication_ar', e.target.value)} /></div>
+            </div>
           </div>
         ))}
 
