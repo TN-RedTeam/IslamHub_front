@@ -150,7 +150,7 @@ class DataService {
     return rpcTags('tags_hadiths', undefined, true);
   }
   async getHadith(id: number): Promise<HadithDetail | null> {
-    const { data, error } = await supabase.rpc('get_hadith', { hadith_id: id });
+    const { data, error } = await supabase.rpc('get_hadith', { hadith_id: id, p_locale: getContentLocale() });
     if (error) throw error;
     return (data ?? null) as HadithDetail | null;
   }
