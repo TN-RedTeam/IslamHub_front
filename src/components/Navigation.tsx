@@ -7,6 +7,7 @@ import { useTheme } from '../context/ThemeContext';
 import { InstallPWA } from './InstallPWA';
 import { LanguageSwitcher } from './LanguageSwitcher';
 import moment from 'moment-hijri';
+import { formatHijriFr } from '../utils/hijri';
 
 // Barre principale (entrées essentielles). `key` → clé i18n nav.<key>.
 const mainItems = [
@@ -25,15 +26,6 @@ const resItems = [
   { to: '/ecoles', key: 'ecoles' },
   { to: '/recits', key: 'recits' },
   { to: '/femmes', key: 'femme' },
-];
-
-// Noms français (translittérés) des 12 mois du calendrier hégirien, dans l'ordre.
-// Sert à afficher la date higri en français ; la version arabe est produite à
-// l'exécution par moment-hijri (aucun texte arabe n'est saisi ici).
-const HIJRI_MONTHS_FR = [
-  'Mouharram', 'Safar', 'Rabîʿ al-awwal', 'Rabîʿ ath-thânî',
-  'Joumâdâ al-oûlâ', 'Joumâdâ ath-thâniya', 'Rajab', 'Chaʿbân',
-  'Ramadân', 'Chawwâl', 'Dhou al-qiʿda', 'Dhou al-hijja',
 ];
 
 // Marque Ahl-Sunnah : mosquée monochrome (currentColor → teinte du thème :
@@ -66,7 +58,7 @@ export const Navigation: React.FC = () => {
   useEffect(() => {
     const update = () => {
       const d = moment();
-      setHijriFr(`${d.iDate()} ${HIJRI_MONTHS_FR[d.iMonth()]} ${d.iYear()}`);
+      setHijriFr(formatHijriFr(d));
       setGreg(new Date().toLocaleDateString('fr-FR', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' }));
     };
     update();

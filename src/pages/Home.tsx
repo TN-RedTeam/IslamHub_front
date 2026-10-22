@@ -4,6 +4,7 @@ import { Book, BookOpen, Heart, GraduationCap, Moon, Sun, Sparkles, Loader2, Arr
 import { dataService } from '../services/DataService';
 import { useSeo } from '../hooks/useSeo';
 import { slugify } from '../utils/slug';
+import { dayOfYear } from '../utils/daily';
 import { GlassCard, SectionHeader, Tile } from '../components/ui/Nuit';
 import { HeroCarousel, type HeroSlide } from '../components/HeroCarousel';
 import { UI } from '../strings';
@@ -19,10 +20,6 @@ import domeJ1672 from '../assets/hero/dome-violet-1672.jpg';
 interface SiteStats { hadiths: number; paroles: number; douaas: number; dhikrs: number; videos: number; coran: number; }
 
 const isNightDouaa = (d: Invocation | null): boolean => (d?.tag ?? '').toLowerCase().includes('nuit');
-const getDayOfYear = (): number => {
-  const t = new Date();
-  return Math.floor((t.getTime() - new Date(t.getFullYear(), 0, 0).getTime()) / 86400000);
-};
 
 export const Home: React.FC = () => {
   useSeo({ description: "Hadiths authentiques, versets du Coran traduits, invocations, paroles de savants et croyance (ʿaqīda) — le savoir islamique sunnite en français." });
@@ -37,7 +34,7 @@ export const Home: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const day = getDayOfYear();
+    const day = dayOfYear();
     // Chargements INDÉPENDANTS : l'échec d'une source ne doit pas vider les autres.
     const jobs = [
       dataService.getStats().then(setStats),
@@ -98,7 +95,7 @@ export const Home: React.FC = () => {
         <div className="absolute inset-0" aria-hidden="true" style={{ background: 'linear-gradient(180deg, transparent 46%, rgba(4,13,14,.5) 86%, var(--hero-fade) 100%)' }} />
 
         <div className="absolute inset-x-0 bottom-0 flex flex-col items-center px-6 pb-[max(26px,9%)] text-center">
-          {heroSlides.length > 0 && <HeroCarousel slides={heroSlides} startIndex={getDayOfYear()} />}
+          {heroSlides.length > 0 && <HeroCarousel slides={heroSlides} startIndex={dayOfYear()} />}
         </div>
       </section>
 
