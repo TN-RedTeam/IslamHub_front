@@ -72,6 +72,12 @@ const SPECS: Record<string, Group[]> = {
     { base: 'Nom', en: 'nom_en', ar: 'nom_ar' },
     { base: 'Introduction', en: 'introduction_md_en', ar: 'introduction_md_ar', multiline: true },
   ],
+  exposes: [
+    { base: 'Titre', en: 'titre_en', ar: 'titre_ar' },
+    { base: 'Contenu', en: 'contenu_md_en', ar: 'contenu_md_ar', multiline: true },
+    { base: 'Traduction du verset', en: 'verset_traduction_en' },
+    { base: 'Phonétique du verset', en: 'verset_phonetique_en' },
+  ],
 };
 
 const field = 'w-full rounded-lg border border-line bg-surface px-3 py-2 text-[14px] text-ink focus:outline-none focus:ring-2 focus:ring-green';
@@ -104,7 +110,7 @@ const LangInput: React.FC<{
   );
 };
 
-export const TranslationFields: React.FC<{ table: string; id: number }> = ({ table, id }) => {
+export const TranslationFields: React.FC<{ table: string; id?: number; exposeSlug?: string }> = ({ table, id, exposeSlug }) => {
   const groups = SPECS[table] ?? [];
   const [vals, setVals] = useState<Record<string, string | null>>({});
   const [loading, setLoading] = useState(true);
@@ -112,12 +118,14 @@ export const TranslationFields: React.FC<{ table: string; id: number }> = ({ tab
   useEffect(() => {
     let alive = true;
     setLoading(true);
-    adminService.getEntryI18n(table, id).then((d) => { if (alive) setVals(d); }).catch(() => {}).finally(() => { if (alive) setLoading(false); });
+    const load = exposeSlug ? adminService.getExposeI18n(exposeSlug) : adminService.getEntryI18n(table, id as number);
+    load.then((d) => { if (alive) setVals(d); }).catch(() => {}).finally(() => { if (alive) setLoading(false); });
     return () => { alive = false; };
-  }, [table, id]);
+  }, [table, id, exposeSlug]);
 
   if (groups.length === 0) return null;
-  const save = (col: string) => (v: string) => adminService.setEntryI18n(table, id, { [col]: v });
+  const save = (col: string) => (v: string) =>
+    exposeSlug ? adminService.setExposeI18n(exposeSlug, { [col]: v }) : adminService.setEntryI18n(table, id as number, { [col]: v });
 
   return (
     <section className="rounded-card border border-line bg-surface p-5 mb-4">

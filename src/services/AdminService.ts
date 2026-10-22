@@ -372,6 +372,15 @@ class AdminService {
     const { error } = await supabase.rpc('admin_entry_i18n_set', { p_table: table, p_id: id, p: patch });
     if (error) throw error;
   }
+  // exposes est keyé par slug (pas d'id)
+  async getExposeI18n(slug: string): Promise<Record<string, string | null>> {
+    const { data, error } = await supabase.rpc('admin_expose_i18n_get', { p_slug: slug });
+    if (error) throw error; return (data ?? {}) as Record<string, string | null>;
+  }
+  async setExposeI18n(slug: string, patch: Record<string, string>): Promise<void> {
+    const { error } = await supabase.rpc('admin_expose_i18n_set', { p_slug: slug, p: patch });
+    if (error) throw error;
+  }
 
   // ---- Traduction de la taxonomie (thèmes & tags) ----
   async listTaxonomyI18n(): Promise<TaxonomyI18n> {
