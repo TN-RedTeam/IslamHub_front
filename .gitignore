@@ -40,3 +40,8 @@ json_to_sql.py
 test.md
 # harnais de dev (non commité)
 /_*.mjs
+
+# Playwright
+/test-results/
+/playwright-report/
+/.playwright/
