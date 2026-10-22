@@ -485,7 +485,7 @@ class DataService {
     return (data ?? []) as SavantMini[];
   }
   async getSavantBySlug(slug: string): Promise<SavantDetail | null> {
-    const { data, error } = await supabase.rpc('savant_by_slug', { savant_slug: slug });
+    const { data, error } = await supabase.rpc('savant_by_slug', { savant_slug: slug, p_locale: getContentLocale() });
     if (error) throw error;
     return (data ?? null) as SavantDetail | null;
   }
@@ -497,7 +497,7 @@ class DataService {
     return (data ?? []) as SourateInfo[];
   }
   async getSourate(slug: string): Promise<SourateDetail | null> {
-    const { data, error } = await supabase.rpc('get_sourate', { sourate_slug: slug });
+    const { data, error } = await supabase.rpc('get_sourate', { sourate_slug: slug, p_locale: getContentLocale() });
     if (error) throw error;
     return (data ?? null) as SourateDetail | null;
   }
