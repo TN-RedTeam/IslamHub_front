@@ -2,6 +2,7 @@ import { lazy, Suspense, useEffect, useMemo } from 'react';
 import { BrowserRouter, HashRouter, Routes, Route, useParams, useLocation } from 'react-router-dom';
 import { Navigate, LocaleProvider } from './lib/router';
 import i18n, { DEFAULT_LOCALE, dirFor, isLocale, type Locale } from './i18n';
+import { isPublicLocale, PUBLIC_DEFAULT_LOCALE } from './config/launch';
 import { LazyMotion, domAnimation } from 'framer-motion';
 
 // Routeur choisi au build :
@@ -45,13 +46,25 @@ const Femmes = lazy(() => import('./pages/Femmes').then((m) => ({ default: m.Fem
 const Madhaheb = lazy(() => import('./pages/Madhaheb').then((m) => ({ default: m.Madhaheb })));
 const Croyance = lazy(() => import('./pages/Croyance').then((m) => ({ default: m.Croyance })));
 const Attributs = lazy(() => import('./pages/croyance/Attributs').then((m) => ({ default: m.Attributs })));
-const PiliersDeLaFoi = lazy(() => import('./pages/croyance/PiliersDeLaFoi').then((m) => ({ default: m.PiliersDeLaFoi })));
-const VersetsEquivoques = lazy(() => import('./pages/croyance/VersetsEquivoques').then((m) => ({ default: m.VersetsEquivoques })));
-const VersetEquivoque = lazy(() => import('./pages/croyance/VersetEquivoque').then((m) => ({ default: m.VersetEquivoque })));
-const ComprendreEquivoques = lazy(() => import('./pages/croyance/ComprendreEquivoques').then((m) => ({ default: m.ComprendreEquivoques })));
-const JugementRationnel = lazy(() => import('./pages/croyance/JugementRationnel').then((m) => ({ default: m.JugementRationnel })));
+const PiliersDeLaFoi = lazy(() =>
+  import('./pages/croyance/PiliersDeLaFoi').then((m) => ({ default: m.PiliersDeLaFoi })),
+);
+const VersetsEquivoques = lazy(() =>
+  import('./pages/croyance/VersetsEquivoques').then((m) => ({ default: m.VersetsEquivoques })),
+);
+const VersetEquivoque = lazy(() =>
+  import('./pages/croyance/VersetEquivoque').then((m) => ({ default: m.VersetEquivoque })),
+);
+const ComprendreEquivoques = lazy(() =>
+  import('./pages/croyance/ComprendreEquivoques').then((m) => ({ default: m.ComprendreEquivoques })),
+);
+const JugementRationnel = lazy(() =>
+  import('./pages/croyance/JugementRationnel').then((m) => ({ default: m.JugementRationnel })),
+);
 const NomsDAllah = lazy(() => import('./pages/croyance/NomsDAllah').then((m) => ({ default: m.NomsDAllah })));
-const DossierThematique = lazy(() => import('./pages/DossierThematique').then((m) => ({ default: m.DossierThematique })));
+const DossierThematique = lazy(() =>
+  import('./pages/DossierThematique').then((m) => ({ default: m.DossierThematique })),
+);
 const DossiersIndex = lazy(() => import('./pages/DossiersIndex').then((m) => ({ default: m.DossiersIndex })));
 const QuestionsIndex = lazy(() => import('./pages/QuestionsIndex').then((m) => ({ default: m.QuestionsIndex })));
 const QuestionPage = lazy(() => import('./pages/QuestionPage').then((m) => ({ default: m.QuestionPage })));
@@ -68,40 +81,92 @@ const AdminLogin = lazy(() => import('./pages/admin/AdminLogin').then((m) => ({ 
 const AdminLayout = lazy(() => import('./pages/admin/AdminLayout').then((m) => ({ default: m.AdminLayout })));
 const AdminHome = lazy(() => import('./pages/admin/AdminHome').then((m) => ({ default: m.AdminHome })));
 const AdminRecherche = lazy(() => import('./pages/admin/AdminRecherche').then((m) => ({ default: m.AdminRecherche })));
-const AdminHadithForm = lazy(() => import('./pages/admin/AdminHadithForm').then((m) => ({ default: m.AdminHadithForm })));
-const AdminHadithsList = lazy(() => import('./pages/admin/AdminHadithsList').then((m) => ({ default: m.AdminHadithsList })));
-const AdminDoublonsList = lazy(() => import('./pages/admin/AdminDoublonsList').then((m) => ({ default: m.AdminDoublonsList })));
-const AdminThemesList = lazy(() => import('./pages/admin/AdminThemesList').then((m) => ({ default: m.AdminThemesList })));
+const AdminHadithForm = lazy(() =>
+  import('./pages/admin/AdminHadithForm').then((m) => ({ default: m.AdminHadithForm })),
+);
+const AdminHadithsList = lazy(() =>
+  import('./pages/admin/AdminHadithsList').then((m) => ({ default: m.AdminHadithsList })),
+);
+const AdminDoublonsList = lazy(() =>
+  import('./pages/admin/AdminDoublonsList').then((m) => ({ default: m.AdminDoublonsList })),
+);
+const AdminThemesList = lazy(() =>
+  import('./pages/admin/AdminThemesList').then((m) => ({ default: m.AdminThemesList })),
+);
 const AdminRemplacer = lazy(() => import('./pages/admin/AdminRemplacer').then((m) => ({ default: m.AdminRemplacer })));
-const AdminOuvragesList = lazy(() => import('./pages/admin/AdminOuvragesList').then((m) => ({ default: m.AdminOuvragesList })));
-const AdminParoleForm = lazy(() => import('./pages/admin/AdminParoleForm').then((m) => ({ default: m.AdminParoleForm })));
-const AdminParolesList = lazy(() => import('./pages/admin/AdminParolesList').then((m) => ({ default: m.AdminParolesList })));
+const AdminOuvragesList = lazy(() =>
+  import('./pages/admin/AdminOuvragesList').then((m) => ({ default: m.AdminOuvragesList })),
+);
+const AdminParoleForm = lazy(() =>
+  import('./pages/admin/AdminParoleForm').then((m) => ({ default: m.AdminParoleForm })),
+);
+const AdminParolesList = lazy(() =>
+  import('./pages/admin/AdminParolesList').then((m) => ({ default: m.AdminParolesList })),
+);
 const AdminRecitForm = lazy(() => import('./pages/admin/AdminRecitForm').then((m) => ({ default: m.AdminRecitForm })));
-const AdminRecitsList = lazy(() => import('./pages/admin/AdminRecitsList').then((m) => ({ default: m.AdminRecitsList })));
+const AdminRecitsList = lazy(() =>
+  import('./pages/admin/AdminRecitsList').then((m) => ({ default: m.AdminRecitsList })),
+);
 const AdminTagsList = lazy(() => import('./pages/admin/AdminTagsList').then((m) => ({ default: m.AdminTagsList })));
-const AdminSujetsList = lazy(() => import('./pages/admin/AdminSujetsList').then((m) => ({ default: m.AdminSujetsList })));
-const AdminEquivoqueForm = lazy(() => import('./pages/admin/AdminEquivoqueForm').then((m) => ({ default: m.AdminEquivoqueForm })));
-const AdminEquivoquesList = lazy(() => import('./pages/admin/AdminEquivoquesList').then((m) => ({ default: m.AdminEquivoquesList })));
+const AdminSujetsList = lazy(() =>
+  import('./pages/admin/AdminSujetsList').then((m) => ({ default: m.AdminSujetsList })),
+);
+const AdminEquivoqueForm = lazy(() =>
+  import('./pages/admin/AdminEquivoqueForm').then((m) => ({ default: m.AdminEquivoqueForm })),
+);
+const AdminEquivoquesList = lazy(() =>
+  import('./pages/admin/AdminEquivoquesList').then((m) => ({ default: m.AdminEquivoquesList })),
+);
 const AdminCoranForm = lazy(() => import('./pages/admin/AdminCoranForm').then((m) => ({ default: m.AdminCoranForm })));
 const AdminCoranList = lazy(() => import('./pages/admin/AdminCoranList').then((m) => ({ default: m.AdminCoranList })));
-const AdminSourateForm = lazy(() => import('./pages/admin/AdminSourateForm').then((m) => ({ default: m.AdminSourateForm })));
-const AdminSouratesList = lazy(() => import('./pages/admin/AdminSouratesList').then((m) => ({ default: m.AdminSouratesList })));
-const AdminInvocationForm = lazy(() => import('./pages/admin/AdminInvocationForm').then((m) => ({ default: m.AdminInvocationForm })));
-const AdminInvocationsList = lazy(() => import('./pages/admin/AdminInvocationsList').then((m) => ({ default: m.AdminInvocationsList })));
-const AdminMomentsList = lazy(() => import('./pages/admin/AdminMomentsList').then((m) => ({ default: m.AdminMomentsList })));
-const AdminSavantForm = lazy(() => import('./pages/admin/AdminSavantForm').then((m) => ({ default: m.AdminSavantForm })));
-const AdminSavantsList = lazy(() => import('./pages/admin/AdminSavantsList').then((m) => ({ default: m.AdminSavantsList })));
-const AdminDossierForm = lazy(() => import('./pages/admin/AdminDossierForm').then((m) => ({ default: m.AdminDossierForm })));
-const AdminDossiersList = lazy(() => import('./pages/admin/AdminDossiersList').then((m) => ({ default: m.AdminDossiersList })));
-const AdminQuestionForm = lazy(() => import('./pages/admin/AdminQuestionForm').then((m) => ({ default: m.AdminQuestionForm })));
-const AdminQuestionsList = lazy(() => import('./pages/admin/AdminQuestionsList').then((m) => ({ default: m.AdminQuestionsList })));
-const AdminTaxonomyI18n = lazy(() => import('./pages/admin/AdminTaxonomyI18n').then((m) => ({ default: m.AdminTaxonomyI18n })));
-const AdminExposeForm = lazy(() => import('./pages/admin/AdminExposeForm').then((m) => ({ default: m.AdminExposeForm })));
-const AdminExposesList = lazy(() => import('./pages/admin/AdminExposesList').then((m) => ({ default: m.AdminExposesList })));
+const AdminSourateForm = lazy(() =>
+  import('./pages/admin/AdminSourateForm').then((m) => ({ default: m.AdminSourateForm })),
+);
+const AdminSouratesList = lazy(() =>
+  import('./pages/admin/AdminSouratesList').then((m) => ({ default: m.AdminSouratesList })),
+);
+const AdminInvocationForm = lazy(() =>
+  import('./pages/admin/AdminInvocationForm').then((m) => ({ default: m.AdminInvocationForm })),
+);
+const AdminInvocationsList = lazy(() =>
+  import('./pages/admin/AdminInvocationsList').then((m) => ({ default: m.AdminInvocationsList })),
+);
+const AdminMomentsList = lazy(() =>
+  import('./pages/admin/AdminMomentsList').then((m) => ({ default: m.AdminMomentsList })),
+);
+const AdminSavantForm = lazy(() =>
+  import('./pages/admin/AdminSavantForm').then((m) => ({ default: m.AdminSavantForm })),
+);
+const AdminSavantsList = lazy(() =>
+  import('./pages/admin/AdminSavantsList').then((m) => ({ default: m.AdminSavantsList })),
+);
+const AdminDossierForm = lazy(() =>
+  import('./pages/admin/AdminDossierForm').then((m) => ({ default: m.AdminDossierForm })),
+);
+const AdminDossiersList = lazy(() =>
+  import('./pages/admin/AdminDossiersList').then((m) => ({ default: m.AdminDossiersList })),
+);
+const AdminQuestionForm = lazy(() =>
+  import('./pages/admin/AdminQuestionForm').then((m) => ({ default: m.AdminQuestionForm })),
+);
+const AdminQuestionsList = lazy(() =>
+  import('./pages/admin/AdminQuestionsList').then((m) => ({ default: m.AdminQuestionsList })),
+);
+const AdminTaxonomyI18n = lazy(() =>
+  import('./pages/admin/AdminTaxonomyI18n').then((m) => ({ default: m.AdminTaxonomyI18n })),
+);
+const AdminExposeForm = lazy(() =>
+  import('./pages/admin/AdminExposeForm').then((m) => ({ default: m.AdminExposeForm })),
+);
+const AdminExposesList = lazy(() =>
+  import('./pages/admin/AdminExposesList').then((m) => ({ default: m.AdminExposesList })),
+);
 const AdminFiqhForm = lazy(() => import('./pages/admin/AdminFiqhForm').then((m) => ({ default: m.AdminFiqhForm })));
 const AdminFiqhList = lazy(() => import('./pages/admin/AdminFiqhList').then((m) => ({ default: m.AdminFiqhList })));
 const AdminFemmeForm = lazy(() => import('./pages/admin/AdminFemmeForm').then((m) => ({ default: m.AdminFemmeForm })));
-const AdminFemmesList = lazy(() => import('./pages/admin/AdminFemmesList').then((m) => ({ default: m.AdminFemmesList })));
+const AdminFemmesList = lazy(() =>
+  import('./pages/admin/AdminFemmesList').then((m) => ({ default: m.AdminFemmesList })),
+);
 
 /** Repli pendant le chargement d'un chunk de page. */
 function PageFallback() {
@@ -150,10 +215,13 @@ function RootRedirect() {
     } catch {
       /* stockage indisponible → on ignore */
     }
-    if (isLocale(stored)) return stored;
+    // Lancement FR-only : on ne redirige que vers une langue PUBLIQUE ; une
+    // préférence stockée ou un navigateur EN/AR ne force donc pas une langue
+    // dormante. Réactiver EN/AR = PUBLIC_LOCALES dans src/config/launch.ts.
+    if (isPublicLocale(stored)) return stored;
     const nav = typeof navigator !== 'undefined' ? navigator.language.slice(0, 2) : '';
-    if (isLocale(nav)) return nav;
-    return DEFAULT_LOCALE;
+    if (isPublicLocale(nav)) return nav;
+    return PUBLIC_DEFAULT_LOCALE;
   }, []);
   return <Navigate to={`/${target}`} replace />;
 }
@@ -182,71 +250,74 @@ function PublicShell() {
                 pour que chaque page re-fetch son contenu dans la nouvelle locale
                 (sinon les listes gardent les données de la langue précédente). */}
             <Routes key={locale}>
-                {/* Pages principales */}
-                <Route index element={<Home />} />
-                {/* 13.3 — la rubrique Coran = exégèse ; « versets par thème » n'est plus exposé publiquement (données + preuves intactes). */}
-                <Route path="coran" element={<Navigate to="/coran/sourates" replace />} />
-                <Route path="coran/sourates" element={<SouratesIndex />} />
-                <Route path="coran/sourates/:slug" element={<SouratePage />} />
-                <Route path="recherche" element={<Recherche />} />
-                <Route path="exposes/:slug" element={<ExposePage />} />
-                <Route path="hadiths" element={<Hadiths />} />
-                <Route path="hadiths/:id/:slug" element={<HadithPage />} />
-                {/* Rubrique unifiée Invocations & Évocations (ex-douaas + ex-dhikrs) */}
-                <Route path="invocations" element={<Invocations />} />
-                <Route path="invocations/journee" element={<Navigate to="/invocations" replace />} />
-                {/* Redirections des anciennes URL pour ne pas casser les liens */}
-                <Route path="douaas" element={<Navigate to="/invocations" replace />} />
-                <Route path="dhikrs" element={<Navigate to="/invocations" replace />} />
-                {/* Rubrique « Savants » : répertoire (défaut) + toutes les paroles */}
-                {/* Phase 10 : hub unique « Biographies » (ex-Savants + ex-Compagnons). */}
-                <Route path="biographies" element={<Biographies />} />
-                <Route path="savants" element={<Navigate to="/biographies" replace />} />
-                <Route path="compagnons" element={<Navigate to="/biographies" replace />} />
-                <Route path="savants/paroles" element={<Navigate to="/paroles" replace />} />
-                <Route path="savants/:slug" element={<SavantPage />} />
-                {/* Pages de parole dédiées + redirection de l'ancienne rubrique */}
-                <Route path="paroles/:slug" element={<ParolePage />} />
-                <Route path="paroles" element={<Paroles />} />
-                <Route path="multimedia" element={<Multimedia />} />
-                {/* Thèmes transverses (Coran / Sunna / Paroles) */}
-                <Route path="themes" element={<ThemesIndex />} />
-                <Route path="themes/:slug" element={<ThemePage />} />
-                {/* Récits : Histoires des Prophètes + Vies des vertueux */}
-                <Route path="recits" element={<Recits />} />
-                <Route path="recits/:slug" element={<RecitPage />} />
-                <Route path="femmes" element={<Femmes />} />
+              {/* Pages principales */}
+              <Route index element={<Home />} />
+              {/* 13.3 — la rubrique Coran = exégèse ; « versets par thème » n'est plus exposé publiquement (données + preuves intactes). */}
+              <Route path="coran" element={<Navigate to="/coran/sourates" replace />} />
+              <Route path="coran/sourates" element={<SouratesIndex />} />
+              <Route path="coran/sourates/:slug" element={<SouratePage />} />
+              <Route path="recherche" element={<Recherche />} />
+              <Route path="exposes/:slug" element={<ExposePage />} />
+              <Route path="hadiths" element={<Hadiths />} />
+              <Route path="hadiths/:id/:slug" element={<HadithPage />} />
+              {/* Rubrique unifiée Invocations & Évocations (ex-douaas + ex-dhikrs) */}
+              <Route path="invocations" element={<Invocations />} />
+              <Route path="invocations/journee" element={<Navigate to="/invocations" replace />} />
+              {/* Redirections des anciennes URL pour ne pas casser les liens */}
+              <Route path="douaas" element={<Navigate to="/invocations" replace />} />
+              <Route path="dhikrs" element={<Navigate to="/invocations" replace />} />
+              {/* Rubrique « Savants » : répertoire (défaut) + toutes les paroles */}
+              {/* Phase 10 : hub unique « Biographies » (ex-Savants + ex-Compagnons). */}
+              <Route path="biographies" element={<Biographies />} />
+              <Route path="savants" element={<Navigate to="/biographies" replace />} />
+              <Route path="compagnons" element={<Navigate to="/biographies" replace />} />
+              <Route path="savants/paroles" element={<Navigate to="/paroles" replace />} />
+              <Route path="savants/:slug" element={<SavantPage />} />
+              {/* Pages de parole dédiées + redirection de l'ancienne rubrique */}
+              <Route path="paroles/:slug" element={<ParolePage />} />
+              <Route path="paroles" element={<Paroles />} />
+              <Route path="multimedia" element={<Multimedia />} />
+              {/* Thèmes transverses (Coran / Sunna / Paroles) */}
+              <Route path="themes" element={<ThemesIndex />} />
+              <Route path="themes/:slug" element={<ThemePage />} />
+              {/* Récits : Histoires des Prophètes + Vies des vertueux */}
+              <Route path="recits" element={<Recits />} />
+              <Route path="recits/:slug" element={<RecitPage />} />
+              <Route path="femmes" element={<Femmes />} />
 
-                {/* Croyance (Aqida) */}
-                <Route path="croyance" element={<Croyance />} />
-                <Route path="croyance/attributs" element={<Attributs />} />
-                {/* Redirection de l'ancienne URL */}
-                <Route path="croyance/noms-et-attributs" element={<Navigate to="/croyance/attributs" replace />} />
-                <Route path="croyance/piliers-de-la-foi" element={<PiliersDeLaFoi />} />
-                <Route path="croyance/versets-hadiths-equivoques" element={<VersetsEquivoques />} />
-                <Route path="croyance/versets-hadiths-equivoques/comprendre" element={<ComprendreEquivoques />} />
-                <Route path="croyance/versets-hadiths-equivoques/:slug" element={<VersetEquivoque />} />
-                {/* Redirections de l'ancienne route */}
-                <Route path="croyance/versets-equivoques" element={<Navigate to="/croyance/versets-hadiths-equivoques" replace />} />
-                <Route path="croyance/versets-equivoques/:slug" element={<OldVersetRedirect />} />
-                <Route path="croyance/noms-d-allah" element={<NomsDAllah />} />
-                <Route path="croyance/jugement-rationnel" element={<JugementRationnel />} />
-                <Route path="dossiers" element={<DossiersIndex />} />
-                <Route path="dossiers/:slug" element={<DossierThematique />} />
-                <Route path="questions" element={<QuestionsIndex />} />
-                <Route path="questions/:slug" element={<QuestionPage />} />
+              {/* Croyance (Aqida) */}
+              <Route path="croyance" element={<Croyance />} />
+              <Route path="croyance/attributs" element={<Attributs />} />
+              {/* Redirection de l'ancienne URL */}
+              <Route path="croyance/noms-et-attributs" element={<Navigate to="/croyance/attributs" replace />} />
+              <Route path="croyance/piliers-de-la-foi" element={<PiliersDeLaFoi />} />
+              <Route path="croyance/versets-hadiths-equivoques" element={<VersetsEquivoques />} />
+              <Route path="croyance/versets-hadiths-equivoques/comprendre" element={<ComprendreEquivoques />} />
+              <Route path="croyance/versets-hadiths-equivoques/:slug" element={<VersetEquivoque />} />
+              {/* Redirections de l'ancienne route */}
+              <Route
+                path="croyance/versets-equivoques"
+                element={<Navigate to="/croyance/versets-hadiths-equivoques" replace />}
+              />
+              <Route path="croyance/versets-equivoques/:slug" element={<OldVersetRedirect />} />
+              <Route path="croyance/noms-d-allah" element={<NomsDAllah />} />
+              <Route path="croyance/jugement-rationnel" element={<JugementRationnel />} />
+              <Route path="dossiers" element={<DossiersIndex />} />
+              <Route path="dossiers/:slug" element={<DossierThematique />} />
+              <Route path="questions" element={<QuestionsIndex />} />
+              <Route path="questions/:slug" element={<QuestionPage />} />
 
-                {/* Écoles (madhāhib) */}
-                <Route path="ecoles" element={<Madhaheb />} />
-                {/* Redirection de l'ancienne route pour ne pas casser les liens */}
-                <Route path="madhaheb" element={<Navigate to="/ecoles" replace />} />
-                <Route path="ecoles/Hanafi" element={<Hanafi />} />
-                <Route path="ecoles/Malikite" element={<Malikite />} />
-                <Route path="ecoles/Shafii" element={<Shafii />} />
-                <Route path="ecoles/Hanbalite" element={<Hanbalite />} />
+              {/* Écoles (madhāhib) */}
+              <Route path="ecoles" element={<Madhaheb />} />
+              {/* Redirection de l'ancienne route pour ne pas casser les liens */}
+              <Route path="madhaheb" element={<Navigate to="/ecoles" replace />} />
+              <Route path="ecoles/Hanafi" element={<Hanafi />} />
+              <Route path="ecoles/Malikite" element={<Malikite />} />
+              <Route path="ecoles/Shafii" element={<Shafii />} />
+              <Route path="ecoles/Hanbalite" element={<Hanbalite />} />
 
-                {/* 404 */}
-                <Route path="*" element={<NotFound />} />
+              {/* 404 */}
+              <Route path="*" element={<NotFound />} />
             </Routes>
           </Suspense>
         </main>

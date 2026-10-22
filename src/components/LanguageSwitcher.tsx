@@ -2,7 +2,8 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Globe, Check, ChevronDown } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate, useLocale, stripLocale } from '../lib/router';
-import { LOCALES, type Locale } from '../i18n';
+import { type Locale } from '../i18n';
+import { PUBLIC_LOCALES } from '../config/launch';
 
 /**
  * Sélecteur de langue (Phase 15.3) — bascule `/fr` ⇄ `/en` ⇄ `/ar` en
@@ -62,7 +63,7 @@ export const LanguageSwitcher: React.FC<{ variant?: 'bar' | 'drawer' }> = ({ var
         <p className="px-4 pt-3 pb-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-muted">
           {t('lang.switch')}
         </p>
-        {LOCALES.map((loc) => {
+        {PUBLIC_LOCALES.map((loc) => {
           const on = loc === current;
           return (
             <button
@@ -98,7 +99,10 @@ export const LanguageSwitcher: React.FC<{ variant?: 'bar' | 'drawer' }> = ({ var
       >
         <Globe className="w-5 h-5" aria-hidden="true" />
         <span className="text-[12px] font-semibold uppercase tracking-wide">{current}</span>
-        <ChevronDown className={`w-3.5 h-3.5 transition-transform motion-reduce:transition-none ${open ? 'rotate-180' : ''}`} aria-hidden="true" />
+        <ChevronDown
+          className={`w-3.5 h-3.5 transition-transform motion-reduce:transition-none ${open ? 'rotate-180' : ''}`}
+          aria-hidden="true"
+        />
       </button>
       {open && (
         <div
@@ -106,7 +110,7 @@ export const LanguageSwitcher: React.FC<{ variant?: 'bar' | 'drawer' }> = ({ var
           aria-label={t('lang.switch')}
           className="absolute end-0 top-full mt-1.5 min-w-[160px] rounded-xl border border-glass-border bg-bg1 backdrop-blur-md shadow-glass py-1.5 z-50"
         >
-          {LOCALES.map((loc) => {
+          {PUBLIC_LOCALES.map((loc) => {
             const on = loc === current;
             return (
               <button

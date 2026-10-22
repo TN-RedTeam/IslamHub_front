@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { useTheme } from '../context/ThemeContext';
 import { InstallPWA } from './InstallPWA';
 import { LanguageSwitcher } from './LanguageSwitcher';
+import { MULTILINGUAL_PUBLIC } from '../config/launch';
 import moment from 'moment-hijri';
 import { formatHijriFr } from '../utils/hijri';
 
@@ -59,7 +60,9 @@ export const Navigation: React.FC = () => {
     const update = () => {
       const d = moment();
       setHijriFr(formatHijriFr(d));
-      setGreg(new Date().toLocaleDateString('fr-FR', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' }));
+      setGreg(
+        new Date().toLocaleDateString('fr-FR', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' }),
+      );
     };
     update();
     const interval = setInterval(update, 3600000); // rafraîchit chaque heure (passage de jour)
@@ -67,22 +70,31 @@ export const Navigation: React.FC = () => {
   }, []);
 
   // Ferme les menus au changement de page.
-  useEffect(() => { setIsMenuOpen(false); setResOpen(false); }, [location.pathname]);
+  useEffect(() => {
+    setIsMenuOpen(false);
+    setResOpen(false);
+  }, [location.pathname]);
 
   // Ferme le déroulant « Ressources » au clic extérieur / touche Échap.
   useEffect(() => {
     if (!resOpen) return;
-    const onDown = (e: MouseEvent) => { if (resRef.current && !resRef.current.contains(e.target as Node)) setResOpen(false); };
-    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setResOpen(false); };
+    const onDown = (e: MouseEvent) => {
+      if (resRef.current && !resRef.current.contains(e.target as Node)) setResOpen(false);
+    };
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setResOpen(false);
+    };
     document.addEventListener('mousedown', onDown);
     document.addEventListener('keydown', onKey);
-    return () => { document.removeEventListener('mousedown', onDown); document.removeEventListener('keydown', onKey); };
+    return () => {
+      document.removeEventListener('mousedown', onDown);
+      document.removeEventListener('keydown', onKey);
+    };
   }, [resOpen]);
 
   // Chemin sans préfixe de langue (`/fr/coran` → `/coran`) pour comparer aux `to`.
   const path = stripLocale(location.pathname);
-  const isActive = (to: string, exact?: boolean) =>
-    exact ? path === to : path === to || path.startsWith(`${to}/`);
+  const isActive = (to: string, exact?: boolean) => (exact ? path === to : path === to || path.startsWith(`${to}/`));
   const resActive = resItems.some((i) => isActive(i.to));
 
   const linkCls = (active: boolean) =>
@@ -91,22 +103,41 @@ export const Navigation: React.FC = () => {
     }`;
 
   return (
-    <nav className="sticky top-0 z-50 backdrop-blur-md border-b border-glass-border" style={{ background: 'color-mix(in srgb, var(--bg2) 82%, transparent)' }}>
+    <nav
+      className="sticky top-0 z-50 backdrop-blur-md border-b border-glass-border"
+      style={{ background: 'color-mix(in srgb, var(--bg2) 82%, transparent)' }}
+    >
       <div className="max-w-[1440px] mx-auto px-4">
         <div className="flex items-center gap-4 h-16">
           {/* Marque : mosquée + pile calligraphie arabe / mot latin */}
-          <Link to="/" className="flex items-center gap-2.5 shrink-0" aria-label={`${t('brand.name')} — ${t('nav.home')}`}>
-            <span className="text-accent dark:text-accent-br"><Mark size={34} /></span>
+          <Link
+            to="/"
+            className="flex items-center gap-2.5 shrink-0"
+            aria-label={`${t('brand.name')} — ${t('nav.home')}`}
+          >
+            <span className="text-accent dark:text-accent-br">
+              <Mark size={34} />
+            </span>
             <span className="flex flex-col leading-none">
-              <span lang="ar" dir="rtl" className="font-logo-ar text-[19px] leading-[1.05] text-accent dark:text-accent-br">أهل السنة</span>
-              <span className="font-logo-latin text-[12px] leading-none tracking-[0.2em] uppercase text-ink mt-0.5">Ahl-Sunnah</span>
+              <span
+                lang="ar"
+                dir="rtl"
+                className="font-logo-ar text-[19px] leading-[1.05] text-accent dark:text-accent-br"
+              >
+                أهل السنة
+              </span>
+              <span className="font-logo-latin text-[12px] leading-none tracking-[0.2em] uppercase text-ink mt-0.5">
+                Ahl-Sunnah
+              </span>
             </span>
           </Link>
 
           {/* Liens en ligne à partir de 900px ; en dessous, drawer hamburger. */}
           <div className="hidden min-[900px]:flex items-center gap-0.5 flex-1 min-w-0">
             {mainItems.map(({ to, key, exact }) => (
-              <Link key={to} to={to} className={linkCls(isActive(to, exact))}>{t(`nav.${key}`)}</Link>
+              <Link key={to} to={to} className={linkCls(isActive(to, exact))}>
+                {t(`nav.${key}`)}
+              </Link>
             ))}
 
             {/* Menu déroulant « Ressources » */}
@@ -119,17 +150,24 @@ export const Navigation: React.FC = () => {
                 className={`${linkCls(resActive)} inline-flex items-center gap-1`}
               >
                 {t('nav.resources')}
-                <ChevronDown className={`w-3.5 h-3.5 transition-transform motion-reduce:transition-none ${resOpen ? 'rotate-180' : ''}`} />
+                <ChevronDown
+                  className={`w-3.5 h-3.5 transition-transform motion-reduce:transition-none ${resOpen ? 'rotate-180' : ''}`}
+                />
               </button>
               {resOpen && (
-                <div role="menu" className="absolute start-0 top-full mt-1.5 min-w-[210px] rounded-xl border border-glass-border bg-bg1 backdrop-blur-md shadow-glass py-1.5 z-50">
+                <div
+                  role="menu"
+                  className="absolute start-0 top-full mt-1.5 min-w-[210px] rounded-xl border border-glass-border bg-bg1 backdrop-blur-md shadow-glass py-1.5 z-50"
+                >
                   {resItems.map(({ to, key }) => (
                     <Link
                       key={to}
                       to={to}
                       role="menuitem"
                       className={`block px-3.5 py-2 text-[13.5px] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green ${
-                        isActive(to) ? 'bg-glass-tint text-ink font-medium' : 'text-ink hover:bg-glass-tint hover:text-ink'
+                        isActive(to)
+                          ? 'bg-glass-tint text-ink font-medium'
+                          : 'text-ink hover:bg-glass-tint hover:text-ink'
                       }`}
                     >
                       {t(`nav.${key}`)}
@@ -147,17 +185,27 @@ export const Navigation: React.FC = () => {
               className="hidden min-[1360px]:flex items-center gap-2.5 px-3 py-1.5 rounded-full bg-surface border border-line"
               aria-label={`Date : ${hijriFr}`}
             >
-              <span className="grid place-items-center shrink-0 w-[30px] h-[30px] rounded-lg bg-glass-tint border border-glass-border text-accent"><Mark size={20} /></span>
+              <span className="grid place-items-center shrink-0 w-[30px] h-[30px] rounded-lg bg-glass-tint border border-glass-border text-accent">
+                <Mark size={20} />
+              </span>
               <span className="leading-tight">
-                <span className="block font-display font-semibold text-[13px] text-ink whitespace-nowrap">{hijriFr}</span>
+                <span className="block font-display font-semibold text-[13px] text-ink whitespace-nowrap">
+                  {hijriFr}
+                </span>
                 <span className="block text-[11px] text-muted whitespace-nowrap first-letter:uppercase">{greg}</span>
               </span>
             </div>
 
-            <div className="hidden min-[1360px]:block"><InstallPWA /></div>
+            <div className="hidden min-[1360px]:block">
+              <InstallPWA />
+            </div>
 
-            {/* Sélecteur de langue (desktop) */}
-            <div className="hidden min-[900px]:block"><LanguageSwitcher variant="bar" /></div>
+            {/* Sélecteur de langue (desktop) — masqué au lancement FR-only */}
+            {MULTILINGUAL_PUBLIC && (
+              <div className="hidden min-[900px]:block">
+                <LanguageSwitcher variant="bar" />
+              </div>
+            )}
 
             <Link
               to="/recherche"
@@ -202,7 +250,9 @@ export const Navigation: React.FC = () => {
                     key={to}
                     to={to}
                     className={`block px-4 py-2.5 rounded-lg mb-0.5 font-sans transition-colors ${
-                      isActive(to, exact) ? 'bg-glass-tint text-ink font-medium' : 'text-ink hover:bg-glass-tint hover:text-ink'
+                      isActive(to, exact)
+                        ? 'bg-glass-tint text-ink font-medium'
+                        : 'text-ink hover:bg-glass-tint hover:text-ink'
                     }`}
                   >
                     {t(`nav.${key}`)}
@@ -210,21 +260,25 @@ export const Navigation: React.FC = () => {
                 ))}
 
                 {/* Sous-groupe « Ressources » */}
-                <p className="px-4 pt-3 pb-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-muted">{t('nav.resources')}</p>
+                <p className="px-4 pt-3 pb-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-muted">
+                  {t('nav.resources')}
+                </p>
                 {resItems.map(({ to, key }) => (
                   <Link
                     key={to}
                     to={to}
                     className={`block ps-6 pe-4 py-2.5 rounded-lg mb-0.5 font-sans transition-colors ${
-                      isActive(to) ? 'bg-glass-tint text-ink font-medium' : 'text-ink hover:bg-glass-tint hover:text-ink'
+                      isActive(to)
+                        ? 'bg-glass-tint text-ink font-medium'
+                        : 'text-ink hover:bg-glass-tint hover:text-ink'
                     }`}
                   >
                     {t(`nav.${key}`)}
                   </Link>
                 ))}
 
-                {/* Sélecteur de langue (mobile) */}
-                <LanguageSwitcher variant="drawer" />
+                {/* Sélecteur de langue (mobile) — masqué au lancement FR-only */}
+                {MULTILINGUAL_PUBLIC && <LanguageSwitcher variant="drawer" />}
 
                 <InstallPWA className="mt-2 flex w-full items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-green text-white hover:bg-green-deep transition-colors" />
               </div>

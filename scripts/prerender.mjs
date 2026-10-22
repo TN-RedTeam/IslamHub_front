@@ -30,7 +30,9 @@ const DIST = resolve(__dirname, '../dist');
 const BASE = '/' + (process.env.VITE_BASE || '/IslamHub_front/').replace(/^\/+|\/+$/g, '');
 const SITE_HOST = new URL(process.env.SITE_ORIGIN || 'https://tn-redteam.github.io/IslamHub_front').origin;
 const MAX = Number(process.env.PRERENDER_MAX || 1500);
-const LOCALES = ['fr', 'en', 'ar'];
+// Lancement FR-only : on ne prérende QUE les langues publiques (EN/AR dormants
+// → pas de snapshot indexable). Réactiver = PUBLIC_LOCALES=fr,en,ar à l'env.
+const LOCALES = (process.env.PUBLIC_LOCALES || 'fr').split(',').map((s) => s.trim()).filter(Boolean);
 
 // Pages « coquille » présentes dans toutes les langues.
 const SHELL = [
