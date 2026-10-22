@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { DeleteEntryButton } from '../../components/admin/DeleteEntryButton';
 import { useNavigate, useParams, Link } from 'react-router-dom';
-import { TranslationPanel } from '../../components/admin/TranslationPanel';
+import { TranslationFields } from '../../components/admin/TranslationFields';
 import { Loader2, Check, AlertTriangle } from 'lucide-react';
 import { adminService, type FemmeFormData } from '../../services/AdminService';
 
@@ -54,7 +54,7 @@ export const AdminFemmeForm: React.FC = () => {
   return (
     <div className="max-w-3xl px-6 py-8 pb-28">
       <p className="text-xs text-muted"><Link to="/admin/femmes" className="hover:text-ink">La femme musulmane</Link> · {editId ? 'Modifier' : 'Nouveau'}</p>
-      {editId ? <TranslationPanel kind="femme" id={editId} editPathBase="/admin/femmes" /> : null}
+      {editId ? <TranslationFields table="femmes" id={editId} /> : null}
       <h1 className="font-display font-semibold text-ink text-3xl mt-1 mb-1">{editId ? 'Modifier le segment' : 'Nouveau segment'}</h1>
       <p className="text-muted text-sm mb-6">Un segment = une entrée dans un chapitre. Le texte arabe est enregistré tel quel (UTF-8).</p>
 

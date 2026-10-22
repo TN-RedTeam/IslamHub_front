@@ -3,7 +3,7 @@ import { SujetField } from '../../components/admin/SujetField';
 import { DeleteEntryButton } from '../../components/admin/DeleteEntryButton';
 import { TagPicker } from '../../components/admin/TagPicker';
 import { useNavigate, useParams, Link } from 'react-router-dom';
-import { TranslationPanel } from '../../components/admin/TranslationPanel';
+import { TranslationFields } from '../../components/admin/TranslationFields';
 import { Loader2, Plus, Trash2, Check, AlertTriangle, X } from 'lucide-react';
 import { adminService, type NarrateurRow, type RecueilRow, type SavantRow, type HadithFormData, type HadithSourceInput } from '../../services/AdminService';
 import { AR_TEMPLATE, caretBetween, normalizeBracketSpaces } from '../../utils/arabicTemplate';
@@ -296,7 +296,7 @@ export const AdminHadithForm: React.FC = () => {
   return (
     <div className="max-w-3xl px-6 py-8 pb-28">
       <p className="text-xs text-muted"><Link to="/admin/hadiths" className="hover:text-ink">Hadiths</Link> · {editId ? 'Modifier' : 'Nouveau'}</p>
-      {editId ? <TranslationPanel kind="hadith" id={editId} editPathBase="/admin/hadiths" /> : null}
+      {editId ? <TranslationFields table="hadiths" id={editId} /> : null}
       <h1 className="font-display font-semibold text-ink text-3xl mt-1 mb-1">{editId ? 'Modifier le hadith' : 'Nouveau hadith'}</h1>
       <p className="text-muted text-sm mb-6">Le texte arabe collé ici est enregistré tel quel (UTF-8, aucune transformation).</p>
 

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { DeleteEntryButton } from '../../components/admin/DeleteEntryButton';
 import { ScanUploadButton } from '../../components/admin/ScanUploadButton';
 import { useNavigate, useParams, Link } from 'react-router-dom';
-import { TranslationPanel } from '../../components/admin/TranslationPanel';
+import { TranslationFields } from '../../components/admin/TranslationFields';
 import { Loader2, Check, AlertTriangle } from 'lucide-react';
 import { adminRecits, type RecitRow } from '../../services/AdminService';
 import { PublishToggle } from '../../components/admin/PublishToggle';
@@ -60,7 +60,7 @@ export const AdminRecitForm: React.FC = () => {
   return (
     <div className="max-w-3xl px-6 py-8 pb-28">
       <p className="text-xs text-muted"><Link to="/admin/recits" className="hover:text-ink">Récits</Link> · {editId ? 'Modifier' : 'Nouveau'}</p>
-      {editId ? <TranslationPanel kind="recit" id={editId} editPathBase="/admin/recits" /> : null}
+      {editId ? <TranslationFields table="recits" id={editId} /> : null}
       <h1 className="font-display font-semibold text-ink text-3xl mt-1 mb-6">{editId ? 'Modifier le récit' : 'Nouveau récit'}</h1>
 
       <section className="rounded-card border border-line bg-surface p-5 space-y-3.5">
