@@ -61,7 +61,7 @@ export const QuestionPage: React.FC = () => {
 
   const share = async () => {
     const url = window.location.href;
-    const title = data?.question.question || 'Aqida';
+    const title = data?.question.question || 'Ahl-Sunnah';
     try {
       if (navigator.share) await navigator.share({ title, url });
       else { await navigator.clipboard.writeText(url); setCopied(true); setTimeout(() => setCopied(false), 2000); }

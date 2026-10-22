@@ -112,7 +112,7 @@ export const DossierThematique: React.FC = () => {
   };
   const share = async () => {
     const url = window.location.href;
-    const title = data?.dossier.h1 || 'Aqida';
+    const title = data?.dossier.h1 || 'Ahl-Sunnah';
     try {
       if (navigator.share) await navigator.share({ title, url });
       else { await navigator.clipboard.writeText(url); setCopied(true); setTimeout(() => setCopied(false), 2000); }
