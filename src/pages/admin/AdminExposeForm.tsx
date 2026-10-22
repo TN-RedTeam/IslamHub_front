@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { BlocEditor } from '../../components/admin/BlocEditor';
+import { TranslationFields } from '../../components/admin/TranslationFields';
 import { PublishToggle } from '../../components/admin/PublishToggle';
 import { DeleteEntryButton } from '../../components/admin/DeleteEntryButton';
 import { useNavigate, useParams, Link } from 'react-router-dom';
@@ -80,6 +81,7 @@ export const AdminExposeForm: React.FC = () => {
     <div className="max-w-3xl px-6 py-8 pb-28">
       <p className="text-xs text-muted"><Link to="/admin/exposes" className="hover:text-ink">Exposés</Link> · {editSlug ? 'Modifier' : 'Nouveau'}</p>
       <h1 className="font-display font-semibold text-ink text-3xl mt-1 mb-1">{editSlug ? 'Modifier l’exposé' : 'Nouvel exposé'}</h1>
+      {editSlug ? <div className="mt-4"><TranslationFields table="exposes" exposeSlug={editSlug} /></div> : null}
       <p className="text-muted text-sm mb-6">Le texte arabe collé ici est enregistré tel quel (UTF-8).</p>
 
       {/* 1. Page */}

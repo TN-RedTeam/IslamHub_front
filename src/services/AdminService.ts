@@ -42,6 +42,7 @@ export interface HadithFormData {
 }
 export interface HadithSegmentInput {
   intro: string; texte_arabe: string; phonetique: string; texte_francais: string; explication: string;
+  intro_en?: string; intro_ar?: string; phonetique_en?: string; texte_en?: string; explication_en?: string; explication_ar?: string;
   variant_index?: number | null; // position 1-based de la variante à laquelle ce dialogue est rattaché (null = matn principal)
 }
 export type DuplicateKind = 'hadith' | 'parole' | 'invocation';
@@ -56,6 +57,7 @@ export interface DuplicatePair {
 }
 export interface HadithVariantInput {
   titre: string; intro: string; texte_arabe: string; phonetique: string; texte_francais: string; explication: string; source: string;
+  titre_en?: string; titre_ar?: string; intro_en?: string; intro_ar?: string; phonetique_en?: string; texte_en?: string; explication_en?: string; explication_ar?: string;
 }
 export interface HadithEditShape {
   id: number; sujet: string | null; rubrique: string | null; intro: string | null; texte_arabe: string | null; texte_francais: string | null;
@@ -65,8 +67,10 @@ export interface HadithEditShape {
   is_equivoque: boolean; equivoque_id: number | null; equivoque_slug: string | null;
   invocation_type: number | null; invocation_commentaire: string | null; invocation_moments: string | null;
   tag: string | null; sources: { recueil_id: number; numero: string | null; chapitre: string | null }[];
-  segments: { variant_id: number | null; intro: string | null; texte_arabe: string | null; phonetique: string | null; texte_francais: string | null; explication: string | null }[];
-  variants: { id: number; titre: string | null; intro: string | null; texte_arabe: string | null; phonetique: string | null; texte_francais: string | null; explication: string | null; source: string | null }[];
+  segments: { variant_id: number | null; intro: string | null; texte_arabe: string | null; phonetique: string | null; texte_francais: string | null; explication: string | null;
+    intro_en?: string | null; intro_ar?: string | null; phonetique_en?: string | null; texte_en?: string | null; explication_en?: string | null; explication_ar?: string | null }[];
+  variants: { id: number; titre: string | null; intro: string | null; texte_arabe: string | null; phonetique: string | null; texte_francais: string | null; explication: string | null; source: string | null;
+    titre_en?: string | null; titre_ar?: string | null; intro_en?: string | null; intro_ar?: string | null; phonetique_en?: string | null; texte_en?: string | null; explication_en?: string | null; explication_ar?: string | null }[];
 }
 export interface HadithExtraRow {
   id: number; sujet: string | null; statut: string | null; tag: string | null;
@@ -372,6 +376,15 @@ class AdminService {
     const { error } = await supabase.rpc('admin_entry_i18n_set', { p_table: table, p_id: id, p: patch });
     if (error) throw error;
   }
+  // exposes est keyé par slug (pas d'id)
+  async getExposeI18n(slug: string): Promise<Record<string, string | null>> {
+    const { data, error } = await supabase.rpc('admin_expose_i18n_get', { p_slug: slug });
+    if (error) throw error; return (data ?? {}) as Record<string, string | null>;
+  }
+  async setExposeI18n(slug: string, patch: Record<string, string>): Promise<void> {
+    const { error } = await supabase.rpc('admin_expose_i18n_set', { p_slug: slug, p: patch });
+    if (error) throw error;
+  }
 
   // ---- Traduction de la taxonomie (thèmes & tags) ----
   async listTaxonomyI18n(): Promise<TaxonomyI18n> {
@@ -593,7 +606,8 @@ export interface ParoleEditShape {
   commente_type: 'parole' | 'hadith' | 'verset' | null;
   commente_parole_id: number | null; commente_hadith_id: number | null; commente_verset_id: number | null; commente_livre: string | null;
   images: { image_url: string; alt: string | null; legende: string | null; source_livre: string | null; source_livre_ar: string | null; ordre: number | null }[];
-  segments: { intro: string | null; texte_arabe: string | null; phonetique: string | null; texte_francais: string | null; explication: string | null }[];
+  segments: { intro: string | null; texte_arabe: string | null; phonetique: string | null; texte_francais: string | null; explication: string | null;
+    intro_en?: string | null; intro_ar?: string | null; phonetique_en?: string | null; texte_en?: string | null; explication_en?: string | null; explication_ar?: string | null }[];
 }
 
 export type VersetType = 'verset' | 'hadith';
@@ -640,8 +654,8 @@ export interface CoranEditShape {
 export interface CoranRow { id: number; sujet: string; sourate: string | null; }
 
 // ---- Exégèse (sourates -> versets -> exégèses) ----
-export interface ExegeseInput { texte: string; source?: string | null; ordre?: number | null; verset_fin?: number | null; }
-export interface VersetInput { numero: string; texte_arabe: string; texte_francais: string; phonetique: string; exegeses: ExegeseInput[]; }
+export interface ExegeseInput { texte: string; source?: string | null; ordre?: number | null; verset_fin?: number | null; texte_en?: string | null; texte_ar?: string | null; }
+export interface VersetInput { numero: string; texte_arabe: string; texte_francais: string; phonetique: string; texte_en?: string | null; phonetique_en?: string | null; exegeses: ExegeseInput[]; }
 export interface SourateFormData {
   id?: number | null;
   numero: string; nom: string; nom_arabe: string; slug?: string | null; revelation: string; nb_versets: string;
@@ -652,7 +666,9 @@ export interface SourateEditShape {
   id: number; numero: number; nom: string; nom_arabe: string | null; slug: string; revelation: string | null; nb_versets: number | null;
   introduction_md: string | null; ordre_revelation: number | null;
   versets: { numero: number; texte_arabe: string | null; texte_francais: string | null; phonetique: string | null;
-             exegeses: { texte: string; source: string | null; ordre: number | null; verset_fin: number | null }[] }[];
+             texte_en?: string | null; phonetique_en?: string | null;
+             exegeses: { texte: string; source: string | null; ordre: number | null; verset_fin: number | null;
+                         texte_en?: string | null; texte_ar?: string | null }[] }[];
 }
 export interface SourateRow { id: number; numero: number; nom: string; slug: string; nb_versets_saisis: number; }
 

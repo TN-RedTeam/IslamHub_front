@@ -41,8 +41,10 @@ export const AdminParoleForm: React.FC = () => {
   const [images, setImages] = useState<Img[]>([]);
   const moveImg = (i: number, d: -1 | 1) => setImages((p) => { const j = i + d; if (j < 0 || j >= p.length) return p; const n = [...p]; [n[i], n[j]] = [n[j], n[i]]; return n; });
   // Dialogue — suite de la parole (échange question/réponse…).
-  type Seg = { intro: string; texte_arabe: string; phonetique: string; texte_francais: string; explication: string };
-  const emptySeg = (): Seg => ({ intro: '', texte_arabe: '', phonetique: '', texte_francais: '', explication: '' });
+  type Seg = { intro: string; texte_arabe: string; phonetique: string; texte_francais: string; explication: string;
+    intro_en: string; intro_ar: string; phonetique_en: string; texte_en: string; explication_en: string; explication_ar: string };
+  const emptySeg = (): Seg => ({ intro: '', texte_arabe: '', phonetique: '', texte_francais: '', explication: '',
+    intro_en: '', intro_ar: '', phonetique_en: '', texte_en: '', explication_en: '', explication_ar: '' });
   const [segments, setSegments] = useState<Seg[]>([]);
   const setSeg = (i: number, k: keyof Seg, v: string) => setSegments((p) => p.map((s, j) => (j === i ? { ...s, [k]: v } : s)));
   const moveSeg = (i: number, d: -1 | 1) => setSegments((p) => { const j = i + d; if (j < 0 || j >= p.length) return p; const n = [...p]; [n[i], n[j]] = [n[j], n[i]]; return n; });
@@ -66,7 +68,8 @@ export const AdminParoleForm: React.FC = () => {
       setCommenteType(ct as '' | 'parole' | 'hadith' | 'verset');
       setCommenteRef(ct === 'parole' ? String(p.commente_parole_id ?? '') : ct === 'hadith' ? String(p.commente_hadith_id ?? '') : ct === 'verset' ? String(p.commente_verset_id ?? '') : '');
       setImages(p.images.map((im) => ({ ...emptyImg(), image_url: im.image_url ?? '', alt: im.alt ?? '', legende: im.legende ?? '', source_livre: im.source_livre ?? '', source_livre_ar: im.source_livre_ar ?? '' })));
-      setSegments((p.segments ?? []).map((s) => ({ intro: s.intro ?? '', texte_arabe: s.texte_arabe ?? '', phonetique: s.phonetique ?? '', texte_francais: s.texte_francais ?? '', explication: s.explication ?? '' })));
+      setSegments((p.segments ?? []).map((s) => ({ intro: s.intro ?? '', texte_arabe: s.texte_arabe ?? '', phonetique: s.phonetique ?? '', texte_francais: s.texte_francais ?? '', explication: s.explication ?? '',
+        intro_en: s.intro_en ?? '', intro_ar: s.intro_ar ?? '', phonetique_en: s.phonetique_en ?? '', texte_en: s.texte_en ?? '', explication_en: s.explication_en ?? '', explication_ar: s.explication_ar ?? '' })));
     }).catch(() => setError('Parole introuvable.'));
   }, [editId]);
 
@@ -281,14 +284,24 @@ export const AdminParoleForm: React.FC = () => {
             </div>
             <div className="mb-2.5"><label className={label}>Intro / narration <span className="text-muted font-normal">(optionnel)</span></label>
               <input className={field} value={sg.intro} onChange={(e) => setSeg(i, 'intro', e.target.value)} placeholder="Ex. On lui demanda :" /></div>
+            <div className="grid sm:grid-cols-2 gap-2.5 mb-2.5">
+              <div><label className={label}>Intro — anglais</label><input className={field} value={sg.intro_en} onChange={(e) => setSeg(i, 'intro_en', e.target.value)} placeholder="Intro (EN)" /></div>
+              <div><label className={label}>Intro — arabe</label><input dir="rtl" lang="ar" className={`${field} font-arabic text-right`} value={sg.intro_ar} onChange={(e) => setSeg(i, 'intro_ar', e.target.value)} /></div>
+            </div>
             <div className="mb-2.5"><label className={label}>Texte arabe</label>
               <textarea dir="rtl" lang="ar" className={`${field} font-arabic text-2xl leading-loose text-right min-h-[80px]`} value={sg.texte_arabe} onChange={(e) => setSeg(i, 'texte_arabe', e.target.value)} /></div>
             <div className="grid sm:grid-cols-2 gap-2.5 mb-2.5">
               <div><label className={label}>Phonétique</label><input className={field} value={sg.phonetique} onChange={(e) => setSeg(i, 'phonetique', e.target.value)} /></div>
+              <div><label className={label}>Phonétique — anglais</label><input className={field} value={sg.phonetique_en} onChange={(e) => setSeg(i, 'phonetique_en', e.target.value)} /></div>
               <div><label className={label}>Traduction</label><input className={field} value={sg.texte_francais} onChange={(e) => setSeg(i, 'texte_francais', e.target.value)} /></div>
+              <div><label className={label}>Traduction — anglais</label><input className={field} value={sg.texte_en} onChange={(e) => setSeg(i, 'texte_en', e.target.value)} placeholder="English" /></div>
             </div>
-            <div><label className={label}>Explication <span className="text-muted font-normal">(Markdown)</span></label>
+            <div className="mb-2.5"><label className={label}>Explication <span className="text-muted font-normal">(Markdown)</span></label>
               <textarea className={`${field} min-h-[60px]`} value={sg.explication} onChange={(e) => setSeg(i, 'explication', e.target.value)} /></div>
+            <div className="grid sm:grid-cols-2 gap-2.5">
+              <div><label className={label}>Explication — anglais</label><textarea className={`${field} min-h-[60px]`} value={sg.explication_en} onChange={(e) => setSeg(i, 'explication_en', e.target.value)} /></div>
+              <div><label className={label}>Explication — arabe</label><textarea dir="rtl" lang="ar" className={`${field} font-arabic text-right min-h-[60px]`} value={sg.explication_ar} onChange={(e) => setSeg(i, 'explication_ar', e.target.value)} /></div>
+            </div>
           </div>
         ))}
         <button type="button" onClick={() => setSegments((p) => [...p, emptySeg()])} className="inline-flex items-center gap-1.5 rounded-lg border border-line bg-surface text-ink font-semibold px-3.5 py-2 text-sm hover:border-green">

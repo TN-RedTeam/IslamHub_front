@@ -283,19 +283,14 @@ class DataService {
 
   // ============ Pages d'exposé (table `exposes`, Markdown éditable) ============
   async getExpose(slug: string): Promise<Expose | null> {
-    const { data, error } = await supabase
-      .from('exposes')
-      .select('slug,titre,contenu_md,verset_arabe,verset_traduction,verset_phonetique,verset_ref')
-      .eq('slug', slug)
-      .eq('published', true)
-      .maybeSingle();
+    const { data, error } = await supabase.rpc('get_expose', { p_slug: slug, p_locale: getContentLocale() });
     if (error) throw error;
     return (data ?? null) as Expose | null;
   }
 
   /** Liste légère des exposés PUBLIÉS (section « Exposés / Cours » de Croyance). */
   async getExposes(): Promise<{ slug: string; titre: string }[]> {
-    const { data, error } = await supabase.from('exposes').select('slug,titre').eq('published', true).order('titre');
+    const { data, error } = await supabase.rpc('exposes_all', { p_locale: getContentLocale() });
     if (error) throw error;
     return (data ?? []) as { slug: string; titre: string }[];
   }
