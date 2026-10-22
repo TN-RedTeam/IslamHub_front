@@ -20,7 +20,10 @@ export default defineConfig({
     launchOptions: { executablePath: CHROME },
   },
   projects: [
-    { name: 'desktop', use: { ...devices['Desktop Chrome'], channel: undefined, launchOptions: { executablePath: CHROME } } },
+    {
+      name: 'desktop',
+      use: { ...devices['Desktop Chrome'], channel: undefined, launchOptions: { executablePath: CHROME } },
+    },
     { name: 'mobile', use: { ...devices['Pixel 5'], channel: undefined, launchOptions: { executablePath: CHROME } } },
   ],
   webServer: {

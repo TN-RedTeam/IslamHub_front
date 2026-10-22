@@ -7,7 +7,7 @@ const renderAt = (url: string, active: 'hadiths' | 'paroles') =>
   render(
     <MemoryRouter initialEntries={[url]}>
       <HadithsParolesTabs active={active} />
-    </MemoryRouter>
+    </MemoryRouter>,
   );
 
 describe('HadithsParolesTabs — toggle hadiths/paroles', () => {

@@ -34,10 +34,7 @@ describe('scoreName — pertinence nom ↔ requête', () => {
 
 describe('rankNames — filtre + tri par pertinence', () => {
   it('ne garde que les correspondances et les trie par score décroissant', () => {
-    const out = rankNames(
-      [{ nom: 'Muslim' }, { nom: 'Al-Bukhari' }, { nom: 'Boukhariyy' }],
-      'bukhari'
-    );
+    const out = rankNames([{ nom: 'Muslim' }, { nom: 'Al-Bukhari' }, { nom: 'Boukhariyy' }], 'bukhari');
     expect(out.map((o) => o.nom)).toEqual(['Al-Bukhari', 'Boukhariyy']);
   });
   it('respecte la limite', () => {

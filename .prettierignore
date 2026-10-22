@@ -1,0 +1,11 @@
+dist
+dev-dist
+coverage
+playwright-report
+test-results
+android
+src/_legacy
+*.md
+package-lock.json
+public
+src/assets

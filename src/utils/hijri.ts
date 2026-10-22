@@ -4,9 +4,18 @@
 
 /** Noms français (translittérés) des 12 mois hégiriens, dans l'ordre (index 0 = Mouharram). */
 export const HIJRI_MONTHS_FR = [
-  'Mouharram', 'Safar', 'Rabîʿ al-awwal', 'Rabîʿ ath-thânî',
-  'Joumâdâ al-oûlâ', 'Joumâdâ ath-thâniya', 'Rajab', 'Chaʿbân',
-  'Ramadân', 'Chawwâl', 'Dhou al-qiʿda', 'Dhou al-hijja',
+  'Mouharram',
+  'Safar',
+  'Rabîʿ al-awwal',
+  'Rabîʿ ath-thânî',
+  'Joumâdâ al-oûlâ',
+  'Joumâdâ ath-thâniya',
+  'Rajab',
+  'Chaʿbân',
+  'Ramadân',
+  'Chawwâl',
+  'Dhou al-qiʿda',
+  'Dhou al-hijja',
 ] as const;
 
 /** Interface minimale d'un moment-hijri (on dépend des méthodes, pas du type du paquet). */
@@ -17,5 +26,4 @@ export interface HijriMoment {
 }
 
 /** « 10 Ramadân 1447 » — jour, mois translittéré, année hégirienne. */
-export const formatHijriFr = (d: HijriMoment): string =>
-  `${d.iDate()} ${HIJRI_MONTHS_FR[d.iMonth()]} ${d.iYear()}`;
+export const formatHijriFr = (d: HijriMoment): string => `${d.iDate()} ${HIJRI_MONTHS_FR[d.iMonth()]} ${d.iYear()}`;

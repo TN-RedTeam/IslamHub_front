@@ -13,7 +13,7 @@ describe('ErrorBoundary', () => {
     render(
       <ErrorBoundary>
         <p>Contenu sain</p>
-      </ErrorBoundary>
+      </ErrorBoundary>,
     );
     expect(screen.getByText('Contenu sain')).toBeInTheDocument();
   });
@@ -24,7 +24,7 @@ describe('ErrorBoundary', () => {
     render(
       <ErrorBoundary>
         <Boom />
-      </ErrorBoundary>
+      </ErrorBoundary>,
     );
     expect(screen.getByText('Une erreur est survenue')).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Réessayer' })).toBeInTheDocument();
@@ -35,7 +35,7 @@ describe('ErrorBoundary', () => {
     render(
       <ErrorBoundary fallback={<p>Repli sur mesure</p>}>
         <Boom />
-      </ErrorBoundary>
+      </ErrorBoundary>,
     );
     expect(screen.getByText('Repli sur mesure')).toBeInTheDocument();
   });

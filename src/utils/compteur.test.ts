@@ -27,15 +27,26 @@ describe('compteurs — assemblage en masquant les zéros', () => {
         { n: 11, type: 'verset' },
         { n: 0, type: 'parole' },
         { n: 18, type: 'hadith' },
-      ])
+      ]),
     ).toBe('11 versets · 18 hadiths');
   });
   it('séparateur personnalisable', () => {
     expect(
-      compteurs([{ n: 1, type: 'sourate' }, { n: 2, type: 'theme' }], ' — ')
+      compteurs(
+        [
+          { n: 1, type: 'sourate' },
+          { n: 2, type: 'theme' },
+        ],
+        ' — ',
+      ),
     ).toBe('1 sourate — 2 thèmes');
   });
   it('tout à 0 → chaîne vide', () => {
-    expect(compteurs([{ n: 0, type: 'verset' }, { n: 0, type: 'hadith' }])).toBe('');
+    expect(
+      compteurs([
+        { n: 0, type: 'verset' },
+        { n: 0, type: 'hadith' },
+      ]),
+    ).toBe('');
   });
 });
