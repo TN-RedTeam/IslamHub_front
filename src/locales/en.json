@@ -1,5 +1,5 @@
 {
-  "brand": { "name": "Aqida" },
+  "brand": { "name": "Ahl-Sunnah" },
   "nav": {
     "home": "Home",
     "coran": "Qur'an",
@@ -24,7 +24,7 @@
   },
   "footer": {
     "quote": "“That one of you should learn a chapter of the religion, or teach it, is better for him than a thousand voluntary rakʿahs.”",
-    "rights": "© 2026 Aqida — Ahl as-Sunna wa-l-Jamāʿa"
+    "rights": "© 2026 Ahl-Sunnah — Ahl as-Sunna wa-l-Jamāʿa"
   },
   "article": {
     "toc": "Contents",

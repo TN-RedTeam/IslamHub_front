@@ -1,5 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="Aqida">
-  <!-- monochrome : hérite de la couleur du texte (currentColor). Un brin plein, un brin estompé pour l'effet entrelacé. -->
-  <path d="M44 20 h-12 a12 12 0 0 0 -12 12 v12" fill="none" stroke="currentColor" stroke-opacity="0.4" stroke-width="6" stroke-linecap="round"/>
-  <path d="M20 20 h12 a12 12 0 0 1 12 12 v12" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round"/>
-</svg>

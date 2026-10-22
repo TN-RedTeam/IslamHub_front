@@ -15,6 +15,9 @@ export default {
         'arabic-display': ['Amiri', 'serif'],             // grande calligraphie (Bismillah, hero, 99 Noms)
         'arabic-name': ['"Noto Naskh Arabic"', 'serif'],  // NOMS & UI : écoles, savants, honorifiques
         'arabic-quran': ['"Amiri Quran"', 'serif'],       // les 99 Noms d'Allah uniquement
+        // Logotype « Ahl-Sunnah » uniquement (en-tête) : calligraphie + mot latin.
+        'logo-ar': ['"Aref Ruqaa"', 'serif'],             // calligraphie أهل السنة
+        'logo-latin': ['Marcellus', 'serif'],             // mot « AHL-SUNNAH »
       },
       colors: {
         // ── Nuit Teal (Phase 8) — pilotés par variables CSS (clair/sombre) ──

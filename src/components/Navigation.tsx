@@ -36,12 +36,20 @@ const HIJRI_MONTHS_FR = [
   'Ramadân', 'Chawwâl', 'Dhou al-qiʿda', 'Dhou al-hijja',
 ];
 
-// Marque Aqida : « le Nœud » — deux brins entrelacés, monochrome (currentColor,
-// donc teinte du thème : teal profond en clair, menthe en sombre).
+// Marque Ahl-Sunnah : mosquée monochrome (currentColor → teinte du thème :
+// teal profond en clair, menthe en sombre). Tracés identiques au fichier
+// src/assets/brand/ahl-sunnah-mark-mono.svg (inlinés pour hériter de la couleur).
 const Mark: React.FC<{ size?: number }> = ({ size = 30 }) => (
-  <svg width={size} height={size} viewBox="0 0 64 64" fill="none" aria-hidden="true">
-    <path d="M44 20 h-12 a12 12 0 0 0 -12 12 v12" fill="none" stroke="currentColor" strokeOpacity={0.4} strokeWidth={6} strokeLinecap="round" />
-    <path d="M20 20 h12 a12 12 0 0 1 12 12 v12" fill="none" stroke="currentColor" strokeWidth={6} strokeLinecap="round" />
+  <svg width={size} height={size} viewBox="0 0 64 64" fill="currentColor" aria-hidden="true">
+    <path d="M11 46 V30 Q11 26 13.5 24 Q16 26 16 30 V46Z" />
+    <circle cx="13.5" cy="21.5" r="1.6" />
+    <path d="M48 46 V30 Q48 26 50.5 24 Q53 26 53 30 V46Z" />
+    <circle cx="50.5" cy="21.5" r="1.6" />
+    <rect x="22" y="34" width="20" height="12" />
+    <path d="M24 34 C21 27 25 20 32 13 C39 20 43 27 40 34 Z" />
+    <rect x="31.1" y="7.5" width="1.8" height="6.5" rx="0.9" />
+    <circle cx="32" cy="6.5" r="1.8" />
+    <rect x="8" y="46" width="48" height="4" rx="1.5" />
   </svg>
 );
 
@@ -94,10 +102,13 @@ export const Navigation: React.FC = () => {
     <nav className="sticky top-0 z-50 backdrop-blur-md border-b border-glass-border" style={{ background: 'color-mix(in srgb, var(--bg2) 82%, transparent)' }}>
       <div className="max-w-[1440px] mx-auto px-4">
         <div className="flex items-center gap-4 h-16">
-          {/* Marque */}
-          <Link to="/" className="flex items-center gap-2 shrink-0 text-accent" aria-label={`${t('brand.name')} — ${t('nav.home')}`}>
-            <Mark size={30} />
-            <span className="font-display text-2xl font-extrabold tracking-[-0.02em] text-ink">{t('brand.name')}<span className="text-accent">.</span></span>
+          {/* Marque : mosquée + pile calligraphie arabe / mot latin */}
+          <Link to="/" className="flex items-center gap-2.5 shrink-0" aria-label={`${t('brand.name')} — ${t('nav.home')}`}>
+            <span className="text-accent dark:text-accent-br"><Mark size={34} /></span>
+            <span className="flex flex-col leading-none">
+              <span lang="ar" dir="rtl" className="font-logo-ar text-[19px] leading-[1.05] text-accent dark:text-accent-br">أهل السنة</span>
+              <span className="font-logo-latin text-[12px] leading-none tracking-[0.2em] uppercase text-ink mt-0.5">Ahl-Sunnah</span>
+            </span>
           </Link>
 
           {/* Liens en ligne à partir de 900px ; en dessous, drawer hamburger. */}

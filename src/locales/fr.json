@@ -1,5 +1,5 @@
 {
-  "brand": { "name": "Aqida" },
+  "brand": { "name": "Ahl-Sunnah" },
   "nav": {
     "home": "Accueil",
     "coran": "Coran",
@@ -24,7 +24,7 @@
   },
   "footer": {
     "quote": "« Que l'un de vous apprenne un chapitre de la religion ou l'enseigne, cela lui vaut mieux que mille rakʿah surérogatoires. »",
-    "rights": "© 2026 Aqida — Ahl as-Sunna wa-l-Jamāʿa"
+    "rights": "© 2026 Ahl-Sunnah — Ahl as-Sunna wa-l-Jamāʿa"
   },
   "article": {
     "toc": "Sommaire",
