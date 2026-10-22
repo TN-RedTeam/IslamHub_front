@@ -1,7 +1,8 @@
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useLocale, stripLocale } from '../lib/router';
-import { LOCALES, type Locale } from '../i18n';
+import { type Locale } from '../i18n';
+import { PUBLIC_LOCALES, PUBLIC_DEFAULT_LOCALE, isPublicLocale } from '../config/launch';
 
 /**
  * Métadonnées MULTILINGUES par page (Phase 15.6) : og:locale, canonical
@@ -42,6 +43,12 @@ export const SeoHead: React.FC = () => {
     };
     upsertMeta('property', 'og:locale', OG_LOCALE[locale]);
 
+    // Lancement FR-only : les langues dormantes (EN/AR), si on y accède par URL,
+    // ne doivent pas être indexées. Robots noindex,follow sur les locales non
+    // publiques ; indexation normale sur les locales publiques.
+    const pub = isPublicLocale(locale);
+    upsertMeta('name', 'robots', pub ? 'index,follow' : 'noindex,follow');
+
     // Liens gérés (canonical + hreflang) : on repart propre à chaque navigation.
     document.head.querySelectorAll('link[data-seo]').forEach((e) => e.remove());
     const addLink = (rel: string, href: string, hreflang?: string) => {
@@ -52,9 +59,12 @@ export const SeoHead: React.FC = () => {
       el.setAttribute('data-seo', '');
       document.head.appendChild(el);
     };
-    addLink('canonical', urlFor(locale));
-    LOCALES.forEach((l) => addLink('alternate', urlFor(l), l));
-    addLink('alternate', urlFor('fr'), 'x-default');
+    // Canonical : toujours vers une page PUBLIQUE (une page dormante pointe vers
+    // son équivalent dans la langue publique par défaut). hreflang : langues
+    // publiques uniquement (+ x-default). Réactiver EN/AR = PUBLIC_LOCALES.
+    addLink('canonical', urlFor(pub ? locale : PUBLIC_DEFAULT_LOCALE));
+    PUBLIC_LOCALES.forEach((l) => addLink('alternate', urlFor(l), l));
+    addLink('alternate', urlFor(PUBLIC_DEFAULT_LOCALE), 'x-default');
   }, [locale, pathname]);
 
   return null;
