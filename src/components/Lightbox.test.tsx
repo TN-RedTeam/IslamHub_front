@@ -38,4 +38,30 @@ describe('Lightbox', () => {
     fireEvent.click(screen.getByRole('dialog'));
     expect(onClose).toHaveBeenCalledTimes(1);
   });
+
+  it('piège de focus : Tab garde le focus dans la boîte de dialogue', () => {
+    render(<Lightbox image={img} onClose={() => {}} />);
+    const close = screen.getByRole('button', { name: 'Fermer' });
+    expect(close).toHaveFocus();
+    // Seul le bouton Fermer est focusable → Tab et Maj+Tab y restent.
+    fireEvent.keyDown(screen.getByRole('dialog'), { key: 'Tab' });
+    expect(close).toHaveFocus();
+    fireEvent.keyDown(screen.getByRole('dialog'), { key: 'Tab', shiftKey: true });
+    expect(close).toHaveFocus();
+  });
+
+  it('rend le focus à l’élément déclencheur à la fermeture', () => {
+    const opener = document.createElement('button');
+    opener.textContent = 'Ouvrir';
+    document.body.appendChild(opener);
+    opener.focus();
+    expect(opener).toHaveFocus();
+
+    const { rerender } = render(<Lightbox image={img} onClose={() => {}} />);
+    expect(screen.getByRole('button', { name: 'Fermer' })).toHaveFocus();
+    // Fermeture : image passe à null → le focus revient au déclencheur.
+    rerender(<Lightbox image={null} onClose={() => {}} />);
+    expect(opener).toHaveFocus();
+    opener.remove();
+  });
 });
