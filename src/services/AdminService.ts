@@ -650,8 +650,8 @@ export interface CoranEditShape {
 export interface CoranRow { id: number; sujet: string; sourate: string | null; }
 
 // ---- Exégèse (sourates -> versets -> exégèses) ----
-export interface ExegeseInput { texte: string; source?: string | null; ordre?: number | null; verset_fin?: number | null; }
-export interface VersetInput { numero: string; texte_arabe: string; texte_francais: string; phonetique: string; exegeses: ExegeseInput[]; }
+export interface ExegeseInput { texte: string; source?: string | null; ordre?: number | null; verset_fin?: number | null; texte_en?: string | null; texte_ar?: string | null; }
+export interface VersetInput { numero: string; texte_arabe: string; texte_francais: string; phonetique: string; texte_en?: string | null; phonetique_en?: string | null; exegeses: ExegeseInput[]; }
 export interface SourateFormData {
   id?: number | null;
   numero: string; nom: string; nom_arabe: string; slug?: string | null; revelation: string; nb_versets: string;
@@ -662,7 +662,9 @@ export interface SourateEditShape {
   id: number; numero: number; nom: string; nom_arabe: string | null; slug: string; revelation: string | null; nb_versets: number | null;
   introduction_md: string | null; ordre_revelation: number | null;
   versets: { numero: number; texte_arabe: string | null; texte_francais: string | null; phonetique: string | null;
-             exegeses: { texte: string; source: string | null; ordre: number | null; verset_fin: number | null }[] }[];
+             texte_en?: string | null; phonetique_en?: string | null;
+             exegeses: { texte: string; source: string | null; ordre: number | null; verset_fin: number | null;
+                         texte_en?: string | null; texte_ar?: string | null }[] }[];
 }
 export interface SourateRow { id: number; numero: number; nom: string; slug: string; nb_versets_saisis: number; }
 

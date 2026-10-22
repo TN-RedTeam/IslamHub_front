@@ -11,12 +11,12 @@ const label = 'block text-[13px] font-semibold text-ink mb-1.5';
 const field = 'w-full rounded-lg border border-line bg-surface px-3 py-2.5 text-[15px] text-ink focus:outline-none focus:ring-2 focus:ring-green';
 const rid = () => Math.random().toString(36).slice(2);
 
-type Exeg = { key: string; texte: string; source: string; verset_fin: string };
-type Verset = { key: string; numero: string; texte_arabe: string; texte_francais: string; phonetique: string; exegeses: Exeg[] };
+type Exeg = { key: string; texte: string; source: string; verset_fin: string; texte_en: string; texte_ar: string };
+type Verset = { key: string; numero: string; texte_arabe: string; texte_francais: string; phonetique: string; texte_en: string; phonetique_en: string; exegeses: Exeg[] };
 // Source par défaut d'une nouvelle exégèse (~95 % des cas) ; reste modifiable.
 const DEFAULT_EXEG_SOURCE = 'An-Naçafiyy — Tafsir An-Naçafiyy';
-const emptyExeg = (): Exeg => ({ key: rid(), texte: '', source: DEFAULT_EXEG_SOURCE, verset_fin: '' });
-const emptyVerset = (numero = ''): Verset => ({ key: rid(), numero, texte_arabe: AR_TEMPLATE.coran, texte_francais: TRAD_TEMPLATE, phonetique: '', exegeses: [] });
+const emptyExeg = (): Exeg => ({ key: rid(), texte: '', source: DEFAULT_EXEG_SOURCE, verset_fin: '', texte_en: '', texte_ar: '' });
+const emptyVerset = (numero = ''): Verset => ({ key: rid(), numero, texte_arabe: AR_TEMPLATE.coran, texte_francais: TRAD_TEMPLATE, phonetique: '', texte_en: '', phonetique_en: '', exegeses: [] });
 const blank = { numero: '', nom: '', nom_arabe: '', slug: '', revelation: '', nb_versets: '', introduction_md: '', ordre_revelation: '' };
 
 const move = <T,>(a: T[], i: number, dir: -1 | 1): T[] => {
@@ -65,7 +65,8 @@ export const AdminSourateForm: React.FC = () => {
       setF({ numero: String(s.numero ?? ''), nom: s.nom ?? '', nom_arabe: s.nom_arabe ?? '', slug: s.slug ?? '', revelation: s.revelation ?? '', nb_versets: s.nb_versets != null ? String(s.nb_versets) : '', introduction_md: s.introduction_md ?? '', ordre_revelation: s.ordre_revelation != null ? String(s.ordre_revelation) : '' });
       setVersets((s.versets ?? []).map((v) => ({
         key: rid(), numero: String(v.numero ?? ''), texte_arabe: v.texte_arabe ?? '', texte_francais: v.texte_francais ?? '', phonetique: v.phonetique ?? '',
-        exegeses: (v.exegeses ?? []).map((e) => ({ key: rid(), texte: e.texte ?? '', source: e.source ?? '', verset_fin: e.verset_fin != null ? String(e.verset_fin) : '' })),
+        texte_en: v.texte_en ?? '', phonetique_en: v.phonetique_en ?? '',
+        exegeses: (v.exegeses ?? []).map((e) => ({ key: rid(), texte: e.texte ?? '', source: e.source ?? '', verset_fin: e.verset_fin != null ? String(e.verset_fin) : '', texte_en: e.texte_en ?? '', texte_ar: e.texte_ar ?? '' })),
       })));
     }).catch(() => setError('Sourate introuvable.')).finally(() => setLoading(false));
   }, [editId]);
@@ -85,7 +86,8 @@ export const AdminSourateForm: React.FC = () => {
       .filter((v) => v.numero.trim())
       .map<VersetInput>((v) => ({
         numero: v.numero, texte_arabe: normalizeBracketSpaces(v.texte_arabe), texte_francais: normalizeBracketSpaces(v.texte_francais), phonetique: v.phonetique,
-        exegeses: v.exegeses.filter((e) => e.texte.trim()).map<ExegeseInput>((e, k) => ({ texte: e.texte.trim(), source: e.source.trim() || null, ordre: k, verset_fin: e.verset_fin.trim() ? Number(e.verset_fin) : null })),
+        texte_en: v.texte_en.trim() || null, phonetique_en: v.phonetique_en.trim() || null,
+        exegeses: v.exegeses.filter((e) => e.texte.trim()).map<ExegeseInput>((e, k) => ({ texte: e.texte.trim(), source: e.source.trim() || null, ordre: k, verset_fin: e.verset_fin.trim() ? Number(e.verset_fin) : null, texte_en: e.texte_en.trim() || null, texte_ar: e.texte_ar.trim() || null })),
       })),
   });
 
@@ -160,6 +162,8 @@ export const AdminSourateForm: React.FC = () => {
             <div className="grid sm:grid-cols-2 gap-2.5 mt-2.5">
               <div><label className={label}>Traduction</label><input className={field} value={v.texte_francais} onChange={(e) => patchVerset(vi, { texte_francais: e.target.value })} onFocus={caretInsideGuillemets(TRAD_TEMPLATE)} placeholder="ce qui signifie : « … »" /></div>
               <div><label className={label}>Phonétique</label><input className={field} value={v.phonetique} onChange={(e) => patchVerset(vi, { phonetique: e.target.value })} /></div>
+              <div><label className={label}>Traduction — anglais</label><input className={field} value={v.texte_en} onChange={(e) => patchVerset(vi, { texte_en: e.target.value })} placeholder="English translation" /></div>
+              <div><label className={label}>Phonétique — anglais</label><input className={field} value={v.phonetique_en} onChange={(e) => patchVerset(vi, { phonetique_en: e.target.value })} /></div>
             </div>
 
             {/* Exégèses du verset */}
@@ -176,6 +180,10 @@ export const AdminSourateForm: React.FC = () => {
                     </div>
                   </div>
                   <textarea className={`${field} min-h-[60px]`} value={ex.texte} onChange={(e) => patchExeg(vi, ei, { texte: e.target.value })} placeholder="Le commentaire (Markdown)…" />
+                  <div className="grid sm:grid-cols-2 gap-2 mt-2">
+                    <textarea className={`${field} min-h-[50px]`} value={ex.texte_en} onChange={(e) => patchExeg(vi, ei, { texte_en: e.target.value })} placeholder="Exégèse — anglais" />
+                    <textarea dir="rtl" lang="ar" className={`${field} font-arabic text-right min-h-[50px]`} value={ex.texte_ar} onChange={(e) => patchExeg(vi, ei, { texte_ar: e.target.value })} placeholder="الشرح بالعربية" />
+                  </div>
                   <input className={`${field} mt-2`} list="exeg-savants" value={ex.source} onChange={(e) => setSource(vi, ei, e.target.value)} placeholder="Source — choisir un savant ou saisir (Ibn Kathīr, Al-Ṭabarī…)" />
                   <p className="text-[11px] text-muted mt-1">Choisir un savant qui a un tafsir associe automatiquement le titre de son tafsir.</p>
                 </div>
