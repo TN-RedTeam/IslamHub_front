@@ -164,10 +164,10 @@ class DataService {
 
   // ================= Coran =================
   async getCoran(params?: PaginationParams): Promise<PaginatedResponse<Coran>> {
-    return rpcSearch<Coran>('search_coran', '', null, 'tag_filter', params ?? LOAD_ALL);
+    return rpcSearch<Coran>('search_coran', '', null, 'tag_filter', params ?? LOAD_ALL, undefined, true);
   }
   async searchCoran(searchTerm: string, tag?: string | null, params?: PaginationParams): Promise<PaginatedResponse<Coran>> {
-    return rpcSearch<Coran>('search_coran', searchTerm, tag ?? null, 'tag_filter', params ?? LOAD_ALL);
+    return rpcSearch<Coran>('search_coran', searchTerm, tag ?? null, 'tag_filter', params ?? LOAD_ALL, undefined, true);
   }
   async getCoranTags(): Promise<string[]> {
     return rpcTags('tags_coran');
@@ -259,7 +259,7 @@ class DataService {
   async getVersetThemes(): Promise<string[]> { return rpcTags('themes_versets_equivoques'); }
   async getVersetSourates(): Promise<string[]> { return rpcTags('sourates_versets_equivoques'); }
   async getVersetEquivoque(slug: string): Promise<VersetEquivoqueDetail | null> {
-    const { data, error } = await supabase.rpc('get_verset_equivoque', { p_slug: slug });
+    const { data, error } = await supabase.rpc('get_verset_equivoque', { p_slug: slug, p_locale: getContentLocale() });
     if (error) throw error;
     return (data ?? null) as VersetEquivoqueDetail | null;
   }
