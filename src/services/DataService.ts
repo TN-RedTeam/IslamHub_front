@@ -205,7 +205,7 @@ class DataService {
   ): Promise<PaginatedResponse<Invocation>> {
     return rpcSearch<Invocation>('search_invocations', searchTerm, tag ?? null, 'tag_filter', params ?? LOAD_ALL, {
       type_filter: type ? String(type) : '',
-    });
+    }, true);
   }
   async getInvocationTags(type?: InvocationType | null): Promise<string[]> {
     return rpcTags('tags_invocations', { type_filter: type ? String(type) : '' });
