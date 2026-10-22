@@ -178,7 +178,10 @@ function PublicShell() {
         <PwaUpdater />
         <main className="flex-1">
           <Suspense fallback={<PageFallback />}>
-            <Routes>
+            {/* key={locale} : on remonte tout l'arbre routé au changement de langue
+                pour que chaque page re-fetch son contenu dans la nouvelle locale
+                (sinon les listes gardent les données de la langue précédente). */}
+            <Routes key={locale}>
                 {/* Pages principales */}
                 <Route index element={<Home />} />
                 {/* 13.3 — la rubrique Coran = exégèse ; « versets par thème » n'est plus exposé publiquement (données + preuves intactes). */}
