@@ -30,6 +30,9 @@ const DIST = resolve(__dirname, '../dist');
 const BASE = '/' + (process.env.VITE_BASE || '/IslamHub_front/').replace(/^\/+|\/+$/g, '');
 const SITE_HOST = new URL(process.env.SITE_ORIGIN || 'https://tn-redteam.github.io/IslamHub_front').origin;
 const MAX = Number(process.env.PRERENDER_MAX || 1500);
+// Nombre d'onglets rendus en parallèle. Le prérendu est I/O-bound (attente
+// réseau/rendu), donc plusieurs pages avancent de front sans saturer le CPU.
+const CONCURRENCY = Math.max(1, Number(process.env.PRERENDER_CONCURRENCY || 8));
 // Lancement FR-only : on ne prérende QUE les langues publiques (EN/AR dormants
 // → pas de snapshot indexable). Réactiver = PUBLIC_LOCALES=fr,en,ar à l'env.
 const LOCALES = (process.env.PUBLIC_LOCALES || 'fr').split(',').map((s) => s.trim()).filter(Boolean);
@@ -134,10 +137,10 @@ async function main() {
   const { port } = server.address();
   const origin = `http://127.0.0.1:${port}`;
   const browser = await chromium.launch({ executablePath: resolveChrome() });
-  const page = await browser.newPage();
   let n = 0;
 
-  for (const { locale, path } of routes) {
+  // Rendu d'une route (réutilise la page du worker).
+  async function renderOne(page, { locale, path }) {
     const route = `/${locale}${path === '/' ? '' : path}`;
     const url = `${origin}${BASE}${route}`;
     try {
@@ -150,6 +153,22 @@ async function main() {
     writeFileSync(join(outDir, 'index.html'), html, 'utf8');
     n++;
   }
+
+  // Pool d'onglets : chaque worker pioche dans la file partagée (JS mono-thread →
+  // shift() est atomique) et réutilise sa page. Le gros du temps est en attente
+  // réseau/rendu, donc N pages en parallèle divisent le temps d'autant.
+  const queue = routes.slice();
+  async function worker() {
+    const page = await browser.newPage();
+    try {
+      for (let item = queue.shift(); item; item = queue.shift()) {
+        await renderOne(page, item);
+      }
+    } finally {
+      await page.close();
+    }
+  }
+  await Promise.all(Array.from({ length: Math.min(CONCURRENCY, routes.length) || 1 }, worker));
 
   await browser.close();
   await new Promise((ok) => server.close(ok));
