@@ -2,12 +2,6 @@ name: Déploiement GitHub Pages
 
 # Build + déploiement automatique du site à chaque push sur `main`.
 # (Déclenchable aussi à la main via l'onglet Actions → « Run workflow ».)
-#
-# En plus du site principal (racine = `main`), on publie deux DÉMOS par branche
-# accessibles sur des sous-URLs, pour comparer les chartes sans changer de branche :
-#   • /v2/  → refonte/architecture-v2 (ancienne charte)
-#   • /v3/  → refonte/architecture-v3 (Nuit Teal)
-# `base: './'` (vite.config) rend l'app fonctionnelle dans un sous-dossier.
 on:
   push:
     branches: [main]
@@ -58,10 +52,18 @@ jobs:
         #
         # Site principal servi sur https://<user>.github.io/IslamHub_front/ :
         # BrowserRouter (URLs propres indexables) + base absolue + 404.html.
-        # Les démos /v2 et /v3 ci-dessous gardent le défaut (HashRouter, base './').
         env:
           VITE_ROUTER: browser
           VITE_BASE: /IslamHub_front/
+
+      # Cache du binaire Chromium de Playwright : évite de le re-télécharger
+      # (~130 Mo) à chaque run. Clé liée à la version de Playwright (package-lock).
+      - name: Cache des navigateurs Playwright
+        id: pw-cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
 
       - name: Installer Chromium (prérendu SSG)
         run: npx playwright install --with-deps chromium
@@ -73,34 +75,6 @@ jobs:
           SITE_ORIGIN: https://tn-redteam.github.io/IslamHub_front
           VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
           VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
-
-      # --- Démo « ancienne charte » : refonte/architecture-v2 → /v2/ ---
-      - name: Récupérer la branche v2
-        uses: actions/checkout@v7
-        with:
-          ref: refonte/architecture-v2
-          path: _demo_v2
-      - name: Compiler v2 → dist/v2
-        working-directory: _demo_v2
-        run: |
-          npm ci
-          npm run build
-          mkdir -p "$GITHUB_WORKSPACE/dist/v2"
-          cp -r dist/. "$GITHUB_WORKSPACE/dist/v2/"
-
-      # --- Démo « Nuit Teal » : refonte/architecture-v3 → /v3/ ---
-      - name: Récupérer la branche v3
-        uses: actions/checkout@v7
-        with:
-          ref: refonte/architecture-v3
-          path: _demo_v3
-      - name: Compiler v3 → dist/v3
-        working-directory: _demo_v3
-        run: |
-          npm ci
-          npm run build
-          mkdir -p "$GITHUB_WORKSPACE/dist/v3"
-          cp -r dist/. "$GITHUB_WORKSPACE/dist/v3/"
 
       - name: Préparer l'artefact Pages
         uses: actions/upload-pages-artifact@v5
