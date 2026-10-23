@@ -62,7 +62,15 @@
           "@type": "WebSite",
           "name": "Ahl-Sunnah",
           "url": "https://tn-redteam.github.io/IslamHub_front/",
-          "inLanguage": "fr-FR"
+          "inLanguage": "fr-FR",
+          "potentialAction": {
+            "@type": "SearchAction",
+            "target": {
+              "@type": "EntryPoint",
+              "urlTemplate": "https://tn-redteam.github.io/IslamHub_front/fr/recherche?q={search_term_string}"
+            },
+            "query-input": "required name=search_term_string"
+          }
         }
       ]
     }
