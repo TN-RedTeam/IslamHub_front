@@ -143,10 +143,13 @@ async function main() {
   async function renderOne(page, { locale, path }) {
     const route = `/${locale}${path === '/' ? '' : path}`;
     const url = `${origin}${BASE}${route}`;
+    // Le service worker étant bloqué (voir page.route ci-dessous), le réseau se
+    // met réellement au repos une fois les données Supabase chargées : networkidle
+    // redevient un bon signal « contenu prêt » et rapide (~1-2 s/page au lieu du
+    // timeout de 20 s + 6 s d'attente hreflang qui ne venait jamais en FR-only).
     try {
-      await page.goto(url, { waitUntil: 'networkidle', timeout: 20000 });
-    } catch { /* on attend les metas ci-dessous */ }
-    await page.waitForFunction(() => document.querySelectorAll('link[hreflang]').length >= 3, { timeout: 6000 }).catch(() => {});
+      await page.goto(url, { waitUntil: 'networkidle', timeout: 12000 });
+    } catch { /* cap de sécurité : on snapshotte l'état courant */ }
     const html = (await page.content()).replaceAll(origin, SITE_HOST);
     const outDir = join(DIST, locale, path === '/' ? '' : path.replace(/^\//, ''));
     mkdirSync(outDir, { recursive: true });
@@ -166,7 +169,11 @@ async function main() {
     // sans changer le HTML produit. On garde documents, scripts et requêtes de
     // données (fetch/xhr vers Supabase), indispensables au rendu du contenu.
     await page.route('**/*', (route) => {
-      const t = route.request().resourceType();
+      const req = route.request();
+      // Pas de service worker / précache PWA en prérendu : il déclenche le
+      // préchargement de ~186 fichiers qui empêche `networkidle` de se stabiliser.
+      if (/\/sw\.js(\?|$)|workbox-[-\w.]+\.js/.test(req.url())) return route.abort();
+      const t = req.resourceType();
       return t === 'image' || t === 'media' || t === 'font' ? route.abort() : route.continue();
     });
     try {
