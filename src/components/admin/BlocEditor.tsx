@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { uid } from '../../utils/uid';
 import { Loader2, Plus, Trash2, ArrowUp, ArrowDown, Check, AlertTriangle, FileText, MessageSquare, BookOpen, Search } from 'lucide-react';
 import {
   adminService, type BlocInput, type BlocType, type BlocCitationType, type DossierRefs, type RefOption,
@@ -12,7 +13,7 @@ import {
  */
 const label = 'block text-[13px] font-semibold text-ink mb-1.5';
 const field = 'w-full rounded-lg border border-line bg-surface px-3 py-2.5 text-[15px] text-ink focus:outline-none focus:ring-2 focus:ring-green';
-const rid = () => Math.random().toString(36).slice(2);
+const rid = () => uid();
 
 type Row = { key: string; type: BlocType; texte_md: string; citation_type: BlocCitationType; citation_id: string; commentaire_md: string; filter: string; libre_arabe: string; libre_traduction: string; libre_ref: string };
 const empty = (type: BlocType): Row => ({ key: rid(), type, texte_md: '', citation_type: 'hadith', citation_id: '', commentaire_md: '', filter: '', libre_arabe: '', libre_traduction: '', libre_ref: '' });

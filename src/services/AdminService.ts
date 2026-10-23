@@ -1,4 +1,5 @@
 import { supabase } from './supabase';
+import { uid } from '../utils/uid';
 import { slugify } from '../utils/slug';
 import type { ThemeRef, RecitCategorie } from '../types';
 
@@ -539,7 +540,7 @@ class AdminService {
     if (!okTypes.includes(file.type)) throw new Error('Format accepté : WebP, JPEG ou PNG.');
     if (file.size > 5 * 1024 * 1024) throw new Error('Image trop lourde (max 5 Mo).');
     const ext = (file.name.split('.').pop() || 'webp').toLowerCase().replace(/[^a-z0-9]/g, '') || 'webp';
-    const path = `${prefix}/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
+    const path = `${prefix}/${Date.now()}-${uid().slice(0, 8)}.${ext}`;
     const { error } = await supabase.storage.from('references')
       .upload(path, file, { cacheControl: '31536000', upsert: false, contentType: file.type });
     if (error) throw new Error(error.message || 'Échec du téléversement.');

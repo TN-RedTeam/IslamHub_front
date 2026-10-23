@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
+import { uid } from '../../utils/uid';
 import { BlocEditor } from '../../components/admin/BlocEditor';
 import { DeleteEntryButton } from '../../components/admin/DeleteEntryButton';
 import { ScanUploadButton } from '../../components/admin/ScanUploadButton';
@@ -13,7 +14,7 @@ import { slugify } from '../../utils/slug';
 
 const label = 'block text-[13px] font-semibold text-ink mb-1.5';
 const field = 'w-full rounded-lg border border-line bg-surface px-3 py-2.5 text-[15px] text-ink focus:outline-none focus:ring-2 focus:ring-green';
-const rid = () => Math.random().toString(36).slice(2);
+const rid = () => uid();
 type Preuve = { key: string; type: DossierPreuveType; ref_id: string };
 type Img = { key: string; image_url: string; alt: string; legende: string; source_livre: string };
 const emptyPreuve = (): Preuve => ({ key: rid(), type: 'hadith', ref_id: '' });

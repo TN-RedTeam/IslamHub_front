@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
+import { uid } from '../../utils/uid';
 import { SujetField } from '../../components/admin/SujetField';
 import { DeleteEntryButton } from '../../components/admin/DeleteEntryButton';
 import { TagPicker } from '../../components/admin/TagPicker';
@@ -20,10 +21,8 @@ const ROLES = [{ v: '', l: '— aucun' }, { v: 'epouse_prophete', l: 'Mère des 
 
 const NEW = '__new';
 /** Clé locale stable (rattachement dialogue → variante, clés React). */
-const uid = (): string =>
-  (typeof crypto !== 'undefined' && crypto.randomUUID ? crypto.randomUUID() : Math.random().toString(36).slice(2));
 type Src = { key: string; recueil_id: string; new_titre: string; new_savant: string; numero: string; chapitre: string };
-const emptySrc = (): Src => ({ key: Math.random().toString(36).slice(2), recueil_id: '', new_titre: '', new_savant: '', numero: '', chapitre: '' });
+const emptySrc = (): Src => ({ key: uid(), recueil_id: '', new_titre: '', new_savant: '', numero: '', chapitre: '' });
 
 const label = 'block text-[13px] font-semibold text-ink mb-1.5';
 const field = 'w-full rounded-lg border border-line bg-surface px-3 py-2.5 text-[15px] text-ink focus:outline-none focus:ring-2 focus:ring-green';

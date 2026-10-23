@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
+import { uid } from '../../utils/uid';
 import { DeleteEntryButton } from '../../components/admin/DeleteEntryButton';
 import { ScanUploadButton } from '../../components/admin/ScanUploadButton';
 import { useNavigate, useParams, Link } from 'react-router-dom';
@@ -18,7 +19,7 @@ const field = 'w-full rounded-lg border border-line bg-surface px-3 py-2.5 text-
 
 type Preuve = { key: string; type: PreuveType; ref_id: string; contenu_libre: string };
 type Img = { key: string; image_url: string; alt: string; legende: string; source_livre: string };
-const rid = () => Math.random().toString(36).slice(2);
+const rid = () => uid();
 const emptyPreuve = (): Preuve => ({ key: rid(), type: 'coran', ref_id: '', contenu_libre: '' });
 const emptyImg = (): Img => ({ key: rid(), image_url: '', alt: '', legende: '', source_livre: '' });
 
