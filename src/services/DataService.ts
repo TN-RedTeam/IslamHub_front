@@ -23,6 +23,7 @@ import type {
   RecitDetail,
   QuestionCard,
   QuestionDetail,
+  QuestionLink,
   Multimedia,
   MultimediaCategory,
   FiqhChapitre,
@@ -343,6 +344,15 @@ class DataService {
     const { data, error } = await supabase.rpc('get_question', { p_slug: slug, p_locale: getContentLocale() });
     if (error) throw error;
     return (data ?? null) as QuestionDetail | null;
+  }
+  /** Questions publiées rattachées à un dossier (maillage réciproque pilier → grappe). */
+  async getQuestionsForDossier(dossierId: number): Promise<QuestionLink[]> {
+    const { data, error } = await supabase.rpc('questions_for_dossier', {
+      p_dossier_id: dossierId,
+      p_locale: getContentLocale(),
+    });
+    if (error) throw error;
+    return (data ?? []) as QuestionLink[];
   }
 
   // ================= Contenu composable (blocs, Phase 3) =================
