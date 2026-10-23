@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
+import { uid } from '../../utils/uid';
 import { BlocEditor } from '../../components/admin/BlocEditor';
 import { TranslationFields } from '../../components/admin/TranslationFields';
 import { PublishToggle } from '../../components/admin/PublishToggle';
@@ -12,7 +13,7 @@ import { slugify } from '../../utils/slug';
 
 const label = 'block text-[13px] font-semibold text-ink mb-1.5';
 const field = 'w-full rounded-lg border border-line bg-surface px-3 py-2.5 text-[15px] text-ink focus:outline-none focus:ring-2 focus:ring-green';
-const rid = () => Math.random().toString(36).slice(2);
+const rid = () => uid();
 type Cit = { key: string; section: string; type: CitationType; ref_id: string; arabe: string; phonetique: string; signification: string; ref: string; accordeon: boolean };
 const emptyCit = (): Cit => ({ key: rid(), section: '', type: 'verset', ref_id: '', arabe: '', phonetique: '', signification: '', ref: '', accordeon: false });
 const move = <T,>(a: T[], i: number, d: -1 | 1): T[] => { const j = i + d; if (j < 0 || j >= a.length) return a; const b = [...a]; [b[i], b[j]] = [b[j], b[i]]; return b; };

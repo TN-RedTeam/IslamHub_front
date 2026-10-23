@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
+import { uid } from '../../utils/uid';
 import { DeleteEntryButton } from '../../components/admin/DeleteEntryButton';
 import { useNavigate, useParams, Link } from 'react-router-dom';
 import { TranslationFields } from '../../components/admin/TranslationFields';
@@ -9,7 +10,7 @@ import { slugify } from '../../utils/slug';
 
 const label = 'block text-[13px] font-semibold text-ink mb-1.5';
 const field = 'w-full rounded-lg border border-line bg-surface px-3 py-2.5 text-[15px] text-ink focus:outline-none focus:ring-2 focus:ring-green';
-const rid = () => Math.random().toString(36).slice(2);
+const rid = () => uid();
 
 type Exeg = { key: string; texte: string; source: string; verset_fin: string; texte_en: string; texte_ar: string };
 type Verset = { key: string; numero: string; texte_arabe: string; texte_francais: string; phonetique: string; texte_en: string; phonetique_en: string; exegeses: Exeg[] };

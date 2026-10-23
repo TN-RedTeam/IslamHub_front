@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
+import { uid } from '../../utils/uid';
 import { SujetField } from '../../components/admin/SujetField';
 import { DeleteEntryButton } from '../../components/admin/DeleteEntryButton';
 import { TagPicker } from '../../components/admin/TagPicker';
@@ -15,7 +16,7 @@ const NEW = '__new';
 const label = 'block text-[13px] font-semibold text-ink mb-1.5';
 const field = 'w-full rounded-lg border border-line bg-surface px-3 py-2.5 text-[15px] text-ink focus:outline-none focus:ring-2 focus:ring-green';
 type Img = { key: string; image_url: string; alt: string; legende: string; source_livre: string; source_livre_ar: string };
-const emptyImg = (): Img => ({ key: Math.random().toString(36).slice(2), image_url: '', alt: '', legende: '', source_livre: '', source_livre_ar: '' });
+const emptyImg = (): Img => ({ key: uid(), image_url: '', alt: '', legende: '', source_livre: '', source_livre_ar: '' });
 
 export const AdminParoleForm: React.FC = () => {
   const { id } = useParams();
