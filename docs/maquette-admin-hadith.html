@@ -189,7 +189,9 @@
   document.getElementById('tags').addEventListener('click',function(e){ if(e.target.tagName==='B') e.target.closest('.chip').remove(); });
   document.getElementById('tagin').addEventListener('keydown',function(e){
     if(e.key==='Enter' && this.value.trim()){e.preventDefault();
-      var s=document.createElement('span');s.className='chip';s.innerHTML=this.value.trim()+' <b>✕</b>';
+      var s=document.createElement('span');s.className='chip';
+      s.appendChild(document.createTextNode(this.value.trim()+' '));
+      var b=document.createElement('b');b.textContent='✕';s.appendChild(b);
       document.getElementById('tags').appendChild(s);this.value='';}
   });
   document.getElementById('narr').addEventListener('change',function(){

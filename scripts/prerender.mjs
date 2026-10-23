@@ -23,7 +23,7 @@ import { createClient } from '@supabase/supabase-js';
 import { createServer } from 'node:http';
 import { readFileSync, existsSync, statSync, mkdirSync, writeFileSync, readdirSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
-import { dirname, resolve, join } from 'node:path';
+import { dirname, resolve, join, sep } from 'node:path';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const DIST = resolve(__dirname, '../dist');
@@ -98,8 +98,9 @@ function startServer() {
   const server = createServer((req, res) => {
     let p = decodeURIComponent((req.url || '/').split('?')[0]);
     if (p.startsWith(BASE)) p = p.slice(BASE.length) || '/';
-    const file = join(DIST, p);
-    if (existsSync(file) && statSync(file).isFile()) {
+    // Confinement : le chemin résolu DOIT rester sous dist/ (anti path-traversal).
+    const file = resolve(DIST, '.' + sep + p);
+    if ((file === DIST || file.startsWith(DIST + sep)) && existsSync(file) && statSync(file).isFile()) {
       res.writeHead(200, { 'content-type': MIME[ext(file)] || 'application/octet-stream' });
       res.end(readFileSync(file));
       return;
