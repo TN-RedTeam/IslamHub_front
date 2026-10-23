@@ -38,9 +38,12 @@ export const EcoleFiqhSection: React.FC<{ ecole: string; titre?: string }> = ({ 
           <Loader2 className="w-7 h-7 text-green animate-spin" />
         </div>
       ) : chapitres.length === 0 ? (
-        <p className="text-center text-muted py-8">
-          Aucun point de jurisprudence pour l'instant.
-        </p>
+        <div className="max-w-xl mx-auto text-center bg-glass-tint border border-line rounded-card px-6 py-8">
+          <p className="text-ink font-medium">Section en cours de préparation</p>
+          <p className="text-muted text-sm mt-1.5">
+            Les points de jurisprudence de cette école seront ajoutés prochainement, in shā’ Allah.
+          </p>
+        </div>
       ) : (
         <FiqhReader chapitres={chapitres} />
       )}
