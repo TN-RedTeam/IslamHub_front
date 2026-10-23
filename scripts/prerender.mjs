@@ -160,6 +160,15 @@ async function main() {
   const queue = routes.slice();
   async function worker() {
     const page = await browser.newPage();
+    // On n'a pas besoin des OCTETS des images/polices/médias pour le snapshot
+    // HTML (les balises <img>/liens restent dans le DOM de toute façon). Les
+    // bloquer accélère nettement `networkidle` (plus d'attente de téléchargement)
+    // sans changer le HTML produit. On garde documents, scripts et requêtes de
+    // données (fetch/xhr vers Supabase), indispensables au rendu du contenu.
+    await page.route('**/*', (route) => {
+      const t = route.request().resourceType();
+      return t === 'image' || t === 'media' || t === 'font' ? route.abort() : route.continue();
+    });
     try {
       for (let item = queue.shift(); item; item = queue.shift()) {
         await renderOne(page, item);
