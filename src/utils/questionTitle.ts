@@ -15,13 +15,17 @@
 /** Libellés déjà en forme rapportée (ou non interrogative) → laissés intacts. */
 const DEJA_RAPPORTE = /^(réponse\b|pour ceux\b|pour celui\b|que répondre\b|à ceux\b|ce qu'il faut\b|comprendre\b)/i;
 
+/** Premiers mots dont la MAJUSCULE doit être préservée (noms sacrés/propres). */
+const PRESERVE_CASE = /^(allah|dieu|allāh)\b/i;
+
 /** « Où est Allah ? » → « Réponse à ceux qui demandent : où est Allah ? ». */
 export function reportedQuestionTitle(question: string): string {
   const q = (question ?? '').trim();
   if (!q) return q;
   if (DEJA_RAPPORTE.test(q)) return q;
-  // Minuscule sur la 1re lettre pour enchaîner après « : » (les noms propres,
-  // « Allah », etc. plus loin dans la phrase sont inchangés).
-  const body = q.charAt(0).toLowerCase() + q.slice(1);
+  // Minuscule sur la 1re lettre pour enchaîner après « : » (interrogatifs
+  // « Où/Comment/Que… »), SAUF si la question commence par un nom sacré/propre
+  // (« Allah », « Dieu ») dont la majuscule doit être conservée.
+  const body = PRESERVE_CASE.test(q) ? q : q.charAt(0).toLowerCase() + q.slice(1);
   return `Réponse à ceux qui demandent : ${body}`;
 }
