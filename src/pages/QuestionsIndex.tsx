@@ -4,6 +4,7 @@ import { Loader2, Search, ArrowRight, HelpCircle } from 'lucide-react';
 import { dataService } from '../services/DataService';
 import { PageHeader } from '../components/PageHeader';
 import { useSeo } from '../hooks/useSeo';
+import { reportedQuestionTitle } from '../utils/questionTitle';
 import type { QuestionCard } from '../types';
 
 const norm = (s: string) => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
@@ -22,21 +23,30 @@ export const QuestionsIndex: React.FC = () => {
   const [theme, setTheme] = useState<string | null>(null);
 
   useEffect(() => {
-    dataService.getQuestions().then(setQuestions).catch(() => setQuestions([])).finally(() => setLoading(false));
+    dataService
+      .getQuestions()
+      .then(setQuestions)
+      .catch(() => setQuestions([]))
+      .finally(() => setLoading(false));
   }, []);
 
   // Thèmes présents (ordre de première rencontre, dédupliqués) pour le filtre.
   const themes = useMemo(() => {
     const seen = new Map<string, string>();
-    questions.forEach((it) => it.themes.forEach((t) => { if (!seen.has(t.slug)) seen.set(t.slug, t.nom); }));
+    questions.forEach((it) =>
+      it.themes.forEach((t) => {
+        if (!seen.has(t.slug)) seen.set(t.slug, t.nom);
+      }),
+    );
     return [...seen.entries()].map(([slug, nom]) => ({ slug, nom }));
   }, [questions]);
 
   const filtered = useMemo(() => {
     const term = norm(q.trim());
-    return questions.filter((it) =>
-      (!theme || it.themes.some((t) => t.slug === theme)) &&
-      (!term || norm(it.question).includes(term) || norm(it.reponse_courte ?? '').includes(term)),
+    return questions.filter(
+      (it) =>
+        (!theme || it.themes.some((t) => t.slug === theme)) &&
+        (!term || norm(it.question).includes(term) || norm(it.reponse_courte ?? '').includes(term)),
     );
   }, [questions, q, theme]);
 
@@ -47,7 +57,10 @@ export const QuestionsIndex: React.FC = () => {
     const map = new Map<string, { nom: string; items: QuestionCard[] }>();
     const autres: QuestionCard[] = [];
     filtered.forEach((it) => {
-      if (it.themes.length === 0) { autres.push(it); return; }
+      if (it.themes.length === 0) {
+        autres.push(it);
+        return;
+      }
       it.themes.forEach((t) => {
         if (!map.has(t.slug)) map.set(t.slug, { nom: t.nom, items: [] });
         map.get(t.slug)!.items.push(it);
@@ -66,7 +79,7 @@ export const QuestionsIndex: React.FC = () => {
       '@type': 'FAQPage',
       mainEntity: questions.slice(0, 50).map((it) => ({
         '@type': 'Question',
-        name: it.question,
+        name: reportedQuestionTitle(it.question),
         acceptedAnswer: { '@type': 'Answer', text: (it.reponse_courte ?? '').slice(0, 500) },
       })),
     };
@@ -74,7 +87,8 @@ export const QuestionsIndex: React.FC = () => {
 
   useSeo({
     title: 'Questions fréquentes',
-    description: 'Des réponses claires et sourcées (Coran, Sunna, parole des savants) aux questions de croyance qu’on se pose vraiment.',
+    description:
+      'Des réponses claires et sourcées (Coran, Sunna, parole des savants) aux questions de croyance qu’on se pose vraiment.',
     jsonLd,
   });
 
@@ -125,33 +139,44 @@ export const QuestionsIndex: React.FC = () => {
         )}
 
         {loading ? (
-          <div className="flex justify-center py-16"><Loader2 className="h-8 w-8 text-green animate-spin" /></div>
+          <div className="flex justify-center py-16">
+            <Loader2 className="h-8 w-8 text-green animate-spin" />
+          </div>
         ) : questions.length === 0 ? (
           <p className="text-muted italic">Les questions arrivent bientôt, in shā’ Allah.</p>
         ) : filtered.length === 0 ? (
           <p className="text-muted italic">Aucune question ne correspond.</p>
         ) : (
-          groups.map((g) => g.items.length === 0 ? null : (
-            <section key={g.slug} className="mb-10">
-              <h2 className="font-display font-semibold text-ink text-2xl mb-4">{g.nom}</h2>
-              <div className="space-y-3">
-                {g.items.map((it) => (
-                  <Link
-                    key={it.slug}
-                    to={`/questions/${it.slug}`}
-                    className="group flex items-start gap-3.5 rounded-card border border-line bg-surface p-4 shadow-card hover:shadow-card-hover hover:-translate-y-0.5 hover:border-green transition-all motion-reduce:transition-none motion-reduce:hover:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green"
-                  >
-                    <HelpCircle className="w-5 h-5 text-green shrink-0 mt-0.5" aria-hidden />
-                    <div className="min-w-0 flex-1">
-                      <h3 className="font-display font-semibold text-ink leading-tight group-hover:text-green">{it.question}</h3>
-                      {it.reponse_courte && <p className="text-sm text-muted mt-1 line-clamp-2">{it.reponse_courte}</p>}
-                    </div>
-                    <ArrowRight className="w-4 h-4 text-green shrink-0 mt-1 group-hover:translate-x-0.5 transition-transform motion-reduce:transition-none" aria-hidden />
-                  </Link>
-                ))}
-              </div>
-            </section>
-          ))
+          groups.map((g) =>
+            g.items.length === 0 ? null : (
+              <section key={g.slug} className="mb-10">
+                <h2 className="font-display font-semibold text-ink text-2xl mb-4">{g.nom}</h2>
+                <div className="space-y-3">
+                  {g.items.map((it) => (
+                    <Link
+                      key={it.slug}
+                      to={`/questions/${it.slug}`}
+                      className="group flex items-start gap-3.5 rounded-card border border-line bg-surface p-4 shadow-card hover:shadow-card-hover hover:-translate-y-0.5 hover:border-green transition-all motion-reduce:transition-none motion-reduce:hover:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green"
+                    >
+                      <HelpCircle className="w-5 h-5 text-green shrink-0 mt-0.5" aria-hidden />
+                      <div className="min-w-0 flex-1">
+                        <h3 className="font-display font-semibold text-ink leading-tight group-hover:text-green">
+                          {reportedQuestionTitle(it.question)}
+                        </h3>
+                        {it.reponse_courte && (
+                          <p className="text-sm text-muted mt-1 line-clamp-2">{it.reponse_courte}</p>
+                        )}
+                      </div>
+                      <ArrowRight
+                        className="w-4 h-4 text-green shrink-0 mt-1 group-hover:translate-x-0.5 transition-transform motion-reduce:transition-none"
+                        aria-hidden
+                      />
+                    </Link>
+                  ))}
+                </div>
+              </section>
+            ),
+          )
         )}
       </main>
     </div>
