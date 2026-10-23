@@ -41,8 +41,9 @@ alter table if exists public.versets_equivoques_backup_phase15 enable row level 
 --   cascade;
 
 -- 2) Durcir le search_path de la seule fonction concernée (anti-hijack).
-alter function if exists public.admin_rewrite_tags() set search_path = public, pg_temp;
--- NB : si admin_rewrite_tags a une signature avec paramètres, adapter la parenthèse.
+--    NB : ALTER FUNCTION n'accepte pas IF EXISTS ; la signature complète est requise.
+alter function public.admin_rewrite_tags(csv text, p_sources text[], p_target text)
+  set search_path = public, pg_temp;
 
 -- 3) PREUVE : plus aucune table publique sans RLS.
 select n.nspname, c.relname
