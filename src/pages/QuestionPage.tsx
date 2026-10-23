@@ -5,6 +5,7 @@ import { dataService } from '../services/DataService';
 import { ArticleBlocs } from '../components/ArticleBlocs';
 import { PageHeader } from '../components/PageHeader';
 import { useSeo } from '../hooks/useSeo';
+import { reportedQuestionTitle } from '../utils/questionTitle';
 import type { QuestionDetail, Bloc } from '../types';
 import { IconBadge } from '../components/Icon';
 
@@ -24,20 +25,41 @@ export const QuestionPage: React.FC = () => {
 
   useEffect(() => {
     let alive = true;
-    setIsLoading(true); setError(null); setBlocs([]);
-    dataService.getQuestion(slug)
+    setIsLoading(true);
+    setError(null);
+    setBlocs([]);
+    dataService
+      .getQuestion(slug)
       .then((d) => {
         if (!alive) return;
-        setData(d); setIsLoading(false);
+        setData(d);
+        setIsLoading(false);
         if (d?.question?.id != null) {
-          dataService.getBlocs('question', d.question.id).then((bl) => { if (alive) setBlocs(bl); }).catch(() => {});
+          dataService
+            .getBlocs('question', d.question.id)
+            .then((bl) => {
+              if (alive) setBlocs(bl);
+            })
+            .catch(() => {});
         }
       })
-      .catch(() => { if (alive) { setError('Erreur lors du chargement de la question.'); setIsLoading(false); } });
-    return () => { alive = false; };
+      .catch(() => {
+        if (alive) {
+          setError('Erreur lors du chargement de la question.');
+          setIsLoading(false);
+        }
+      });
+    return () => {
+      alive = false;
+    };
   }, [slug]);
 
-  // JSON-LD QAPage : une question par page (question + réponse courte).
+  // Règle A : titre/H1/schéma en forme RAPPORTÉE (la question nue reste en
+  // `text`, variantes et recherche). Le slug et les données ne changent pas.
+  const reportedTitle = useMemo(() => (data ? reportedQuestionTitle(data.question.question) : undefined), [data]);
+
+  // JSON-LD QAPage : une question par page. `name` = forme rapportée ;
+  // `text` = la question réellement posée/cherchée (SEO).
   const jsonLd = useMemo(() => {
     if (!data) return undefined;
     return {
@@ -45,7 +67,7 @@ export const QuestionPage: React.FC = () => {
       '@type': 'QAPage',
       mainEntity: {
         '@type': 'Question',
-        name: data.question.question,
+        name: reportedQuestionTitle(data.question.question),
         text: data.question.question,
         acceptedAnswer: { '@type': 'Answer', text: (data.question.reponse_courte ?? '').slice(0, 500) },
       },
@@ -53,7 +75,7 @@ export const QuestionPage: React.FC = () => {
   }, [data]);
 
   useSeo({
-    title: data?.question.question,
+    title: reportedTitle,
     description: data?.question.reponse_courte ?? undefined,
     type: 'article',
     jsonLd,
@@ -64,12 +86,26 @@ export const QuestionPage: React.FC = () => {
     const title = data?.question.question || 'Ahl-Sunnah';
     try {
       if (navigator.share) await navigator.share({ title, url });
-      else { await navigator.clipboard.writeText(url); setCopied(true); setTimeout(() => setCopied(false), 2000); }
-    } catch { /* annulé */ }
+      else {
+        await navigator.clipboard.writeText(url);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+      }
+    } catch {
+      /* annulé */
+    }
   };
   const copy = async () => {
-    const txt = [data?.question.question, data?.question.reponse_courte, window.location.href].filter(Boolean).join('\n\n');
-    try { await navigator.clipboard.writeText(txt); setCopied(true); setTimeout(() => setCopied(false), 2000); } catch { /* ignore */ }
+    const txt = [data?.question.question, data?.question.reponse_courte, window.location.href]
+      .filter(Boolean)
+      .join('\n\n');
+    try {
+      await navigator.clipboard.writeText(txt);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      /* ignore */
+    }
   };
 
   if (isLoading) {
@@ -87,7 +123,12 @@ export const QuestionPage: React.FC = () => {
           <IconBadge name="sad" />
           <h1 className="text-xl font-bold text-ink mb-2 font-display">Question introuvable</h1>
           <p className="text-muted mb-6">{error || "Cette question n'existe pas ou n'est pas encore publiée."}</p>
-          <Link to="/questions" className="px-6 py-2 bg-accent-deep hover:brightness-110 text-white rounded-lg transition-colors">Toutes les questions</Link>
+          <Link
+            to="/questions"
+            className="px-6 py-2 bg-accent-deep hover:brightness-110 text-white rounded-lg transition-colors"
+          >
+            Toutes les questions
+          </Link>
         </div>
       </div>
     );
@@ -100,17 +141,27 @@ export const QuestionPage: React.FC = () => {
     <div className="min-h-screen">
       <PageHeader
         eyebrow="Question fréquente"
-        title={question.question}
-        crumbs={[{ label: 'Accueil', to: '/' }, { label: 'Questions fréquentes', to: '/questions' }, { label: question.question }]}
+        title={reportedQuestionTitle(question.question)}
+        crumbs={[
+          { label: 'Accueil', to: '/' },
+          { label: 'Questions fréquentes', to: '/questions' },
+          { label: reportedQuestionTitle(question.question) },
+        ]}
       />
 
       <main className="max-w-3xl mx-auto px-5 py-8 pb-16 space-y-8">
         {/* Actions */}
         <div className="flex flex-wrap gap-3">
-          <button onClick={copy} className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-glass border border-line text-green hover:bg-glass-tint transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green">
+          <button
+            onClick={copy}
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-glass border border-line text-green hover:bg-glass-tint transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green"
+          >
             {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />} Copier
           </button>
-          <button onClick={share} className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-glass border border-line text-green hover:bg-glass-tint transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green">
+          <button
+            onClick={share}
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-glass border border-line text-green hover:bg-glass-tint transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green"
+          >
             <Share2 className="h-4 w-4" /> Partager
           </button>
         </div>
@@ -118,10 +169,15 @@ export const QuestionPage: React.FC = () => {
         {/* Réponse courte — encart accentué (carte verre) */}
         {question.reponse_courte && (
           <section aria-labelledby="en-bref" className="bg-glass-tint border border-green-line rounded-card p-6">
-            <h2 id="en-bref" className="text-sm font-bold uppercase tracking-wide text-green mb-2 flex items-center gap-2">
+            <h2
+              id="en-bref"
+              className="text-sm font-bold uppercase tracking-wide text-green mb-2 flex items-center gap-2"
+            >
               <Sparkles className="h-4 w-4" /> En bref
             </h2>
-            <p className="text-ink text-lg leading-relaxed whitespace-pre-wrap [unicode-bidi:plaintext]">{question.reponse_courte}</p>
+            <p className="text-ink text-lg leading-relaxed whitespace-pre-wrap [unicode-bidi:plaintext]">
+              {question.reponse_courte}
+            </p>
           </section>
         )}
 
@@ -139,7 +195,12 @@ export const QuestionPage: React.FC = () => {
             <h2 className="text-sm font-bold text-ink mb-3">Aussi demandé</h2>
             <ul className="flex flex-wrap gap-2">
               {variantes.map((v, i) => (
-                <li key={i} className="px-3 py-1.5 rounded-full bg-surface border border-line text-sm text-muted [unicode-bidi:plaintext]">{v}</li>
+                <li
+                  key={i}
+                  className="px-3 py-1.5 rounded-full bg-surface border border-line text-sm text-muted [unicode-bidi:plaintext]"
+                >
+                  {v}
+                </li>
               ))}
             </ul>
           </section>
@@ -152,7 +213,10 @@ export const QuestionPage: React.FC = () => {
             <ul className="space-y-2">
               {dossiers.map((d) => (
                 <li key={`d-${d.slug}`}>
-                  <Link to={`/dossiers/${d.slug}`} className="inline-flex items-center gap-1.5 text-green hover:underline">
+                  <Link
+                    to={`/dossiers/${d.slug}`}
+                    className="inline-flex items-center gap-1.5 text-green hover:underline"
+                  >
                     <ArrowRight className="h-4 w-4" /> {d.h1}
                   </Link>
                 </li>
@@ -161,7 +225,11 @@ export const QuestionPage: React.FC = () => {
             {themes.length > 0 && (
               <div className="flex flex-wrap gap-2 mt-4">
                 {themes.map((t) => (
-                  <Link key={`t-${t.slug}`} to={`/themes/${t.slug}`} className="px-3 py-1.5 rounded-full bg-glass border border-line text-sm text-green hover:bg-glass-tint transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green">
+                  <Link
+                    key={`t-${t.slug}`}
+                    to={`/themes/${t.slug}`}
+                    className="px-3 py-1.5 rounded-full bg-glass border border-line text-sm text-green hover:bg-glass-tint transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green"
+                  >
                     {t.nom}
                   </Link>
                 ))}
