@@ -6,7 +6,7 @@ import { ArticleBlocs } from '../components/ArticleBlocs';
 import { PageHeader } from '../components/PageHeader';
 import { useSeo } from '../hooks/useSeo';
 import { reportedQuestionTitle } from '../utils/questionTitle';
-import type { QuestionDetail, Bloc } from '../types';
+import type { QuestionDetail, QuestionCard, Bloc } from '../types';
 import { IconBadge } from '../components/Icon';
 
 /**
@@ -19,6 +19,7 @@ export const QuestionPage: React.FC = () => {
   const { slug = '' } = useParams();
   const [data, setData] = useState<QuestionDetail | null>(null);
   const [blocs, setBlocs] = useState<Bloc[]>([]);
+  const [siblings, setSiblings] = useState<QuestionCard[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
@@ -28,6 +29,7 @@ export const QuestionPage: React.FC = () => {
     setIsLoading(true);
     setError(null);
     setBlocs([]);
+    setSiblings([]);
     dataService
       .getQuestion(slug)
       .then((d) => {
@@ -39,6 +41,18 @@ export const QuestionPage: React.FC = () => {
             .getBlocs('question', d.question.id)
             .then((bl) => {
               if (alive) setBlocs(bl);
+            })
+            .catch(() => {});
+        }
+        // Questions sœurs (Règle B « Pour approfondir ») : autres questions
+        // publiées partageant un thème. Filtrage client (pas de requête dédiée).
+        const myThemes = new Set((d?.themes ?? []).map((t) => t.slug));
+        if (myThemes.size > 0) {
+          dataService
+            .getQuestions()
+            .then((all) => {
+              if (!alive) return;
+              setSiblings(all.filter((x) => x.slug !== slug && x.themes.some((t) => myThemes.has(t.slug))).slice(0, 6));
             })
             .catch(() => {});
         }
@@ -206,8 +220,8 @@ export const QuestionPage: React.FC = () => {
           </section>
         )}
 
-        {/* Pour approfondir → maillage dossiers + thèmes */}
-        {(dossiers.length > 0 || themes.length > 0) && (
+        {/* Pour approfondir → maillage dossiers + thèmes + questions sœurs */}
+        {(dossiers.length > 0 || themes.length > 0 || siblings.length > 0) && (
           <section>
             <h2 className="text-lg font-bold text-ink mb-3">Pour approfondir</h2>
             <ul className="space-y-2">
@@ -233,6 +247,24 @@ export const QuestionPage: React.FC = () => {
                     {t.nom}
                   </Link>
                 ))}
+              </div>
+            )}
+            {/* Questions sœurs — autres questions du même thème (Règle B). */}
+            {siblings.length > 0 && (
+              <div className="mt-5">
+                <p className="text-sm font-bold text-ink mb-2">Questions sœurs</p>
+                <ul className="space-y-2">
+                  {siblings.map((s) => (
+                    <li key={`q-${s.slug}`}>
+                      <Link
+                        to={`/questions/${s.slug}`}
+                        className="inline-flex items-center gap-1.5 text-green hover:underline [unicode-bidi:plaintext]"
+                      >
+                        <ArrowRight className="h-4 w-4 shrink-0" /> {reportedQuestionTitle(s.question)}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
               </div>
             )}
           </section>
