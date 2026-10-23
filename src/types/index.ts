@@ -222,6 +222,13 @@ export interface QuestionDetail {
   dossiers: { slug: string; h1: string }[];
 }
 
+/** Lien léger question → affiché en maillage réciproque sur une page dossier. */
+export interface QuestionLink {
+  slug: string;
+  question: string;
+  reponse_courte: string | null;
+}
+
 /** Fiche savant (table `savants`) pour la page /savants */
 export interface SavantInfo {
   id: number;

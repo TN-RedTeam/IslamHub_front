@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useParams, Link } from '../lib/router';
 import { m } from 'framer-motion';
-import { Loader, Copy, Check, Share2, Star, BookOpen, ArrowLeft, Quote } from 'lucide-react';
+import { Loader, Copy, Check, Share2, Star, BookOpen, ArrowLeft, Quote, HelpCircle, ArrowRight } from 'lucide-react';
 import { dataService } from '../services/DataService';
 import { Markdown } from '../components/Markdown';
 import { ArticleBlocs } from '../components/ArticleBlocs';
@@ -9,7 +9,8 @@ import { Lightbox, type LightboxImage } from '../components/Lightbox';
 import { VideoCard } from '../components/VideoCard';
 import { useSeo } from '../hooks/useSeo';
 import { SavantHover } from '../components/SavantHover';
-import type { DossierData, DossierPreuve, Bloc } from '../types';
+import { reportedQuestionTitle } from '../utils/questionTitle';
+import type { DossierData, DossierPreuve, Bloc, QuestionLink } from '../types';
 import { IconBadge } from '../components/Icon';
 
 const FAV_KEY = 'islamhub:favoris:dossiers';
@@ -42,6 +43,7 @@ export const DossierThematique: React.FC = () => {
   const { slug = '' } = useParams();
   const [data, setData] = useState<DossierData | null>(null);
   const [blocs, setBlocs] = useState<Bloc[]>([]);
+  const [questions, setQuestions] = useState<QuestionLink[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
@@ -55,12 +57,16 @@ export const DossierThematique: React.FC = () => {
 
   useEffect(() => {
     let alive = true;
-    setIsLoading(true); setError(null); setBlocs([]);
+    setIsLoading(true); setError(null); setBlocs([]); setQuestions([]);
     dataService.getDossier(slug)
       .then((d) => {
         if (!alive) return;
         setData(d); setIsLoading(false);
-        if (d?.dossier?.id != null) dataService.getBlocs('dossier', d.dossier.id).then((bl) => { if (alive) setBlocs(bl); }).catch(() => {});
+        if (d?.dossier?.id != null) {
+          dataService.getBlocs('dossier', d.dossier.id).then((bl) => { if (alive) setBlocs(bl); }).catch(() => {});
+          // Maillage réciproque : questions fréquentes rattachées à ce dossier.
+          dataService.getQuestionsForDossier(d.dossier.id).then((qs) => { if (alive) setQuestions(qs); }).catch(() => {});
+        }
       })
       .catch(() => { if (alive) { setError('Erreur lors du chargement du dossier.'); setIsLoading(false); } });
     return () => { alive = false; };
@@ -260,6 +266,34 @@ export const DossierThematique: React.FC = () => {
             <h2 className="text-lg font-bold text-ink mb-3">Pour approfondir</h2>
             <div className="grid sm:grid-cols-2 gap-4">
               {videos.map((v, i) => <VideoCard key={v.id} video={v} index={i} />)}
+            </div>
+          </section>
+        )}
+
+        {/* Questions fréquentes sur ce thème — maillage réciproque (pilier → grappe) */}
+        {questions.length > 0 && (
+          <section>
+            <h2 className="text-lg font-bold text-ink mb-3">Questions fréquentes sur ce thème</h2>
+            <div className="space-y-3">
+              {questions.map((q) => (
+                <Link
+                  key={q.slug}
+                  to={`/questions/${q.slug}`}
+                  className="group flex items-start gap-3.5 rounded-card border border-line bg-surface p-4 shadow-card hover:shadow-card-hover hover:-translate-y-0.5 hover:border-green transition-all motion-reduce:transition-none motion-reduce:hover:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green"
+                >
+                  <HelpCircle className="w-5 h-5 text-green shrink-0 mt-0.5" aria-hidden />
+                  <div className="min-w-0 flex-1">
+                    <h3 className="font-display font-semibold text-ink leading-tight group-hover:text-green">
+                      {reportedQuestionTitle(q.question)}
+                    </h3>
+                    {q.reponse_courte && <p className="text-sm text-muted mt-1 line-clamp-2">{q.reponse_courte}</p>}
+                  </div>
+                  <ArrowRight
+                    className="w-4 h-4 text-green shrink-0 mt-1 group-hover:translate-x-0.5 transition-transform motion-reduce:transition-none"
+                    aria-hidden
+                  />
+                </Link>
+              ))}
             </div>
           </section>
         )}
