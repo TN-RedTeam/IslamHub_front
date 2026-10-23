@@ -9,7 +9,7 @@ const config: CapacitorConfig = {
   // Configuration Android
   android: {
     // Couleur de la barre de status
-    backgroundColor: '#065f46', // emerald-800
+    backgroundColor: '#0b1e22', // teal nuit (charte Ahl-Sunnah)
     // Permettre le contenu mixte (HTTP/HTTPS)
     allowMixedContent: true,
   },
@@ -28,7 +28,7 @@ const config: CapacitorConfig = {
     SplashScreen: {
       launchShowDuration: 2000,
       launchAutoHide: true,
-      backgroundColor: '#065f46',
+      backgroundColor: '#0b1e22',
       androidScaleType: 'CENTER_CROP',
       showSpinner: true,
       spinnerColor: '#ffffff',
