@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { Link, NavLink, Navigate, Outlet, useLocation } from 'react-router-dom';
 import { Loader2, LogOut, ExternalLink } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
+import { Mark } from '../../components/BrandMark';
 import i18n from '../../i18n';
 
 const ENTITIES: { to: string; label: string; soon?: boolean }[] = [
@@ -50,7 +51,19 @@ export const AdminLayout: React.FC = () => {
   return (
     <div className="min-h-screen">
       <header className="sticky top-0 z-20 flex items-center gap-3 h-14 px-5 bg-[#0b1e22] text-[#e9f4f1]">
-        <span className="font-display font-extrabold text-xl">Aq<span className="text-accent-br">ida</span></span>
+        <Link to="/" className="flex items-center gap-2 shrink-0" aria-label="Ahl-Sunnah — accueil">
+          <span className="text-accent-br">
+            <Mark size={26} />
+          </span>
+          <span className="flex flex-col leading-none">
+            <span lang="ar" dir="rtl" className="font-logo-ar text-[16px] leading-[1.05] text-accent-br">
+              أهل السنة
+            </span>
+            <span className="font-logo-latin text-[10px] leading-none tracking-[0.2em] uppercase text-[#e9f4f1] mt-0.5">
+              Ahl-Sunnah
+            </span>
+          </span>
+        </Link>
         <span className="text-[11px] uppercase tracking-[0.16em] text-[#8fb2ad] border border-glass-border rounded-full px-2.5 py-0.5">Admin</span>
         <div className="ml-auto flex items-center gap-3">
           <span className="hidden sm:block text-[13px] text-[#8fb2ad]">{email}</span>
