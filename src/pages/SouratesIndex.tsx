@@ -6,11 +6,17 @@ import { useSeo } from '../hooks/useSeo';
 import type { SourateInfo } from '../types';
 
 // Sections de l'index (dérivées du numéro de sourate — aucun champ en base).
-// Al-Fātiḥah (hors Juz 29 & 30) ouvre la page, puis les deux juz.
+// Ordre du Coran : Al-Fātiḥah (1), puis les sourates du début (2→66), puis les
+// Juz 29 & 30. La section « Autres sourates » récupère TOUTE sourate publiée
+// hors Al-Fātiḥah et Juz 29/30 (ex. Al-Baqarah / Āyat al-Koursiyy), pour qu'aucun
+// ajout ne disparaisse de la liste.
+const JUZ29 = (n: number) => n >= 67 && n <= 77;
+const JUZ30 = (n: number) => n >= 78 && n <= 114;
 const SECTIONS: { key: string; badge: React.ReactNode; titre: string; arabe: string; has: (n: number) => boolean }[] = [
   { key: 'fatiha', badge: <BookOpen className="w-5 h-5" aria-hidden />, titre: 'Al-Fātiḥah · L’ouverture', arabe: 'الفاتحة', has: (n) => n === 1 },
-  { key: 'juz29', badge: '29', titre: 'Juz 29 · Tabārak', arabe: 'تبارك', has: (n) => n >= 67 && n <= 77 },
-  { key: 'juz30', badge: '30', titre: 'Juz 30 · ʿAmma', arabe: 'عمّ', has: (n) => n >= 78 && n <= 114 },
+  { key: 'autres', badge: <BookOpen className="w-5 h-5" aria-hidden />, titre: 'Autres sourates', arabe: '', has: (n) => n !== 1 && !JUZ29(n) && !JUZ30(n) },
+  { key: 'juz29', badge: '29', titre: 'Juz 29 · Tabārak', arabe: 'تبارك', has: JUZ29 },
+  { key: 'juz30', badge: '30', titre: 'Juz 30 · ʿAmma', arabe: 'عمّ', has: JUZ30 },
 ];
 
 const norm = (s: string) => s.normalize('NFD').replace(/\p{Diacritic}/gu, '').toLowerCase();
@@ -64,7 +70,7 @@ export const SouratesIndex: React.FC = () => {
       <header className="max-w-3xl mx-auto px-4 pt-7 pb-2">
         <nav aria-label="Fil d'Ariane" className="text-xs text-muted mb-2"><Link to="/" className="hover:text-accent">Accueil</Link> <span aria-hidden>·</span> Coran</nav>
         <h1 className="font-display font-extrabold tracking-[-0.02em] text-ink" style={{ fontSize: 'clamp(24px,5vw,34px)' }}>Exégèse des sourates</h1>
-        <p className="text-muted mt-2 text-[14px] max-w-2xl">Le tafsir d’Al-Fātiḥah et des Juz 29 &amp; 30, expliqué à la lumière des savants.</p>
+        <p className="text-muted mt-2 text-[14px] max-w-2xl">Le tafsir des sourates du Coran, expliqué à la lumière des savants.</p>
       </header>
 
       <main className="max-w-3xl mx-auto px-4 py-6">
@@ -165,7 +171,7 @@ export const SouratesIndex: React.FC = () => {
         )}
 
         <p className="text-center text-sm text-muted mt-10 flex items-center justify-center gap-1.5">
-          <BookOpen className="h-4 w-4" /> D'autres sourates des Juz 29 &amp; 30 seront ajoutées progressivement.
+          <BookOpen className="h-4 w-4" /> D'autres sourates seront ajoutées progressivement.
         </p>
       </main>
     </div>
