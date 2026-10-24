@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { useParams, Link } from '../../lib/router';
 import { Loader2, Copy, Check, Share2, Star, ChevronRight, BookOpen } from 'lucide-react';
 import { dataService } from '../../services/DataService';
+import { copyToClipboard, withLink, shareContent } from '../../utils/shareCopy';
 import { Markdown } from '../../components/Markdown';
 import { ArticleBlocs } from '../../components/ArticleBlocs';
 import type { Bloc } from '../../types';
@@ -102,20 +103,15 @@ export const VersetEquivoque: React.FC = () => {
     setIsFav(next.includes(slug));
   };
 
-  const copyDebate = async () => {
-    if (!v) return;
+  const buildText = () => {
+    if (!v) return '';
     const ref = `${v.sourate}${v.ayah != null ? ` : ${v.ayah}` : ''}`;
     const firstSavant = paroles.find((p) => p.savant)?.savant;
-    const txt = [v.verset_arabe, v.verset_traduction ? `« ${v.verset_traduction} »` : '', ref, firstSavant]
-      .filter(Boolean).join('\n');
-    try { await navigator.clipboard.writeText(txt); setCopied(true); setTimeout(() => setCopied(false), 2000); } catch { /* ignore */ }
+    return [v.verset_arabe, v.verset_traduction ? `« ${v.verset_traduction} »` : '', ref, firstSavant].filter(Boolean).join('\n');
   };
-  const share = async () => {
-    try {
-      if (navigator.share) await navigator.share({ title, url: window.location.href });
-      else { await navigator.clipboard.writeText(window.location.href); setCopied(true); setTimeout(() => setCopied(false), 2000); }
-    } catch { /* annulé */ }
-  };
+  const flash = () => { setCopied(true); setTimeout(() => setCopied(false), 2000); };
+  const copyDebate = async () => { if (!v) return; if (await copyToClipboard(withLink(buildText()))) flash(); };
+  const share = async () => { if ((await shareContent({ title, text: buildText() })) === 'copied') flash(); };
 
   if (loading) {
     return <div className="min-h-screen grid place-items-center"><Loader2 className="w-10 h-10 text-green animate-spin" /></div>;

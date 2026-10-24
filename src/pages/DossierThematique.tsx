@@ -9,6 +9,7 @@ import { Lightbox, type LightboxImage } from '../components/Lightbox';
 import { VideoCard } from '../components/VideoCard';
 import { useSeo } from '../hooks/useSeo';
 import { SavantHover } from '../components/SavantHover';
+import { copyToClipboard, withLink, shareContent } from '../utils/shareCopy';
 import type { DossierData, DossierPreuve, Bloc, QuestionLink } from '../types';
 import { IconBadge } from '../components/Icon';
 
@@ -112,16 +113,10 @@ export const DossierThematique: React.FC = () => {
     return `${data.dossier.h1}\n\n${blocks.join('\n\n')}`;
   }, [data]);
 
-  const copyDebate = async () => {
-    try { await navigator.clipboard.writeText(debateText); setCopied(true); setTimeout(() => setCopied(false), 2000); } catch { /* ignore */ }
-  };
+  const flash = () => { setCopied(true); setTimeout(() => setCopied(false), 2000); };
+  const copyDebate = async () => { if (await copyToClipboard(withLink(debateText))) flash(); };
   const share = async () => {
-    const url = window.location.href;
-    const title = data?.dossier.h1 || 'Ahl-Sunnah';
-    try {
-      if (navigator.share) await navigator.share({ title, url });
-      else { await navigator.clipboard.writeText(url); setCopied(true); setTimeout(() => setCopied(false), 2000); }
-    } catch { /* annulé */ }
+    if ((await shareContent({ title: data?.dossier.h1 || 'Ahl-Sunnah', text: debateText })) === 'copied') flash();
   };
 
   if (isLoading) {
