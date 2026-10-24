@@ -4,7 +4,6 @@ import { Loader2, Search, ArrowRight, HelpCircle } from 'lucide-react';
 import { dataService } from '../services/DataService';
 import { PageHeader } from '../components/PageHeader';
 import { useSeo } from '../hooks/useSeo';
-import { reportedQuestionTitle } from '../utils/questionTitle';
 import type { QuestionCard } from '../types';
 
 const norm = (s: string) => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
@@ -79,7 +78,7 @@ export const QuestionsIndex: React.FC = () => {
       '@type': 'FAQPage',
       mainEntity: questions.slice(0, 50).map((it) => ({
         '@type': 'Question',
-        name: reportedQuestionTitle(it.question),
+        name: it.question,
         acceptedAnswer: { '@type': 'Answer', text: (it.reponse_courte ?? '').slice(0, 500) },
       })),
     };
@@ -161,7 +160,7 @@ export const QuestionsIndex: React.FC = () => {
                       <HelpCircle className="w-5 h-5 text-green shrink-0 mt-0.5" aria-hidden />
                       <div className="min-w-0 flex-1">
                         <h3 className="font-display font-semibold text-ink leading-tight group-hover:text-green">
-                          {reportedQuestionTitle(it.question)}
+                          {it.question}
                         </h3>
                         {it.reponse_courte && (
                           <p className="text-sm text-muted mt-1 line-clamp-2">{it.reponse_courte}</p>

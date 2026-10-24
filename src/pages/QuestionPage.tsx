@@ -5,7 +5,6 @@ import { dataService } from '../services/DataService';
 import { ArticleBlocs } from '../components/ArticleBlocs';
 import { PageHeader } from '../components/PageHeader';
 import { useSeo } from '../hooks/useSeo';
-import { reportedQuestionTitle } from '../utils/questionTitle';
 import type { QuestionDetail, QuestionCard, Bloc } from '../types';
 import { IconBadge } from '../components/Icon';
 
@@ -68,12 +67,11 @@ export const QuestionPage: React.FC = () => {
     };
   }, [slug]);
 
-  // Règle A : titre/H1/schéma en forme RAPPORTÉE (la question nue reste en
-  // `text`, variantes et recherche). Le slug et les données ne changent pas.
-  const reportedTitle = useMemo(() => (data ? reportedQuestionTitle(data.question.question) : undefined), [data]);
+  // Le titre/H1/schéma affichent la question TELLE QU'ELLE EST SAISIE (aucun
+  // préfixe automatique) ; l'auteur met une forme rapportée lui-même si besoin.
+  const pageTitle = data?.question.question ?? undefined;
 
-  // JSON-LD QAPage : une question par page. `name` = forme rapportée ;
-  // `text` = la question réellement posée/cherchée (SEO).
+  // JSON-LD QAPage : une question par page.
   const jsonLd = useMemo(() => {
     if (!data) return undefined;
     return {
@@ -81,7 +79,7 @@ export const QuestionPage: React.FC = () => {
       '@type': 'QAPage',
       mainEntity: {
         '@type': 'Question',
-        name: reportedQuestionTitle(data.question.question),
+        name: data.question.question,
         text: data.question.question,
         acceptedAnswer: { '@type': 'Answer', text: (data.question.reponse_courte ?? '').slice(0, 500) },
       },
@@ -89,7 +87,7 @@ export const QuestionPage: React.FC = () => {
   }, [data]);
 
   useSeo({
-    title: reportedTitle,
+    title: pageTitle,
     description: data?.question.reponse_courte ?? undefined,
     type: 'article',
     jsonLd,
@@ -155,11 +153,11 @@ export const QuestionPage: React.FC = () => {
     <div className="min-h-screen">
       <PageHeader
         eyebrow="Question fréquente"
-        title={reportedQuestionTitle(question.question)}
+        title={question.question}
         crumbs={[
           { label: 'Accueil', to: '/' },
           { label: 'Questions fréquentes', to: '/questions' },
-          { label: reportedQuestionTitle(question.question) },
+          { label: question.question },
         ]}
       />
 
@@ -260,7 +258,7 @@ export const QuestionPage: React.FC = () => {
                         to={`/questions/${s.slug}`}
                         className="inline-flex items-center gap-1.5 text-green hover:underline [unicode-bidi:plaintext]"
                       >
-                        <ArrowRight className="h-4 w-4 shrink-0" /> {reportedQuestionTitle(s.question)}
+                        <ArrowRight className="h-4 w-4 shrink-0" /> {s.question}
                       </Link>
                     </li>
                   ))}

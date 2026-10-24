@@ -9,7 +9,6 @@ import { Lightbox, type LightboxImage } from '../components/Lightbox';
 import { VideoCard } from '../components/VideoCard';
 import { useSeo } from '../hooks/useSeo';
 import { SavantHover } from '../components/SavantHover';
-import { reportedQuestionTitle } from '../utils/questionTitle';
 import type { DossierData, DossierPreuve, Bloc, QuestionLink } from '../types';
 import { IconBadge } from '../components/Icon';
 
@@ -284,7 +283,7 @@ export const DossierThematique: React.FC = () => {
                   <HelpCircle className="w-5 h-5 text-green shrink-0 mt-0.5" aria-hidden />
                   <div className="min-w-0 flex-1">
                     <h3 className="font-display font-semibold text-ink leading-tight group-hover:text-green">
-                      {reportedQuestionTitle(q.question)}
+                      {q.question}
                     </h3>
                     {q.reponse_courte && <p className="text-sm text-muted mt-1 line-clamp-2">{q.reponse_courte}</p>}
                   </div>
