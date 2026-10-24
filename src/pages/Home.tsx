@@ -8,7 +8,7 @@ import { dayOfYear } from '../utils/daily';
 import { GlassCard, SectionHeader, Tile } from '../components/ui/Nuit';
 import { HeroCarousel, type HeroSlide } from '../components/HeroCarousel';
 import { UI } from '../strings';
-import type { Hadith, Invocation, Coran, Parole, ThemeCard, HomeVedette, HomeRecentItem } from '../types';
+import type { Hadith, Invocation, DailyExegese, Parole, ThemeCard, HomeVedette, HomeRecentItem } from '../types';
 // Hero validé — Dôme vert au crépuscule (violet), images fidèles bundlées (offline).
 import domeW800 from '../assets/hero/dome-violet-800.webp';
 import domeW1280 from '../assets/hero/dome-violet-1280.webp';
@@ -26,7 +26,7 @@ export const Home: React.FC = () => {
   const [stats, setStats] = useState<SiteStats>({ hadiths: 0, paroles: 0, douaas: 0, dhikrs: 0, videos: 0, coran: 0 });
   const [dailyHadith, setDailyHadith] = useState<Hadith | null>(null);
   const [dailyDouaa, setDailyDouaa] = useState<Invocation | null>(null);
-  const [dailyVerse, setDailyVerse] = useState<Coran | null>(null);
+  const [dailyExegese, setDailyExegese] = useState<DailyExegese | null>(null);
   const [dailyParole, setDailyParole] = useState<Parole | null>(null);
   const [vedette, setVedette] = useState<HomeVedette | null>(null);
   const [recent, setRecent] = useState<HomeRecentItem[]>([]);
@@ -40,7 +40,7 @@ export const Home: React.FC = () => {
       dataService.getStats().then(setStats),
       dataService.getDailyHadith(day).then(setDailyHadith),
       dataService.getDailyInvocation(day, 1).then(setDailyDouaa),
-      dataService.getDailyCoran(day).then(setDailyVerse),
+      dataService.getDailyExegese(day).then(setDailyExegese),
       dataService.getDailyParole(day).then(setDailyParole),
       dataService.getHomeVedette().then(setVedette),
       dataService.getHomeRecent(3).then(setRecent),
@@ -59,10 +59,9 @@ export const Home: React.FC = () => {
 
   // Carrousel du hero : verset / hadith / parole (rotation déterministe par date).
   const heroSlides: HeroSlide[] = [
-    // Pas de lien : le verset du jour peut venir d'une sourate sans page
-    // d'exégèse (la rubrique Coran ne couvre pas tout le Coran). On l'affiche
-    // sans renvoyer vers une page qui ne contient pas ce verset.
-    dailyVerse?.texte_arabe && { key: 'verset', eyebrow: UI.hero.verset, eyebrowAr: UI.hero.versetAr, arabic: dailyVerse.texte_arabe, translation: dailyVerse.texte_francais, source: dailyVerse.sourate, to: null },
+    // Exégèse du jour : un verset d'une sourate PUBLIÉE (qui a donc une page
+    // d'exégèse) → le lien /coran/sourates/<slug> est toujours valide.
+    dailyExegese?.texte_arabe && { key: 'exegese', eyebrow: UI.hero.exegese, eyebrowAr: UI.hero.exegeseAr, arabic: dailyExegese.texte_arabe, translation: dailyExegese.texte_francais, source: dailyExegese.sourate, to: dailyExegese.slug ? `/coran/sourates/${dailyExegese.slug}` : null },
     dailyHadith?.texte_arabe && { key: 'hadith', eyebrow: UI.hero.hadith, arabic: dailyHadith.texte_arabe, translation: dailyHadith.texte_francais, source: dailyHadith.rapporteur ?? dailyHadith.narrateur ?? null, to: `/hadiths/${dailyHadith.id}/${slugify(dailyHadith.sujet)}` },
     dailyParole?.texte_arabe && { key: 'parole', eyebrow: UI.hero.parole, arabic: dailyParole.texte_arabe, translation: dailyParole.texte_francais, source: dailyParole.savant, to: dailyParole.slug ? `/paroles/${dailyParole.slug}` : null },
   ].filter(Boolean) as HeroSlide[];
