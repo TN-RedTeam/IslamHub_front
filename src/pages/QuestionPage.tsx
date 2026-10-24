@@ -5,6 +5,7 @@ import { dataService } from '../services/DataService';
 import { ArticleBlocs } from '../components/ArticleBlocs';
 import { PageHeader } from '../components/PageHeader';
 import { useSeo } from '../hooks/useSeo';
+import { copyToClipboard, withLink, shareContent } from '../utils/shareCopy';
 import type { QuestionDetail, QuestionCard, Bloc } from '../types';
 import { IconBadge } from '../components/Icon';
 
@@ -93,31 +94,13 @@ export const QuestionPage: React.FC = () => {
     jsonLd,
   });
 
+  const flash = () => { setCopied(true); setTimeout(() => setCopied(false), 2000); };
+  const questionText = () => [data?.question.question, data?.question.reponse_courte].filter(Boolean).join('\n\n');
   const share = async () => {
-    const url = window.location.href;
-    const title = data?.question.question || 'Ahl-Sunnah';
-    try {
-      if (navigator.share) await navigator.share({ title, url });
-      else {
-        await navigator.clipboard.writeText(url);
-        setCopied(true);
-        setTimeout(() => setCopied(false), 2000);
-      }
-    } catch {
-      /* annulé */
-    }
+    if ((await shareContent({ title: data?.question.question || 'Ahl-Sunnah', text: questionText() })) === 'copied') flash();
   };
   const copy = async () => {
-    const txt = [data?.question.question, data?.question.reponse_courte, window.location.href]
-      .filter(Boolean)
-      .join('\n\n');
-    try {
-      await navigator.clipboard.writeText(txt);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    } catch {
-      /* ignore */
-    }
+    if (await copyToClipboard(withLink(questionText()))) flash();
   };
 
   if (isLoading) {

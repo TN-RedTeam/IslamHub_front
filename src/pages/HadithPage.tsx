@@ -3,6 +3,7 @@ import { useParams, Link } from '../lib/router';
 import { m } from 'framer-motion';
 import { Loader2, ArrowLeft, Copy, Check, Share2, AlertTriangle, ChevronRight, BookOpen } from 'lucide-react';
 import { dataService } from '../services/DataService';
+import { copyToClipboard, withLink, shareContent } from '../utils/shareCopy';
 import { BadgeGeneration } from '../components/BadgeGeneration';
 import { HadithSources } from '../components/HadithSources';
 import { ThemeChips } from '../components/ThemeChips';
@@ -84,17 +85,17 @@ export const HadithPage: React.FC = () => {
     hadith.type_hadith || '',
   ].filter(Boolean).join(' — ');
 
+  const buildText = () =>
+    [hadith?.texte_arabe, hadith?.texte_francais ? `« ${hadith.texte_francais} »` : '', source, reference]
+      .filter(Boolean).join('\n');
+  const flash = () => { setCopied(true); setTimeout(() => setCopied(false), 2000); };
   const copyDebate = async () => {
     if (!hadith) return;
-    const txt = [hadith.texte_arabe, hadith.texte_francais ? `« ${hadith.texte_francais} »` : '', source, reference]
-      .filter(Boolean).join('\n');
-    try { await navigator.clipboard.writeText(txt); setCopied(true); setTimeout(() => setCopied(false), 2000); } catch { /* ignore */ }
+    if (await copyToClipboard(withLink(buildText()))) flash();
   };
   const share = async () => {
-    try {
-      if (navigator.share) await navigator.share({ title: hadith?.sujet || 'Hadith', url: window.location.href });
-      else { await navigator.clipboard.writeText(window.location.href); setCopied(true); setTimeout(() => setCopied(false), 2000); }
-    } catch { /* annulé */ }
+    if (!hadith) return;
+    if ((await shareContent({ title: hadith.sujet || 'Hadith', text: buildText() })) === 'copied') flash();
   };
 
   if (loading) {
