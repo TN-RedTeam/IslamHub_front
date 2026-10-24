@@ -284,6 +284,16 @@ export interface SourateInfo {
   a_du_contenu: boolean;
   a_exegese?: boolean;
 }
+/** « Exégèse du jour » (accueil) — un verset d'une sourate publiée + son exégèse. */
+export interface DailyExegese {
+  numero: number;
+  texte_arabe: string | null;
+  texte_francais: string | null;
+  exegese: string | null;
+  sourate: string | null;
+  slug: string | null;
+}
+
 export interface SourateDetail {
   sourate: {
     numero: number;
