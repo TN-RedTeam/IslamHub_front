@@ -59,7 +59,10 @@ export const Home: React.FC = () => {
 
   // Carrousel du hero : verset / hadith / parole (rotation déterministe par date).
   const heroSlides: HeroSlide[] = [
-    dailyVerse?.texte_arabe && { key: 'verset', eyebrow: UI.hero.verset, eyebrowAr: UI.hero.versetAr, arabic: dailyVerse.texte_arabe, translation: dailyVerse.texte_francais, source: dailyVerse.sourate, to: '/coran/sourates' },
+    // Pas de lien : le verset du jour peut venir d'une sourate sans page
+    // d'exégèse (la rubrique Coran ne couvre pas tout le Coran). On l'affiche
+    // sans renvoyer vers une page qui ne contient pas ce verset.
+    dailyVerse?.texte_arabe && { key: 'verset', eyebrow: UI.hero.verset, eyebrowAr: UI.hero.versetAr, arabic: dailyVerse.texte_arabe, translation: dailyVerse.texte_francais, source: dailyVerse.sourate, to: null },
     dailyHadith?.texte_arabe && { key: 'hadith', eyebrow: UI.hero.hadith, arabic: dailyHadith.texte_arabe, translation: dailyHadith.texte_francais, source: dailyHadith.rapporteur ?? dailyHadith.narrateur ?? null, to: `/hadiths/${dailyHadith.id}/${slugify(dailyHadith.sujet)}` },
     dailyParole?.texte_arabe && { key: 'parole', eyebrow: UI.hero.parole, arabic: dailyParole.texte_arabe, translation: dailyParole.texte_francais, source: dailyParole.savant, to: dailyParole.slug ? `/paroles/${dailyParole.slug}` : null },
   ].filter(Boolean) as HeroSlide[];
