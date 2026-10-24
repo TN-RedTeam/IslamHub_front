@@ -4,6 +4,7 @@ import { MOMENTS, type MomentDef } from '../data/moments';
 import type {
   Hadith,
   Coran,
+  DailyExegese,
   Dhikr,
   Douaa,
   Invocation,
@@ -540,6 +541,12 @@ class DataService {
     const { data, error } = await supabase.rpc('daily_coran', { day, p_locale: getContentLocale() });
     if (error) throw error;
     return (data ?? null) as Coran | null;
+  }
+  /** Exégèse du jour (verset d'une sourate publiée + son exégèse) — pour l'accueil. */
+  async getDailyExegese(day: number): Promise<DailyExegese | null> {
+    const { data, error } = await supabase.rpc('daily_exegese', { day, p_locale: getContentLocale() });
+    if (error) throw error;
+    return (data ?? null) as DailyExegese | null;
   }
   async getDailyParole(day: number): Promise<Parole | null> {
     const { data, error } = await supabase.rpc('daily_parole', { day, p_locale: getContentLocale() });

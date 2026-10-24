@@ -36,6 +36,8 @@
   "hero": {
     "verset": "Verse of the day",
     "versetAr": "آية اليوم",
+    "exegese": "Exegesis of the day",
+    "exegeseAr": "تفسير اليوم",
     "hadith": "Hadith of the day",
     "parole": "Scholar's saying",
     "prev": "Previous",
